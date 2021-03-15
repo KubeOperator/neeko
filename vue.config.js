@@ -6,15 +6,20 @@ function resolve(dir) {
 
 module.exports = {
   productionSourceMap: true,
-  // 使用mock-server
   devServer: {
-    port: 8080,
+    port: 4200,
     open: true,
     overlay: {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/api': {
+        target: 'http://0.0.0.0:8080',
+        ws: true,
+        secure: false,
+      },
+    }
   },
   configureWebpack: {
     devtool: 'source-map',

@@ -29,7 +29,7 @@ const generateRoutes = async (to, from, next) => {
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
-  const isLogin = await store.dispatch('user/isLogin') // 或者user-token/isLogin
+  const isLogin = await store.dispatch('user/isLogin')
 
   if (isLogin) {
     if (to.path === '/login') {

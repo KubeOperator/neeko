@@ -2,7 +2,6 @@ import axios from 'axios'
 import {$alert, $error} from "./message"
 import store from '@/store'
 import i18n from "@/i18n";
-import {TokenKey, getToken} from '@/utils/token'
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -10,19 +9,6 @@ const instance = axios.create({
   timeout: 60000 // request timeout, default 1 min
 })
 
-// 每次请求加上Token。如果没用使用Token，删除这个拦截器
-instance.interceptors.request.use(
-  config => {
-    if (store.getters.token) {
-      config.headers[TokenKey] = getToken()
-    }
-    return config
-  },
-  error => {
-    console.log(error) // for debug
-    return Promise.reject(error)
-  }
-)
 
 const checkAuth = response => {
   // 请根据实际需求修改
@@ -68,11 +54,12 @@ const promise = (request, loading = {}) => {
   return new Promise((resolve, reject) => {
     loading.status = true;
     request.then(response => {
-      if (response.data.success) {
-        resolve(response.data);
-      } else {
-        reject(response.data)
-      }
+      // if (response.data.success) {
+      resolve(response.data);
+      // }
+      // else {
+      //   reject(response.data)
+      // }
       loading.status = false;
     }).catch(error => {
       reject(error)

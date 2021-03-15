@@ -1,5 +1,6 @@
 /* 前后端不分离的登录方式*/
-import {login, isLogin, getCurrentUser, updateInfo, logout} from '@/api/user'
+import {updateInfo} from '@/api/user'
+import {login, logout, isLogin, getSession} from '@/api/auth'
 import {resetRouter} from '@/router'
 import {getLanguage, setLanguage} from "@/i18n";
 
@@ -44,13 +45,17 @@ const actions = {
 
   isLogin({commit}) {
     return new Promise((resolve) => {
-      if (state.login) {
+      if (state.isLogin) {
         resolve(true)
         return;
       }
-      isLogin().then(() => {
-        commit('LOGIN')
-        resolve(true)
+      isLogin().then((data) => {
+        if (data.isLogin) {
+          commit('LOGIN')
+          resolve(true)
+        } else {
+          resolve(false)
+        }
       }).catch(() => {
         resolve(false)
       })
@@ -59,12 +64,13 @@ const actions = {
 
   getCurrentUser({commit}) {
     return new Promise((resolve, reject) => {
-      getCurrentUser().then(response => {
-        const {name, roles, language} = response.data
+      getSession().then(data => {
+        const user = data.user;
+        const {name, roles, language} = user;
         commit('SET_NAME', name)
         commit('SET_ROLES', roles)
         commit('SET_LANGUAGE', language)
-        resolve(response.data)
+        resolve(user)
       }).catch(error => {
         reject(error)
       })
