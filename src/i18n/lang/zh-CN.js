@@ -44,7 +44,10 @@ const message = {
     system_setting: "系统设置",
     user_management: "用户管理",
     params_setting: "参数设置",
-    complex_table: "复合表格"
+    complex_table: "复合表格",
+    cluster: "集群",
+    host: "主机",
+    project: "项目"
   },
 
 }

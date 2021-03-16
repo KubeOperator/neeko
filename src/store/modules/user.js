@@ -1,5 +1,5 @@
 /* 前后端不分离的登录方式*/
-import {updateInfo} from '@/api/user'
+import {update} from '@/api/user'
 import {login, logout, isLogin, getSession} from '@/api/auth'
 import {resetRouter} from '@/router'
 import {getLanguage, setLanguage} from "@/i18n";
@@ -80,7 +80,7 @@ const actions = {
   setLanguage({commit, state}, language) {
     commit('SET_LANGUAGE', language)
     return new Promise((resolve, reject) => {
-      updateInfo(state.id, {language: language}).then(response => {
+      update(state.name, {language: language}).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)

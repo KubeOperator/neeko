@@ -84,6 +84,11 @@ export const del = (url, loading) => {
   return promise(request({url: url, method: "delete"}), loading)
 };
 
+export const patch = (url, data, loading) => {
+  return promise(request({url: url, method: "patch", data}), loading)
+};
+
+
 export default {
   install(Vue) {
     Vue.prototype.$get = get;

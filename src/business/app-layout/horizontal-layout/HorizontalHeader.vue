@@ -37,17 +37,6 @@
     position: relative;
     height: 100%;
 
-    // 先去掉横线看看
-    //&:after {
-    //  content: "";
-    //  position: absolute;
-    //  bottom: 0;
-    //  left: 0;
-    //  height: 1px;
-    //  width: 100%;
-    //  background-color: #D5D5D5;
-    //}
-
     .header-left {
       @include flex-row(flex-start, center);
       position: relative;
