@@ -15,6 +15,7 @@ const message = {
       delete: "删除",
       cancel: "取消",
       return: "返回",
+      create: "添加"
     },
     msg: {
       success: "{0}成功",
@@ -31,7 +32,17 @@ const message = {
       personal_information: "个人信息",
       help_documentation: "帮助文档",
       exit_system: "退出系统",
-    }
+    },
+    table: {
+      action: "动作",
+      name: "名称",
+      status: "状态",
+      create_time: "创建时间"
+    },
+    status: {
+      running: "运行中",
+      error: "错误"
+    },
   },
   login: {
     username: "用户名",
@@ -49,6 +60,16 @@ const message = {
     host: "主机",
     project: "项目"
   },
+  cluster: {
+    cluster: "集群"
+  },
+  host: {
+    host: "主机",
+    memory: "内存",
+    os: "操作系统",
+    architecture: "架构",
+    port: "端口"
+  }
 
 }
 

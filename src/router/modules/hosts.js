@@ -4,11 +4,26 @@ const Host = {
   path: '/hosts',
   component: Layout,
   name: 'Host',
-  meta: {
-    title: "route.host",
-    icon: 'el-icon-setting',
-    roles: ['admin']
-  },
-  children: []
+  children: [
+    {
+      path: 'list',
+      component: () => import('@/business/hosts'),
+      name: "HostList",
+      meta: {
+        title: "route.host",
+        icon: 'el-icon-setting',
+        roles: ['admin']
+      },
+    },
+    {
+      path: "create",
+      hidden: true,
+      component: () => import('@/business/hosts/create'),
+      meta: {
+        activeMenu: "/hosts/list",
+        roles: ['admin']
+      },
+    }
+  ]
 }
 export default Host

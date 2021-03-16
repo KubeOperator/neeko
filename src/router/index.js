@@ -51,7 +51,7 @@ export const constantRoutes = [
  */
 export const rolesRoutes = [
   ...modules.keys().map(key => modules(key).default),
-  {path: '*', redirect: '/', hidden: true}
+  // {path: '*', redirect: '/', hidden: true}
 ]
 
 const createRouter = () => new Router({
