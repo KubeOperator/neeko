@@ -50,7 +50,7 @@
         loading: false,
         form: {
           username: 'admin',
-          password: '123456'
+          password: 'kubeoperator@admin123'
         },
         rules: {
           username: [

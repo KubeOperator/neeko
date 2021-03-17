@@ -2,6 +2,13 @@ import Vue from 'vue'
 import "@/styles/index.scss"
 import Fit2CloudUI from 'fit2cloud-ui';
 // import Fit2CloudUI from './external/fit2cloud-ui.common';
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {fas} from '@fortawesome/free-solid-svg-icons'
+import {far} from '@fortawesome/free-regular-svg-icons'
+import {fab} from '@fortawesome/free-brands-svg-icons'
+import {FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText} from '@fortawesome/vue-fontawesome'
+
+
 import ElementUI from 'element-ui';
 import App from './App.vue'
 import i18n from "./i18n";
@@ -22,10 +29,16 @@ Vue.use(ElementUI, {
 Vue.use(Fit2CloudUI, {
   i18n: (key, value) => i18n.t(key, value)
 });
+library.add(fas, far, fab)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers', FontAwesomeLayers)
+Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
 Vue.use(icons);
 Vue.use(plugins);
 Vue.use(directives);
 Vue.use(filters);
+
 
 new Vue({
   el: '#app',

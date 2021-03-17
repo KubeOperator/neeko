@@ -11,34 +11,29 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
+      <el-table-column :label="$t('commons.table.name')" mix-width="100" fix>
         <template v-slot:default="{row}">
           <el-row>
-            <el-col :span="6">
-              <font-awesome-icon icon="server" size="3x"/>
+            <el-col :span="3">
+              <font-awesome-icon icon="user" size="3x"/>
             </el-col>
             <el-col :span="18">
               {{row.name}}<br/>
-              {{row.ip}}
+              {{row.email}}
             </el-col>
           </el-row>
-
         </template>
       </el-table-column>
       <!--      <el-table-column label="IP" min-width="100" prop="ip" fix/>-->
-      <el-table-column label="CPU" min-width="100" prop="cpuCore"/>
-      <el-table-column label="GPU" min-width="100" prop="gpuNum"/>
-      <el-table-column :label="$t('host.memory')" min-width="100" prop="memory"/>
-      <el-table-column :label="$t('host.os')" min-width="100">
-        <template v-slot:default="{row}">
-          {{ row.os}} {{row.osVersion}}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('host.architecture')" min-width="100" prop="architecture"/>
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
-          <el-tag v-if="row.status === 'Error'" type="danger" size="small">{{$t('commons.status.error')}}</el-tag>
+          <el-tag v-if="row.status === 'active'" type="success" size="small">{{$t('commons.status.active')}}</el-tag>
+          <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{$t('commons.status.passive')}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="角色" min-width="100">
+        <template v-slot:default="{row}">
+          <el-tag type="info" size="small">{{$t(`commons.role.${row.role}`)}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -54,7 +49,7 @@
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import {listHosts} from "@/api/hosts"
+  import {listUsers} from "@/api/user"
   import ComplexTable from "@/components/complex-table";
 
   const buttonClick = function (row) {
@@ -62,14 +57,14 @@
   }
 
   export default {
-    name: "Host",
+    name: "UserList",
     components: {ComplexTable, LayoutContent},
     data() {
       return {
         columns: [],
         buttons: [
           {
-            label: "执行", icon: "el-icon-video-play", click: buttonClick
+            label: "编辑", icon: "el-icon-edit", click: buttonClick
           }, {
             label: "删除", icon: "el-icon-delete", type: "danger", click: buttonClick
           },
@@ -108,12 +103,12 @@
         console.log("编辑: ", row)
       },
       create() {
-        this.$router.push({path: '/hosts/create'})
+        this.$router.push({path: '/users/create'})
       },
       search(condition) {
         console.log(condition) // demo只查看搜索条件，没有搜索的实现
         const {currentPage, pageSize} = this.paginationConfig
-        listHosts(currentPage, pageSize).then(data => {
+        listUsers(currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
