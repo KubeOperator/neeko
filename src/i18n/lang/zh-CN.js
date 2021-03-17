@@ -41,13 +41,14 @@ const message = {
     expires: '认证信息已过期，请重新登录',
   },
   route: {
-    system_setting: "系统设置",
-    user_management: "用户管理",
-    params_setting: "参数设置",
-    complex_table: "复合表格",
+    project: "项目",
     cluster: "集群",
     host: "主机",
-    project: "项目"
+    user_management: "用户管理",
+    system_setting: "系统设置",
+    system_log: "系统日志",
+    params_setting: "参数设置",
+    complex_table: "复合表格",
   },
 
 }
