@@ -1,29 +1,29 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
-const Host = {
-  path: '/hosts',
+const Projects = {
+  path: '/projects',
   component: Layout,
-  name: 'Host',
+  name: 'Project',
   children: [
     {
       path: 'list',
-      component: () => import('@/business/hosts'),
-      name: "HostList",
+      component: () => import('@/business/projects'),
+      name: "ProjectList",
       meta: {
-        title: "route.host",
+        title: "route.project",
         icon: 'el-icon-setting',
         roles: ['admin']
-      },
+      }
     },
     {
       path: "create",
       hidden: true,
-      component: () => import('@/business/hosts/create'),
+      component: () => import('@/business/projects/create'),
       meta: {
-        activeMenu: "/hosts/list",
+        activeMenu: "/projects/list",
         roles: ['admin']
       },
     }
   ]
 }
-export default Host
+export default Projects

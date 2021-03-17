@@ -8,6 +8,9 @@ const message = {
       confirm: "确认",
       prompt: "提示",
     },
+    dialog: {
+      delete: "删除",
+    },
     button: {
       login: "登录",
       ok: "确定",
@@ -15,6 +18,8 @@ const message = {
       delete: "删除",
       cancel: "取消",
       return: "返回",
+      create: "添加",
+      confirm: "确定"
     },
     msg: {
       success: "{0}成功",
@@ -31,6 +36,23 @@ const message = {
       personal_information: "个人信息",
       help_documentation: "帮助文档",
       exit_system: "退出系统",
+    },
+    table: {
+      action: "动作",
+      name: "名称",
+      status: "状态",
+      description: "描述",
+      create_time: "创建时间"
+    },
+    status: {
+      running: "运行中",
+      error: "错误",
+      active: "活跃",
+      passive: "禁用"
+    },
+    role: {
+      admin: "管理员",
+      user: "用户"
     }
   },
   login: {
@@ -49,7 +71,27 @@ const message = {
     system_log: "系统日志",
     params_setting: "参数设置",
     complex_table: "复合表格",
+
+    project: "项目",
+    user: "用户"
   },
+  cluster: {
+    cluster: "集群"
+  },
+  host: {
+    host: "主机",
+    memory: "内存",
+    os: "操作系统",
+    architecture: "架构",
+    port: "端口"
+  },
+  user: {
+    username: "用户名",
+    password: "密码",
+    confirm_password: "确认密码",
+    role: "角色",
+    email: "邮箱"
+  }
 
 }
 
