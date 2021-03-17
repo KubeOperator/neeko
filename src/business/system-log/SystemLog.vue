@@ -1,11 +1,11 @@
 <template>
   <layout-content>
-    <complex-table header="复合表格" :data="data" :search-config="searchConfig"
+    <complex-table :header="$t('system_log.title')" :data="data" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @input="search" @search="search">
-      <el-table-column label="名称" min-width="100" prop="name"/>
-      <el-table-column label="操作" min-width="100" prop="operation"/>
-      <el-table-column label="操作内容" min-width="100" prop="operationInfo" :show-overflow-tooltip="true"/>
-      <el-table-column label="创建时间">
+      <el-table-column :label="$t('system_log.name')" min-width="100" prop="name"/>
+      <el-table-column :label="$t('system_log.operation')" min-width="100" prop="operation"/>
+      <el-table-column :label="$t('system_log.operation_info')" min-width="100" prop="operationInfo" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('system_log.create_at')">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
@@ -32,9 +32,6 @@ export default {
           {field: "operation_info", label: "操作内容", component: "FuComplexInput"}
         ]
       },
-      condition : {
-        name: '',
-      },
       paginationConfig: {
         currentPage: 1,
         pageSize: 20,
@@ -50,10 +47,10 @@ export default {
         const currentLanguage = localStorage.getItem('currentLanguage') || this.translate.getBrowserCultureLang();
         if (response.items != null) {
           for (const item of response.items) {
-            if (currentLanguage == 'en-US') {
-                item.operation = item.operation.split('|')[1]
+            if (currentLanguage == "en-US") {
+                item.operation = item.operation.split("|")[1]
             } else {
-                item.operation = item.operation.split('|')[0]
+                item.operation = item.operation.split("|")[0]
             }
           }
         }
@@ -65,9 +62,9 @@ export default {
   mounted() {
     var condition = {
       name: {
-        field: '',
-        operator: '',
-        value: '',
+        field: "",
+        operator: "",
+        value: "",
       }
     }
     this.search(condition)

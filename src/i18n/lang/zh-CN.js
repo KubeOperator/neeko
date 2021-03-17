@@ -66,13 +66,9 @@ const message = {
     project: "项目",
     cluster: "集群",
     host: "主机",
-    user_management: "用户管理",
     system_setting: "系统设置",
     system_log: "系统日志",
-    params_setting: "参数设置",
     complex_table: "复合表格",
-
-    project: "项目",
     user: "用户"
   },
   cluster: {
@@ -91,6 +87,13 @@ const message = {
     confirm_password: "确认密码",
     role: "角色",
     email: "邮箱"
+  },
+  system_log: {
+    title: "系统日志",
+    name: "名称",
+    operation: "操作",
+    operation_info: "操作内容",
+    create_at: "创建时间"
   }
 
 }
