@@ -67,6 +67,7 @@ const message = {
     cluster: "集群",
     host: "主机",
     system_setting: "系统设置",
+    manifest: "版本管理",
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户"
@@ -88,12 +89,19 @@ const message = {
     role: "角色",
     email: "邮箱"
   },
+  manifest: {
+    title: "版本管理",
+    detail: "详情",
+    enable: "启用",
+    message: "版本 {0} 启用/停用成功！"
+  },
   system_log: {
     title: "系统日志",
     name: "名称",
     operation: "操作",
     operation_info: "操作内容",
-    create_at: "创建时间"
+    create_at: "创建时间",
+    query_placeholder: "按 名称/操作/操作内容 搜索"
   }
 
 }

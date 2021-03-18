@@ -1,21 +1,21 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const SystemLog = {
-  path: '/system-log',
+  path: '/manifest',
   component: Layout,
-  name: 'SystemLog',
+  name: 'Manifest',
   meta: {
-    title: "route.system_log",
+    title: "route.manifest",
     icon: 'el-icon-notebook-2',
     roles: ['admin']
   },
   children: [
     {
-      path: 'logs',
-      component: () => import('@/business/system-log/index'),
-      name: "Logs",
+      path: 'manifests',
+      component: () => import('@/business/manifest/index'),
+      name: "Manifests",
       meta: {
-        title: "route.system_log",
+        title: "route.manifest",
         roles: ['admin']
       }
     }
