@@ -1,6 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const Projects = {
+  sort: 0,
   path: '/projects',
   component: Layout,
   name: 'Project',
@@ -18,6 +19,7 @@ const Projects = {
     {
       path: "create",
       hidden: true,
+      name: "ProjectCreate",
       component: () => import('@/business/projects/create'),
       meta: {
         activeMenu: "/projects/list",
