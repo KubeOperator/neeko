@@ -1,9 +1,10 @@
 <template>
   <layout-content>
     <el-menu router :default-active="$route.path" mode="horizontal">
-      <el-menu-item :index="'/projects/detail/'+name+'/members'">成员管理</el-menu-item>
-      <el-menu-item :index="'/projects/detail/'+name+'/resources'">资源管理</el-menu-item>
+      <el-menu-item :index="'/projects/detail/'+name+'/members/list'">成员管理</el-menu-item>
+      <el-menu-item :index="'/projects/detail/'+name+'/resources/list'">资源管理</el-menu-item>
     </el-menu>
+    <br/>
     <router-view></router-view>
   </layout-content>
 </template>

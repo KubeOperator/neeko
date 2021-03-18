@@ -92,7 +92,8 @@ const message = {
     password: "密码",
     confirm_password: "确认密码",
     role: "角色",
-    email: "邮箱"
+    email: "邮箱",
+    user: "用户"
   },
   manifest: {
     title: "版本管理",

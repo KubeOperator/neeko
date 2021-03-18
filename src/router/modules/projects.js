@@ -47,20 +47,30 @@ const Projects = {
       },
       children: [
         {
-          path: "members",
-          name: "ProjectMembers",
+          path: "members/list",
+          name: "ProjectMembersList",
           hidden: true,
           props: true,
           component: () => import('@/business/projects/detail/members'),
           meta: {
             activeMenu: "/projects/list",
             roles: ['admin']
-          }
-
+          },
         },
         {
-          path: "resources",
-          name: "ProjectResources",
+          path: "members/create",
+          name: "ProjectMemberCreate",
+          hidden: true,
+          props: true,
+          component: () => import('@/business/projects/detail/members/create'),
+          meta: {
+            activeMenu: "/projects/list",
+            roles: ['admin']
+          },
+        },
+        {
+          path: "resources/list",
+          name: "ProjectResourcesList",
           props: true,
           hidden: true,
           component: () => import('@/business/projects/detail/resources'),

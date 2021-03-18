@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import {listUsers} from "@/api/user"
+  import {listProjectMembers} from "@/api/project-member"
   import ComplexTable from "@/components/complex-table";
 
   const buttonClick = function (row) {
@@ -56,6 +56,7 @@
   export default {
     name: "ProjectMemberList",
     components: {ComplexTable},
+    props: ["name"],
     data() {
       return {
         columns: [],
@@ -100,12 +101,11 @@
         console.log("编辑: ", row)
       },
       create() {
-        this.$router.push({path: '/users/create'})
+        this.$router.push({name: 'ProjectMemberCreate'})
       },
-      search(condition) {
-        console.log(condition) // demo只查看搜索条件，没有搜索的实现
+      search() {
         const {currentPage, pageSize} = this.paginationConfig
-        listUsers(currentPage, pageSize).then(data => {
+        listProjectMembers(this.name, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
