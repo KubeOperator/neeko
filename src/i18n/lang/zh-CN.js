@@ -1,15 +1,15 @@
-import el from "element-ui/lib/locale/lang/zh-CN"; // 加载element的内容
-import fu from "fit2cloud-ui/src/locale/lang/zh-CN"; // 加载fit2cloud的内容
+import el from "element-ui/lib/locale/lang/zh-CN" // 加载element的内容
+import fu from "fit2cloud-ui/src/locale/lang/zh-CN" // 加载fit2cloud的内容
 
 const message = {
   commons: {
     message_box: {
       alert: "警告",
       confirm: "确认",
-      prompt: "提示",
+      prompt: "提示"
     },
     dialog: {
-      delete: "删除",
+      delete: "删除"
     },
     button: {
       login: "登录",
@@ -26,17 +26,17 @@ const message = {
       success: "{0}成功",
       op_success: "操作成功",
       save_success: "保存成功",
-      delete_success: "删除成功",
+      delete_success: "删除成功"
     },
     validate: {
-      limit: '长度在 {0} 到 {1} 个字符',
+      limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
-      select: "请选择{0}",
+      select: "请选择{0}"
     },
     personal: {
       personal_information: "个人信息",
       help_documentation: "帮助文档",
-      exit_system: "退出系统",
+      exit_system: "退出系统"
     },
     table: {
       action: "动作",
@@ -61,7 +61,7 @@ const message = {
     password: "密码",
     title: "登录 FIT2CLOUD",
     welcome: "欢迎回来，请输入用户名和密码登录",
-    expires: '认证信息已过期，请重新登录',
+    expires: "认证信息已过期，请重新登录"
   },
   route: {
     project: "项目",
@@ -95,12 +95,16 @@ const message = {
     operation: "操作",
     operation_info: "操作内容",
     create_at: "创建时间"
+  },
+  automatic: {
+    name: "自动模式",
+    cloud_provider: "云提供商",
+    datacenter: "数据中心"
   }
-
 }
 
 export default {
   ...el,
   ...fu,
   ...message
-};
+}
