@@ -19,7 +19,8 @@ const message = {
       cancel: "取消",
       return: "返回",
       create: "添加",
-      confirm: "确定"
+      confirm: "确定",
+      edit: "编辑"
     },
     msg: {
       success: "{0}成功",

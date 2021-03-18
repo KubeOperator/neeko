@@ -1,18 +1,5 @@
 <template>
   <layout-content>
-    <!--    <el-dialog-->
-    <!--      :title="$t('commons.dialog.delete')"-->
-    <!--      :visible.sync="deleteDialogOpen"-->
-    <!--      width="30%">-->
-    <!--      <span>-->
-    <!--        -->
-    <!--      </span>-->
-    <!--      <span slot="footer" class="dialog-footer">-->
-    <!--        <el-button @click="deleteDialogOpen = false">{{$t('commons.button.delete')}}</el-button>-->
-    <!--        <el-button type="primary" @click="deleteDialogOpen = false">{{$t('commons.button.confirm')}}</el-button>-->
-    <!--      </span>-->
-    <!--    </el-dialog>-->
-
     <complex-table @select='select' :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
       <template #header>
@@ -24,7 +11,16 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix></el-table-column>
+
+      <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
+        <template v-slot:default="{row}">
+          <router-link :to="{name:'ProjectDetail',query: {name:row.name}}">
+            {{row.name}}
+          </router-link>
+        </template>
+      </el-table-column>
+
+
       <el-table-column :label="$t('commons.table.description')" min-width="100" prop="description"
                        fix></el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -53,7 +49,12 @@
         columns: [],
         buttons: [
           {
-            label: "删除", icon: "el-icon-delete", type: "danger", click: (row) => {
+            label: this.$t("commons.button.edit"), icon: "el-icon-edit", type: "info", click: (row) => {
+              this.$router.push({name: "ProjectEdit", params: {name: row.name}})
+            }
+          },
+          {
+            label: this.$t("commons.button.delete"), icon: "el-icon-delete", type: "danger", click: (row) => {
               this.del(row.name)
             }
           },
@@ -77,11 +78,8 @@
       select(selection) {
         this.selects = selection
       },
-      edit(row) {
-        console.log("编辑: ", row)
-      },
       create() {
-        this.$router.push({path: '/projects/create'})
+        this.$router.push({name: 'ProjectCreate'})
       },
       del(name) {
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -121,7 +119,7 @@
         })
       }
     },
-    created(){
+    created() {
       this.search()
 
     }
