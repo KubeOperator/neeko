@@ -64,7 +64,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { listRegions } from "@/api/region"
+import { listRegions, deleteRegionBy } from "@/api/region"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -79,9 +79,10 @@ export default {
           icon: "el-icon-edit"
         },
         {
-          label: "",
+          label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger"
+          type: "danger",
+          click: this.openDelete
         }
       ],
       searchConfig: {
@@ -127,6 +128,31 @@ export default {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
+    },
+    openDelete(row) {
+      this.$confirm(
+        this.$t("commons.confirm_message.delete"),
+        this.$t("commons.message_box.prompt"),
+        {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning"
+        }
+      )
+        .then(() => {
+          deleteRegionBy(row.name).then(() => {
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.delete_success")
+            })
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: this.$t("commons.msg.delete_cancel")
+          })
+        })
     }
   },
   created() {
