@@ -54,7 +54,7 @@
   }
 
   export default {
-    name: "ProjectMemberManagement",
+    name: "ProjectMemberList",
     components: {ComplexTable},
     data() {
       return {
@@ -120,5 +120,3 @@
 <style scoped>
 
 </style>
-
-

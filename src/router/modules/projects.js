@@ -39,6 +39,37 @@ const Projects = {
       path: "detail/:name",
       props: true,
       hidden: true,
+      redirect: to => {
+        return {
+          name: 'ProjectMembers',
+          params: to.params,
+        }
+      },
+      children: [
+        {
+          path: "members",
+          name: "ProjectMembers",
+          hidden: true,
+          props: true,
+          component: () => import('@/business/projects/detail/members'),
+          meta: {
+            activeMenu: "/projects/list",
+            roles: ['admin']
+          }
+
+        },
+        {
+          path: "resources",
+          name: "ProjectResources",
+          props: true,
+          hidden: true,
+          component: () => import('@/business/projects/detail/resources'),
+          meta: {
+            activeMenu: "/projects/list",
+            roles: ['admin']
+          }
+        }
+      ],
       name: "ProjectDetail",
       component: () => import('@/business/projects/detail'),
       meta: {

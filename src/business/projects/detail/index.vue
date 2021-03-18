@@ -1,28 +1,25 @@
 <template>
   <layout-content>
-    <el-tabs :tab-position="'top'">
-      <el-tab-pane label="成员管理">
-        <project-member-management></project-member-management>
-      </el-tab-pane>
-      <el-tab-pane label="资源管理">
-        <project-resource-management></project-resource-management>
-      </el-tab-pane>
-    </el-tabs>
+    <el-menu router :default-active="$route.path" mode="horizontal">
+      <el-menu-item :index="'/projects/detail/'+name+'/members'">成员管理</el-menu-item>
+      <el-menu-item :index="'/projects/detail/'+name+'/resources'">资源管理</el-menu-item>
+    </el-menu>
+    <router-view></router-view>
   </layout-content>
 </template>
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import ProjectMemberManagement from "./ProjectMemberManagement";
-  import ProjectResourceManagement from "./ProjectResourceManagement";
 
 
   export default {
     name: "ProjectDetail",
-    components: {ProjectResourceManagement, ProjectMemberManagement, LayoutContent},
+    props: ['name'],
+    components: {LayoutContent},
     data() {
       return {}
     },
+    methods: {},
   }
 </script>
 

@@ -19,6 +19,7 @@ const Users = {
     {
       path: "create",
       hidden: true,
+      name: "UserCreate",
       component: () => import('@/business/users/create'),
       meta: {
         activeMenu: "/users/list",
