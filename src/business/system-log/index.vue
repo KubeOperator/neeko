@@ -25,11 +25,11 @@ export default {
   data() {
     return {
       searchConfig: {
-        quickPlaceholder: "按 名称/操作/操作内容 搜索",
+        quickPlaceholder: this.$t('system_log.query_placeholder'),
         components: [
-          {field: "name", label: "名称", component: "FuComplexInput"},
-          {field: "operation", label: "操作", component: "FuComplexInput"},
-          {field: "operation_info", label: "操作内容", component: "FuComplexInput"}
+          {field: "name", label: this.$t('system_log.name'), component: "FuComplexInput"},
+          {field: "operation", label: this.$t('system_log.operation'), component: "FuComplexInput"},
+          {field: "operation_info", label: this.$t('system_log.operation_info'), component: "FuComplexInput"}
         ]
       },
       paginationConfig: {
