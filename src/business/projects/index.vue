@@ -14,7 +14,7 @@
 
       <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
         <template v-slot:default="{row}">
-          <router-link :to="{name:'ProjectDetail',query: {name:row.name}}">
+          <router-link :to="{name:'ProjectDetail',params: {name:row.name}}">
             {{row.name}}
           </router-link>
         </template>

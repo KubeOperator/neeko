@@ -1,6 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const Host = {
+  sort: 2,
   path: '/hosts',
   component: Layout,
   name: 'Host',
