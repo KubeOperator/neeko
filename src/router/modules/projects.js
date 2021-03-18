@@ -23,6 +23,26 @@ const Projects = {
         activeMenu: "/projects/list",
         roles: ['admin']
       },
+    }, {
+      path: "edit/:name",
+      hidden: true,
+      props: true,
+      name: "ProjectEdit",
+      component: () => import('@/business/projects/edit'),
+      meta: {
+        activeMenu: "/projects/list",
+        roles: ['admin']
+      },
+    }, {
+      path: "detail/:name",
+      props: true,
+      hidden: true,
+      name: "ProjectDetail",
+      component: () => import('@/business/projects/detail'),
+      meta: {
+        activeMenu: "/projects/list",
+        roles: ['admin']
+      }
     }
   ]
 }
