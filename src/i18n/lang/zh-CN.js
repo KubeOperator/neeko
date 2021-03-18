@@ -11,6 +11,9 @@ const message = {
     dialog: {
       delete: "删除"
     },
+    confirm_message: {
+      delete: "此操作不可撤销, 是否继续?"
+    },
     button: {
       login: "登录",
       ok: "确定",
@@ -26,7 +29,8 @@ const message = {
       success: "{0}成功",
       op_success: "操作成功",
       save_success: "保存成功",
-      delete_success: "删除成功"
+      delete_success: "删除成功",
+      delete_cancel: "已取消删除"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -101,13 +105,13 @@ const message = {
     name: "名称",
     operation: "操作",
     operation_info: "操作内容",
-    create_at: "创建时间"
+    create_at: "创建时间",
+    query_placeholder: "按 名称/操作/操作内容 搜索"
   },
   automatic: {
     name: "自动模式",
     cloud_provider: "云提供商",
-    datacenter: "数据中心",
-    query_placeholder: "按 名称/操作/操作内容 搜索"
+    datacenter: "数据中心"
   }
 }
 
