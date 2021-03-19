@@ -16,6 +16,15 @@ const Cluster = {
         roles: ['admin']
       },
     },
+    {
+      path: "create",
+      hidden: true,
+      component: () => import('@/business/clusters/create'),
+      meta: {
+        activeMenu: "/cluster/list",
+        roles: ['admin']
+      },
+    }
   ]
 }
 export default Cluster
