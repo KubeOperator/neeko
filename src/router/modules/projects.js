@@ -41,7 +41,7 @@ const Projects = {
       hidden: true,
       redirect: to => {
         return {
-          name: 'ProjectMembers',
+          name: 'ProjectMembersList',
           params: to.params,
         }
       },

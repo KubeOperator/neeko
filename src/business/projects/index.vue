@@ -1,14 +1,23 @@
 <template>
-  <layout-content>
-    <complex-table @select='select' :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table @select='select' :data="data" :columns="columns"
+                   :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
-      <template #header>
 
-        <el-button-group>
-          <el-button size="small" round @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" round @click="del()">{{$t('commons.button.delete')}}</el-button>
-        </el-button-group>
+      <template #header>
+        <back-button path=""></back-button>
+        {{$t('project.project')}}
       </template>
+      <template #toolbar>
+        <el-button>{{$t('commons.button.create')}}</el-button>
+      </template>
+
+
+      <!--      <template #header>-->
+      <!--        <el-button-group>-->
+      <!--          <el-button size="small" round @click="create()">{{$t('commons.button.create')}}</el-button>-->
+      <!--          <el-button size="small" round @click="del()">{{$t('commons.button.delete')}}</el-button>-->
+      <!--        </el-button-group>-->
+      <!--      </template>-->
 
       <el-table-column type="selection" fix></el-table-column>
 
@@ -31,18 +40,17 @@
 
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
-  </layout-content>
 </template>
 
 <script>
-  import LayoutContent from "@/components/layout/LayoutContent";
   import {listProjects, deleteProject} from "@/api/projects"
   import ComplexTable from "@/components/complex-table";
+  import BackButton from "@/components/back-button";
 
 
   export default {
     name: "ProjectList",
-    components: {ComplexTable, LayoutContent},
+    components: {ComplexTable, BackButton},
     data() {
       return {
         deleteDialogOpen: false,

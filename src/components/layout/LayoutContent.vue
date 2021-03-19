@@ -1,27 +1,49 @@
 <template>
   <div class="content-container">
+    <div class="content-container__header" v-if="$slots.header || header">
+      <slot name="header">
+        {{ header }}
+      </slot>
+    </div>
+    <div class="content-container__toolbar" v-if="$slots.toolbar">
+      <slot name="toolbar"></slot>
+    </div>
     <slot></slot>
   </div>
 </template>
 
 <script>
-export default {
-  name: "LayoutContent"
-}
+  export default {
+    name: "LayoutContent",
+    props: {
+      header: String
+    }
+  }
 </script>
 
 <style lang="scss">
-@import "~@/styles/common/variables";
+  @import "~@/styles/common/mixins.scss";
+  @import "~@/styles/common/variables";
 
-.content-container {
-  transition: 0.3s;
-  color: $--color-text-primary;
-  background-color: #FFFFFF;
-  overflow: auto;
-  height: 100%;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 14%);
-  box-sizing: border-box;
-}
+  .content-container {
+    transition: 0.3s;
+    color: $--color-text-primary;
+    background-color: #FFFFFF;
+    overflow: auto;
+    height: 100%;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 14%);
+    box-sizing: border-box;
+
+    .content-container__header {
+      line-height: 60px;
+      font-size: 18px;
+    }
+
+    .content-container__toolbar {
+      @include flex-row(space-between, center);
+      margin-bottom: 10px;
+    }
+  }
 </style>

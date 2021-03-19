@@ -113,6 +113,9 @@ const message = {
     name: "自动模式",
     cloud_provider: "云提供商",
     datacenter: "数据中心"
+  },
+  project: {
+    project: "项目"
   }
 }
 
