@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue"
+import Router from "vue-router"
 
 // 加载modules中的路由
-const modules = require.context('./modules', true, /\.js$/)
+const modules = require.context("./modules", true, /\.js$/)
 
 // 修复路由变更后报错的问题
 const routerPush = Router.prototype.push;
@@ -12,35 +12,35 @@ Router.prototype.push = function push(location) {
 
 Vue.use(Router)
 
-import Layout from '@/business/app-layout/horizontal-layout'
+import Layout from "@/business/app-layout/horizontal-layout"
 
 export const constantRoutes = [
   {
-    path: '/redirect',
+    path: "/redirect",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/components/redirect')
+        path: "/redirect/:path(.*)",
+        component: () => import("@/components/redirect")
       }
     ]
   },
   {
-    path: '/login',
-    component: () => import('@/business/login'),
+    path: "/login",
+    component: () => import("@/business/login"),
     hidden: true
   },
   {
-    path: '/',
+    path: "/",
     component: Layout,
-    redirect: '/dashboard',
+    redirect: "/dashboard",
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/business/dashboard'),
-        name: 'Dashboard',
-        meta: {title: 'Dashboard', icon: 'el-icon-s-marketing', affix: true}
+        path: "dashboard",
+        component: () => import("@/business/dashboard"),
+        name: "Dashboard",
+        meta: {title: "Dashboard", icon: "el-icon-s-marketing", affix: true}
       }
     ]
   }
@@ -50,8 +50,13 @@ export const constantRoutes = [
  * 用户登录后根据角色加载的路由
  */
 export const rolesRoutes = [
-  ...modules.keys().map(key => modules(key).default),
-  // {path: '*', redirect: '/', hidden: true}
+  // 先按sort排序
+  ...modules.keys().map(key => modules(key).default).sort((r1, r2) => {
+    r1.sort ??= Number.MAX_VALUE
+    r2.sort ??= Number.MAX_VALUE
+    return r1.sort - r2.sort
+  }),
+  {path: "*", redirect: "/", hidden: true}
 ]
 
 const createRouter = () => new Router({

@@ -1,44 +1,26 @@
 <template>
   <layout-content>
-    <el-tabs :tab-position="'top'">
-      <el-tab-pane label="概览">概览</el-tab-pane>
-      <el-tab-pane label="成员管理">成员管理</el-tab-pane>
-      <el-tab-pane label="资源管理">资源管理</el-tab-pane>
-    </el-tabs>
+    <el-menu router :default-active="$route.path" mode="horizontal">
+      <el-menu-item :index="'/projects/detail/'+name+'/members/list'">成员管理</el-menu-item>
+      <el-menu-item :index="'/projects/detail/'+name+'/resources/list'">资源管理</el-menu-item>
+    </el-menu>
+    <br/>
+    <router-view></router-view>
   </layout-content>
 </template>
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import {createProject} from "@/api/projects"
 
 
   export default {
     name: "ProjectDetail",
+    props: ['name'],
     components: {LayoutContent},
     data() {
-      return {
-        form: {
-          name: '',
-          description: '',
-        }
-      }
+      return {}
     },
-    methods: {
-      onSubmit() {
-        createProject(this.form).then(() => {
-          this.$message({
-            type: 'success',
-            message: `创建成功`
-          });
-          this.$router.push({name: "ProjectList"})
-        })
-      },
-      onCancel() {
-        this.$router.push({name: "ProjectList"})
-      }
-    },
-
+    methods: {},
   }
 </script>
 
