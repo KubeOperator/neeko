@@ -79,7 +79,7 @@ const message = {
     manifest: "版本管理",
     system_log: "系统日志",
     complex_table: "复合表格",
-    user: "用户"
+    user: "用户",
   },
   cluster: {
     cluster: "集群",

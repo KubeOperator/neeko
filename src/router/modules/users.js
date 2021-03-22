@@ -12,7 +12,7 @@ const Users = {
       name: "UserList",
       meta: {
         title: "route.user",
-        icon: 'el-icon-setting',
+        icon: 'el-icon-user',
         roles: ['admin']
       }
     },
