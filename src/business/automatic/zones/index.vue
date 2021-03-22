@@ -22,15 +22,15 @@
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
       <el-table-column
-        :label="$t('automatic.cloud_provider')"
+        :label="$t('automatic.zone.name')"
         mix-width="100"
         v-slot:default="{ row }"
-      >{{ row.regionVars['provider'] }}</el-table-column>
+      >{{row.regionName}}</el-table-column>
       <el-table-column
-        :label="$t('automatic.datacenter')"
+        :label="$t('table.status')"
         mix-width="100"
         v-slot:default="{ row }"
-      >{{ row.datacenter }}</el-table-column>
+      >{{ row.status }}</el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
@@ -41,11 +41,10 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { listRegions, deleteRegionBy } from "@/api/region"
+import { listZones, deleteZoneBy } from "@/api/zone"
 import LayoutContent from "@/components/layout/LayoutContent"
-
 export default {
-  name: "RegionList",
+  name: "ZoneList",
   components: { ComplexTable, LayoutContent },
   data() {
     return {
@@ -91,7 +90,7 @@ export default {
       },
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0
       },
       data: []
@@ -101,13 +100,10 @@ export default {
     search(condition) {
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listRegions(currentPage, pageSize).then(data => {
+      listZones(currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
-    },
-    create() {
-      this.$router.push({ path: "/automatic/regions/create" })
     },
     openDelete(row) {
       this.$confirm(
@@ -120,7 +116,7 @@ export default {
         }
       )
         .then(() => {
-          deleteRegionBy(row.name).then(() => {
+          deleteZoneBy(row.name).then(() => {
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")

@@ -13,7 +13,7 @@ const Automatic = {
     {
       path: "regions",
       component: () => import("@/business/automatic/regions"),
-      name: "RegionComponent",
+      name: "RegionList",
       meta: {
         title: "automatic.region.name"
       }
@@ -21,15 +21,20 @@ const Automatic = {
     {
       path: "regions/create",
       hidden: true,
+      name: "RegionCreate",
       component: () => import("@/business/automatic/regions/create"),
       meta: {
         activeMenu: "/automatic/regions",
         roles: ["admin"]
       }
     },
-
     {
-      path: ""
+      path: "zones",
+      component: () => import("@/business/automatic/zones"),
+      name: "ZoneList",
+      meta: {
+        title: "automatic.zone.name"
+      }
     }
   ]
 }
