@@ -9,7 +9,9 @@
             <template #header>
                 <el-button-group>
                     <el-button size="small" round @click="create()">
-                        {{ $t("commons.button.create") }}
+                        {{
+                            $t("commons.button.create")
+                        }}
                     </el-button>
                     <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
                 </el-button-group>
@@ -21,12 +23,18 @@
             <el-table-column
                     :label="$t('automatic.region.name')"
                     mix-width="100"
-                    v-slot:default="{ row }">{{ row.regionName }}
+                    v-slot:default="{ row }"
+            >
+                {{ row.regionName }}
+            </el-table-column>
+            <el-table-column :label="$t('automatic.zone.name')" mix-width="100" v-slot:default="{ row }">
+                <span v-for="name in row.zoneNames" :key="name">{{ name }},</span>
             </el-table-column>
             <el-table-column
                     :label="$t('commons.table.status')"
                     mix-width="100"
-                    v-slot:default="{ row }">{{ row.status }}
+                    v-slot:default="{ row }"
+            >{{ row.status }}
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
                 <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -35,14 +43,13 @@
         </complex-table>
     </layout-content>
 </template>
-
 <script>
     import ComplexTable from "@/components/complex-table"
-    import {listZones, deleteZoneBy} from "@/api/zone"
+    import {listPlans, deletePlanBy} from "@/api/plan"
     import LayoutContent from "@/components/layout/LayoutContent"
 
     export default {
-        name: "ZoneList",
+        name: "PlanList",
         components: {ComplexTable, LayoutContent},
         data() {
             return {
@@ -98,7 +105,7 @@
             search(condition) {
                 console.log(condition)
                 const {currentPage, pageSize} = this.paginationConfig
-                listZones(currentPage, pageSize).then(data => {
+                listPlans(currentPage, pageSize).then(data => {
                     this.data = data.items
                     this.paginationConfig.total = data.total
                 })
@@ -114,7 +121,7 @@
                     }
                 )
                     .then(() => {
-                        deleteZoneBy(row.name).then(() => {
+                        deletePlanBy(row.name).then(() => {
                             this.$message({
                                 type: "success",
                                 message: this.$t("commons.msg.delete_success")
@@ -134,3 +141,4 @@
         }
     }
 </script>
+

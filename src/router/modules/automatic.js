@@ -35,6 +35,14 @@ const Automatic = {
       meta: {
         title: "automatic.zone.name"
       }
+    },
+    {
+      path: "plans",
+      component: () => import("@/business/automatic/plans"),
+      name: "PlanList",
+      meta: {
+        title: "automatic.plan.name"
+      }
     }
   ]
 }

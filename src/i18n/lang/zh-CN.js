@@ -183,6 +183,9 @@ const message = {
     },
     zone: {
       name: "可用区"
+    },
+    plan: {
+      name: "部署计划"
     }
   },
   project: {
