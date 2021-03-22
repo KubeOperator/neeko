@@ -1,10 +1,12 @@
 <template>
-  <div>参数设置</div>
+<div>
+  <p>仓库设置</p>
+</div>
 </template>
 
 <script>
 export default {
-  name: "ParamsSetting"
+name: "registry"
 }
 </script>
 

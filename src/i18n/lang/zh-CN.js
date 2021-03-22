@@ -80,7 +80,6 @@ const message = {
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户",
-    setting: "系统设置"
   },
   cluster: {
     cluster: "集群",
