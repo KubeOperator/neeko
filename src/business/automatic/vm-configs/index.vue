@@ -19,12 +19,17 @@
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
       <el-table-column
-              :label="$t('automatic.region.name')"
+              :label="$t('automatic.vm_config.cpu')"
               mix-width="100"
               v-slot:default="{ row }">
-        {{ row.regionName }}
+        {{ row.cpu }}
       </el-table-column>
-
+      <el-table-column
+              :label="$t('automatic.vm_config.memory')"
+              mix-width="100"
+              v-slot:default="{ row }"
+      >{{ row.memory }}
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
@@ -34,7 +39,7 @@
 </template>
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listPlans, deletePlanBy} from "@/api/plan"
+import {listVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -94,7 +99,7 @@ export default {
     search (condition) {
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listPlans(currentPage, pageSize).then(data => {
+      listVmConfigs(currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
@@ -110,7 +115,7 @@ export default {
         }
       )
         .then(() => {
-          deletePlanBy(row.name).then(() => {
+          deleteVmConfigBy(row.name).then(() => {
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")

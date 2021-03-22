@@ -186,6 +186,11 @@ const message = {
     },
     plan: {
       name: "部署计划"
+    },
+    vm_config: {
+      name: "虚拟机配置",
+      cpu: "CPU(核)",
+      memory: "内存(GB)",
     }
   },
   project: {

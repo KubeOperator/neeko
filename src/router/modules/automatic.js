@@ -43,6 +43,14 @@ const Automatic = {
       meta: {
         title: "automatic.plan.name"
       }
+    },
+    {
+      path: "vm-configs",
+      component: () => import("@/business/automatic/vm-configs"),
+      name: "VmConfigList",
+      meta: {
+        title: "automatic.vm_config.name"
+      }
     }
   ]
 }
