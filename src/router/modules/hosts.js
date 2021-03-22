@@ -12,7 +12,7 @@ const Host = {
       name: "HostList",
       meta: {
         title: "route.host",
-        icon: 'el-icon-setting',
+        icon: 'el-icon-c-scale-to-original',
         roles: ['admin']
       },
     },

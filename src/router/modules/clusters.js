@@ -13,7 +13,7 @@ const Cluster = {
       name: "ClusterList",
       meta: {
         title: "route.cluster",
-        icon: 'el-icon-setting',
+        icon: 'el-icon-film',
         roles: ['admin']
       },
     },

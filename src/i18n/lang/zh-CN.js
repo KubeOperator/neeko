@@ -79,7 +79,8 @@ const message = {
     manifest: "版本管理",
     system_log: "系统日志",
     complex_table: "复合表格",
-    user: "用户"
+    user: "用户",
+    setting: "系统设置"
   },
   cluster: {
     cluster: "集群",
@@ -101,7 +102,7 @@ const message = {
       yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
       yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
       yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
-      
+
       step2: "集群设置",
       container_network: "容器网络",
       cluster_cidr: "集群 CIDR",
