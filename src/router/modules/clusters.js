@@ -13,10 +13,19 @@ const Cluster = {
       name: "ClusterList",
       meta: {
         title: "route.cluster",
-        icon: 'el-icon-setting',
+        icon: 'el-icon-film',
         roles: ['admin']
       },
     },
+    {
+      path: "create",
+      hidden: true,
+      component: () => import('@/business/clusters/create'),
+      meta: {
+        activeMenu: "/cluster/list",
+        roles: ['admin']
+      },
+    }
   ]
 }
 export default Cluster
