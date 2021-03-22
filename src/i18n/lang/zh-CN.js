@@ -39,7 +39,7 @@ const message = {
       limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
-      select: "请选择{0}",
+      select: "请选择{0}"
     },
     personal: {
       personal_information: "个人信息",
@@ -98,10 +98,11 @@ const message = {
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
       yum_repo: "Yum 仓库",
-      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
+      yum_repo_replace_help:
+        "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
       yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
       yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
-      
+
       step2: "集群设置",
       container_network: "容器网络",
       cluster_cidr: "集群 CIDR",
@@ -125,8 +126,10 @@ const message = {
       network_interface_help: "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
       network_type: "容器网络",
       flannel_backend: "网络模式",
-      flannel_backend_help_route: "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
-      flannel_backend_help_channel: "基于隧道，在任何网络环境下都可以正常工作，优势是对物理网络环境没有特殊要求，只要宿主机IP层可以路由互通即可。劣势是封包和解包耗费CPU性能，且额外的封装导致带宽浪费。",
+      flannel_backend_help_route:
+        "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
+      flannel_backend_help_channel:
+        "基于隧道，在任何网络环境下都可以正常工作，优势是对物理网络环境没有特殊要求，只要宿主机IP层可以路由互通即可。劣势是封包和解包耗费CPU性能，且额外的封装导致带宽浪费。",
 
       step5: "组件设置",
       ingress_type: "ingress 类型",
@@ -139,8 +142,8 @@ const message = {
       worker_num: "Worker 数量",
 
       step7: "配置预览",
-      base_setting: "基本配置",
-    },
+      base_setting: "基本配置"
+    }
   },
   host: {
     host: "主机",
@@ -172,7 +175,12 @@ const message = {
   automatic: {
     name: "自动模式",
     cloud_provider: "云提供商",
-    datacenter: "数据中心"
+    datacenter: "数据中心",
+    region: {
+      name: "区域",
+      basic: "基本信息",
+      config: "配置参数"
+    }
   },
   project: {
     project: "项目"

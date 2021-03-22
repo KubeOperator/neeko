@@ -9,55 +9,32 @@
     >
       <template #header>
         <el-button-group>
-          <el-button
-            size="small"
-            round
-          >{{
+          <el-button size="small" round @click="create()">
+            {{
             $t("commons.button.create")
-            }}</el-button>
-          <el-button
-            size="small"
-            round
-          >
-            {{ $t("commons.button.delete") }}
+            }}
           </el-button>
+          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
         </el-button-group>
       </template>
-      <el-table-column
-        type="selection"
-        fix
-      > </el-table-column>
-      <el-table-column
-        :label="$t('commons.table.name')"
-        mix-width="100"
-      >
-        <template v-slot:default="{ row }">
-          {{ row.name }}
-        </template>
+      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
       <el-table-column
         :label="$t('automatic.cloud_provider')"
         mix-width="100"
         v-slot:default="{ row }"
-      >
-        {{ row.regionVars['provider'] }}
-      </el-table-column>
+      >{{ row.regionVars['provider'] }}</el-table-column>
       <el-table-column
         :label="$t('automatic.datacenter')"
         mix-width="100"
         v-slot:default="{ row }"
-      >
-        {{ row.datacenter }}
-      </el-table-column>
+      >{{ row.datacenter }}</el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
-        <template v-slot:default="{ row }">
-          {{ row.createdAt | datetimeFormat }}
-        </template>
+        <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
-      <fu-table-operations
-        :buttons="buttons"
-        :label="$t('commons.table.action')"
-      />
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
   </layout-content>
 </template>
@@ -82,7 +59,7 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           type: "danger",
-          click: this.openDelete
+          click: this.openDeleteß
         }
       ],
       searchConfig: {
@@ -128,6 +105,9 @@ export default {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
+    },
+    create() {
+      this.$router.push({ path: "/automatic/regions/create" })
     },
     openDelete(row) {
       this.$confirm(
