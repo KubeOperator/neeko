@@ -2,13 +2,12 @@
   <layout-content>
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
-      <template #header>
-
+      <template #toolbar>
         <el-button-group>
-          <el-button size="small" round @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" round>{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
         </el-button-group>
       </template>
+
 
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100" fix>
@@ -49,7 +48,7 @@
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import {listUsers} from "@/api/user"
+  import {searchUsers} from "@/api/user"
   import ComplexTable from "@/components/complex-table";
 
   const buttonClick = function (row) {
@@ -70,21 +69,20 @@
           },
         ],
         searchConfig: {
-          quickPlaceholder: "按 姓名/邮箱 搜索",
+          quickPlaceholder: "按 姓名 搜索",
           components: [
             {field: "name", label: "姓名", component: "FuComplexInput", defaultOperator: "eq"},
             {
-              field: "status",
+              field: "is_active",
               label: "状态",
               component: "FuComplexSelect",
               options: [
-                {label: "运行中", value: "Running"},
-                {label: "成功", value: "Success"},
-                {label: "失败", value: "Fail"}
+                {label: "活跃", value: 1},
+                {label: "禁用", value: 0},
               ],
               multiple: true
             },
-            {field: "create_time", label: "创建时间", component: "FuComplexDateTime"},
+            {field: "create_at", label: "创建时间", component: "FuComplexDateTime"},
           ]
         },
         paginationConfig: {
@@ -106,9 +104,8 @@
         this.$router.push({path: '/users/create'})
       },
       search(condition) {
-        console.log(condition) // demo只查看搜索条件，没有搜索的实现
         const {currentPage, pageSize} = this.paginationConfig
-        listUsers(currentPage, pageSize).then(data => {
+        searchUsers(currentPage, pageSize, condition).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
