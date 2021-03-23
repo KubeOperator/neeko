@@ -39,6 +39,9 @@ const message = {
       limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
+      select: "请选择{0}",
+    }, search: {
+      quickSearch: "快速搜索",
       select: "请选择{0}"
     },
     personal: {
@@ -210,6 +213,11 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
+    },
+    ip_pool: {
+      name: "IP池",
+      subnet: "子网",
+      ip_usage: "使用情况"
     }
   },
   project: {

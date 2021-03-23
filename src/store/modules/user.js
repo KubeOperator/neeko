@@ -1,5 +1,5 @@
 /* 前后端不分离的登录方式*/
-import {update} from '@/api/user'
+import {updateUser} from '@/api/user'
 import {login, logout, isLogin, getSession} from '@/api/auth'
 import {resetRouter} from '@/router'
 import {getLanguage, setLanguage} from "@/i18n";
@@ -7,6 +7,7 @@ import {getLanguage, setLanguage} from "@/i18n";
 const state = {
   login: false,
   name: "",
+  currentProject: "",
   language: getLanguage(),
   roles: []
 }
@@ -27,6 +28,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_CURRENT_PROJECT: (state, project) => {
+    state.currentProject = project
   }
 }
 
@@ -66,10 +70,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       getSession().then(data => {
         const user = data.user;
-        const {name, roles, language} = user;
+        const {name, roles, language, currentProject} = user;
         commit('SET_NAME', name)
         commit('SET_ROLES', roles)
         commit('SET_LANGUAGE', language)
+        commit('SET_CURRENT_PROJECT', currentProject)
         resolve(user)
       }).catch(error => {
         reject(error)
@@ -80,7 +85,17 @@ const actions = {
   setLanguage({commit, state}, language) {
     commit('SET_LANGUAGE', language)
     return new Promise((resolve, reject) => {
-      update(state.name, {language: language}).then(response => {
+      updateUser(state.name, {language: language}).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  setCurrentProject({commit, state}, project) {
+    commit('SET_CURRENT_PROJECT', project)
+    return new Promise((resolve, reject) => {
+      updateUser(state.name, {currentProject: project}).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)

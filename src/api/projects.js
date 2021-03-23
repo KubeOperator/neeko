@@ -23,3 +23,6 @@ export function deleteProject(name) {
   return del(`${projectUrl}/${name}`)
 }
 
+export function allProjects() {
+  return get(`${projectUrl}`)
+}
