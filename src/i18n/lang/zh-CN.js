@@ -230,6 +230,9 @@ const message = {
   },
   project: {
     project: "项目"
+  },
+  backup_account: {
+    name: "备份账号"
   }
 }
 
