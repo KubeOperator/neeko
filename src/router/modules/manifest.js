@@ -1,6 +1,6 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
-const SystemLog = {
+const Manifest = {
   path: '/manifest',
   component: Layout,
   name: 'Manifest',
@@ -21,4 +21,4 @@ const SystemLog = {
     }
   ]
 }
-export default SystemLog
+export default Manifest

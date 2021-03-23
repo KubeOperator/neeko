@@ -77,6 +77,9 @@ const message = {
     host: "主机",
     system_setting: "系统设置",
     manifest: "版本管理",
+    message: "消息中心",
+    message_receiver: "接收源",
+    message_subscribe: "消息订阅",
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户"
@@ -148,6 +151,22 @@ const message = {
     os: "操作系统",
     architecture: "架构",
     port: "端口"
+  },
+  message: {
+    content: "消息内容",
+    type: "类型",
+    level: "级别",
+    mark_as_read: "标记为已读",
+    dingding_phone: "钉钉手机号",
+    dingding_phone_help: "用于钉钉接收告警消息",
+    dingding_wechart_id: "企业微信用户ID",
+    dingding_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    email: "邮箱",
+    message_type: "消息类型",
+    message_in_station: "站内信",
+    mail: "邮件",
+    enterprise_wechat: "企业微信",
+    dingding: "钉钉"
   },
   user: {
     username: "用户名",
