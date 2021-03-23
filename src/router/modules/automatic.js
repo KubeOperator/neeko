@@ -77,6 +77,15 @@ const Automatic = {
       meta: {
         activeMenu: "/automatic/ippools"
       }
+    },
+    {
+      path: "ippools/:name/ips",
+      hidden: true,
+      component: () => import("@/business/automatic/ip-pools/ips"),
+      name: "IpList",
+      meta: {
+        activeMenu: "/automatic/ippools"
+      }
     }
   ]
 }

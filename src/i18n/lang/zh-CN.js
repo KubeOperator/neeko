@@ -223,7 +223,9 @@ const message = {
       ip_end: "结束IP",
       dns1: "DNS1",
       dns2: "DNS2",
-      description: "描述"
+      description: "描述",
+      address: "IP",
+      status: "状态"
     }
   },
   project: {
