@@ -30,7 +30,7 @@
           <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{$t('commons.status.passive')}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="角色" min-width="100">
+      <el-table-column :label="$t('user.role')" min-width="100">
         <template v-slot:default="{row}">
           <el-tag type="info" size="small">{{$t(`commons.role.${row.role}`)}}</el-tag>
         </template>
@@ -48,12 +48,9 @@
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import {searchUsers} from "@/api/user"
+  import {searchUsers, deleteUser} from "@/api/user"
   import ComplexTable from "@/components/complex-table";
 
-  const buttonClick = function (row) {
-    console.log(this.label + ": " + row.id)
-  }
 
   export default {
     name: "UserList",
@@ -63,26 +60,41 @@
         columns: [],
         buttons: [
           {
-            label: "编辑", icon: "el-icon-edit", click: buttonClick
+            label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
+              this.$router.push({name: "UserEdit", params: {name: row.name}})
+
+            }
           }, {
-            label: "删除", icon: "el-icon-delete", type: "danger", click: buttonClick
+            label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+              this.del(row.name)
+            }
           },
         ],
         searchConfig: {
-          quickPlaceholder: "按 姓名 搜索",
+          quickPlaceholder: this.$t("commons.search.quickSearch"),
           components: [
-            {field: "name", label: "姓名", component: "FuComplexInput", defaultOperator: "eq"},
+            {field: "name", label: this.$t('commons.table.name'), component: "FuComplexInput", defaultOperator: "eq"},
             {
               field: "is_active",
-              label: "状态",
+              label: this.$t('commons.table.status'),
               component: "FuComplexSelect",
               options: [
-                {label: "活跃", value: 1},
-                {label: "禁用", value: 0},
+                {label: this.$t('commons.status.active'), value: 1},
+                {label: this.$t('commons.status.passive'), value: 0},
               ],
               multiple: true
             },
-            {field: "create_at", label: "创建时间", component: "FuComplexDateTime"},
+            {
+              field: "is_admin",
+              label: this.$t('user.role'),
+              component: "FuComplexSelect",
+              options: [
+                {label: this.$t('commons.role.admin'), value: 1},
+                {label: this.$t('commons.role.user'), value: 0},
+              ],
+              multiple: true
+            },
+            {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
           ]
         },
         paginationConfig: {
@@ -97,11 +109,8 @@
       select(selection) {
         console.log(selection)
       },
-      edit(row) {
-        console.log("编辑: ", row)
-      },
       create() {
-        this.$router.push({path: '/users/create'})
+        this.$router.push({name: "UserCreate"})
       },
       search(condition) {
         const {currentPage, pageSize} = this.paginationConfig
@@ -109,7 +118,36 @@
           this.data = data.items
           this.paginationConfig.total = data.total
         })
-      }
+      },
+      del(name) {
+        this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
+          confirmButtonText: this.$t('commons.button.confirm'),
+          cancelButtonText: this.$t('commons.button.cancel'),
+          type: 'warning'
+        }).then(() => {
+          if (name) {
+            deleteUser(name).then(() => {
+              this.search()
+              this.$message({
+                type: 'success',
+                message: `${name}${this.$t('commons.msg.delete_success')}!`
+              });
+            })
+          } else {
+            const ps = []
+            for (const item of this.selects) {
+              ps.push(deleteUser(item.name))
+            }
+            Promise.all(ps).then(() => {
+              this.search()
+              this.$message({
+                type: 'success',
+                message: this.$t('commons.msg.delete_success'),
+              });
+            })
+          }
+        })
+      },
     },
     created() {
       this.search()

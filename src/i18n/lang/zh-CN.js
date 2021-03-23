@@ -40,6 +40,8 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
+    }, search: {
+      quickSearch: "快速搜索",
     },
     personal: {
       personal_information: "个人信息",

@@ -1,4 +1,4 @@
-import {get, patch, post} from "@/plugins/request"
+import {get, patch, post, del} from "@/plugins/request"
 
 const userUrl = "/users"
 
@@ -17,4 +17,12 @@ export function createUser(data) {
 
 export function searchUsers(currentPage, pageSize, conditions) {
   return post(`${userUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}
+
+export function getUser(name) {
+  return get(`${userUrl}/${name}`)
+}
+
+export function deleteUser(name) {
+  return del(`${userUrl}/${name}`)
 }
