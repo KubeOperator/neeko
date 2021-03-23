@@ -1,7 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const SystemSetting = {
-  sort: 5,
+  sort: 8,
   path: '/setting',
   component: Layout,
   name: 'Setting',

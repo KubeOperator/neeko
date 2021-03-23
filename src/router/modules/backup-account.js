@@ -1,7 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout"
 
 const BackupAccount = {
-  sort: 4,
+  sort: 5,
   path: "/backupaccount",
   component: Layout,
   name: "BackupAccount",
