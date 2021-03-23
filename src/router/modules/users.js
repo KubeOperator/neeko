@@ -25,6 +25,16 @@ const Users = {
         activeMenu: "/users/list",
         roles: ['admin']
       },
+    }, {
+      props: true,
+      path: "edit/:name",
+      hidden: true,
+      name: "UserEdit",
+      component: () => import('@/business/users/edit'),
+      meta: {
+        activeMenu: "/users/list",
+        roles: ['admin']
+      },
     }
   ]
 }
