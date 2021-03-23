@@ -12,7 +12,7 @@ const Projects = {
       name: "ProjectList",
       meta: {
         title: "route.project",
-        icon: 'el-icon-setting',
+        icon: 'el-icon-s-data',
         roles: ['admin']
       }
     },
