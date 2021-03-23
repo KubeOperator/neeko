@@ -42,6 +42,7 @@ const message = {
       select: "请选择{0}",
     }, search: {
       quickSearch: "快速搜索",
+      select: "请选择{0}"
     },
     personal: {
       personal_information: "个人信息",
@@ -79,9 +80,12 @@ const message = {
     host: "主机",
     system_setting: "系统设置",
     manifest: "版本管理",
+    message: "消息中心",
+    message_receiver: "接收源",
+    message_subscribe: "消息订阅",
     system_log: "系统日志",
     complex_table: "复合表格",
-    user: "用户",
+    user: "用户"
   },
   cluster: {
     cluster: "集群",
@@ -100,7 +104,8 @@ const message = {
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
       yum_repo: "Yum 仓库",
-      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
+      yum_repo_replace_help:
+        "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
       yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
       yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
@@ -127,8 +132,10 @@ const message = {
       network_interface_help: "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
       network_type: "容器网络",
       flannel_backend: "网络模式",
-      flannel_backend_help_route: "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
-      flannel_backend_help_channel: "基于隧道，在任何网络环境下都可以正常工作，优势是对物理网络环境没有特殊要求，只要宿主机IP层可以路由互通即可。劣势是封包和解包耗费CPU性能，且额外的封装导致带宽浪费。",
+      flannel_backend_help_route:
+        "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
+      flannel_backend_help_channel:
+        "基于隧道，在任何网络环境下都可以正常工作，优势是对物理网络环境没有特殊要求，只要宿主机IP层可以路由互通即可。劣势是封包和解包耗费CPU性能，且额外的封装导致带宽浪费。",
 
       step5: "组件设置",
       ingress_type: "ingress 类型",
@@ -141,8 +148,8 @@ const message = {
       worker_num: "Worker 数量",
 
       step7: "配置预览",
-      base_setting: "基本配置",
-    },
+      base_setting: "基本配置"
+    }
   },
   host: {
     host: "主机",
@@ -150,6 +157,22 @@ const message = {
     os: "操作系统",
     architecture: "架构",
     port: "端口"
+  },
+  message: {
+    content: "消息内容",
+    type: "类型",
+    level: "级别",
+    mark_as_read: "标记为已读",
+    dingding_phone: "钉钉手机号",
+    dingding_phone_help: "用于钉钉接收告警消息",
+    dingding_wechart_id: "企业微信用户ID",
+    dingding_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    email: "邮箱",
+    message_type: "消息类型",
+    message_in_station: "站内信",
+    mail: "邮件",
+    enterprise_wechat: "企业微信",
+    dingding: "钉钉"
   },
   user: {
     username: "用户名",
@@ -174,7 +197,23 @@ const message = {
   automatic: {
     name: "自动模式",
     cloud_provider: "云提供商",
-    datacenter: "数据中心"
+    datacenter: "数据中心",
+    region: {
+      name: "区域",
+      basic: "基本信息",
+      config: "配置参数"
+    },
+    zone: {
+      name: "可用区"
+    },
+    plan: {
+      name: "部署计划"
+    },
+    vm_config: {
+      name: "虚拟机配置",
+      cpu: "CPU(核)",
+      memory: "内存(GB)",
+    }
   },
   project: {
     project: "项目"

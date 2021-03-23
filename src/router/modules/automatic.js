@@ -1,24 +1,58 @@
-import Layout from "@/business/app-layout/horizontal-layout";
+import Layout from "@/business/app-layout/horizontal-layout"
 
 const Automatic = {
-    path: "/automatic",
-    component: Layout,
-    name: "Automatic",
-    meta: {
-        title: "automatic.name",
-        icon: "el-icon-date"
+  sort: 3,
+  path: "/automatic",
+  component: Layout,
+  name: "Automatic",
+  meta: {
+    title: "automatic.name",
+    icon: "el-icon-date"
+  },
+  children: [
+    {
+      path: "regions",
+      component: () => import("@/business/automatic/regions"),
+      name: "RegionList",
+      meta: {
+        title: "automatic.region.name"
+      }
     },
-    children: [
-        {
-            path: "regions",
-            component: () => import('@/business/automatic/regions'),
-            name: "RegionComponent",
-            meta: {
-                title: "automatic.name",
-                icon: "el-icon-date"
-            },
-        }
-    ]
+    {
+      path: "regions/create",
+      hidden: true,
+      name: "RegionCreate",
+      component: () => import("@/business/automatic/regions/create"),
+      meta: {
+        activeMenu: "/automatic/regions",
+        roles: ["admin"]
+      }
+    },
+    {
+      path: "zones",
+      component: () => import("@/business/automatic/zones"),
+      name: "ZoneList",
+      meta: {
+        title: "automatic.zone.name"
+      }
+    },
+    {
+      path: "plans",
+      component: () => import("@/business/automatic/plans"),
+      name: "PlanList",
+      meta: {
+        title: "automatic.plan.name"
+      }
+    },
+    {
+      path: "vm-configs",
+      component: () => import("@/business/automatic/vm-configs"),
+      name: "VmConfigList",
+      meta: {
+        title: "automatic.vm_config.name"
+      }
+    }
+  ]
 }
 
 export default Automatic

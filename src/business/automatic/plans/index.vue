@@ -1,18 +1,15 @@
 <template>
   <layout-content>
     <complex-table
-      :data="data"
-      :colums="columns"
-      :pagination-config="paginationConfig"
-      :search-config="searchConfig"
-      @search="search"
-    >
+            :data="data"
+            :colums="columns"
+            :pagination-config="paginationConfig"
+            :search-config="searchConfig"
+            @search="search">
       <template #header>
         <el-button-group>
           <el-button size="small" round @click="create()">
-            {{
-            $t("commons.button.create")
-            }}
+            {{ $t("commons.button.create") }}
           </el-button>
           <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
         </el-button-group>
@@ -22,15 +19,12 @@
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
       <el-table-column
-        :label="$t('automatic.cloud_provider')"
-        mix-width="100"
-        v-slot:default="{ row }"
-      >{{ row.regionVars['provider'] }}</el-table-column>
-      <el-table-column
-        :label="$t('automatic.datacenter')"
-        mix-width="100"
-        v-slot:default="{ row }"
-      >{{ row.datacenter }}</el-table-column>
+              :label="$t('automatic.region.name')"
+              mix-width="100"
+              v-slot:default="{ row }">
+        {{ row.regionName }}
+      </el-table-column>
+
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
@@ -38,16 +32,15 @@
     </complex-table>
   </layout-content>
 </template>
-
 <script>
 import ComplexTable from "@/components/complex-table"
-import { listRegions, deleteRegionBy } from "@/api/region"
+import {listPlans, deletePlanBy} from "@/api/plan"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
-  name: "RegionList",
+  name: "PlanList",
   components: { ComplexTable, LayoutContent },
-  data() {
+  data () {
     return {
       columns: [],
       buttons: [
@@ -91,25 +84,22 @@ export default {
       },
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0
       },
       data: []
     }
   },
   methods: {
-    search(condition) {
+    search (condition) {
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listRegions(currentPage, pageSize).then(data => {
+      listPlans(currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
     },
-    create() {
-      this.$router.push({ path: "/automatic/regions/create" })
-    },
-    openDelete(row) {
+    openDelete (row) {
       this.$confirm(
         this.$t("commons.confirm_message.delete"),
         this.$t("commons.message_box.prompt"),
@@ -120,7 +110,7 @@ export default {
         }
       )
         .then(() => {
-          deleteRegionBy(row.name).then(() => {
+          deletePlanBy(row.name).then(() => {
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
@@ -135,8 +125,9 @@ export default {
         })
     }
   },
-  created() {
+  created () {
     this.search()
   }
 }
 </script>
+
