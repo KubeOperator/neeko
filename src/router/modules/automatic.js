@@ -53,6 +53,15 @@ const Automatic = {
       }
     },
     {
+      path: "vmconfigs/create",
+      component: () => import("@/business/automatic/vm-configs/create"),
+      name: "VmConfigCreate",
+      hidden: true,
+      meta: {
+        activeMenu: "/automatic/vmconfigs"
+      }
+    },
+    {
       path: "ippools",
       component: () => import("@/business/automatic/ip-pools"),
       name: "IpPoolList",

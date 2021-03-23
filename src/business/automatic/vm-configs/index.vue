@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('automatic.vm_config.name')">
     <complex-table
             :data="data"
             :colums="columns"
@@ -128,6 +128,9 @@ export default {
             message: this.$t("commons.msg.delete_cancel")
           })
         })
+    },
+    create() {
+      this.$router.push({name:"VmConfigCreate"})
     }
   },
   created () {
