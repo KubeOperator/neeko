@@ -191,6 +191,11 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
+    },
+    ip_pool: {
+      name: "IP池",
+      subnet: "子网",
+      ip_usage: "使用情况"
     }
   },
   project: {

@@ -45,11 +45,19 @@ const Automatic = {
       }
     },
     {
-      path: "vm-configs",
+      path: "vmconfigs",
       component: () => import("@/business/automatic/vm-configs"),
       name: "VmConfigList",
       meta: {
         title: "automatic.vm_config.name"
+      }
+    },
+    {
+      path: "ippools",
+      component: () => import("@/business/automatic/ip-pools"),
+      name: "IpPoolList",
+      meta: {
+        title: "automatic.ip_pool.name"
       }
     }
   ]
