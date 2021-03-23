@@ -162,14 +162,14 @@ const message = {
     mark_as_read: "标记为已读",
     dingding_phone: "钉钉手机号",
     dingding_phone_help: "用于钉钉接收告警消息",
-    dingding_wechart_id: "企业微信用户ID",
-    dingding_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    work_wechart_id: "企业微信用户ID",
+    work_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
     email: "邮箱",
     message_type: "消息类型",
     message_in_station: "站内信",
     mail: "邮件",
-    enterprise_wechat: "企业微信",
-    dingding: "钉钉"
+    work_wechat: "企业微信",
+    dingding: "钉钉",
   },
   user: {
     username: "用户名",
