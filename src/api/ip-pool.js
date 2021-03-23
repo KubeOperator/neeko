@@ -1,11 +1,15 @@
-import { get, del } from "@/plugins/request"
+import {get, del, post} from "@/plugins/request"
 
 const ipPoolUrl = "/ippools"
 
-export function listIpPools(page, size) {
+export function listIpPools (page, size) {
   return get(`ippools?pageNum=${page}&pageSize=${size}`)
 }
 
-export function deleteIpPoolBy(name) {
+export function deleteIpPoolBy (name) {
   return del(ipPoolUrl + "/" + name)
+}
+
+export function createIpPool (data) {
+  return post(ipPoolUrl, data)
 }

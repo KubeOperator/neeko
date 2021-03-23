@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.create')">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">

@@ -68,6 +68,15 @@ const Automatic = {
       meta: {
         title: "automatic.ip_pool.name"
       }
+    },
+    {
+      path: "ippools/create",
+      hidden: true,
+      component: () => import("@/business/automatic/ip-pools/create"),
+      name: "IpPoolCreate",
+      meta: {
+        activeMenu: "/automatic/ippools"
+      }
     }
   ]
 }

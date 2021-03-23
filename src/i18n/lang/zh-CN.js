@@ -217,7 +217,13 @@ const message = {
     ip_pool: {
       name: "IP池",
       subnet: "子网",
-      ip_usage: "使用情况"
+      ip_usage: "使用情况",
+      gateway: "网管",
+      ip_start: "开始IP",
+      ip_end: "结束IP",
+      dns1: "DNS1",
+      dns2: "DNS2",
+      description: "描述"
     }
   },
   project: {
