@@ -1,4 +1,4 @@
-import { get, del } from "@/plugins/request"
+import { get, del ,post} from "@/plugins/request"
 
 const vmConfigUrl = "/vmconfigs"
 
@@ -8,4 +8,8 @@ export function listVmConfigs(page, size) {
 
 export function deleteVmConfigBy(name) {
   return del(vmConfigUrl + "/" + name)
+}
+
+export function createVmConfig(data) {
+  return post(vmConfigUrl, data)
 }

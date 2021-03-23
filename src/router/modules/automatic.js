@@ -45,11 +45,46 @@ const Automatic = {
       }
     },
     {
-      path: "vm-configs",
+      path: "vmconfigs",
       component: () => import("@/business/automatic/vm-configs"),
       name: "VmConfigList",
       meta: {
         title: "automatic.vm_config.name"
+      }
+    },
+    {
+      path: "vmconfigs/create",
+      component: () => import("@/business/automatic/vm-configs/create"),
+      name: "VmConfigCreate",
+      hidden: true,
+      meta: {
+        activeMenu: "/automatic/vmconfigs"
+      }
+    },
+    {
+      path: "ippools",
+      component: () => import("@/business/automatic/ip-pools"),
+      name: "IpPoolList",
+      meta: {
+        title: "automatic.ip_pool.name"
+      }
+    },
+    {
+      path: "ippools/create",
+      hidden: true,
+      component: () => import("@/business/automatic/ip-pools/create"),
+      name: "IpPoolCreate",
+      meta: {
+        activeMenu: "/automatic/ippools"
+      }
+    },
+    {
+      path: "ippools/:name/ips",
+      hidden: true,
+      component: () => import("@/business/automatic/ip-pools/ips"),
+      name: "IpList",
+      meta: {
+        activeMenu: "/automatic/ippools"
       }
     }
   ]

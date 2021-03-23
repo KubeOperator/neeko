@@ -1,22 +1,23 @@
-import Layout from "@/business/app-layout/horizontal-layout";
+import Layout from "@/business/app-layout/horizontal-layout"
 
 const Manifest = {
-  path: '/manifest',
+  path: "/manifest",
+  sort: 6,
   component: Layout,
-  name: 'Manifest',
+  name: "Manifest",
   meta: {
     title: "route.manifest",
-    icon: 'el-icon-s-grid',
-    roles: ['admin']
+    icon: "el-icon-s-grid",
+    roles: ["admin"]
   },
   children: [
     {
-      path: 'manifests',
-      component: () => import('@/business/manifest/index'),
+      path: "manifests",
+      component: () => import("@/business/manifest/index"),
       name: "Manifests",
       meta: {
         title: "route.manifest",
-        roles: ['admin']
+        roles: ["admin"]
       }
     }
   ]

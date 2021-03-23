@@ -9,16 +9,16 @@
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('message.dingding_phone_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('message.dingding_wechart_id')">
+            <el-form-item :label="$t('message.work_wechart_id')">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('message.dingding_wechart_id_help')}}</span></div>
+              <div><span class="input-help">{{$t('message.work_wechart_id_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('message.email')">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">{{$t('common.button.create')}}</el-button>
-              <el-button @click="onCancel()">{{$t('common.button.cancel')}}</el-button>
+              <el-button type="primary" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
+              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -29,7 +29,8 @@
 </template>
 
 <script>
-  import LayoutContent from "@/components/layout/LayoutContent";
+  import LayoutContent from "@/components/layout/LayoutContent"
+  import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
 
   export default {
     name: "HostCreate",
@@ -43,11 +44,21 @@
     },
     methods: {
       onSubmit() {
-        console.log('submit!');
+        updateMessageReceicver(this.form).then(data => {
+          console.log(data)
+        })
+      },
+      search() {
+        getMessageReceicver().then(data => {
+          console.log(data)
+        })
       },
       onCancel() {
         this.$router.push({name: "Messages"})
       }
+    },
+    mounted() {
+      this.search()
     }
   }
 </script>

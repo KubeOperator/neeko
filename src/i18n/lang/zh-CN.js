@@ -168,14 +168,14 @@ const message = {
     mark_as_read: "标记为已读",
     dingding_phone: "钉钉手机号",
     dingding_phone_help: "用于钉钉接收告警消息",
-    dingding_wechart_id: "企业微信用户ID",
-    dingding_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    work_wechart_id: "企业微信用户ID",
+    work_wechart_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
     email: "邮箱",
     message_type: "消息类型",
     message_in_station: "站内信",
     mail: "邮件",
-    enterprise_wechat: "企业微信",
-    dingding: "钉钉"
+    work_wechat: "企业微信",
+    dingding: "钉钉",
   },
   user: {
     username: "用户名",
@@ -216,6 +216,19 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
+    },
+    ip_pool: {
+      name: "IP池",
+      subnet: "子网",
+      ip_usage: "使用情况",
+      gateway: "网管",
+      ip_start: "开始IP",
+      ip_end: "结束IP",
+      dns1: "DNS1",
+      dns2: "DNS2",
+      description: "描述",
+      address: "IP",
+      status: "状态"
     }
   },
   project: {
@@ -226,6 +239,9 @@ const message = {
     username: "用户名",
     password: "密码",
     privateKey: "密钥",
+  },
+  backup_account: {
+    name: "备份账号"
   }
 }
 

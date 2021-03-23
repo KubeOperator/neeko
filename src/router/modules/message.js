@@ -1,40 +1,41 @@
-import Layout from "@/business/app-layout/horizontal-layout";
+import Layout from "@/business/app-layout/horizontal-layout"
 
 const Message = {
-  path: '/message',
+  path: "/message",
+  sort: 7,
   component: Layout,
-  name: 'message',
+  name: "message",
   meta: {
     title: "route.message",
-    icon: 'el-icon-message',
-    roles: ['admin']
+    icon: "el-icon-message",
+    roles: ["admin"]
   },
   children: [
     {
-      path: 'messages',
-      component: () => import('@/business/message/index'),
+      path: "messages",
+      component: () => import("@/business/message/index"),
       name: "Messages",
       meta: {
         title: "route.message",
-        roles: ['admin']
+        roles: ["admin"]
       }
     },
     {
-      path: 'receiver',
-      component: () => import('@/business/message/receiver/index'),
+      path: "receiver",
+      component: () => import("@/business/message/receiver/index"),
       name: "Receivers",
       meta: {
         title: "route.message_receiver",
-        roles: ['admin']
+        roles: ["admin"]
       }
     },
     {
-      path: 'subscribe',
-      component: () => import('@/business/message/subscribe/index'),
+      path: "subscribe",
+      component: () => import("@/business/message/subscribe/index"),
       name: "Subscribes",
       meta: {
         title: "route.message_subscribe",
-        roles: ['admin']
+        roles: ["admin"]
       }
     }
   ]

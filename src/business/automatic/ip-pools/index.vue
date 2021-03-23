@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('automatic.vm_config.name')">
+  <layout-content :header="$t('automatic.ip_pool.name')">
     <complex-table
             :data="data"
             :colums="columns"
@@ -19,16 +19,16 @@
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
       <el-table-column
-              :label="$t('automatic.vm_config.cpu')"
+              :label="$t('automatic.ip_pool.subnet')"
               mix-width="100"
               v-slot:default="{ row }">
-        {{ row.cpu }}
+        {{ row.subnet }}
       </el-table-column>
       <el-table-column
-              :label="$t('automatic.vm_config.memory')"
+              :label="$t('automatic.ip_pool.ip_usage')"
               mix-width="100"
-              v-slot:default="{ row }"
-      >{{ row.memory }}
+              v-slot:default="{ row }">
+        <el-link type="primary" @click="openIpList(row.name)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -37,14 +37,15 @@
     </complex-table>
   </layout-content>
 </template>
+
 <script>
-import ComplexTable from "@/components/complex-table"
-import {listVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
+import ComplexTable from "@/components/complex-table"
+import {listIpPools, deleteIpPoolBy} from "@/api/ip-pool"
 
 export default {
-  name: "PlanList",
-  components: { ComplexTable, LayoutContent },
+  name: "IpPoolList",
+  components: { LayoutContent, ComplexTable },
   data () {
     return {
       columns: [],
@@ -99,7 +100,7 @@ export default {
     search (condition) {
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listVmConfigs(currentPage, pageSize).then(data => {
+      listIpPools(currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
@@ -115,7 +116,7 @@ export default {
         }
       )
         .then(() => {
-          deleteVmConfigBy(row.name).then(() => {
+          deleteIpPoolBy(row.name).then(() => {
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
@@ -129,8 +130,11 @@ export default {
           })
         })
     },
-    create() {
-      this.$router.push({name:"VmConfigCreate"})
+    create () {
+      this.$router.push({ name: "IpPoolCreate" })
+    },
+    openIpList (name) {
+      this.$router.push({ name: "IpList", params: { name } })
     }
   },
   created () {
@@ -139,3 +143,6 @@ export default {
 }
 </script>
 
+<style scoped>
+
+</style>
