@@ -35,6 +35,11 @@
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
           <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+          <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+          <el-tag v-if="row.status === 'Initializing'" type="info" size="small">{{$t('commons.status.initializing')}}
+            <font-awesome-icon icon="spinner" pulse/>
+
+          </el-tag>
           <el-tag v-if="row.status === 'Error'" type="danger" size="small">{{$t('commons.status.error')}}</el-tag>
         </template>
       </el-table-column>
@@ -95,9 +100,6 @@
     methods: {
       select(selection) {
         console.log(selection)
-      },
-      edit(row) {
-        console.log("编辑: ", row)
       },
       create() {
         this.$router.push({path: '/hosts/create'})
