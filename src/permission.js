@@ -14,7 +14,8 @@ const generateRoutes = async (to, from, next) => {
   } else {
     try {
       const {roles} = await store.dispatch('user/getCurrentUser')
-      const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+      const license = await store.dispatch('license/getLicense')
+      const accessRoutes = await store.dispatch('permission/generateRoutes', {license, roles})
       router.addRoutes(accessRoutes)
       next({...to, replace: true})
     } catch (error) {
