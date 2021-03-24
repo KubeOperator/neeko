@@ -21,3 +21,7 @@ export function listIps (ipPoolName, page, size) {
 export function deleteIpBy (ipPoolName, ip) {
   return del(ipPoolUrl + "/" + ipPoolName + "/ips/" + ip)
 }
+
+export function createIp (ipPoolName, data) {
+  return post(ipPoolUrl + "/" + ipPoolName + "/ips", data)
+}

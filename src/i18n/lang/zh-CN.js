@@ -65,6 +65,11 @@ const message = {
     role: {
       admin: "管理员",
       user: "用户"
+    },
+    form: {
+      required_msg:"输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
+      ip_range_error: "Ip范围无效"
     }
   },
   login: {
@@ -221,14 +226,19 @@ const message = {
       name: "IP池",
       subnet: "子网",
       ip_usage: "使用情况",
-      gateway: "网管",
+      gateway: "网关",
       ip_start: "开始IP",
       ip_end: "结束IP",
       dns1: "DNS1",
       dns2: "DNS2",
       description: "描述",
       address: "IP",
-      status: "状态"
+      status: "状态",
+      ip_list: "IP列表",
+      ip_available: "可用",
+      ip_lock: "占用",
+      ip_used: "使用中",
+      ip_reachable: "可达"
     }
   },
   project: {

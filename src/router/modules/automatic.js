@@ -90,11 +90,22 @@ const Automatic = {
     },
     {
       path: "ippools/:name/ips",
+      props: true,
       hidden: true,
       component: () => import("@/business/automatic/ip-pools/ips"),
       name: "IpList",
       meta: {
         activeMenu: "/automatic/ippools"
+      }
+    },
+    {
+      path: "ippools/:name/ips/create",
+      props: true,
+      hidden: true,
+      component: () => import("@/business/automatic/ip-pools/ips/create"),
+      name: "IpCreate",
+      meta: {
+        activeMenu: "ippools/:name/ips"
       }
     }
   ]
