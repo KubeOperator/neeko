@@ -26,14 +26,16 @@ const message = {
       return: "返回",
       create: "添加",
       confirm: "确定",
-      edit: "编辑"
+      edit: "编辑",
+      sync: "同步"
     },
     msg: {
       success: "{0}成功",
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      delete_cancel: "已取消删除"
+      delete_cancel: "已取消删除",
+      sync_success: "同步成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -67,6 +69,11 @@ const message = {
     role: {
       admin: "管理员",
       user: "用户"
+    },
+    form: {
+      required_msg:"输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
+      ip_range_error: "Ip范围无效"
     }
   },
   login: {
@@ -223,14 +230,19 @@ const message = {
       name: "IP池",
       subnet: "子网",
       ip_usage: "使用情况",
-      gateway: "网管",
+      gateway: "网关",
       ip_start: "开始IP",
       ip_end: "结束IP",
       dns1: "DNS1",
       dns2: "DNS2",
       description: "描述",
       address: "IP",
-      status: "状态"
+      status: "状态",
+      ip_list: "IP列表",
+      ip_available: "可用",
+      ip_lock: "占用",
+      ip_used: "使用中",
+      ip_reachable: "可达"
     }
   },
   project: {

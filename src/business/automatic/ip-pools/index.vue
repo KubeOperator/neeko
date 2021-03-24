@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('automatic.ip_pool.name')">
+  <layout-content :header="$t('automatic.ip_pool.name')" v-loading="loading">
     <complex-table
             :data="data"
             :colums="columns"
@@ -51,10 +51,6 @@ export default {
       columns: [],
       buttons: [
         {
-          label: this.$t("commons.button.edit"),
-          icon: "el-icon-edit"
-        },
-        {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           type: "danger",
@@ -93,16 +89,19 @@ export default {
         pageSize: 10,
         total: 0
       },
-      data: []
+      data: [],
+      loading: false,
     }
   },
   methods: {
     search (condition) {
+      this.loading = true
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
       listIpPools(currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
+        this.loading = false
       })
     },
     openDelete (row) {
@@ -134,7 +133,7 @@ export default {
       this.$router.push({ name: "IpPoolCreate" })
     },
     openIpList (name) {
-      this.$router.push({ name: "IpList", params: { name } })
+      this.$router.push({ name: "IpList", params: { name: name } })
     }
   },
   created () {
