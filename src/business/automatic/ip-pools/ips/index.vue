@@ -11,12 +11,12 @@
             :search-config="searchConfig"
             @search="search">
       <template #header>
-        <el-button-group>
-          <el-button size="small" round @click="create()">
-            {{ $t("commons.button.create") }}
-          </el-button>
-          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
-        </el-button-group>
+        <el-button size="small" @click="create()">
+          {{ $t("commons.button.create") }}
+        </el-button>
+        <el-button size="small" @click="sync()">
+          {{ $t("commons.button.sync") }}
+        </el-button>
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('automatic.ip_pool.address')" mix-width="100">
@@ -59,7 +59,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {listIps, deleteIpBy} from "@/api/ip-pool"
+import {listIps, deleteIpBy, syncIp} from "@/api/ip-pool"
 
 export default {
   name: "IpList",
@@ -153,6 +153,16 @@ export default {
     },
     goBack () {
       this.$router.push({ name: "IpPoolList" })
+    },
+    sync () {
+      this.loading = true
+      syncIp(this.name).then(() => {
+        this.loading = false
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.sync_success")
+        })
+      })
     }
   },
   created () {

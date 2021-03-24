@@ -1,4 +1,4 @@
-import {get, del, post} from "@/plugins/request"
+import {get, del, post, patch} from "@/plugins/request"
 
 const ipPoolUrl = "/ippools"
 
@@ -24,4 +24,8 @@ export function deleteIpBy (ipPoolName, ip) {
 
 export function createIp (ipPoolName, data) {
   return post(ipPoolUrl + "/" + ipPoolName + "/ips", data)
+}
+
+export function syncIp (ipPoolName) {
+  return patch(ipPoolUrl + "/" + ipPoolName + "/ips/sync")
 }

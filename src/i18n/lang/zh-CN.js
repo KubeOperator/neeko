@@ -26,14 +26,16 @@ const message = {
       return: "返回",
       create: "添加",
       confirm: "确定",
-      edit: "编辑"
+      edit: "编辑",
+      sync: "同步"
     },
     msg: {
       success: "{0}成功",
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      delete_cancel: "已取消删除"
+      delete_cancel: "已取消删除",
+      sync_success: "同步成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
