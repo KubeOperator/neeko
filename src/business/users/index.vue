@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('user.user')">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>

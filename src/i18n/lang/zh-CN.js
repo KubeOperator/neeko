@@ -156,7 +156,10 @@ const message = {
     memory: "内存",
     os: "操作系统",
     architecture: "架构",
-    port: "端口"
+    port: "端口",
+    new_credential: "新建凭据",
+    exists_credential: "已存在凭据",
+    credential_name: "凭据名称",
   },
   message: {
     content: "消息内容",
@@ -230,6 +233,12 @@ const message = {
   },
   project: {
     project: "项目"
+  },
+  credential: {
+    credential: "凭据",
+    username: "用户名",
+    password: "密码",
+    privateKey: "密钥",
   },
   backup_account: {
     name: "备份账号"
