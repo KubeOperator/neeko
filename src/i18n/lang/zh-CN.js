@@ -58,9 +58,11 @@ const message = {
     },
     status: {
       running: "运行中",
+      initializing: '初始化中',
+      failed: '失败',
       error: "错误",
       active: "活跃",
-      passive: "禁用"
+      passive: "禁用",
     },
     role: {
       admin: "管理员",
