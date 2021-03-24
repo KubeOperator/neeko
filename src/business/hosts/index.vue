@@ -1,15 +1,12 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('host.host')">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
-      <template #header>
-
+      <template #toolbar>
         <el-button-group>
-          <el-button size="small" round @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" round>{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
         </el-button-group>
       </template>
-
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
         <template v-slot:default="{row}">
@@ -38,6 +35,11 @@
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
           <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+          <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+          <el-tag v-if="row.status === 'Initializing'" type="info" size="small">{{$t('commons.status.initializing')}}
+            <font-awesome-icon icon="spinner" pulse/>
+
+          </el-tag>
           <el-tag v-if="row.status === 'Error'" type="danger" size="small">{{$t('commons.status.error')}}</el-tag>
         </template>
       </el-table-column>
@@ -54,12 +56,8 @@
 
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
-  import {listHosts} from "@/api/hosts"
+  import {deleteHost, searchHosts} from "@/api/hosts"
   import ComplexTable from "@/components/complex-table";
-
-  const buttonClick = function (row) {
-    console.log(this.label + ": " + row.id)
-  }
 
   export default {
     name: "Host",
@@ -67,12 +65,11 @@
     data() {
       return {
         columns: [],
-        buttons: [
-          {
-            label: "执行", icon: "el-icon-video-play", click: buttonClick
-          }, {
-            label: "删除", icon: "el-icon-delete", type: "danger", click: buttonClick
+        buttons: [{
+          label: 'commons.button.delete', icon: "el-icon-delete", type: "danger", click: (row) => {
+            this.delete(row.name)
           },
+        },
         ],
         searchConfig: {
           quickPlaceholder: "按 姓名/邮箱 搜索",
@@ -104,16 +101,41 @@
       select(selection) {
         console.log(selection)
       },
-      edit(row) {
-        console.log("编辑: ", row)
-      },
       create() {
         this.$router.push({path: '/hosts/create'})
       },
-      search(condition) {
-        console.log(condition) // demo只查看搜索条件，没有搜索的实现
+      delete(name) {
+        this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
+          confirmButtonText: this.$t('commons.button.confirm'),
+          cancelButtonText: this.$t('commons.button.cancel'),
+          type: 'warning'
+        }).then(() => {
+          if (name) {
+            deleteHost(name).then(() => {
+              this.search()
+              this.$message({
+                type: 'success',
+                message: `${name}${this.$t('commons.msg.delete_success')}!`
+              });
+            })
+          } else {
+            const ps = []
+            for (const item of this.selects) {
+              ps.push(deleteHost(item.name))
+            }
+            Promise.all(ps).then(() => {
+              this.search()
+              this.$message({
+                type: 'success',
+                message: this.$t('commons.msg.delete_success'),
+              });
+            })
+          }
+        })
+      },
+      search(conditions) {
         const {currentPage, pageSize} = this.paginationConfig
-        listHosts(currentPage, pageSize).then(data => {
+        searchHosts(currentPage, pageSize, conditions).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })

@@ -2,8 +2,8 @@ import { get, del } from "@/plugins/request"
 
 const regionUrl = "/regions"
 
-export function listRegions() {
-  return get(regionUrl)
+export function listRegions(page, size) {
+  return get(`regions?pageNum=${page}&pageSize=${size}`)
 }
 
 export function deleteRegionBy(name) {

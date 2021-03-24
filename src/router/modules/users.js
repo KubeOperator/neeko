@@ -1,10 +1,13 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const Users = {
-  sort: 4,
+  sort: 7,
   path: '/users',
   component: Layout,
   name: 'User',
+  meta: {
+    requireLicense: true,
+  },
   children: [
     {
       path: 'list',

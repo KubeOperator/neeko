@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('automatic.vm_config.name')">
     <complex-table
             :data="data"
             :colums="columns"
@@ -51,7 +51,10 @@ export default {
       buttons: [
         {
           label: this.$t("commons.button.edit"),
-          icon: "el-icon-edit"
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "VmConfigEdit", params: { name: row.name } })
+          }
         },
         {
           label: this.$t("commons.button.delete"),
@@ -128,6 +131,9 @@ export default {
             message: this.$t("commons.msg.delete_cancel")
           })
         })
+    },
+    create () {
+      this.$router.push({ name: "VmConfigCreate" })
     }
   },
   created () {

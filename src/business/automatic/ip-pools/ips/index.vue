@@ -1,5 +1,9 @@
 <template>
-  <layout-content :header="$t('automatic.ip_pool.name')" v-loading="loading">
+  <layout-content v-loading="loading">
+    <br>
+    <el-page-header @back="goBack" :content="$t('automatic.ip_pool.ip_list')">
+    </el-page-header>
+    <br>
     <complex-table
             :data="data"
             :colums="columns"
@@ -7,28 +11,41 @@
             :search-config="searchConfig"
             @search="search">
       <template #header>
-        <el-button-group>
-          <el-button size="small" round @click="create()">
-            {{ $t("commons.button.create") }}
-          </el-button>
-          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
-        </el-button-group>
+        <el-button size="small" @click="create()">
+          {{ $t("commons.button.create") }}
+        </el-button>
+        <el-button size="small" @click="sync()">
+          {{ $t("commons.button.sync") }}
+        </el-button>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
-        <template v-slot:default="{ row }">{{ row.name }}</template>
+      <el-table-column :label="$t('automatic.ip_pool.address')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.address }}</template>
       </el-table-column>
-      <el-table-column
-              :label="$t('automatic.ip_pool.subnet')"
-              mix-width="100"
-              v-slot:default="{ row }">
-        {{ row.subnet }}
+      <el-table-column :label="$t('automatic.ip_pool.gateway')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.gateway }}</template>
       </el-table-column>
-      <el-table-column
-              :label="$t('automatic.ip_pool.ip_usage')"
-              mix-width="100"
-              v-slot:default="{ row }">
-        <el-link type="primary" @click="openIpList(row.name)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
+      <el-table-column :label="$t('automatic.ip_pool.dns1')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.dns1 }}</template>
+      </el-table-column>
+      <el-table-column :label="$t('automatic.ip_pool.dns2')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.dns2 }}</template>
+      </el-table-column>
+      <el-table-column :label="$t('automatic.ip_pool.status')" mix-width="100">
+        <template v-slot:default="{ row }">
+          <el-tag v-if="row.status === 'IP_AVAILABLE'" type="success" size="small">
+            {{ $t("automatic.ip_pool.ip_available") }}
+          </el-tag>
+          <el-tag v-if="row.status === 'IP_USED'" type="danger" size="small">
+            {{ $t("automatic.ip_pool.ip_used") }}
+          </el-tag>
+          <el-tag v-if="row.status === 'IP_REACHABLE'" type="warning" size="small">
+            {{ $t("automatic.ip_pool.ip_reachable") }}
+          </el-tag>
+          <el-tag v-if="row.status === 'IP_LOCK'" type="info" size="small">
+            {{ $t("automatic.ip_pool.ip_reachable") }}
+          </el-tag>
+        </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -36,16 +53,18 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
   </layout-content>
+
 </template>
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {listIpPools, deleteIpPoolBy} from "@/api/ip-pool"
+import {listIps, deleteIpBy, syncIp} from "@/api/ip-pool"
 
 export default {
-  name: "IpPoolList",
-  components: { LayoutContent, ComplexTable },
+  name: "IpList",
+  components: { ComplexTable, LayoutContent },
+  props: ["name"],
   data () {
     return {
       columns: [],
@@ -90,7 +109,7 @@ export default {
         total: 0
       },
       data: [],
-      loading: false,
+      loading: false
     }
   },
   methods: {
@@ -98,11 +117,14 @@ export default {
       this.loading = true
       console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listIpPools(currentPage, pageSize).then(data => {
+      listIps(this.name, currentPage, pageSize).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
         this.loading = false
       })
+    },
+    create () {
+      this.$router.push({ name: "IpCreate", params: { name: this.name } })
     },
     openDelete (row) {
       this.$confirm(
@@ -115,7 +137,7 @@ export default {
         }
       )
         .then(() => {
-          deleteIpPoolBy(row.name).then(() => {
+          deleteIpBy(this.$route.params["name"], row.address).then(() => {
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
@@ -129,11 +151,18 @@ export default {
           })
         })
     },
-    create () {
-      this.$router.push({ name: "IpPoolCreate" })
+    goBack () {
+      this.$router.push({ name: "IpPoolList" })
     },
-    openIpList (name) {
-      this.$router.push({ name: "IpList", params: { name: name } })
+    sync () {
+      this.loading = true
+      syncIp(this.name).then(() => {
+        this.loading = false
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.sync_success")
+        })
+      })
     }
   },
   created () {
