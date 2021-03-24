@@ -51,7 +51,10 @@ export default {
       buttons: [
         {
           label: this.$t("commons.button.edit"),
-          icon: "el-icon-edit"
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "VmConfigEdit", params: { name: row.name } })
+          }
         },
         {
           label: this.$t("commons.button.delete"),
@@ -129,8 +132,8 @@ export default {
           })
         })
     },
-    create() {
-      this.$router.push({name:"VmConfigCreate"})
+    create () {
+      this.$router.push({ name: "VmConfigCreate" })
     }
   },
   created () {

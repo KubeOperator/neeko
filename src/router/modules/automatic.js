@@ -62,6 +62,16 @@ const Automatic = {
       }
     },
     {
+      path: "vmconfigs/edit/:name",
+      props: true,
+      component: () => import("@/business/automatic/vm-configs/edit"),
+      name: "VmConfigEdit",
+      hidden: true,
+      meta: {
+        activeMenu: "/automatic/vmconfigs"
+      }
+    },
+    {
       path: "ippools",
       component: () => import("@/business/automatic/ip-pools"),
       name: "IpPoolList",
