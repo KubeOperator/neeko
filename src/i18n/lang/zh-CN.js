@@ -149,6 +149,24 @@ const message = {
 
       step7: "配置预览",
       base_setting: "基本配置"
+    },
+    detail: {
+      tag: {
+        overview: "概览",
+        node: "节点",
+        namespace: "命名空间",
+        storage: "存储",
+        event: "事件",
+        monitor: "监控",
+        log: "日志",
+        tool: "工具",
+        backup: "备份",
+        csi: "csi扫描",
+        grade: "集群评分",
+      },
+      overview: {
+        source: "来源",
+      }
     }
   },
   host: {

@@ -1,0 +1,66 @@
+<template>
+  <div>
+    <complex-table @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">
+      <template #header>
+        <el-button-group>
+          <el-button size="small" round @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="clusterSelection.length < 1" round @click="remove()">{{$t('commons.button.delete')}}</el-button>
+        </el-button-group>
+      </template>
+
+      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix/>
+      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix/>
+      <el-table-column :label="$t('commons.table.create_time')">
+        <template v-slot:default="{row}">
+          {{ row.metadata.creationTimestamp | datetimeFormat }}
+        </template>
+      </el-table-column>
+    </complex-table>
+  </div>
+</template>
+
+<script>
+  import ComplexTable from "@/components/complex-table"
+  import { listNamespaces } from "@/api/cluster"
+
+  export default {
+    name: "Cluster",
+    components: {ComplexTable},
+    data() {
+      return {
+        paginationConfig: {
+          currentPage: 1,
+          pageSize: 5,
+          total: 0,
+        },
+        clusterName: "",
+        clusterSelection: [], 
+        data: [],
+      }
+    },
+    methods: {
+      search() {
+        this.clusterName = this.$route.params.name
+        listNamespaces(this.clusterName).then(data => {
+          this.data = data.items
+          this.paginationConfig.total = data.total
+        })
+      },
+      handleSelectionChange(val) {
+        this.clusterSelection = val
+      },
+      create() {
+      },
+      remove() {
+      }
+    },
+    created() {
+      this.search()
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
