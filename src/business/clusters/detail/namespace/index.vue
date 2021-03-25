@@ -22,7 +22,7 @@
 
 <script>
   import ComplexTable from "@/components/complex-table"
-  import { listNamespaces } from "@/api/cluster"
+  import { listNamespace } from "@/api/cluster/namespace"
 
   export default {
     name: "Cluster",
@@ -42,7 +42,7 @@
     methods: {
       search() {
         this.clusterName = this.$route.params.name
-        listNamespaces(this.clusterName).then(data => {
+        listNamespace(this.clusterName).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })

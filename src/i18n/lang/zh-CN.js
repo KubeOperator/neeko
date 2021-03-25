@@ -27,7 +27,10 @@ const message = {
       create: "添加",
       confirm: "确定",
       edit: "编辑",
-      sync: "同步"
+      sync: "同步",
+      enable: "启用",
+      disable: "禁用",
+      jump_to: "转到"
     },
     msg: {
       success: "{0}成功",
@@ -65,6 +68,12 @@ const message = {
       error: "错误",
       active: "活跃",
       passive: "禁用",
+      Waiting: '等待中',
+      Failed: '失败',
+      Running: '运行中',
+      Initializing: '初始化中',
+      Upgrading: '升级中',
+      Terminating: '销毁中',
     },
     role: {
       admin: "管理员",

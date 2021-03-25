@@ -1,41 +1,41 @@
-import Layout from '@/business/app-layout/horizontal-layout'
+import Layout from "@/business/app-layout/horizontal-layout"
 
 
 const Cluster = {
-  path: '/clusters',
+  path: "/clusters",
   sort: 1,
   component: Layout,
-  name: 'Clusters',
+  name: "Clusters",
   children: [
     {
-      path: '/clusters',
-      component: () => import('@/business/clusters'),
+      path: "/clusters",
+      component: () => import("@/business/clusters"),
       name: "ClusterList",
       meta: {
         title: "route.cluster",
-        icon: 'el-icon-film',
-        roles: ['admin']
+        icon: "el-icon-film",
+        roles: ["admin"]
       },
     },
     {
       path: "create",
       hidden: true,
-      component: () => import('@/business/clusters/create'),
+      component: () => import("@/business/clusters/create"),
       name: "ClusterCreate",
       meta: {
         activeMenu: "/cluster/create",
-        roles: ['admin']
+        roles: ["admin"]
       },
     },
     {
       path: "detail/:name",
       props: true,
       hidden: true,
-      component: () => import('@/business/clusters/detail/index'),
+      component: () => import("@/business/clusters/detail/index"),
       name: "ClusterDetail",
       meta: {
         activeMenu: "/clusters",
-        roles: ['admin']
+        roles: ["admin"]
       },
       children: [
         {
@@ -43,10 +43,10 @@ const Cluster = {
           name: "ClusterOverview",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/overview'),
+          component: () => import("@/business/clusters/detail/overview"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -54,10 +54,10 @@ const Cluster = {
           name: "ClusterNode",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/node'),
+          component: () => import("@/business/clusters/detail/node"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -65,10 +65,10 @@ const Cluster = {
           name: "ClusterNamespace",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/namespace'),
+          component: () => import("@/business/clusters/detail/namespace"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -76,10 +76,10 @@ const Cluster = {
           name: "ClusterTool",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/tool'),
+          component: () => import("@/business/clusters/detail/tool"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -87,10 +87,10 @@ const Cluster = {
           name: "ClusterMonitor",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/monitor'),
+          component: () => import("@/business/clusters/detail/monitor"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -98,10 +98,10 @@ const Cluster = {
           name: "ClusterBackup",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/backup'),
+          component: () => import("@/business/clusters/detail/backup"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -109,10 +109,10 @@ const Cluster = {
           name: "ClusterF5",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/f5'),
+          component: () => import("@/business/clusters/detail/f5"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -120,10 +120,10 @@ const Cluster = {
           name: "ClusterSecurity",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/security'),
+          component: () => import("@/business/clusters/detail/security"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -131,10 +131,10 @@ const Cluster = {
           name: "ClusterLog",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/log'),
+          component: () => import("@/business/clusters/detail/log"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -142,10 +142,10 @@ const Cluster = {
           name: "ClusterIstio",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/istio'),
+          component: () => import("@/business/clusters/detail/istio"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -153,10 +153,10 @@ const Cluster = {
           name: "ClusterEvent",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/event'),
+          component: () => import("@/business/clusters/detail/event"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -164,10 +164,10 @@ const Cluster = {
           name: "ClusterStorage",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/storage'),
+          component: () => import("@/business/clusters/detail/storage"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
         },
         {
@@ -175,12 +175,12 @@ const Cluster = {
           name: "ClusterGrade",
           hidden: true,
           props: true,
-          component: () => import('@/business/clusters/detail/grade'),
+          component: () => import("@/business/clusters/detail/grade"),
           meta: {
             activeMenu: "/clusters",
-            roles: ['admin']
+            roles: ["admin"]
           }
-        },
+        }
       ]
     }
   ]
