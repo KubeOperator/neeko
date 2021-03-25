@@ -27,7 +27,7 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t('system_log.query_placeholder'),
         components: [
-          {field: "name", label: this.$t('system_log.name'), component: "FuComplexInput"},
+          {field: "name", label: this.$t('commons.table.name'), component: "FuComplexInput"},
           {field: "operation", label: this.$t('system_log.operation'), component: "FuComplexInput"},
           {field: "operation_info", label: this.$t('system_log.operation_info'), component: "FuComplexInput"}
         ]
