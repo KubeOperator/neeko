@@ -1,47 +1,61 @@
 <template>
-  <div>
-    <layout-content>
-      <template #header>
-        <back-button path=""></back-button>
-        {{$t('route.system_setting')}}
-      </template>
-      <TabPage :submenu="submenu" :active-menu.sync="activeMenu">
-        <keep-alive>
-          <component :is="activeMenu" :object="componentData" />
-        </keep-alive>
-      </TabPage>
-      </layout-content>
-  </div>
+<!--  <div>-->
+<!--    <layout-content>-->
+<!--      <template #header>-->
+<!--        <back-button path=""></back-button>-->
+<!--        {{$t('route.system_setting')}}-->
+<!--      </template>-->
+<!--      <TabPage :submenu="submenu" :active-menu.sync="activeMenu">-->
+<!--        <keep-alive>-->
+<!--          <component :is="activeMenu" :object="componentData" />-->
+<!--        </keep-alive>-->
+<!--      </TabPage>-->
+<!--      </layout-content>-->
+<!--  </div>-->
+
+  <layout-content :header="$t('route.system_setting')">
+    <el-menu router :default-active="$route.path" mode="horizontal">
+      <el-menu-item :index="'/setting/registry'">仓库</el-menu-item>
+      <el-menu-item :index="'/setting/credential'">凭证</el-menu-item>
+      <el-menu-item :index="'/setting/ntp'">NTP</el-menu-item>
+      <el-menu-item :index="'/setting/email'">邮箱</el-menu-item>
+      <el-menu-item :index="'/setting/ldap'">LDAP</el-menu-item>
+      <el-menu-item :index="'/setting/license'">许可</el-menu-item>
+      <el-menu-item :index="'/setting/theme'">主题</el-menu-item>
+      <el-menu-item :index="'/setting/message'">消息</el-menu-item>
+    </el-menu>
+    <br/>
+    <router-view></router-view>
+  </layout-content>
 </template>
 
 <script>
-import Registry from "./registry";
-import NTP from "./ntp";
-import Credential from "./ssh-credential";
-import Theme from "./theme"
-import Ldap from "./ldap";
-import Email from "./email";
-import Message from "./message";
-import License from "./license";
-import TabPage from "@/components/tab-page";
+// import Registry from "./registry";
+// import NTP from "./ntp";
+// import Credential from "./credential";
+// import Theme from "./theme"
+// import Ldap from "./ldap";
+// import Email from "./email";
+// import Message from "./message";
+// import License from "./license";
+// import TabPage from "@/components/tab-page";
 import LayoutContent from "@/components/layout/LayoutContent";
 
 
 export default {
   components: {
-    Registry,
-    NTP,
+    // Registry,
+    // NTP,
     LayoutContent,
-    TabPage,
-    Credential,
+    // TabPage,
     // Credential,
-    Ldap,
-    Email,
-    Message,
-    License,
-    Theme
+    // Ldap,
+    // Email,
+    // Message,
+    // License,
+    // Theme
   },
-  name: "setting",
+  name: "Setting",
   data() {
     return {
       activeMenu: 'registry',

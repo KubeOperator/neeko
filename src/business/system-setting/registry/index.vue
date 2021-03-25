@@ -1,47 +1,58 @@
 <template>
-  <div>
-    <div style="margin-top: 20px">
-      <el-button @click="toggleSelection([tableData[1], tableData[2]])">添加</el-button>
-      <el-button @click="toggleSelection()">修改</el-button>
-      <el-button @click="toggleSelection()">删除</el-button>
-    </div>
 
-    <p/>
-    <el-table
-      ref="multipleTable"
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection">
-      </el-table-column>
-      <el-table-column
-        prop="arch"
-        label="CPU架构"
-        min-width="50">
-      </el-table-column>
-      <el-table-column
-        prop="protocol"
-        label="协议"
-        min-width="50">
-      </el-table-column>
-      <el-table-column
-        prop="hostname"
-        label="地址"
-        show-overflow-tooltip>
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        show-overflow-tooltip>
-      </el-table-column>
-    </el-table>
-  </div>
+  <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+                 :pagination-config="paginationConfig" @search="search">
+    <template #toolbar>
+      <el-button-group>
+        <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+      </el-button-group>
+    </template>
+
+    <el-table-column type="selection" fix></el-table-column>
+    <el-table-column :label="$t('commons.table.arch')" mix-width="100" fix>
+      <template v-slot:default="{row}">
+        <el-row>
+          <el-col :span="3">
+            <font-awesome-icon icon="user" size="3x"/>
+          </el-col>
+          <el-col :span="18">
+            {{row.name}}x86_64
+          </el-col>
+        </el-row>
+      </template>
+    </el-table-column>
+    <el-table-column :label="$t('commons.table.protocol')" min-width="100">
+      <template v-slot:default="{row}">
+        <el-tag v-if="row.status === 'active'" type="success" size="small">{{$t('commons.status.active')}}</el-tag>
+        <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{$t('commons.status.passive')}}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column :label="$t('commons.table.hostname')" min-width="100">
+      <template v-slot:default="{row}">
+        <el-tag type="info" size="small">{{$t(`commons.role.${row.role}`)}}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column :label="$t('commons.table.create_time')">
+      <template v-slot:default="{row}">
+        {{ row.createdAt | datetimeFormat }}
+      </template>
+    </el-table-column>
+
+    <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
+  </complex-table>
+
+
 </template>
 
 <script>
+import ComplexTable from "@/components/complex-table";
+// import LayoutContent from "@/components/layout/LayoutContent";
+
 export default {
+  components: {
+    ComplexTable,
+
+  },
   name: "Registry",
   data() {
     return{
