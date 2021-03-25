@@ -19,7 +19,7 @@
               <ul>{{$t('cluster.creation.runtime_type')}}</ul>
               <ul>{{$t('cluster.detail.overview.source')}}</ul>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
               <ul>{{currentCluster.name}}</ul>
               <ul>{{currentCluster.spec.version}}</ul>
               <ul>{{currentCluster.spec.architectures}}</ul>
@@ -93,7 +93,10 @@
 </template>
 
 <script>
-  import { getClusterByName, listNamespaces, listPod, listNodes, listDeployment, listNodesUsage } from "@/api/cluster"
+  import { listPod, listDeployment } from "@/api/cluster/cluster"
+  import { listNode, listNodesUsage } from "@/api/cluster/node"
+  import { listNamespace } from "@/api/cluster/namespace"
+  import { getClusterByName } from "@/api/cluster"
 
   export default {
     name: "Cluster",
@@ -143,14 +146,14 @@
         })
         this.listNameSpaces()
         this.listNodes()
-        this.listDeployment()
+        this.listDeployments()
       },
       open() {
       },
       newWindow() {
       },
       listNameSpaces() {
-        listNamespaces(this.clusterName).then(data => {
+        listNamespace(this.clusterName).then(data => {
           this.namespaces = data.items
         })
       },
@@ -164,7 +167,7 @@
         })
       },
       listNodes() {
-        listNodes(this.clusterName).then(data => {
+        listNode(this.clusterName).then(data => {
           this.nodes = data.items
           this.nodes.forEach(node => {
             this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)
@@ -172,16 +175,16 @@
             this.memTotal = this.memTotal + Number(mem)
             this.podLimit = this.podLimit + Number(node.status.capacity.pods)
           })
-          this.listNodesUsage()
+          this.listNodesUsages()
           this.listPods()
         })
       },
-      listDeployment() {
+      listDeployments() {
         listDeployment(this.clusterName).then(data => {
           this.deployments = data.items
         })
       },
-      listNodesUsage() {
+      listNodesUsages() {
         listNodesUsage(this.clusterName).then(data => {
           let metrics = data.items
           metrics.forEach(me => {

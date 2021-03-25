@@ -41,7 +41,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {listIpPools, deleteIpPoolBy} from "@/api/ip-pool"
+import {searchIpPool, deleteIpPoolBy} from "@/api/ip-pool"
 
 export default {
   name: "IpPoolList",
@@ -58,30 +58,21 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: "姓名",
+            label: this.$t('commons.table.name'),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
           {
-            field: "status",
-            label: "状态",
-            component: "FuComplexSelect",
-            options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
-            ],
-            multiple: true
+            field: "subnet",
+            label: this.$t('automatic.ip_pool.subnet'),
+            component: "FuComplexInput",
+            defaultOperator: "eq"
           },
-          {
-            field: "create_time",
-            label: "创建时间",
-            component: "FuComplexDateTime"
-          }
+          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
         ]
       },
       paginationConfig: {
@@ -96,9 +87,8 @@ export default {
   methods: {
     search (condition) {
       this.loading = true
-      console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listIpPools(currentPage, pageSize).then(data => {
+      searchIpPool(currentPage, pageSize,condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
         this.loading = false

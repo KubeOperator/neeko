@@ -7,11 +7,16 @@ export function listIpPools (page, size) {
 }
 
 export function deleteIpPoolBy (name) {
-  return del(ipPoolUrl + "/" + name)
+  return del(`${ipPoolUrl}/${name}`)
 }
 
 export function createIpPool (data) {
   return post(ipPoolUrl, data)
+}
+
+export function searchIpPool(currentPage, pageSize, conditions) {
+  return post(`${ipPoolUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+
 }
 
 export function listIps (ipPoolName, page, size) {
@@ -19,13 +24,17 @@ export function listIps (ipPoolName, page, size) {
 }
 
 export function deleteIpBy (ipPoolName, ip) {
-  return del(ipPoolUrl + "/" + ipPoolName + "/ips/" + ip)
+  return del(`${ipPoolUrl}/${ipPoolName}/ips/${ip}`)
 }
 
 export function createIp (ipPoolName, data) {
-  return post(ipPoolUrl + "/" + ipPoolName + "/ips", data)
+  return post(`${ipPoolUrl}/${ipPoolName}/ips`, data)
 }
 
 export function syncIp (ipPoolName) {
-  return patch(ipPoolUrl + "/" + ipPoolName + "/ips/sync")
+  return patch(`${ipPoolUrl}/${ipPoolName}/ips/sync`)
+}
+
+export function searchIp (currentPage, pageSize, ipPoolName, conditions) {
+  return post(`${ipPoolUrl}/${ipPoolName}/ips/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }

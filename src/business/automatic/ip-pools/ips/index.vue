@@ -43,7 +43,7 @@
             {{ $t("automatic.ip_pool.ip_reachable") }}
           </el-tag>
           <el-tag v-if="row.status === 'IP_LOCK'" type="info" size="small">
-            {{ $t("automatic.ip_pool.ip_reachable") }}
+            {{ $t("automatic.ip_pool.ip_lock") }}
           </el-tag>
         </template>
       </el-table-column>
@@ -59,7 +59,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {listIps, deleteIpBy, syncIp} from "@/api/ip-pool"
+import {deleteIpBy, syncIp, searchIp} from "@/api/ip-pool"
 
 export default {
   name: "IpList",
@@ -77,30 +77,27 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
-            field: "name",
-            label: "姓名",
+            field: "address",
+            label: this.$t("automatic.ip_pool.address"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
           {
             field: "status",
-            label: "状态",
+            label: this.$t("commons.table.status"),
             component: "FuComplexSelect",
             options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
+              { label: this.$t("automatic.ip_pool.ip_available"), value: "IP_AVAILABLE" },
+              { label: this.$t("automatic.ip_pool.ip_lock"), value: "IP_LOCK" },
+              { label: this.$t("automatic.ip_pool.ip_used"), value: "IP_USED" },
+              { label: this.$t("automatic.ip_pool.ip_reachable"), value: "IP_REACHABLE" }
             ],
             multiple: true
           },
-          {
-            field: "create_time",
-            label: "创建时间",
-            component: "FuComplexDateTime"
-          }
+          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
         ]
       },
       paginationConfig: {
@@ -115,9 +112,8 @@ export default {
   methods: {
     search (condition) {
       this.loading = true
-      console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listIps(this.name, currentPage, pageSize).then(data => {
+      searchIp(currentPage, pageSize, this.name, condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
         this.loading = false

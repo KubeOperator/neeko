@@ -27,7 +27,10 @@ const message = {
       create: "添加",
       confirm: "确定",
       edit: "编辑",
-      sync: "同步"
+      sync: "同步",
+      enable: "启用",
+      disable: "禁用",
+      jump_to: "转到"
     },
     msg: {
       success: "{0}成功",
@@ -70,6 +73,12 @@ const message = {
       error: "错误",
       active: "活跃",
       passive: "禁用",
+      Waiting: '等待中',
+      Failed: '失败',
+      Running: '运行中',
+      Initializing: '初始化中',
+      Upgrading: '升级中',
+      Terminating: '销毁中',
     },
     role: {
       admin: "管理员",
@@ -180,6 +189,29 @@ const message = {
       },
       overview: {
         source: "来源",
+      },
+      tool: {
+        enable_title: "启用工具",
+        disable_title: "禁用工具",
+        info_title: "提示信息",
+        err_title: "错误信息",
+        upgrade_title: "版本升级",
+        disable_show_msg: "禁用此工具会导致数据丢失,是否继续？",
+        enable_storage: "启用存储",
+        storage_class: "存储类",
+        storage_size: "大小（Gi）",
+        data_retention: "数据保留（天）",
+        search_index: "前缀索引",
+        search_index_help: "例如：logstash",
+        replicas: "副本数量",
+        max_replicas_num: "最大副本数为",
+        hip_memery: "堆内存(GB)",
+        default_hip_memery: "默认值为1G",
+        password: "密码",
+        password_re: "确认密码",
+        node_select_help: "（非必填项）",
+        log_err_msg: "logging 和 loki 不支持同时启用！",
+        grafana_err_msg: "请先启用 promethues 作为默认数据源！",
       }
     }
   },
@@ -236,13 +268,16 @@ const message = {
     region: {
       name: "区域",
       basic: "基本信息",
-      config: "配置参数"
+      config: "配置参数",
+      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。"
     },
     zone: {
-      name: "可用区"
+      name: "可用区",
+      description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池"
     },
     plan: {
-      name: "部署计划"
+      name: "部署计划",
+      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念"
     },
     vm_config: {
       name: "虚拟机配置",
