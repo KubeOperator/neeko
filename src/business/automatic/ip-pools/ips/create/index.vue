@@ -5,19 +5,19 @@
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon>
-            <el-form-item :label="$t('automatic.ip_pool.ip_start')" prop="ipStart" required>
+            <el-form-item :label="$t('automatic.ip_pool.ip_start')" prop="ipStart">
               <el-input v-model="form.ipStart"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.ip_pool.ip_end')" prop="ipEnd" required>
+            <el-form-item :label="$t('automatic.ip_pool.ip_end')" prop="ipEnd">
               <el-input v-model="form.ipEnd"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.ip_pool.gateway')" prop="gateway" required>
+            <el-form-item :label="$t('automatic.ip_pool.gateway')" prop="gateway">
               <el-input v-model="form.gateway"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.ip_pool.dns1')" prop="dns1" required>
+            <el-form-item :label="$t('automatic.ip_pool.dns1')" prop="dns1">
               <el-input v-model="form.dns1"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.ip_pool.dns2')" prop="dns2" required>
+            <el-form-item :label="$t('automatic.ip_pool.dns2')" prop="dns2">
               <el-input v-model="form.dns2"></el-input>
             </el-form-item>
             <el-form-item>
@@ -62,13 +62,12 @@ export default {
         ipPoolName: ""
       },
       rules: {
-        ipStart: [{ validator: checkIp, trigger: "blur" }],
-        ipEnd: [{ validator: checkIp, trigger: "blur" }],
-        gateway: [{ validator: checkIp, trigger: "blur" }],
-        dns1: [{ validator: checkIp, trigger: "blur" }],
-        dns2: [{ validator: checkIp, trigger: "blur" }]
-      },
-      errorMsg: ""
+        ipStart: [{ validator: checkIp, required: true, trigger: "blur" }],
+        ipEnd: [{ validator: checkIp, required: true, trigger: "blur" }],
+        gateway: [{ validator: checkIp, required: true, trigger: "blur" }],
+        dns1: [{ validator: checkIp, required: true, trigger: "blur" }],
+        dns2: [{ validator: checkIp, required: true, trigger: "blur" }]
+      }
     }
   },
   methods: {
@@ -104,7 +103,7 @@ export default {
     onCancel () {
       this.$router.push({ name: "IpList" })
     },
-    checkNetwork() {
+    checkNetwork () {
       const ipStartAddr = ipaddr.IPv4.parse(this.form.ipStart)
       const ipEndAddr = ipaddr.IPv4.parse(this.form.ipEnd)
       const start = ipStartAddr.toByteArray()
