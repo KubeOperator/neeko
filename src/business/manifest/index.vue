@@ -10,7 +10,7 @@
               </div>
               <span>{{versionMini.name}}</span>
               <el-col :span="4">
-                <img style="width: 40px; height: 40px" src="../../assets/tools/kubernetes.png" alt="">
+                <img style="width: 40px; height: 40px" src="@/assets/images/tools/kubernetes.png" alt="">
               </el-col>
               <el-col :span="20">
                 <div v-for="vars in versionMini.coreVars" :key="vars.name">

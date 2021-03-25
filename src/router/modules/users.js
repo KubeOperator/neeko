@@ -5,6 +5,9 @@ const Users = {
   path: '/users',
   component: Layout,
   name: 'User',
+  meta: {
+    requireLicense: true,
+  },
   children: [
     {
       path: 'list',

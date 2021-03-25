@@ -56,7 +56,12 @@ const message = {
       name: "名称",
       status: "状态",
       description: "描述",
-      create_time: "创建时间"
+      create_time: "创建时间",
+      arch: "CPU架构",
+      type: "类型",
+      hostname: "地址",
+      username: "用户名",
+      protocol: "协议"
     },
     status: {
       running: "运行中",
@@ -158,6 +163,24 @@ const message = {
 
       step7: "配置预览",
       base_setting: "基本配置"
+    },
+    detail: {
+      tag: {
+        overview: "概览",
+        node: "节点",
+        namespace: "命名空间",
+        storage: "存储",
+        event: "事件",
+        monitor: "监控",
+        log: "日志",
+        tool: "工具",
+        backup: "备份",
+        csi: "csi扫描",
+        grade: "集群评分",
+      },
+      overview: {
+        source: "来源",
+      }
     }
   },
   host: {
@@ -256,6 +279,16 @@ const message = {
   },
   backup_account: {
     name: "备份账号"
+  },
+  setting: {
+    registry: "仓库",
+    ntp: "NTP",
+    email: "邮箱",
+    license: "许可证",
+    ldap: "LDAP",
+    message: "消息",
+    theme: "主题",
+    credential: "凭证",
   }
 }
 

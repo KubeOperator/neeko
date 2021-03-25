@@ -196,224 +196,109 @@
         </div>
 
         <div v-if="activeStep === 6">
-          <el-form-item>
             <el-divider content-position="left">{{$t ('cluster.creation.base_setting')}}</el-divider>
-            <div>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.name')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.name}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.provider')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.provider}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.version')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.version}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.arch')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.architectures}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.yum_repo')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.yumOperate}}</label>
-                </el-col>
-              </el-row>
-            </div>
+            <el-row type="flex" justify="center">
+              <el-col :span="6">
+                <ul>{{$t ('cluster.creation.name')}}</ul>
+                <ul>{{$t ('cluster.creation.provider')}}</ul>
+                <ul>{{$t ('cluster.creation.version')}}</ul>
+                <ul>{{$t ('cluster.creation.arch')}}</ul>
+                <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
+              </el-col>
+              <el-col :span="6">
+                <ul>{{form.name}}</ul>
+                <ul>{{form.provider}}</ul>
+                <ul>{{form.version}}</ul>
+                <ul>{{form.architectures}}</ul>
+                <ul>{{form.yumOperate}}</ul>
+              </el-col>
+            </el-row>
 
-            <el-divider content-position="left">{{$t ('cluster.creation.step2')}}</el-divider>
-            <div>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.cluster_cidr')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.clusterCidr}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.max_node_pod_num')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.maxNodePodNum}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.max_cluster_service_num')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.maxClusterServiceNum}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.proxy_mode')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.kubeProxyMode}}</label>
-                </el-col>
-              </el-row>
-            </div>
+          <el-divider content-position="left">{{$t ('cluster.creation.step2')}}</el-divider>
+          <el-row type="flex" justify="center">
+            <el-col :span="6">
+              <ul>{{$t ('cluster.creation.cluster_cidr')}}</ul>
+              <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
+              <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
+              <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
+              <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
+            </el-col>
+            <el-col :span="6">
+              <ul>{{form.clusterCidr}}</ul>
+              <ul>{{form.maxNodePodNum}}</ul>
+              <ul>{{form.maxClusterServiceNum}}</ul>
+              <ul>{{form.kubeProxyMode}}</ul>
+              <ul>{{form.yumOperate}}</ul>
+            </el-col>
+          </el-row>
 
-            <el-divider content-position="left">{{$t ('cluster.creation.step3')}}</el-divider>
-            <div>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.runtime_type')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.runtimeType}}</label>
-                </el-col>
-              </el-row>
-              <div v-if="form.runtimeType === 'docker'">
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">{{$t ('cluster.creation.docker_storage_dir')}}</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{form.dockerStorageDir}}</label>
-                  </el-col>
-                </el-row>
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">{{$t ('cluster.creation.subnet')}}</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{form.dockerSubnet}}</label>
-                  </el-col>
-                </el-row>
-              </div>
-              <div v-if="form.runtimeType === 'containerd'">
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">{{$t ('cluster.creation.containe_storage_dir')}}</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{form.containerdStorageDir}}</label>
-                  </el-col>
-                </el-row>
-              </div>
-            </div>
+          <el-divider content-position="left">{{$t ('cluster.creation.step3')}}</el-divider>
+          <el-row type="flex" justify="center">
+            <el-col :span="6">
+              <ul>{{$t ('cluster.creation.runtime_type')}}</ul>
+              <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
+              <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.subnet')}}</ul>
+              <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.containe_storage_dir')}}</ul>
+            </el-col>
+            <el-col :span="6">
+              <ul>{{form.runtimeType}}</ul>
+              <ul v-if="form.runtimeType === 'docker'">{{form.dockerStorageDir}}</ul>
+              <ul v-if="form.runtimeType === 'docker'">{{form.dockerSubnet}}</ul>
+              <ul v-if="form.runtimeType === 'containerd'">{{form.containerdStorageDir}}</ul>
+            </el-col>
+          </el-row>
+          
+          <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>
+          <el-row type="flex" justify="center">
+            <el-col :span="6">
+              <ul>{{$t ('cluster.creation.network_interface')}}</ul>
+              <ul>{{$t ('cluster.creation.network_type')}}</ul>
+              <ul>{{$t ('cluster.creation.flannel_backend')}}</ul>
+            </el-col>
+            <el-col :span="6">
+              <ul>{{form.networkInterface}}</ul>
+              <ul>{{form.networkType}}</ul>
+              <ul>{{form.flannelBackend}}</ul>
+            </el-col>
+          </el-row>
 
-            <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>
-            <div>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.network_interface')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.networkInterface}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.network_type')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.networkType}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.flannel_backend')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.flannelBackend}}</label>
-                </el-col>
-              </el-row>
-              
+          <el-divider content-position="left">{{$t ('cluster.creation.step5')}}</el-divider>
+          <el-row type="flex" justify="center">
+            <el-col :span="6">
+              <ul>helm</ul>
+              <ul>{{$t ('cluster.creation.ingress_type')}}</ul>
+              <ul>{{$t ('cluster.creation.support_gpu')}}</ul>
+            </el-col>
+            <el-col :span="6">
+              <ul>{{form.helmVersion}}</ul>
+              <ul>{{form.ingressControllerType}}</ul>
+              <ul>{{form.supportGpu}}</ul>
+            </el-col>
+          </el-row>
+          
+          <el-divider content-position="left">{{$t ('cluster.creation.step6_of_bare_metal')}}</el-divider>
+          <el-row type="flex" justify="center">
+            <div v-if="form.provider === 'plan'">
+              <el-col :span="6">
+                <ul>{{$t ('cluster.creation.step6_of_plan')}}</ul>
+                <ul>{{$t ('cluster.creation.worker_num')}}</ul>
+              </el-col>
+              <el-col :span="6">
+                <ul>{{form.plan}}</ul>
+                <ul>{{form.workerNum}}</ul>
+              </el-col>
             </div>
-            
-            <el-divider content-position="left">{{$t ('cluster.creation.step5')}}</el-divider>
-            <div>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">helm</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.helmVersion}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.ingress_type')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.ingressControllerType}}</label>
-                </el-col>
-              </el-row>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <label class="preview">{{$t ('cluster.creation.support_gpu')}}</label>
-                </el-col>
-                <el-col :span="4">
-                  <label class="preview">{{form.supportGpu}}</label>
-                </el-col>
-              </el-row>
+            <div v-if="form.provider === 'bareMetal'">
+              <el-col :span="6">
+                <ul>Masters</ul>
+                <ul>Workers</ul>
+              </el-col>
+              <el-col :span="6">
+                <ul>{{getHostName(masters)}}</ul>
+                <ul>{{getHostName(workers)}}</ul>
+              </el-col>
             </div>
-
-            <el-divider content-position="left">{{$t ('cluster.creation.step6_of_bare_metal')}}</el-divider>
-            <div>
-              <div v-if="form.provider === 'plan'">
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">{{$t ('cluster.creation.step6_of_plan')}}</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{form.plan}}</label>
-                  </el-col>
-                </el-row>
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">{{$t ('cluster.creation.worker_num')}}</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{form.workerNum}}</label>
-                  </el-col>
-                </el-row>
-              </div>
-              <div v-if="form.provider === 'bareMetal'">
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">Masters</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{getHostName(masters)}}</label>
-                  </el-col>
-                </el-row>
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <label class="preview">Workers</label>
-                  </el-col>
-                  <el-col :span="4">
-                    <label class="preview">{{getHostName(workers)}}</label>
-                  </el-col>
-                </el-row>
-              </div>
-            </div>
-          </el-form-item>
+          </el-row>
         </div>
       </div>
       <el-button type="primary" style="float: right" @click="nextStep">下一步</el-button>
@@ -478,7 +363,7 @@
           plan: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
           workerAmount: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "blur" }],
         },
-        activeStep: 0,
+        activeStep: 6,
         versions: ["1.18.16", "1.20.10"],
         isNameChecking: false,
         nameValid: true,
