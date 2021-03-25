@@ -1,6 +1,11 @@
 import {rolesRoutes, constantRoutes} from '@/router'
 
-function hasPermission(roles, route) {
+function hasPermission(roles, license, route) {
+  if (route.meta && route.meta.requireLicense) {
+    if (license.status !== 'valid') {
+      return false
+    }
+  }
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {
@@ -8,14 +13,14 @@ function hasPermission(roles, route) {
   }
 }
 
-export function filterRolesRoutes(routes, roles) {
-  const res = []
 
+export function filterRolesRoutes(routes, license, roles) {
+  const res = []
   routes.forEach(route => {
     const tmp = {...route}
-    if (hasPermission(roles, tmp)) {
+    if (hasPermission(roles, license, tmp)) {
       if (tmp.children) {
-        tmp.children = filterRolesRoutes(tmp.children, roles)
+        tmp.children = filterRolesRoutes(tmp.children, license, roles)
       }
       res.push(tmp)
     }
@@ -37,16 +42,11 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({commit}, roles) {
+  generateRoutes({commit}, p) {
     return new Promise(resolve => {
+      const {license, roles} = p
       let accessedRoutes
-      if (roles.includes('admin')) {
-        // admin角色加载所有路由
-        accessedRoutes = rolesRoutes || []
-      } else {
-        // 其他角色加载对应角色的路由
-        accessedRoutes = filterRolesRoutes(rolesRoutes, roles)
-      }
+      accessedRoutes = filterRolesRoutes(rolesRoutes, license, roles)
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })
