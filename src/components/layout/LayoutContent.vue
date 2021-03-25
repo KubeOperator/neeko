@@ -1,5 +1,10 @@
 <template>
   <div class="content-container">
+    <div class="content-container__description" v-if="$slots.description || description">
+      <el-alert :title="description" type="info">
+      </el-alert>
+      <br>
+    </div>
     <div class="content-container__header" v-if="$slots.header || header">
       <slot name="header">
         {{ header }}
@@ -13,12 +18,13 @@
 </template>
 
 <script>
-  export default {
-    name: "LayoutContent",
-    props: {
-      header: String
-    }
+export default {
+  name: "LayoutContent",
+  props: {
+    header: String,
+    description: String,
   }
+}
 </script>
 
 <style lang="scss">
