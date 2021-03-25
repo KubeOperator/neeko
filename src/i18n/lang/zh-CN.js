@@ -268,13 +268,16 @@ const message = {
     region: {
       name: "区域",
       basic: "基本信息",
-      config: "配置参数"
+      config: "配置参数",
+      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。"
     },
     zone: {
-      name: "可用区"
+      name: "可用区",
+      description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池"
     },
     plan: {
-      name: "部署计划"
+      name: "部署计划",
+      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念"
     },
     vm_config: {
       name: "虚拟机配置",
