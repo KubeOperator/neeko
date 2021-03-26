@@ -1,5 +1,5 @@
 <template>
-  <el-icon name="back" class="back-button" @click="jump"/>
+  <el-icon name="back" class="back-button" @click.native="jump"/>
 </template>
 
 <script>

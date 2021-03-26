@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('commons.button.create')">
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'VmConfigList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
