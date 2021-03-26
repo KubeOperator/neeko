@@ -15,7 +15,11 @@ export function listNodesUsage(clusterName, continueToken) {
   return get(url)
 }
 
-export function listNode(clusterName, continueToken) {
+export function listNodeInDB(clusterName) {
+  return get(`clusters/node/${clusterName}`)
+}
+
+export function listNodeInCluster(clusterName, continueToken) {
   let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodesUrl)
   url += "?limit=" + limit
   if (continueToken !== undefined && continueToken !== null) {
