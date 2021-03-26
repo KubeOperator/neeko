@@ -6,14 +6,7 @@
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="80px">
             <el-form-item :label="$t('commons.table.arch')" required>
-              <el-select style="width: 100%" v-model="form.architecture" placeholder="请选择">
-                <el-option
-                  v-for="item in architectureOptions"
-                  :key="item.value"
-                  :value="item.value"
-                  :disabled="item.disabled">
-                </el-option>
-              </el-select>
+              <el-input v-model="form.architecture" readonly></el-input>
             </el-form-item>
             <el-form-item :label="$t('commons.table.protocol')" required>
               <el-input v-model="form.protocol"></el-input>
@@ -34,33 +27,29 @@
 </template>
 
 <script>
-import LayoutContent from "@/components/layout/LayoutContent";
-import {createRegistry} from "@/api/system-setting";
+import {getRegistry, updateRegistry} from "@/api/system-setting";
+
 export default {
-  name: "RegistryCreate",
-  components: {LayoutContent},
+  name: "EditRegistry",
+  props: ['arch'],
   data() {
     return {
       form: {
         architecture: '',
         hostname: '',
-        protocol: ''
-      },
-      architectureOptions: [{
-        value: 'x86_64',
-      }, {
-        value: 'aarch64',
-        // disabled: true
-      }]
+        protocol: '',
+        id: '',
+      }
     }
   },
   methods: {
     onSubmit() {
-      createRegistry({
+      updateRegistry(this.arch, {
         architecture: this.form.architecture,
         hostname: this.form.hostname,
-        protocol: this.form.protocol
-      }).then(() => {
+        protocol: this.form.protocol,
+        id: this.form.id
+      }).then( () => {
         this.$message({
           type: 'success',
           message: `创建成功`
@@ -70,7 +59,15 @@ export default {
     },
     onCancel() {
       this.$router.push({name: "Registry"})
-    }
+    },
+  },
+  created() {
+    getRegistry(this.arch).then(data => {
+      this.form.architecture = data.architecture,
+      this.form.hostname = data.hostname,
+      this.form.protocol = data.protocol,
+      this.form.id = data.id
+    })
   }
 }
 </script>

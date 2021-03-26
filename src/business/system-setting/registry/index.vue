@@ -1,88 +1,109 @@
 <template>
 
-  <complex-table :data="data" :columns="columns" :search-config="searchConfig"
-                 :pagination-config="paginationConfig" @search="search">
-    <template #toolbar>
-      <el-button-group>
-        <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-      </el-button-group>
-    </template>
-
-    <el-table-column type="selection" fix></el-table-column>
-    <el-table-column :label="$t('commons.table.arch')" mix-width="100" fix>
-      <template v-slot:default="{row}">
-        <el-row>
-          <el-col :span="3">
-            <font-awesome-icon icon="user" size="3x"/>
-          </el-col>
-          <el-col :span="18">
-            {{row.name}}x86_64
-          </el-col>
-        </el-row>
+    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+                   :pagination-config="paginationConfig" @search="search">
+      <template #toolbar>
+        <el-button-group>
+          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+        </el-button-group>
       </template>
-    </el-table-column>
-    <el-table-column :label="$t('commons.table.protocol')" min-width="100">
-      <template v-slot:default="{row}">
-        <el-tag v-if="row.status === 'active'" type="success" size="small">{{$t('commons.status.active')}}</el-tag>
-        <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{$t('commons.status.passive')}}</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column :label="$t('commons.table.hostname')" min-width="100">
-      <template v-slot:default="{row}">
-        <el-tag type="info" size="small">{{$t(`commons.role.${row.role}`)}}</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column :label="$t('commons.table.create_time')">
-      <template v-slot:default="{row}">
-        {{ row.createdAt | datetimeFormat }}
-      </template>
-    </el-table-column>
 
-    <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
-  </complex-table>
+      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column :label="$t('commons.table.arch')" mix-width="80" fix prop="architecture"/>
+      <el-table-column :label="$t('commons.table.protocol')" mix-width="30" prop="protocol"/>
+      <el-table-column :label="$t('commons.table.hostname')" min-width="100" prop="hostname"/>
+      <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
+        <template v-slot:default="{row}">
+          {{ row.updatedAt | datetimeFormat }}
+        </template>
+      </el-table-column>
 
-
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
+    </complex-table>
 </template>
 
 <script>
-import ComplexTable from "@/components/complex-table";
 // import LayoutContent from "@/components/layout/LayoutContent";
-
+import ComplexTable from "@/components/complex-table";
+import {listRegistry, deleteRegistry} from "@/api/system-setting";
 export default {
   components: {
     ComplexTable,
-
+    // LayoutContent
   },
   name: "Registry",
   data() {
     return{
-      multipleSelection: [],
-      tableData: [{
-        arch: 'x86_64',
-        protocol: 'http',
-        hostname: '192.168.1.200',
-        createTime: '2021-05-03'
-      }, {
-        arch: 'aarch64',
-        protocol: 'https',
-        hostname: '192.168.1.200',
-        createTime: '2021-05-01'
-      }],
+      columns: [],
+      buttons: [
+        {
+          label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
+            this.$router.push({name: "RegistryEdit", params: {arch: row.architecture}})
+          }
+        }, {
+          label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+            this.del(row.architecture)
+          }
+        },
+      ],
+      searchConfig: {
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
+        components: [
+          {field: "arch", label: this.$t('commons.table.arch'), component: "FuComplexInput", defaultOperator: "eq"},
+          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
+        ]
+      },
+      paginationConfig: {
+        currentPage: 1,
+        pageSize: 5,
+        total: 0,
+      },
+      data: [],
     }
   },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
+    search(conditions) {
+      const {currentPage, pageSize} = this.paginationConfig
+      listRegistry(currentPage, pageSize, conditions).then(data => {
+        this.data = data.items
+        this.paginationConfig.total = data.total
+      })
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    create() {
+      this.$router.push({name: "RegistryCreate"})
+    },
+    del(arch) {
+      this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
+        confirmButtonText: this.$t('commons.button.confirm'),
+        cancelButtonText: this.$t('commons.button.cancel'),
+        type: 'warning'
+      }).then(() => {
+        if (arch) {
+          deleteRegistry(arch).then(() => {
+            this.search()
+            this.$message({
+              type: 'success',
+              message: `${name}${this.$t('commons.msg.delete_success')}!`
+            });
+          })
+        } else {
+          const ps = []
+          for (const item of this.selects) {
+            ps.push(deleteRegistry(item.name))
+          }
+          Promise.all(ps).then(() => {
+            this.search()
+            this.$message({
+              type: 'success',
+              message: this.$t('commons.msg.delete_success'),
+            });
+          })
+        }
+      })
     }
+  },
+  created() {
+    this.search()
   }
 }
 </script>
