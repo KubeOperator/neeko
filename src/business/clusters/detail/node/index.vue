@@ -31,7 +31,7 @@
 
 <script>
   import ComplexTable from "@/components/complex-table"
-  import { listNodesByPage } from "@/api/cluster"
+  import { listNodesByPage } from "@/api/cluster/node"
 
   export default {
     name: "ClusterNode",
