@@ -94,7 +94,7 @@
 
 <script>
   import { listPod, listDeployment } from "@/api/cluster/cluster"
-  import { listNode, listNodesUsage } from "@/api/cluster/node"
+  import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
   import { listNamespace } from "@/api/cluster/namespace"
   import { getClusterByName } from "@/api/cluster"
 
@@ -167,7 +167,7 @@
         })
       },
       listNodes() {
-        listNode(this.clusterName).then(data => {
+        listNodeInCluster(this.clusterName).then(data => {
           this.nodes = data.items
           this.nodes.forEach(node => {
             this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)

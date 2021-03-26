@@ -256,7 +256,7 @@
 
 <script>
   import { listTool, enableTool, disableTool, upgradeTool } from "@/api/cluster/tool"
-  import { listNode } from "@/api/cluster/node"
+  import { listNodeInCluster } from "@/api/cluster/node"
   import { listNamespace } from "@/api/cluster/namespace"
   import { listStorageClass } from "@/api/cluster/storage"
   import { getClusterByName } from "@/api/cluster"
@@ -388,7 +388,7 @@
         })
       },
       listNodes() {
-        listNode(this.clusterName).then(data => {
+        listNodeInCluster(this.clusterName).then(data => {
           this.nodes = []
           data.items.forEach(item => {
             this.nodes.push(item.metadata.name)
