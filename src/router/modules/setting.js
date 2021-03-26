@@ -30,8 +30,61 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/registry'),
           meta: {
             activeMenu: "/setting",
+            roles: ['admin'],
+            requireLicense: true,
+          },
+        },
+        {
+          name: "RegistryCreate",
+          path: "registry/create",
+          hidden: true,
+          component: () => import('@/business/system-setting/registry/create'),
+          meta: {
+            // activeMenu: "/setting",
+            roles: ['admin']
+          },
+        },{
+          name: "RegistryEdit",
+          path: "registry/edit/:arch",
+          props: true,
+          hidden: true,
+          component: () => import('@/business/system-setting/registry/edit'),
+          meta: {
+            // activeMenu: "/setting",
             roles: ['admin']
           }
+          // children: [
+          //   {
+          //     name: "RegistryList",
+          //     path: "list",
+          //     // hidden: true,
+          //     component: () => import('@/business/system-setting/registry'),
+          //     meta: {
+          //       activeMenu: "/setting",
+          //       roles: ['admin']
+          //     },
+          //   },
+          //   {
+          //     name: "RegistryCreate",
+          //     path: "create",
+          //     hidden: true,
+          //     component: () => import('@/business/system-setting/registry/create'),
+          //     meta: {
+          //       activeMenu: "/setting",
+          //       roles: ['admin']
+          //     },
+          //   },{
+          //     name: "RegistryEdit",
+          //     path: "edit/:arch",
+          //     props: true,
+          //     hidden: true,
+          //     component: () => import('@/business/system-setting/registry/edit'),
+          //     meta: {
+          //       activeMenu: "/setting",
+          //       roles: ['admin']
+          //     }
+          //   },
+          // ]
         },
         {
           path: "ntp",
