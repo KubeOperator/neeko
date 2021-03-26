@@ -7,6 +7,7 @@
     </div>
     <div class="content-container__header" v-if="$slots.header || header">
       <slot name="header">
+        <back-button :path="backPath" :name="backName" :to="backTo" v-if="showBack"></back-button>
         {{ header }}
       </slot>
     </div>
@@ -18,11 +19,21 @@
 </template>
 
 <script>
+import BackButton from "@/components/back-button"
 export default {
   name: "LayoutContent",
+  components: { BackButton  },
   props: {
     header: String,
     description: String,
+    backPath: String,
+    backName: String,
+    backTo: Object
+  },
+  computed: {
+    showBack({backPath, backName, backTo}) {
+      return backPath || backName || backTo
+    }
   }
 }
 </script>
