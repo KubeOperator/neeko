@@ -30,7 +30,8 @@ const message = {
       sync: "同步",
       enable: "启用",
       disable: "禁用",
-      jump_to: "转到"
+      jump_to: "转到",
+      search: "查询"
     },
     msg: {
       success: "{0}成功",
@@ -45,9 +46,16 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
-    }, search: {
+    },
+    search: {
       quickSearch: "快速搜索",
-      select: "请选择{0}"
+      select: "请选择{0}",
+      time: "时间",
+      time_start: "开始时间",
+      time_end: "结束时间",
+      time_range: "至",
+      date_start: "开始日期",
+      date_end: "结束日期"
     },
     personal: {
       personal_information: "个人信息",
@@ -189,6 +197,13 @@ const message = {
       },
       overview: {
         source: "来源",
+      },
+      log: {
+        time: "时间",
+        msg_info: "消息内容",
+        monitor_node: "监控节点",
+        label: "标签",
+        value: "标签值"
       },
       tool: {
         enable_title: "启用工具",
