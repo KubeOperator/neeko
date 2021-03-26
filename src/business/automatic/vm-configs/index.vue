@@ -7,9 +7,9 @@
             :search-config="searchConfig"
             @search="search">
       <template #header>
-      <el-button size="small" @click="create()">
-        {{ $t("commons.button.create") }}
-      </el-button>
+        <el-button size="small" @click="create()">
+          {{ $t("commons.button.create") }}
+        </el-button>
         <!--          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>-->
       </template>
       <el-table-column type="selection" fix></el-table-column>
@@ -19,14 +19,12 @@
       <el-table-column
               :label="$t('automatic.vm_config.cpu')"
               mix-width="100"
-              v-slot:default="{ row }">
-        {{ row.cpu }}
+              v-slot:default="{ row }">{{ row.cpu }}
       </el-table-column>
       <el-table-column
               :label="$t('automatic.vm_config.memory')"
               mix-width="100"
-              v-slot:default="{ row }"
-      >{{ row.memory }}
+              v-slot:default="{ row }">{{ row.memory }}
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -37,7 +35,7 @@
 </template>
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
+import {searchVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -62,30 +60,16 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: "姓名",
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
-          {
-            field: "status",
-            label: "状态",
-            component: "FuComplexSelect",
-            options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
-            ],
-            multiple: true
-          },
-          {
-            field: "create_time",
-            label: "创建时间",
-            component: "FuComplexDateTime"
-          }
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+
         ]
       },
       paginationConfig: {
@@ -98,9 +82,8 @@ export default {
   },
   methods: {
     search (condition) {
-      console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listVmConfigs(currentPage, pageSize).then(data => {
+      searchVmConfigs(currentPage, pageSize,condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
