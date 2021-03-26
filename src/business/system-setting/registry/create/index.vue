@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'Registry'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -38,6 +38,7 @@
       <el-col :span="4"><br/></el-col>
     </el-row>
   </layout-content>
+
 </template>
 
 <script>
@@ -46,6 +47,9 @@ import {createRegistry} from "@/api/system-setting";
 export default {
   name: "RegistryCreate",
   components: {LayoutContent},
+  props: [
+    'dialogFormVisible'
+  ],
   data() {
     return {
       form: {
@@ -62,7 +66,8 @@ export default {
         value: 'http',
       }, {
         value: 'https',
-      }]
+      }],
+      formLabelWidth: '120px'
     }
   },
   methods: {

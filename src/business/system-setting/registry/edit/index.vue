@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'Registry'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -28,8 +28,11 @@
 
 <script>
 import {getRegistry, updateRegistry} from "@/api/system-setting";
-
+import LayoutContent from "@/components/layout/LayoutContent";
 export default {
+  components: {
+    LayoutContent
+  },
   name: "EditRegistry",
   props: ['arch'],
   data() {

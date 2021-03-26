@@ -17,9 +17,9 @@
           {{ row.updatedAt | datetimeFormat }}
         </template>
       </el-table-column>
-
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
+
 </template>
 
 <script>
@@ -35,6 +35,7 @@ export default {
   data() {
     return{
       columns: [],
+      formLabelWidth: '120px',
       buttons: [
         {
           label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
@@ -49,8 +50,7 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
-          {field: "arch", label: this.$t('commons.table.arch'), component: "FuComplexInput", defaultOperator: "eq"},
-          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
+          {field: "architecture", label: this.$t('commons.table.arch'), component: "FuComplexInput", defaultOperator: "eq"},
         ]
       },
       paginationConfig: {
