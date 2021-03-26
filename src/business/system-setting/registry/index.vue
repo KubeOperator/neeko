@@ -104,7 +104,6 @@ export default {
   },
   created() {
     this.search()
-    console.log(this.data,"123")
   }
 }
 </script>

@@ -10,8 +10,12 @@ export function createRegistry(data) {
   return post(`${settingUrl}/registry`,data)
 }
 
-export function updateRegistry(currentPage, pageSize) {
-  return patch(`${settingUrl}/registry?pageNum=${currentPage}&pageSize=${pageSize}`)
+export function updateRegistry(arch, data) {
+  return patch(`${settingUrl}/registry/${arch}`,data)
+}
+
+export function getRegistry(arch) {
+  return get(`${settingUrl}/registry/${arch}`)
 }
 
 export function deleteRegistry(arch) {
