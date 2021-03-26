@@ -1,5 +1,6 @@
 <template>
-  <layout-content :description="$t('automatic.plan.description')">
+  <layout-content :header="$t('automatic.plan.name')" :description="$t('automatic.plan.description')"
+                  v-loading="loading">
     <complex-table
             :data="data"
             :colums="columns"
@@ -22,7 +23,12 @@
               v-slot:default="{ row }">
         {{ row.regionName }}
       </el-table-column>
-
+      <el-table-column
+              :label="$t('automatic.zone.name')"
+              mix-width="100"
+              v-slot:default="{ row }">
+        <span v-for="zoneName in row.zoneNames" v-bind:key="zoneName">{{zoneName}},</span>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
@@ -32,7 +38,7 @@
 </template>
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listPlans, deletePlanBy} from "@/api/plan"
+import {searchPlans, deletePlanBy} from "@/api/plan"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -40,6 +46,7 @@ export default {
   components: { ComplexTable, LayoutContent },
   data () {
     return {
+      loading: false,
       columns: [],
       buttons: [
         {
@@ -90,9 +97,10 @@ export default {
   },
   methods: {
     search (condition) {
-      console.log(condition)
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      listPlans(currentPage, pageSize).then(data => {
+      searchPlans(currentPage, pageSize, condition).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })

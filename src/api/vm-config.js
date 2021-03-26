@@ -3,7 +3,7 @@ import {get, del, post, patch} from "@/plugins/request"
 const vmConfigUrl = "/vmconfigs"
 
 export function listVmConfigs (page, size) {
-  return get(`vmconfigs?pageNum=${page}&pageSize=${size}`)
+  return get(`${vmConfigUrl}/search?pageNum=${page}&pageSize=${size}`)
 }
 
 export function deleteVmConfigBy (name) {
@@ -21,4 +21,8 @@ export function getVmConfig (name) {
 
 export function updateVmConfig (name, data) {
   return patch(`${vmConfigUrl}/${name}`, data)
+}
+
+export function searchVmConfigs (page, size, conditions) {
+  return post(`${vmConfigUrl}/search?pageNum=${page}&pageSize=${size}`, conditions)
 }

@@ -48,6 +48,7 @@ const message = {
       select: "请选择{0}",
     },
     search: {
+      name: "",
       quickSearch: "快速搜索",
       select: "请选择{0}",
       time: "时间",
@@ -76,8 +77,8 @@ const message = {
     },
     status: {
       running: "运行中",
-      initializing: '初始化中',
-      failed: '失败',
+      initializing: "初始化中",
+      failed: "失败",
       error: "错误",
       active: "活跃",
       passive: "禁用",
@@ -93,7 +94,7 @@ const message = {
       user: "用户"
     },
     form: {
-      required_msg:"输入项不能为空",
+      required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效"
     }
@@ -288,7 +289,10 @@ const message = {
     },
     zone: {
       name: "可用区",
-      description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池"
+      description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
+      ready: "就绪",
+      uploadImageError: "上传镜像失败",
+      initializing: "初始化中"
     },
     plan: {
       name: "部署计划",
@@ -298,6 +302,9 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
+      name_validate_msg: "支持英文和数字",
+      cpu_invalid: "CPU 范围 1～1000",
+      mem_invalid: "内存 范围 1～1000",
     },
     ip_pool: {
       name: "IP池",
