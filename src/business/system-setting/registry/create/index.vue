@@ -16,7 +16,14 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('commons.table.protocol')" required>
-              <el-input v-model="form.protocol"></el-input>
+              <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
+                <el-option
+                  v-for="item in protocolOptions"
+                  :key="item.value"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item :label="$t('commons.table.hostname')" required>
               <el-input v-model="form.hostname"></el-input>
@@ -50,7 +57,11 @@ export default {
         value: 'x86_64',
       }, {
         value: 'aarch64',
-        // disabled: true
+      }],
+      protocolOptions: [{
+        value: 'http',
+      }, {
+        value: 'https',
       }]
     }
   },
@@ -71,6 +82,10 @@ export default {
     onCancel() {
       this.$router.push({name: "Registry"})
     }
+  },
+  created() {
+      this.form.architecture = 'x86_64';
+      this.form.protocol = 'http';
   }
 }
 </script>
