@@ -7,12 +7,10 @@
             :search-config="searchConfig"
             @search="search">
       <template #header>
-        <el-button-group>
-          <el-button size="small" round @click="create()">
-            {{ $t("commons.button.create") }}
-          </el-button>
-          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
-        </el-button-group>
+      <el-button size="small" @click="create()">
+        {{ $t("commons.button.create") }}
+      </el-button>
+        <!--          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>-->
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">

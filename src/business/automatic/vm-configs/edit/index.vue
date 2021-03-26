@@ -4,14 +4,14 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.vm_config.cpu')">
+            <el-form-item :label="$t('automatic.vm_config.cpu')" prop="cpu">
               <el-input-number v-model="form.cpu"></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('automatic.vm_config.memory')">
+            <el-form-item :label="$t('automatic.vm_config.memory')" prop="memory">
               <el-input-number v-model="form.memory"></el-input-number>
             </el-form-item>
             <el-form-item>
@@ -19,7 +19,6 @@
               <el-button type="primary" @click="onSubmit">{{ $t("commons.button.save") }}</el-button>
             </el-form-item>
           </el-form>
-
         </div>
       </el-col>
       <el-col :span="4"></el-col>
@@ -41,6 +40,24 @@ export default {
         name: "",
         cpu: 0,
         memory: 0
+      },
+      rules: {
+        cpu: [{
+          required: true,
+          trigger: "blur",
+          type: "number",
+          min: 1,
+          max: 1000,
+          message: this.$t("automatic.vm_config.cpu_invalid")
+        }],
+        memory: [{
+          required: true,
+          trigger: "blur",
+          type: "number",
+          min: 1,
+          max: 1000,
+          message: this.$t("automatic.vm_config.mem_invalid")
+        }]
       }
     }
   },
