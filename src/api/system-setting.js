@@ -2,6 +2,7 @@ import {get, patch, post, del} from "@/plugins/request"
 
 const settingUrl = "/settings"
 
+// Registry
 export function listRegistry(currentPage, pageSize) {
   return get(`${settingUrl}/registry?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
@@ -20,4 +21,17 @@ export function getRegistry(arch) {
 
 export function deleteRegistry(arch) {
   return del(`${settingUrl}/registry/${arch}`)
+}
+
+// Settings
+export function getSetting() {
+  return get(settingUrl)
+}
+
+export function updateSetting(arch, data) {
+  return patch(`${settingUrl}/registry/${arch}`,data)
+}
+
+export function createSetting(data) {
+  return post(settingUrl,data)
 }

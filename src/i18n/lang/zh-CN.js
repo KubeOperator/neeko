@@ -30,7 +30,8 @@ const message = {
       sync: "同步",
       enable: "启用",
       disable: "禁用",
-      jump_to: "转到"
+      jump_to: "转到",
+      search: "查询"
     },
     msg: {
       success: "{0}成功",
@@ -38,17 +39,25 @@ const message = {
       save_success: "保存成功",
       delete_success: "删除成功",
       delete_cancel: "已取消删除",
-      sync_success: "同步成功"
+      sync_success: "同步成功",
+      create_success: "创建成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
-      name: ""
-    }, search: {
+    },
+    search: {
+      name: "",
       quickSearch: "快速搜索",
-      select: "请选择{0}"
+      select: "请选择{0}",
+      time: "时间",
+      time_start: "开始时间",
+      time_end: "结束时间",
+      time_range: "至",
+      date_start: "开始日期",
+      date_end: "结束日期"
     },
     personal: {
       personal_information: "个人信息",
@@ -61,11 +70,7 @@ const message = {
       status: "状态",
       description: "描述",
       create_time: "创建时间",
-      arch: "CPU架构",
       type: "类型",
-      hostname: "地址",
-      username: "用户名",
-      protocol: "协议"
     },
     status: {
       running: "运行中",
@@ -191,6 +196,13 @@ const message = {
       overview: {
         source: "来源",
       },
+      log: {
+        time: "时间",
+        msg_info: "消息内容",
+        monitor_node: "监控节点",
+        label: "标签",
+        value: "标签值"
+      },
       tool: {
         enable_title: "启用工具",
         disable_title: "禁用工具",
@@ -224,7 +236,6 @@ const message = {
     port: "端口",
     new_credential: "新建凭据",
     exists_credential: "已存在凭据",
-    credential_name: "凭据名称",
   },
   message: {
     content: "消息内容",
@@ -314,10 +325,12 @@ const message = {
     project: "项目"
   },
   credential: {
+    name: "凭据名称",
     credential: "凭据",
     username: "用户名",
     password: "密码",
     privateKey: "密钥",
+    type: "类型"
   },
   backup_account: {
     name: "备份账号"
@@ -331,6 +344,23 @@ const message = {
     message: "消息",
     theme: "主题",
     credential: "凭证",
+    ntpServer: "NTP服务器",
+    table: {
+      registry: {
+        protocol: "协议",
+        hostname: "地址",
+        arch: "CPU架构",
+      }
+    },
+    option: {
+      addRegistry: "添加仓库",
+      editRegistry: "编辑仓库",
+      addCredential: "添加SSH凭证",
+      editCredential: "编辑SSH凭证",
+    },
+    helpInfo: {
+      inputPassword: "请输入密码"
+    }
   }
 }
 

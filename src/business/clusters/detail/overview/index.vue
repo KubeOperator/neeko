@@ -99,7 +99,7 @@
   import { getClusterByName } from "@/api/cluster"
 
   export default {
-    name: "Cluster",
+    name: "ClusterOverview",
     data() {
       return {
         loading: false,

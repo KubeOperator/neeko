@@ -262,7 +262,7 @@
   import { getClusterByName } from "@/api/cluster"
 
   export default {
-    name: "Tool",
+    name: "ClusterTool",
     data() {
       return {
         clusterName: "",

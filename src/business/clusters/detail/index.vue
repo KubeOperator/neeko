@@ -6,8 +6,9 @@
      <el-menu-item :index="'/clusters/detail/'+name+'/namespace'">命名空间</el-menu-item>
      <el-menu-item :index="'/clusters/detail/'+name+'/storage'">存储</el-menu-item>
      <el-menu-item :index="'/clusters/detail/'+name+'/event'">事件</el-menu-item>
-     <el-menu-item :index="'/clusters/detail/'+name+'/monitor'">监控</el-menu-item>
-     <el-menu-item :index="'/clusters/detail/'+name+'/log'">日志</el-menu-item>
+     <el-menu-item v-if="isPrometheusOn" :index="'/clusters/detail/'+name+'/monitor'">监控</el-menu-item>
+     <el-menu-item v-if="isLoggingOn" :index="'/clusters/detail/'+name+'/logging'">日志</el-menu-item>
+     <el-menu-item v-if="isLokiOn" :index="'/clusters/detail/'+name+'/loki'">日志</el-menu-item>
      <el-menu-item :index="'/clusters/detail/'+name+'/tool'">工具</el-menu-item>
      <el-menu-item :index="'/clusters/detail/'+name+'/istio'">istio</el-menu-item>
      <el-menu-item :index="'/clusters/detail/'+name+'/backup'">备份</el-menu-item>
@@ -21,17 +22,40 @@
 </template>
 
 <script>
-  import LayoutContent from "@/components/layout/LayoutContent";
-
+  import LayoutContent from "@/components/layout/LayoutContent"
+  import { listTool } from "@/api/cluster/tool"
 
   export default {
     name: "ClusterDetail",
     props: ['name'],
     components: {LayoutContent},
     data() {
-      return {}
+      return {
+        isLokiOn: false,
+        isLoggingOn: false,
+        isPrometheusOn: false,
+      }
     },
-    methods: {},
+    methods: {
+      search() {
+        listTool(this.$route.params.name).then(data => {
+          data.forEach(item => {
+            if (item.name === "logging") {
+              this.isLoggingOn = (item.status === "Running")
+            }
+            if (item.name === "loki") {
+              this.isLokiOn = (item.status === "Running")
+            }
+            if (item.name === "prometheus") {
+              this.isPrometheusOn = (item.status === "Running")
+            }
+          })
+        })
+      }
+    },
+    mounted() {
+      this.search()
+    },
   }
 </script>
 

@@ -1,11 +1,11 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('setting.option.addRegistry')" :back-to="{ name: 'Registry'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item :label="$t('commons.table.arch')" required>
+            <el-form-item :label="$t('setting.table.registry.arch')" required>
               <el-select style="width: 100%" v-model="form.architecture" placeholder="请选择">
                 <el-option
                   v-for="item in architectureOptions"
@@ -15,10 +15,17 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.protocol')" required>
-              <el-input v-model="form.protocol"></el-input>
+            <el-form-item :label="$t('setting.table.registry.protocol')" required>
+              <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
+                <el-option
+                  v-for="item in protocolOptions"
+                  :key="item.value"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.hostname')" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" required>
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
             <el-form-item>
@@ -31,6 +38,7 @@
       <el-col :span="4"><br/></el-col>
     </el-row>
   </layout-content>
+
 </template>
 
 <script>
@@ -39,6 +47,9 @@ import {createRegistry} from "@/api/system-setting";
 export default {
   name: "RegistryCreate",
   components: {LayoutContent},
+  props: [
+    'dialogFormVisible'
+  ],
   data() {
     return {
       form: {
@@ -50,8 +61,13 @@ export default {
         value: 'x86_64',
       }, {
         value: 'aarch64',
-        // disabled: true
-      }]
+      }],
+      protocolOptions: [{
+        value: 'http',
+      }, {
+        value: 'https',
+      }],
+      formLabelWidth: '120px'
     }
   },
   methods: {
@@ -71,6 +87,10 @@ export default {
     onCancel() {
       this.$router.push({name: "Registry"})
     }
+  },
+  created() {
+      this.form.architecture = 'x86_64';
+      this.form.protocol = 'http';
   }
 }
 </script>

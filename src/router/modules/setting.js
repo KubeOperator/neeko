@@ -29,62 +29,10 @@ const SystemSetting = {
           props: true,
           component: () => import('@/business/system-setting/registry'),
           meta: {
-            activeMenu: "/setting",
+            // activeMenu: "/setting",
             roles: ['admin'],
-            requireLicense: true,
+            // requireLicense: true,
           },
-        },
-        {
-          name: "RegistryCreate",
-          path: "registry/create",
-          hidden: true,
-          component: () => import('@/business/system-setting/registry/create'),
-          meta: {
-            // activeMenu: "/setting",
-            roles: ['admin']
-          },
-        },{
-          name: "RegistryEdit",
-          path: "registry/edit/:arch",
-          props: true,
-          hidden: true,
-          component: () => import('@/business/system-setting/registry/edit'),
-          meta: {
-            // activeMenu: "/setting",
-            roles: ['admin']
-          }
-          // children: [
-          //   {
-          //     name: "RegistryList",
-          //     path: "list",
-          //     // hidden: true,
-          //     component: () => import('@/business/system-setting/registry'),
-          //     meta: {
-          //       activeMenu: "/setting",
-          //       roles: ['admin']
-          //     },
-          //   },
-          //   {
-          //     name: "RegistryCreate",
-          //     path: "create",
-          //     hidden: true,
-          //     component: () => import('@/business/system-setting/registry/create'),
-          //     meta: {
-          //       activeMenu: "/setting",
-          //       roles: ['admin']
-          //     },
-          //   },{
-          //     name: "RegistryEdit",
-          //     path: "edit/:arch",
-          //     props: true,
-          //     hidden: true,
-          //     component: () => import('@/business/system-setting/registry/edit'),
-          //     meta: {
-          //       activeMenu: "/setting",
-          //       roles: ['admin']
-          //     }
-          //   },
-          // ]
         },
         {
           path: "ntp",
@@ -169,8 +117,45 @@ const SystemSetting = {
       meta: {
         activeMenu: "/setting",
         roles: ['admin']
+      }
+    },
+    {
+      name: "RegistryCreate",
+      path: "registry/create",
+      hidden: true,
+      component: () => import('@/business/system-setting/registry/create'),
+      meta: {
+        // activeMenu: "/setting",
+        roles: ['admin']
       },
-    }
+    },{
+      name: "RegistryEdit",
+      path: "registry/edit/:arch",
+      props: true,
+      hidden: true,
+      component: () => import('@/business/system-setting/registry/edit'),
+      meta: {
+        // activeMenu: "/setting",
+        roles: ['admin']
+      }
+    },{
+      name: "CredentialCreate",
+      path: "credential/create",
+      hidden: true,
+      component: () => import('@/business/system-setting/credential/create'),
+      meta: {
+        roles: ['admin']
+      },
+    },{
+      name: "CredentialEdit",
+      path: "credential/edit",
+      props: true,
+      hidden: true,
+      component: () => import('@/business/system-setting/credential/edit'),
+      meta: {
+        roles: ['admin']
+      }
+    },
   ]
 }
 export default SystemSetting
