@@ -31,7 +31,9 @@ const message = {
       enable: "启用",
       disable: "禁用",
       jump_to: "转到",
-      search: "查询"
+      search: "查询",
+      verify: "校验",
+      submit: "提交"
     },
     msg: {
       success: "{0}成功",
@@ -40,7 +42,8 @@ const message = {
       delete_success: "删除成功",
       delete_cancel: "已取消删除",
       sync_success: "同步成功",
-      create_success: "创建成功"
+      create_success: "创建成功",
+      verify_success: "校验成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -350,6 +353,14 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
+      },
+      mail: {
+        smtp: "SMTP 地址",
+        port: "端口",
+        username: "用户名",
+        password: "密码",
+        testUser: "测试用户",
+        status: "状态"
       }
     },
     option: {
