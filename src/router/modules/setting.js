@@ -138,6 +138,23 @@ const SystemSetting = {
         // activeMenu: "/setting",
         roles: ['admin']
       }
+    },{
+      name: "CredentialCreate",
+      path: "credential/create",
+      hidden: true,
+      component: () => import('@/business/system-setting/credential/create'),
+      meta: {
+        roles: ['admin']
+      },
+    },{
+      name: "CredentialEdit",
+      path: "credential/edit",
+      props: true,
+      hidden: true,
+      component: () => import('@/business/system-setting/credential/edit'),
+      meta: {
+        roles: ['admin']
+      }
     },
   ]
 }

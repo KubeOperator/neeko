@@ -221,7 +221,6 @@ const message = {
     port: "端口",
     new_credential: "新建凭据",
     exists_credential: "已存在凭据",
-    credential_name: "凭据名称",
   },
   message: {
     content: "消息内容",
@@ -308,10 +307,12 @@ const message = {
     project: "项目"
   },
   credential: {
+    name: "凭据名称",
     credential: "凭据",
     username: "用户名",
     password: "密码",
     privateKey: "密钥",
+    type: "类型"
   },
   backup_account: {
     name: "备份账号"
@@ -334,8 +335,13 @@ const message = {
       }
     },
     option: {
-      editRegistry: "编辑仓库",
       addRegistry: "添加仓库",
+      editRegistry: "编辑仓库",
+      addCredential: "添加SSH凭证",
+      editCredential: "编辑SSH凭证",
+    },
+    helpInfo: {
+      inputPassword: "请输入密码"
     }
   }
 }

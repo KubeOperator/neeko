@@ -27,7 +27,7 @@
             </el-form-item>
 
             <span v-if="credentialType==='new'">
-               <el-form-item :label="$t('host.credential_name')" required>
+               <el-form-item :label="$t('credential.name')" required>
                  <el-input v-model="form.credential.name"></el-input>
                </el-form-item>
                <el-form-item :label="$t('credential.username')" required>
