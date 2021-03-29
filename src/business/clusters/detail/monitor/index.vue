@@ -1,13 +1,17 @@
 <template>
   <layout-content>
     <el-form :inline="true">
-      <el-form-item label="监控节点">
+      <el-form-item :label="$t('cluster.detail.log.monitor_node')">
         <el-select size="small" @change="search()" clearable allow-create filterable v-model="searchruleForm.node">
           <el-option v-for="node in nodes" :key="node" :label="node" :value="node"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="时 间">
-         <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" />
+      <el-form-item :label="$t('commons.search.time')">
+        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" 
+          :range-separator="$t('commons.search.time_range')"
+          :start-placeholder="$t('commons.search.time_start')"
+          :end-placeholder="$t('commons.search.time_end')">
+        </el-date-picker>
       </el-form-item>
     </el-form>
     <el-row>

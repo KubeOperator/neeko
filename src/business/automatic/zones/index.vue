@@ -1,5 +1,5 @@
 <template>
-  <layout-content :description="$t('automatic.zone.description')">
+  <layout-content :description="$t('automatic.zone.description')" v-loading="loading">
     <complex-table
             :data="data"
             :colums="columns"
@@ -24,7 +24,16 @@
       <el-table-column
               :label="$t('commons.table.status')"
               mix-width="100"
-              v-slot:default="{ row }">{{ row.status }}
+              v-slot:default="{ row }">
+        <el-tag v-if="row.status === 'READY'" type="success" size="small">
+          {{ $t("automatic.zone.ready") }}
+        </el-tag>
+        <el-tag v-if="row.status === 'INITIALIZING'" type="info" size="small">
+          {{ $t("automatic.zone.initializing") }}
+        </el-tag>
+        <el-tag v-if="row.status === 'UPLOADIMAGERROR'" type="danger" size="small">
+          {{ $t("automatic.zone.uploadImageError") }}
+        </el-tag>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -36,7 +45,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listZones, deleteZoneBy} from "@/api/zone"
+import {searchZone, deleteZoneBy} from "@/api/zone"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -44,6 +53,7 @@ export default {
   components: { ComplexTable, LayoutContent },
   data () {
     return {
+      loading: false,
       columns: [],
       buttons: [
         {
@@ -58,28 +68,28 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: "姓名",
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
           {
             field: "status",
-            label: "状态",
+            label: this.$t("commons.table.status"),
             component: "FuComplexSelect",
             options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
+              { label: this.$t("automatic.zone.ready"), value: "READY" },
+              { label: this.$t("automatic.zone.initializing"), value: "INITIALIZING" },
+              { label: this.$t("automatic.zone.uploadImageError"), value: "UPLOADIMAGERROR" }
             ],
             multiple: true
           },
           {
             field: "create_time",
-            label: "创建时间",
+            label: this.$t("commons.table.create_time"),
             component: "FuComplexDateTime"
           }
         ]
@@ -94,9 +104,10 @@ export default {
   },
   methods: {
     search (condition) {
-      console.log(condition)
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      listZones(currentPage, pageSize).then(data => {
+      searchZone(currentPage, pageSize, condition).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })

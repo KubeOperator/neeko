@@ -25,7 +25,7 @@
   import { listNamespace } from "@/api/cluster/namespace"
 
   export default {
-    name: "Cluster",
+    name: "ClusterNamespace",
     components: {ComplexTable},
     data() {
       return {
