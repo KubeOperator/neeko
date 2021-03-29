@@ -1,17 +1,24 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'Registry'}">
+  <layout-content :header="$t('setting.option.editRegistry')" :back-to="{ name: 'Registry'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item :label="$t('commons.table.arch')" required>
+            <el-form-item :label="$t('setting.table.registry.arch')" required>
               <el-input v-model="form.architecture" readonly></el-input>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.protocol')" required>
-              <el-input v-model="form.protocol"></el-input>
+            <el-form-item :label="$t('setting.table.registry.protocol')" required>
+              <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
+                <el-option
+                  v-for="item in protocolOptions"
+                  :key="item.value"
+                  :value="item.value"
+                  :disabled="item.disabled">
+                </el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.hostname')" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" required>
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
             <el-form-item>
@@ -42,7 +49,12 @@ export default {
         hostname: '',
         protocol: '',
         id: '',
-      }
+      },
+      protocolOptions: [{
+        value: 'http',
+      }, {
+        value: 'https',
+      }],
     }
   },
   methods: {
