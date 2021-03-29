@@ -38,7 +38,8 @@ const message = {
       save_success: "保存成功",
       delete_success: "删除成功",
       delete_cancel: "已取消删除",
-      sync_success: "同步成功"
+      sync_success: "同步成功",
+      create_success: "创建成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -61,11 +62,7 @@ const message = {
       status: "状态",
       description: "描述",
       create_time: "创建时间",
-      arch: "CPU架构",
       type: "类型",
-      hostname: "地址",
-      username: "用户名",
-      protocol: "协议"
     },
     status: {
       running: "运行中",
@@ -328,6 +325,18 @@ const message = {
     message: "消息",
     theme: "主题",
     credential: "凭证",
+    ntpServer: "NTP服务器",
+    table: {
+      registry: {
+        protocol: "协议",
+        hostname: "地址",
+        arch: "CPU架构",
+      }
+    },
+    option: {
+      editRegistry: "编辑仓库",
+      addRegistry: "添加仓库",
+    }
   }
 }
 

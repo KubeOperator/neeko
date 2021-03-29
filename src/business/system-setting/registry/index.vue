@@ -1,5 +1,4 @@
 <template>
-
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
@@ -9,9 +8,9 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.arch')" mix-width="80" fix prop="architecture"/>
-      <el-table-column :label="$t('commons.table.protocol')" mix-width="30" prop="protocol"/>
-      <el-table-column :label="$t('commons.table.hostname')" min-width="100" prop="hostname"/>
+      <el-table-column :label="$t('setting.table.registry.arch')" mix-width="80" fix prop="architecture"/>
+      <el-table-column :label="$t('setting.table.registry.protocol')" mix-width="30" prop="protocol"/>
+      <el-table-column :label="$t('setting.table.registry.hostname')" min-width="100" prop="hostname"/>
       <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
         <template v-slot:default="{row}">
           {{ row.updatedAt | datetimeFormat }}
@@ -19,7 +18,6 @@
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
-
 </template>
 
 <script>
