@@ -1,5 +1,5 @@
 <template>
-  <layout-content :description="$t('automatic.region.description')">
+  <layout-content :description="$t('automatic.region.description')" v-loading="loading">
     <complex-table
       :data="data"
       :colums="columns"
@@ -37,7 +37,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { listRegions, deleteRegionBy } from "@/api/region"
+import { searchRegion, deleteRegionBy } from "@/api/region"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
@@ -59,28 +59,17 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: "姓名",
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
           {
-            field: "status",
-            label: "状态",
-            component: "FuComplexSelect",
-            options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
-            ],
-            multiple: true
-          },
-          {
             field: "create_time",
-            label: "创建时间",
+            label: this.$t("commons.table.create_time"),
             component: "FuComplexDateTime"
           }
         ]
@@ -90,14 +79,16 @@ export default {
         pageSize: 5,
         total: 0
       },
-      data: []
+      data: [],
+      loading: false
     }
   },
   methods: {
     search(condition) {
-      console.log(condition)
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      listRegions(currentPage, pageSize).then(data => {
+      searchRegion(currentPage, pageSize,condition).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })
