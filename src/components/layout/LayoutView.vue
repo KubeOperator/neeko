@@ -1,18 +1,32 @@
 <template>
   <main class="view-container">
     <transition name="el-fade-in" mode="out-in">
-      <router-view :key="key"/>
+      <keep-alive :include="caches">
+        <router-view :key="key"></router-view>
+      </keep-alive>
     </transition>
   </main>
 </template>
 
 <script>
-  export default {
-    name: "LayoutView",
-    computed: {
-      key() {
-        return this.$route.path
-      }
+export default {
+  name: "LayoutView",
+  data () {
+    return {
+      caches: []
+    }
+  },
+  computed: {
+    key () {
+      return this.$route.path
+    },
+  },
+  beforeUpdate () {
+    let cache = this.$route.meta?.cache
+    let name = this.$route.name
+    if (cache && name && !this.caches.includes(name)) {
+      this.caches.push(name)
     }
   }
+}
 </script>
