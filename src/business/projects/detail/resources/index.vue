@@ -54,7 +54,7 @@
   }
 
   export default {
-    name: "ProjectResourceList",
+    name: "ProjectResourceList1",
     components: {ComplexTable},
     data() {
       return {
