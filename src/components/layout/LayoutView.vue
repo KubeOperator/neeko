@@ -2,7 +2,7 @@
   <main class="view-container">
     <transition name="el-fade-in" mode="out-in">
       <keep-alive :include="caches">
-        <router-view :key="key"/>
+        <router-view :key="key"></router-view>
       </keep-alive>
     </transition>
   </main>
@@ -11,7 +11,7 @@
 <script>
 export default {
   name: "LayoutView",
-  data() {
+  data () {
     return {
       caches: []
     }
@@ -21,7 +21,7 @@ export default {
       return this.$route.path
     },
   },
-  beforeUpdate() {
+  beforeUpdate () {
     let cache = this.$route.meta?.cache
     let name = this.$route.name
     if (cache && name && !this.caches.includes(name)) {
