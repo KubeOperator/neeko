@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      createSetting( {
+      createSetting( 'EMAIL',{
         vars: this.form.vars,
         tab: 'EMAIL'
       }).then(() => {

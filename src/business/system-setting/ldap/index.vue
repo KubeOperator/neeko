@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {checkEMail, createSetting, getEMail} from "@/api/system-setting";
+import {check, createSetting, getSetting} from "@/api/system-setting";
 export default {
   name: "Ldap",
   data() {
@@ -78,9 +78,9 @@ export default {
       })
     },
     verify(){
-      checkEMail( {
+      check( 'LDAP',{
         vars: this.form.vars,
-        tab: 'EMAIL'
+        tab: 'LDAP'
       }).then(() => {
         this.$message({
           type: 'success',
@@ -101,7 +101,7 @@ export default {
     }
   },
   created() {
-    getEMail().then( data => {
+    getSetting('LDAP').then( data => {
       this.form.vars = data.vars,
         this.form.tab = data.tab
     })
