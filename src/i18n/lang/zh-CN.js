@@ -31,7 +31,9 @@ const message = {
       enable: "启用",
       disable: "禁用",
       jump_to: "转到",
-      search: "查询"
+      search: "查询",
+      verify: "校验",
+      submit: "提交"
     },
     msg: {
       success: "{0}成功",
@@ -40,7 +42,9 @@ const message = {
       delete_success: "删除成功",
       delete_cancel: "已取消删除",
       sync_success: "同步成功",
-      create_success: "创建成功"
+      create_success: "创建成功",
+      verify_success: "校验成功",
+      import_success: "导入成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -363,6 +367,36 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
+      },
+      mail: {
+        smtp: "SMTP 地址",
+        port: "端口",
+        username: "用户名",
+        password: "密码",
+        testUser: "测试用户",
+        status: "状态"
+      },
+      ldap: {
+        address: "地址",
+        port: "端口",
+        username: "用户名",
+        password: "密码",
+        filterDN: "用户过滤 DN",
+        filterRule: "用户过滤规则",
+        status: "状态"
+      },
+      license: {
+        title: "KubeOperator 许可证",
+        corporation: "公司",
+        count: "数量",
+        expiration: "过期时间",
+        edition: "版本",
+        status: "状态",
+        valid: "有效",
+        invalid: "无效",
+        expired: "已到期",
+        licenseFile: "许可证",
+        communityEdition: "社区版"
       }
     },
     option: {
@@ -370,6 +404,7 @@ const message = {
       editRegistry: "编辑仓库",
       addCredential: "添加SSH凭证",
       editCredential: "编辑SSH凭证",
+      addLicense: "添加许可"
     },
     helpInfo: {
       inputPassword: "请输入密码"
