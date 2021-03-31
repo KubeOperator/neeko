@@ -399,6 +399,10 @@ const message = {
         expired: "已到期",
         licenseFile: "许可证",
         communityEdition: "社区版"
+      },
+      theme: {
+        systemName: "系统名称",
+        logo: "Logo"
       }
     },
     option: {
