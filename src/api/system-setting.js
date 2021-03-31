@@ -3,8 +3,11 @@ import {get, patch, post, del} from "@/plugins/request"
 const settingUrl = "/settings"
 
 // Settings
-export function getSetting() {
-  return get(settingUrl)
+export function getSetting(tabName) {
+  return get(`${settingUrl}/${tabName}`)
+}
+export function check(tabName,data){
+  return post(`${settingUrl}/check/${tabName}`,data)
 }
 
 export function updateSetting(arch, data) {
@@ -37,10 +40,4 @@ export function deleteRegistry(arch) {
 }
 
 
-// Mail
-export function checkEMail(data){
-   return post(`${settingUrl}/check/EMAIL`,data)
-}
-export function getEMail() {
-  return get(`${settingUrl}/EMAIL`)
-}
+

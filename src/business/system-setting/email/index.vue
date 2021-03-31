@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import {checkEMail, createSetting, getEMail} from "@/api/system-setting";
+import {check, createSetting, getSetting} from "@/api/system-setting";
 export default {
-  name: "Email",
+  name: "EMail",
   data() {
     return {
       form: {
@@ -72,14 +72,15 @@ export default {
           type: 'success',
           message: this.$t('commons.msg.save_success')
         });
-        this.$router.push({name: "Email"})
+        this.$router.push({name: "EMail"})
       })
     },
     verify(){
-      checkEMail( {
+      check( 'EMAIL',{
         vars: this.form.vars,
         tab: 'EMAIL'
-      }).then(() => {
+      }
+      ).then(() => {
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')
@@ -99,7 +100,7 @@ export default {
     }
   },
   created() {
-    getEMail().then( data => {
+    getSetting('EMAIL').then( data => {
       this.form.vars = data.vars,
       this.form.tab = data.tab
     })
