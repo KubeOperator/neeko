@@ -3,7 +3,7 @@ import AuthorizationComponent from "@/business/authorization"
 
 
 const Authorization = {
-  sort: 10,
+  sort: 1,
   path: "/authorization",
   component: Layout,
   name: "Authorization",
@@ -13,7 +13,6 @@ const Authorization = {
       component: () => import("@/business/authorization"),
       name: "ProjectAuthorizationList",
       meta: {
-        cache: true,
         title: "route.project",
         icon: "el-icon-s-data"
       }
