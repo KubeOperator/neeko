@@ -86,11 +86,11 @@ export default {
       return ''
     },
     detailItems() {
-      if (!this.form.status) {
+      if (this.form.status == 'invalid') {
         return [
           {
-            key: this.$t('setting.License'),
-            value: this.$t('setting.communityEdition')
+            key: this.$t('setting.license'),
+            value: this.$t('setting.table.license.communityEdition')
           }
         ]
       }

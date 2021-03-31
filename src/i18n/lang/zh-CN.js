@@ -382,7 +382,8 @@ const message = {
         valid: "有效",
         invalid: "无效",
         expired: "已到期",
-        licenseFile: "许可证"
+        licenseFile: "许可证",
+        communityEdition: "社区版"
       }
     },
     option: {

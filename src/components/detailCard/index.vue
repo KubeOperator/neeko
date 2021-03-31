@@ -42,25 +42,6 @@ export default {
     }
   },
   created() {
-  },
-  methods: {
-    setValue() {
-      let i = ''
-      for (i in this.items){
-        if (i.value == "valid") {
-          return this.$t('setting.table.license.valid')
-        }else if (i.value == "invalid") {
-          return this.$t('setting.table.license.invalid')
-        }else {
-          return i
-        }
-      }
-    }
-  },
-  computed: {
-    v(){
-      return this.setValue()
-    }
   }
 }
 </script>
