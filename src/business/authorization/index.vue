@@ -13,7 +13,8 @@
         </el-tree>
       </el-col>
       <el-col :span="18" v-loading="loadingResource">
-        <management :name="name" :type="type"></management>
+        <management :name="name" :type="type" v-if="type!=='PROJECT_LIST'"></management>
+        <project-list v-if="type==='PROJECT_LIST'"></project-list>
       </el-col>
     </el-row>
   </layout-content>
@@ -24,11 +25,12 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import {getResourceTree} from "@/api/authorization"
 import Management from "@/business/authorization/management"
+import ProjectList from "@/business/authorization/projects"
 
 
 export default {
   name: "ProjectAuthorizationList",
-  components: { Management, LayoutContent },
+  components: { ProjectList, Management, LayoutContent },
   data () {
     return {
       resources: [{
@@ -60,8 +62,7 @@ export default {
       })
     }
   },
-  watch: {
-  },
+  watch: {},
   created () {
     this.getTree()
   },
