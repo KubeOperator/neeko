@@ -1,6 +1,5 @@
 <template>
   <div>
-    <layout-content>
       <el-col :span="1"><br/></el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light">
@@ -40,13 +39,11 @@
         </div>
       </el-col>
       <el-col :span="4"><br/></el-col>
-    </layout-content>
   </div>
 </template>
 
 <script>
 import {checkEMail, createSetting, getEMail} from "@/api/system-setting";
-
 export default {
   name: "Email",
   data() {

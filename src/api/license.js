@@ -1,12 +1,11 @@
-import {post, get} from "@/plugins/request"
+import {get, post} from "@/plugins/request"
 
 const licenseUrl = "/license"
 
-export function saveLicense(data) {
-  return post(licenseUrl, data)
+export function getLicense() {
+  return get(`${licenseUrl}`)
 }
 
-
-export function getLicense() {
-  return get(licenseUrl)
+export function importLicense(data) {
+  return post(licenseUrl,data)
 }
