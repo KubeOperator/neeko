@@ -77,7 +77,6 @@ export default {
       })
     },
     fileChange(e) {
-      console.log(this.licenseFile,"xiaohu")
       this.licenseFile['file'] = e.target.files[0]
     }
   },
