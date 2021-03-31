@@ -7,7 +7,6 @@
                 class="filter-tree"
                 :data="resources"
                 :props="props"
-                default-expand-all
                 ref="tree"
                 @node-click="toPage">
         </el-tree>
@@ -45,7 +44,7 @@ export default {
       },
       loadingProject: false,
       loadingResource: false,
-      type: "PROJECT",
+      type: "PROJECT_LIST",
       name: "",
     }
   },

@@ -336,7 +336,9 @@ const message = {
     resource: "资源管理",
     CLUSTER_MANAGER: "集群管理员",
     PROJECT_MANAGER: "项目管理员",
-    description: "描述"
+    description: "描述",
+    add_project_manager: "添加项目管理员",
+    key_words:"请输入姓名"
   },
   credential: {
     name: "凭据名称",

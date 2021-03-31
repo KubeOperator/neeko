@@ -3,10 +3,11 @@
     <complex-table
             :data="data"
             :colums="columns"
-            :pagination-config="paginationConfig">
+            :pagination-config="paginationConfig"
+            v-loading="loading">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="create()">
+          <el-button size="small" @click="openCreate()">
             {{ $t("commons.button.create") }}
           </el-button>
           <el-button size="small">{{ $t("commons.button.delete") }}</el-button>
@@ -22,7 +23,7 @@
       <el-table-column :label="$t('user.role')">
         <template v-slot:default="{ row }">
           <el-tag type="info" size="small">
-            {{ $t("project."+row.role) }}
+            {{ $t("project." + row.role) }}
           </el-tag>
         </template>
       </el-table-column>
@@ -30,12 +31,42 @@
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
     </complex-table>
+    <el-dialog
+            :visible="openCreatePage"
+            :title="$t('project.add_project_manager')"
+            width="30%"
+            @close="cancel">
+      <el-select
+              v-model="form.names"
+              size="medium"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              :placeholder="$t('project.key_words')"
+              :remote-method="getUsers"
+              :loading="searchUserLoading"
+              style="width:100%">
+        <el-option
+                v-for="(item,index) in users"
+                :key="index"
+                :label="item"
+                :value="item">
+        </el-option>
+      </el-select>
+      <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="cancel">{{ $t("commons.button.cancel") }}</el-button>
+      <el-button type="primary" @click="submit">{{ $t("commons.button.save") }}</el-button>
+    </span>
+      </template>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjectMembers} from "@/api/project-member"
+import {listProjectMembers, listUsers, createProjectMember} from "@/api/project-member"
 
 export default {
   name: "MemberList",
@@ -58,29 +89,72 @@ export default {
         total: 0
       },
       data: [],
+      loading: false,
+      openCreatePage: false,
+      searchUserLoading: false,
+      users: [],
+      form: {
+        names: []
+      }
     }
   },
   created () {
     if (this.type === "PROJECT") {
-      this.listMemberList()
+      this.getMemberList()
     }
   },
   methods: {
-    listMemberList () {
+    getMemberList () {
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       if (this.type === "PROJECT") {
         listProjectMembers(this.name, currentPage, pageSize).then(data => {
+          this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
         })
       }
     },
+    getUsers (query) {
+      if (query !== "") {
+        this.searchUserLoading = true
+        listUsers(this.name, query).then(data => {
+          this.searchUserLoading = false
+          this.users = data.items
+        })
+      }
+    },
+    openCreate () {
+      this.openCreatePage = true
+    },
+    cancel () {
+      this.openCreatePage = false
+      this.users = []
+      this.form.names = []
+    },
+    submit () {
+      createProjectMember(this.name, {
+        userNames: this.form.names
+      }).then(() => {
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.create_success"),
+        })
+        this.cancel()
+        this.getMemberList()
+      }).catch(error => {
+        this.$message({
+          type: "error",
+          message: error.error.msg,
+        })
+      })
+    }
   },
   computed: {
-    member() {
-      const {name,type} = this
+    member () {
+      const { name, type } = this
       return {
-        name,type
+        name, type
       }
     }
   },
@@ -88,7 +162,7 @@ export default {
     member: {
       handler (newValue, oldValue) {
         if (newValue !== oldValue) {
-          this.listMemberList()
+          this.getMemberList()
         }
       }
     },

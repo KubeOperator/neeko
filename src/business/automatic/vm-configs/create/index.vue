@@ -76,7 +76,7 @@ export default {
           this.$message(
             {
               type: "success",
-              message: this.$t("msg.create_success")
+              message: this.$t("commons.msg.create_success")
             }
           )
           this.$router.push({ name: "VmConfigList" })
