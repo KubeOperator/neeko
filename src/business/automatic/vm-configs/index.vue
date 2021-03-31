@@ -39,7 +39,7 @@ import {searchVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
-  name: "PlanList",
+  name: "VmConfigList",
   components: { ComplexTable, LayoutContent },
   data () {
     return {

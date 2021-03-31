@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'VmConfigList' }">
+  <layout-content :header="$t('commons.button.create')" :back-to="{name:'ProjectAuthorizationList'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -8,11 +8,8 @@
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.vm_config.cpu')" prop="cpu">
-              <el-input-number v-model="form.cpu"></el-input-number>
-            </el-form-item>
-            <el-form-item :label="$t('automatic.vm_config.memory')" prop="memory">
-              <el-input-number v-model="form.memory"></el-input-number>
+            <el-form-item :label="$t('project.description')" prop="description">
+              <el-input v-model="form.description"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
@@ -21,44 +18,26 @@
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"></el-col>
     </el-row>
   </layout-content>
 </template>
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {createVmConfig} from "@/api/vm-config"
 import Rule from "@/utils/rules"
+import {createProject} from "@/api/projects"
 
 export default {
-  name: "VmConfigCreate",
+  name: "ProjectCreate",
   components: { LayoutContent },
   data () {
     return {
       form: {
-        cpu: 0,
-        memory: 0,
         name: "",
+        description: ""
       },
       rules: {
-        name: [Rule.NameRule],
-        cpu: [{
-          required: true,
-          trigger: "blur",
-          type: "number",
-          min: 1,
-          max: 1000,
-          message: this.$t("automatic.vm_config.cpu_invalid")
-        }],
-        memory: [{
-          required: true,
-          trigger: "blur",
-          type: "number",
-          min: 1,
-          max: 1000,
-          message: this.$t("automatic.vm_config.mem_invalid")
-        }],
+        name: [Rule.NameRule]
       }
     }
   },
@@ -68,10 +47,9 @@ export default {
         if (!valid) {
           return false
         }
-        createVmConfig({
+        createProject({
           name: this.form.name,
-          cpu: this.form.cpu,
-          memory: this.form.memory,
+          description: this.form.description,
         }).then(() => {
           this.$message(
             {
@@ -79,12 +57,12 @@ export default {
               message: this.$t("msg.create_success")
             }
           )
-          this.$router.push({ name: "VmConfigList" })
+          this.$router.push({ name: "ProjectAuthorizationList" })
         })
       })
     },
     onCancel () {
-      this.$router.push({ name: "VmConfigList" })
+      this.$router.push({ name: "ProjectAuthorizationList" })
     }
   }
 }

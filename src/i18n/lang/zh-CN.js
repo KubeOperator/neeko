@@ -334,8 +334,9 @@ const message = {
     project: "项目",
     member: "成员管理",
     resource: "资源管理",
-    CLUSTER_MANAGER:"集群管理员",
-    PROJECT_MANAGER: "项目管理员"
+    CLUSTER_MANAGER: "集群管理员",
+    PROJECT_MANAGER: "项目管理员",
+    description: "描述"
   },
   credential: {
     name: "凭据名称",
