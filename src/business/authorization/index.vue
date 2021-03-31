@@ -2,7 +2,7 @@
 
   <layout-content :header="$t('project.project')" :description="$t('')">
     <el-row>
-      <el-col :span="8" v-loading="loadingProject">
+      <el-col :span="6" v-loading="loadingProject">
         <el-tree
                 class="filter-tree"
                 :data="resources"
@@ -12,7 +12,7 @@
                 @node-click="toPage">
         </el-tree>
       </el-col>
-      <el-col :span="16" v-loading="loadingResource">
+      <el-col :span="18" v-loading="loadingResource">
         <management :name="name" :type="type"></management>
       </el-col>
     </el-row>

@@ -14,7 +14,20 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
-        <template v-slot:default="{ row }">{{ row.name }}</template>
+        <template v-slot:default="{ row }">{{ row.userName }}</template>
+      </el-table-column>
+      <el-table-column :label="$t('user.email')" mix-width="100">
+        <template v-slot:default="{ row }">{{ row.email }}</template>
+      </el-table-column>
+      <el-table-column :label="$t('user.role')">
+        <template v-slot:default="{ row }">
+          <el-tag type="info" size="small">
+            {{ $t("project."+row.role) }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('commons.table.create_time')">
+        <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
     </complex-table>
   </el-row>

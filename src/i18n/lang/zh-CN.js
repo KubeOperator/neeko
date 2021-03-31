@@ -79,12 +79,12 @@ const message = {
       error: "错误",
       active: "活跃",
       passive: "禁用",
-      Waiting: '等待中',
-      Failed: '失败',
-      Running: '运行中',
-      Initializing: '初始化中',
-      Upgrading: '升级中',
-      Terminating: '销毁中',
+      Waiting: "等待中",
+      Failed: "失败",
+      Running: "运行中",
+      Initializing: "初始化中",
+      Upgrading: "升级中",
+      Terminating: "销毁中",
     },
     role: {
       admin: "管理员",
@@ -236,6 +236,8 @@ const message = {
     port: "端口",
     new_credential: "新建凭据",
     exists_credential: "已存在凭据",
+    ip: "IP",
+    gpu: "GPU(个)"
   },
   message: {
     content: "消息内容",
@@ -292,7 +294,10 @@ const message = {
     },
     plan: {
       name: "部署计划",
-      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念"
+      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
+      deploy_template: "部署模型",
+      SINGLE: "一主多节点",
+      MULTIPLE: "多主多节点"
     },
     vm_config: {
       name: "虚拟机配置",
@@ -322,7 +327,11 @@ const message = {
     }
   },
   project: {
-    project: "项目"
+    project: "项目",
+    member: "成员管理",
+    resource: "资源管理",
+    CLUSTER_MANAGER:"集群管理员",
+    PROJECT_MANAGER: "项目管理员"
   },
   credential: {
     name: "凭据名称",
@@ -333,7 +342,10 @@ const message = {
     type: "类型"
   },
   backup_account: {
-    name: "备份账号"
+    name: "备份账号",
+    bucket: "桶",
+    type: "类型",
+    status: "状态"
   },
   setting: {
     registry: "仓库",
