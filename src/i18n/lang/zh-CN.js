@@ -405,6 +405,8 @@ const message = {
         logo: "Logo"
       },
       message: {
+        wechat: "企业微信",
+        dingTalk: "钉钉",
         testUser: "测试用户",
         status: "状态",
         webhookAddress: "webhook地址",
