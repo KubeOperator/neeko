@@ -12,7 +12,7 @@
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small">{{ $t("commons.button.delete") }}</el-button>
+              <el-button size="small" >{{ $t("commons.button.delete") }}</el-button>
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
