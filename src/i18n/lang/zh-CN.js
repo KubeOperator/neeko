@@ -338,7 +338,8 @@ const message = {
     PROJECT_MANAGER: "项目管理员",
     description: "描述",
     add_project_manager: "添加项目管理员",
-    key_words:"请输入姓名"
+    key_words:"请输入姓名",
+    add_project_resource: "添加资源",
   },
   credential: {
     name: "凭据名称",
