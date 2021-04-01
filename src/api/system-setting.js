@@ -1,18 +1,17 @@
 import {get, patch, post, del} from "@/plugins/request"
 
 const settingUrl = "/settings"
-
+const messageUrl = "message/setting"
 // Settings
-export function getSetting() {
-  return get(settingUrl)
+export function getSetting(tabName) {
+  return get(`${settingUrl}/${tabName}`)
+}
+export function check(tabName,data){
+  return post(`${settingUrl}/check/${tabName}`,data)
 }
 
-export function updateSetting(arch, data) {
-  return patch(`${settingUrl}/registry/${arch}`,data)
-}
-
-export function createSetting(data) {
-  return post(settingUrl,data)
+export function createSetting(tabName,data) {
+  return post(`${settingUrl}/${tabName}`,data)
 }
 
 // Registry
@@ -36,11 +35,14 @@ export function deleteRegistry(arch) {
   return del(`${settingUrl}/registry/${arch}`)
 }
 
-
-// Mail
-export function checkEMail(data){
-   return post(`${settingUrl}/check/EMAIL`,data)
+// Message
+export function getMessageSetting(tabName) {
+  return get(`${messageUrl}/${tabName}`)
 }
-export function getEMail() {
-  return get(`${settingUrl}/EMAIL`)
+export function checkMessage(tabName,data){
+  return post(`${messageUrl}/check/${tabName}`,data)
+}
+
+export function createMessageSetting(tabName,data) {
+  return post(`${messageUrl}/${tabName}`,data)
 }

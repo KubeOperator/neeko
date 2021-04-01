@@ -24,14 +24,13 @@
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.status')" required>
               <el-switch
-                style="display: block"
                 v-model="form.vars.EMAIL_STATUS"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
                 active-value="ENABLE"
                 inactive-value="DISABLE"
-                active-text="启用"
-                inactive-text="禁用">
+                :active-text="$t('commons.button.enable')"
+                :inactive-text="$t('commons.button.disable')">
               </el-switch>
             </el-form-item>
             <el-form-item>
@@ -46,7 +45,7 @@
 </template>
 
 <script>
-import {checkEMail, createSetting, getEMail} from "@/api/system-setting";
+import {check, createSetting, getSetting} from "@/api/system-setting";
 export default {
   name: "Ldap",
   data() {
@@ -79,9 +78,9 @@ export default {
       })
     },
     verify(){
-      checkEMail( {
+      check( 'LDAP',{
         vars: this.form.vars,
-        tab: 'EMAIL'
+        tab: 'LDAP'
       }).then(() => {
         this.$message({
           type: 'success',
@@ -102,7 +101,7 @@ export default {
     }
   },
   created() {
-    getEMail().then( data => {
+    getSetting('LDAP').then( data => {
       this.form.vars = data.vars,
         this.form.tab = data.tab
     })

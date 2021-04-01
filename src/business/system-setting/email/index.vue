@@ -21,14 +21,13 @@
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.status')" required>
               <el-switch
-                style="display: block"
                 v-model="form.vars.EMAIL_STATUS"
                 active-color="#13ce66"
                 inactive-color="#ff4949"
                 active-value="ENABLE"
                 inactive-value="DISABLE"
-                active-text="启用"
-                inactive-text="禁用">
+                :active-text="$t('commons.button.enable')"
+                :inactive-text="$t('commons.button.disable')">
               </el-switch>
             </el-form-item>
             <el-form-item>
@@ -43,9 +42,9 @@
 </template>
 
 <script>
-import {checkEMail, createSetting, getEMail} from "@/api/system-setting";
+import {check, createSetting, getSetting} from "@/api/system-setting";
 export default {
-  name: "Email",
+  name: "EMail",
   data() {
     return {
       form: {
@@ -64,7 +63,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      createSetting( {
+      createSetting( 'EMAIL',{
         vars: this.form.vars,
         tab: 'EMAIL'
       }).then(() => {
@@ -72,14 +71,15 @@ export default {
           type: 'success',
           message: this.$t('commons.msg.save_success')
         });
-        this.$router.push({name: "Email"})
+        this.$router.push({name: "EMail"})
       })
     },
     verify(){
-      checkEMail( {
+      check( 'EMAIL',{
         vars: this.form.vars,
         tab: 'EMAIL'
-      }).then(() => {
+      }
+      ).then(() => {
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')
@@ -99,7 +99,7 @@ export default {
     }
   },
   created() {
-    getEMail().then( data => {
+    getSetting('EMAIL').then( data => {
       this.form.vars = data.vars,
       this.form.tab = data.tab
     })

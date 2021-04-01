@@ -47,7 +47,6 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
-          {field: "architecture", label: this.$t('commons.table.arch'), component: "FuComplexInput", defaultOperator: "eq"},
         ]
       },
       paginationConfig: {

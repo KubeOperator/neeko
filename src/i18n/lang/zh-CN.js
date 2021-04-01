@@ -403,6 +403,15 @@ const message = {
       theme: {
         systemName: "系统名称",
         logo: "Logo"
+      },
+      message: {
+        testUser: "测试用户",
+        status: "状态",
+        webhookAddress: "webhook地址",
+        dingTalkConcept: "钉钉基本概念",
+        dingTalkLimit: "钉钉消息频率限制",
+        wechatConcept: "企业微信基本概念",
+        wechatLimit: "企业微信消息频率限制"
       }
     },
     option: {
@@ -413,7 +422,8 @@ const message = {
       addLicense: "添加许可"
     },
     helpInfo: {
-      inputPassword: "请输入密码"
+      inputPassword: "请输入密码",
+      messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
   }
 }
