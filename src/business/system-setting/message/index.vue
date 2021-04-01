@@ -4,7 +4,7 @@
       <el-card class="box-card" style="height: 545px">
         <div slot="header" class="clearfix">
           <span>{{$t('setting.table.message.wechatSetting')}}</span>
-          <el-button style="float: right; padding: 3px 0" type="text">{{$t('commons.button.refresh')}}</el-button>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="getWechat">{{$t('commons.button.refresh')}}</el-button>
         </div>
 
         <el-form ref="form" :model="wechat" label-width="140px">
@@ -50,7 +50,7 @@
       <el-card class="box-card" style="height: 500px">
         <div slot="header" class="clearfix">
           <span>{{$t('setting.table.message.dingTalkSetting')}}</span>
-          <el-button style="float: right; padding: 3px 0" type="text">{{$t('commons.button.refresh')}}</el-button>
+          <el-button style="float: right; padding: 3px 0" @click="getDingTalk" type="text">{{$t('commons.button.refresh')}}</el-button>
         </div>
       <el-form ref="form" :model="dingTalk" label-width="140px">
         <el-form-item  style="width: 50%" :label="$t('setting.table.message.webhookAddress')" required>
