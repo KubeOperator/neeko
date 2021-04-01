@@ -57,7 +57,10 @@ export default {
               message: this.$t("commons.msg.create_success")
             }
           )
-          this.$router.push({ name: "ProjectAuthorizationList" })
+          this.$router.push({
+            name: "ProjectAuthorizationList",
+            params: { expendType: "PROJECT", expendName: this.form.name }
+          })
         })
       })
     },

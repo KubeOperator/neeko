@@ -87,8 +87,7 @@ export default {
     }
   },
   methods: {
-    search (condition) {
-      console.log(condition)
+    search () {
       const { currentPage, pageSize } = this.paginationConfig
       listProjects(currentPage, pageSize).then(data => {
         this.data = data.items
