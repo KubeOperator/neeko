@@ -1,4 +1,4 @@
-import {get, post} from "@/plugins/request"
+import {del, get, post} from "@/plugins/request"
 
 
 const projectResourceUrl = (project_name) => {
@@ -15,4 +15,8 @@ export function getResourceList (project_name, resourceType) {
 
 export function createProjectResource (project_name, data) {
   return post(`${projectResourceUrl(project_name)}`, data)
+}
+
+export function deleteProjectResource (project_name, name,resourceType) {
+  return del(`${projectResourceUrl(project_name)}/${name}?resourceType=${resourceType}`)
 }
