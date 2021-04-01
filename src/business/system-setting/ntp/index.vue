@@ -47,7 +47,7 @@ export default {
     }
   },
   created() {
-    getSetting().then( data => {
+    getSetting("SYSTEM").then( data => {
       this.form.vars.ntp_server = data.vars['ntp_server']
     })
   }

@@ -2,6 +2,7 @@ import {get, patch, post, del} from "@/plugins/request"
 
 const settingUrl = "/settings"
 const messageUrl = "message/setting"
+
 // Settings
 export function getSetting(tabName) {
   return get(`${settingUrl}/${tabName}`)
@@ -10,8 +11,8 @@ export function check(tabName,data){
   return post(`${settingUrl}/check/${tabName}`,data)
 }
 
-export function createSetting(tabName,data) {
-  return post(`${settingUrl}/${tabName}`,data)
+export function createSetting(data) {
+  return post(settingUrl,data)
 }
 
 // Registry
@@ -36,6 +37,9 @@ export function deleteRegistry(arch) {
 }
 
 // Message
+export function createMessage(tabName,data) {
+  return post(`${settingUrl}/${tabName}`,data)
+}
 export function getMessageSetting(tabName) {
   return get(`${messageUrl}/${tabName}`)
 }

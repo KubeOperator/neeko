@@ -58,7 +58,7 @@ const SystemSetting = {
         },
         {
           path: "email",
-          name: "Email",
+          name: "EMail",
           hidden: true,
           props: true,
           component: () => import('@/business/system-setting/email'),
