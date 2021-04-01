@@ -201,7 +201,9 @@ const message = {
         msg_info: "消息内容",
         monitor_node: "监控节点",
         label: "标签",
-        value: "标签值"
+        value: "标签值",
+        match_info: "匹配内容",
+        match_info_quick: "按 匹配内容 查询",
       },
       tool: {
         enable_title: "启用工具",
