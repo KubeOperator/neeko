@@ -37,9 +37,7 @@ export function deleteRegistry(arch) {
 }
 
 // Message
-export function createMessage(tabName,data) {
-  return post(`${settingUrl}/${tabName}`,data)
-}
+
 export function getMessageSetting(tabName) {
   return get(`${messageUrl}/${tabName}`)
 }
