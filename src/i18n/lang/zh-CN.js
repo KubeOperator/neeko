@@ -205,7 +205,9 @@ const message = {
         msg_info: "消息内容",
         monitor_node: "监控节点",
         label: "标签",
-        value: "标签值"
+        value: "标签值",
+        match_info: "匹配内容",
+        match_info_quick: "按 匹配内容 查询",
       },
       tool: {
         enable_title: "启用工具",
@@ -338,7 +340,8 @@ const message = {
     PROJECT_MANAGER: "项目管理员",
     description: "描述",
     add_project_manager: "添加项目管理员",
-    key_words:"请输入姓名"
+    key_words:"请输入姓名",
+    add_project_resource: "添加资源",
   },
   credential: {
     name: "凭据名称",

@@ -4,13 +4,17 @@
             :data="data"
             :colums="columns"
             :pagination-config="paginationConfig"
-            v-loading="loading">
+            v-loading="loading"
+            @selection-change="handleSelectionChange">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="openCreate()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small">{{ $t("commons.button.delete") }}</el-button>
+          <el-button size="small" @click="openDelete" :disabled="selects.length===0">{{
+              $t("commons.button.delete")
+            }}
+          </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
@@ -66,7 +70,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjectMembers, listUsers, createProjectMember} from "@/api/project-member"
+import {listProjectMembers, listUsers, createProjectMember, deleteProjectMember} from "@/api/project-member"
 
 export default {
   name: "MemberList",
@@ -75,14 +79,7 @@ export default {
   data () {
     return {
       columns: [],
-      buttons: [
-        {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          type: "danger",
-          click: this.openDelete
-        }
-      ],
+      buttons: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -95,7 +92,8 @@ export default {
       users: [],
       form: {
         names: []
-      }
+      },
+      selects: [],
     }
   },
   created () {
@@ -148,6 +146,28 @@ export default {
           message: error.error.msg,
         })
       })
+    },
+    openDelete () {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning"
+      }).then(() => {
+        const ps = []
+        for (const item of this.selects) {
+          ps.push(deleteProjectMember(this.name, item.userName))
+        }
+        Promise.all(ps).then(() => {
+          this.getMemberList()
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+        })
+      })
+    },
+    handleSelectionChange (val) {
+      this.selects = val
     }
   },
   computed: {

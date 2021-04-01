@@ -1,4 +1,4 @@
-import {get, post} from "@/plugins/request"
+import {del, get, post} from "@/plugins/request"
 
 const projectMemberUrl = (project_name) => {
   return `/project/${project_name}/members`
@@ -14,7 +14,7 @@ export function createProjectMember(project_name, data) {
 }
 
 export function deleteProjectMember(project_name, name) {
-  return get(`${projectMemberUrl(project_name)}/${name}`)
+  return del(`${projectMemberUrl(project_name)}/${name}`)
 }
 
 export function updateProjectMember(project_name, name, data) {
