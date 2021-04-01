@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  import {getTheme} from "@/api/theme";
+
   export default {
     name: 'SidebarLogo',
     props: {
@@ -33,6 +35,16 @@
         type: Boolean,
         required: true
       }
+    },
+    created() {
+      getTheme().then( data => {
+        if (data.logo){
+          this.logo = data.logo
+        }
+        if (data.systemName) {
+          this.title = data.systemName
+        }
+      })
     },
     data() {
       return {

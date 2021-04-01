@@ -31,7 +31,9 @@ const message = {
       enable: "启用",
       disable: "禁用",
       jump_to: "转到",
-      search: "查询"
+      search: "查询",
+      verify: "校验",
+      submit: "提交"
     },
     msg: {
       success: "{0}成功",
@@ -40,7 +42,9 @@ const message = {
       delete_success: "删除成功",
       delete_cancel: "已取消删除",
       sync_success: "同步成功",
-      create_success: "创建成功"
+      create_success: "创建成功",
+      verify_success: "校验成功",
+      import_success: "导入成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -79,12 +83,12 @@ const message = {
       error: "错误",
       active: "活跃",
       passive: "禁用",
-      Waiting: '等待中',
-      Failed: '失败',
-      Running: '运行中',
-      Initializing: '初始化中',
-      Upgrading: '升级中',
-      Terminating: '销毁中',
+      Waiting: "等待中",
+      Failed: "失败",
+      Running: "运行中",
+      Initializing: "初始化中",
+      Upgrading: "升级中",
+      Terminating: "销毁中",
     },
     role: {
       admin: "管理员",
@@ -238,6 +242,8 @@ const message = {
     port: "端口",
     new_credential: "新建凭据",
     exists_credential: "已存在凭据",
+    ip: "IP",
+    gpu: "GPU(个)"
   },
   message: {
     content: "消息内容",
@@ -294,7 +300,10 @@ const message = {
     },
     plan: {
       name: "部署计划",
-      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念"
+      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
+      deploy_template: "部署模型",
+      SINGLE: "一主多节点",
+      MULTIPLE: "多主多节点"
     },
     vm_config: {
       name: "虚拟机配置",
@@ -324,7 +333,14 @@ const message = {
     }
   },
   project: {
-    project: "项目"
+    project: "项目",
+    member: "成员管理",
+    resource: "资源管理",
+    CLUSTER_MANAGER: "集群管理员",
+    PROJECT_MANAGER: "项目管理员",
+    description: "描述",
+    add_project_manager: "添加项目管理员",
+    key_words:"请输入姓名"
   },
   credential: {
     name: "凭据名称",
@@ -335,7 +351,10 @@ const message = {
     type: "类型"
   },
   backup_account: {
-    name: "备份账号"
+    name: "备份账号",
+    bucket: "桶",
+    type: "类型",
+    status: "状态"
   },
   setting: {
     registry: "仓库",
@@ -352,6 +371,49 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
+      },
+      mail: {
+        smtp: "SMTP 地址",
+        port: "端口",
+        username: "用户名",
+        password: "密码",
+        testUser: "测试用户",
+        status: "状态"
+      },
+      ldap: {
+        address: "地址",
+        port: "端口",
+        username: "用户名",
+        password: "密码",
+        filterDN: "用户过滤 DN",
+        filterRule: "用户过滤规则",
+        status: "状态"
+      },
+      license: {
+        title: "KubeOperator 许可证",
+        corporation: "公司",
+        count: "数量",
+        expiration: "过期时间",
+        edition: "版本",
+        status: "状态",
+        valid: "有效",
+        invalid: "无效",
+        expired: "已到期",
+        licenseFile: "许可证",
+        communityEdition: "社区版"
+      },
+      theme: {
+        systemName: "系统名称",
+        logo: "Logo"
+      },
+      message: {
+        testUser: "测试用户",
+        status: "状态",
+        webhookAddress: "webhook地址",
+        dingTalkConcept: "钉钉基本概念",
+        dingTalkLimit: "钉钉消息频率限制",
+        wechatConcept: "企业微信基本概念",
+        wechatLimit: "企业微信消息频率限制"
       }
     },
     option: {
@@ -359,9 +421,11 @@ const message = {
       editRegistry: "编辑仓库",
       addCredential: "添加SSH凭证",
       editCredential: "编辑SSH凭证",
+      addLicense: "添加许可"
     },
     helpInfo: {
-      inputPassword: "请输入密码"
+      inputPassword: "请输入密码",
+      messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
   }
 }

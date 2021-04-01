@@ -12,6 +12,6 @@ export default {
 
 <style>
   .header-container {
-      background-color: #fa5d50;
+      background-color: #E4E7ED;
   }
 </style>

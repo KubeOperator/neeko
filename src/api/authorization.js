@@ -1,6 +1,6 @@
 import {get} from "@/plugins/request"
 
-const authorizationUrl = "/project/resources"
+const authorizationUrl = "/projects"
 
 export function getResourceTree () {
   return get(`${authorizationUrl}/tree`)

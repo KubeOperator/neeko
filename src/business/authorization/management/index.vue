@@ -1,12 +1,10 @@
 <template>
   <el-row>
-    {{this.name}}
-    {{this.type}}
     <el-tabs v-model="active" @tab-click="changeItem" type="border-card">
-      <el-tab-pane label="成员管理" name="member">
+      <el-tab-pane :label="$t('project.member')" name="member">
         <member-list :name="name" :type="type"></member-list>
       </el-tab-pane>
-      <el-tab-pane label="资源管理" name="resource">
+      <el-tab-pane :label="$t('project.resource')" name="resource">
         <resource-list :name="name" :type="type"></resource-list>
       </el-tab-pane>
     </el-tabs>

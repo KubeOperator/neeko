@@ -3,7 +3,7 @@ import AuthorizationComponent from "@/business/authorization"
 
 
 const Authorization = {
-  sort: 10,
+  sort: 1,
   path: "/authorization",
   component: Layout,
   name: "Authorization",
@@ -13,7 +13,6 @@ const Authorization = {
       component: () => import("@/business/authorization"),
       name: "ProjectAuthorizationList",
       meta: {
-        cache: true,
         title: "route.project",
         icon: "el-icon-s-data"
       }
@@ -27,6 +26,25 @@ const Authorization = {
         activeMenu: "/authorization/list"
       },
     },
+    {
+      path: "project/create",
+      component: () => import("@/business/authorization/projects/create"),
+      name: "ProjectCreate",
+      hidden: true,
+      meta: {
+        activeMenu: "/authorization/list"
+      }
+    },
+    {
+      path: "project/edit/:name",
+      props: true,
+      component: () => import("@/business/authorization/projects/edit"),
+      name: "ProjectEdit",
+      hidden: true,
+      meta: {
+        activeMenu: "/authorization/list"
+      }
+    }
   ]
 }
 
