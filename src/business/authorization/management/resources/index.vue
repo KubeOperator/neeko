@@ -13,7 +13,7 @@
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0">
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -47,13 +47,14 @@
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
-                v-loading="loading">
+                v-loading="loading"
+                @selection-change="handleSelectionChange">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0">
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -79,13 +80,14 @@
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
-                v-loading="loading">
+                v-loading="loading"
+                @selection-change="handleSelectionChange">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0">
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -129,9 +131,14 @@
                 :key="index"
                 :value="item.name">
           <span style="float: left">{{ item.name }}</span>
-          <span v-if="resourceType==='HOST'" style="color: #8492a6; font-size: 13px">{{ "\u00a0\u00a0\u00a0" + item.ip }}</span>
-          <span v-if="resourceType==='PLAN'" style="color: #8492a6; font-size: 13px">{{ "\u00a0\u00a0\u00a0" + $t("automatic.plan." + item.deployTemplate) }}</span>
-          <span v-if="resourceType==='BACKUP_ACCOUNT'" style="color: #8492a6; font-size: 13px">{{ "\u00a0\u00a0\u00a0" + item.bucket }}</span>
+          <span v-if="resourceType==='HOST'" style="color: #8492a6; font-size: 13px">
+            {{ "\u00a0\u00a0\u00a0" + item.ip }}
+          </span>
+          <span v-if="resourceType==='PLAN'" style="color: #8492a6; font-size: 13px">
+            {{ "\u00a0\u00a0\u00a0" + $t("automatic.plan." + item.deployTemplate) }}
+          </span>
+          <span v-if="resourceType==='BACKUP_ACCOUNT'"
+                style="color: #8492a6; font-size: 13px">{{ "\u00a0\u00a0\u00a0" + item.bucket }}</span>
         </el-option>
       </el-select>
       <template #footer>
@@ -146,7 +153,12 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjectResources, getResourceList, createProjectResource} from "@/api/project-resource"
+import {
+  listProjectResources,
+  getResourceList,
+  createProjectResource,
+  deleteProjectResource
+} from "@/api/project-resource"
 
 export default {
   name: "ResourceList",
@@ -155,14 +167,7 @@ export default {
   data () {
     return {
       columns: [],
-      buttons: [
-        {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          type: "danger",
-          click: this.openDelete
-        }
-      ],
+      buttons: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -227,6 +232,25 @@ export default {
         })
         this.getProjectResourceList(this.resourceType)
         this.cancel()
+      })
+    },
+    openDelete () {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning"
+      }).then(() => {
+        const ps = []
+        for (const item of this.selects) {
+          ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+        }
+        Promise.all(ps).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.getProjectResourceList(this.resourceType)
+        })
       })
     }
   },
