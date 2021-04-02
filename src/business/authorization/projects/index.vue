@@ -111,6 +111,7 @@ export default {
               message: this.$t("commons.msg.delete_success")
             })
             this.search()
+            this.$emit("refresh")
           })
         })
     },

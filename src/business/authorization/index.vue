@@ -17,7 +17,7 @@
       </el-col>
       <el-col :span="18">
         <management :name="name" :type="type" v-if="type!=='PROJECT_LIST'"></management>
-        <project-list v-if="type==='PROJECT_LIST'"></project-list>
+        <project-list @refresh="getTree" v-if="type==='PROJECT_LIST'"></project-list>
       </el-col>
     </el-row>
   </layout-content>
