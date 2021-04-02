@@ -8,8 +8,8 @@
       </el-form-item>
       <el-form-item :label="$t('commons.search.time')">
         <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" 
-          :range-separator="$t('commons.search.time_range')"
-          :start-placeholder="$t('commons.search.time_start')"
+          :range-separator="$t('commons.search.time_range')" 
+          :start-placeholder="$t('commons.search.time_start')" 
           :end-placeholder="$t('commons.search.time_end')">
         </el-date-picker>
       </el-form-item>
@@ -44,12 +44,12 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listNodeInDB } from "@/api/cluster/node"
-let echarts = require('echarts/lib/echarts')
+let echarts = require("echarts/lib/echarts")
 import { QueryCPU, QueryMemeryTotal, QueryMemeryUsed, QueryMemeryCacheBuffer, QueryMemeryFree, QueryMemerySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
 
 export default {
   name: "SystemLog",
-  components: {LayoutContent},
+  components: { LayoutContent },
   data() {
     return {
       searchruleForm: {
@@ -74,7 +74,7 @@ export default {
   methods: {
     search() {
       this.clusterName = this.$route.params.name
-      listNodeInDB(this.clusterName).then( data => {
+      listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
           return item.ip
         })
@@ -93,17 +93,17 @@ export default {
         this.getNetworkDatas(start, end)
       })
     },
-    getCPUDatas (start, end) {
+    getCPUDatas(start, end) {
       this.cpuDateList = []
       this.cpuValueList = []
       let system = new Promise((resolve) => {
-        QueryCPU(this.clusterName, (this.selectNode + ":9100"), '"system"', start.toString(), end.toString()).then(data => {
-          if(data.data.result.length === 0) {
+        QueryCPU(this.clusterName, this.selectNode + ":9100", '"system"', start.toString(), end.toString()).then((data) => {
+          if (data.data.result.length === 0) {
             return
           }
           this.cpuDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
-            return (timeNow.getMonth() + 1) + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
           })
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
@@ -114,8 +114,8 @@ export default {
         })
       })
       let user = new Promise((resolve) => {
-        QueryCPU(this.clusterName, (this.selectNode + ":9100"), '"user"', start.toString(), end.toString()).then(data => {
-          if(data.data.result.length === 0) {
+        QueryCPU(this.clusterName, this.selectNode + ":9100", '"user"', start.toString(), end.toString()).then((data) => {
+          if (data.data.result.length === 0) {
             return
           }
           let itemDatas = []
@@ -127,8 +127,8 @@ export default {
         })
       })
       let iowait = new Promise((resolve) => {
-        QueryCPU(this.clusterName, (this.selectNode + ":9100"), '"iowait"', start.toString(), end.toString()).then(data => {
-          if(data.data.result.length === 0) {
+        QueryCPU(this.clusterName, this.selectNode + ":9100", '"iowait"', start.toString(), end.toString()).then((data) => {
+          if (data.data.result.length === 0) {
             return
           }
           let itemDatas = []
@@ -140,8 +140,8 @@ export default {
         })
       })
       let idle = new Promise((resolve) => {
-        QueryCPU(this.clusterName, (this.selectNode + ":9100"), '"idle"', start.toString(), end.toString()).then(data => {
-          if(data.data.result.length === 0) {
+        QueryCPU(this.clusterName, this.selectNode + ":9100", '"idle"', start.toString(), end.toString()).then((data) => {
+          if (data.data.result.length === 0) {
             return
           }
           let itemDatas = []
@@ -153,7 +153,7 @@ export default {
         })
       })
       let irq = new Promise((resolve) => {
-        QueryCPU(this.clusterName, (this.selectNode + ":9100"), '~".*irq"', start.toString(), end.toString()).then(data => {
+        QueryCPU(this.clusterName, this.selectNode + ":9100", '~".*irq"', start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return Number(item[1]).toFixed(2)
@@ -162,21 +162,23 @@ export default {
           resolve()
         })
       })
-      Promise.all([system, user, iowait, idle, irq]).then(() => {
-        this.initCharts("cpuChart", "CPU Basic", this.cpuDateList, this.cpuValueList, "%")
-      }).catch(err => {
-        alert(err)
-      })
+      Promise.all([system, user, iowait, idle, irq])
+        .then(() => {
+          this.initCharts("cpuChart", "CPU Basic", this.cpuDateList, this.cpuValueList, "%")
+        })
+        .catch((err) => {
+          alert(err)
+        })
     },
 
-    getMemeryDatas (start, end) {
+    getMemeryDatas(start, end) {
       this.memeryDateList = []
       this.memeryValueList = []
       let total = new Promise((resolve) => {
-        QueryMemeryTotal(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryMemeryTotal(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           this.memeryDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
-            return (timeNow.getMonth() + 1) + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
           })
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
@@ -187,7 +189,7 @@ export default {
         })
       })
       let used = new Promise((resolve) => {
-        QueryMemeryUsed(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryMemeryUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -197,7 +199,7 @@ export default {
         })
       })
       let cache = new Promise((resolve) => {
-        QueryMemeryCacheBuffer(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryMemeryCacheBuffer(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -207,7 +209,7 @@ export default {
         })
       })
       let free = new Promise((resolve) => {
-        QueryMemeryFree(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryMemeryFree(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -217,7 +219,7 @@ export default {
         })
       })
       let swap = new Promise((resolve) => {
-        QueryMemerySWAPUsed(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryMemerySWAPUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -231,13 +233,13 @@ export default {
       })
     },
 
-    getDiskDatas (start, end) {
+    getDiskDatas(start, end) {
       this.diskDateList = []
       this.diskValueList = []
-      QueryDisk(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+      QueryDisk(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
         this.diskDateList = data.data.result[0].values.map(function (item) {
           const timeNow = new Date(item[0] * 1000)
-          return (timeNow.getMonth() + 1) + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+          return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
         })
         let itemDatas = []
         itemDatas = data.data.result[0].values.map(function (item) {
@@ -248,19 +250,19 @@ export default {
       })
     },
 
-    getNetworkDatas (start , end) {
+    getNetworkDatas(start, end) {
       this.networkDateList = []
       this.networkValueList = []
       let recv = new Promise((resolve) => {
-        QueryNetworkRecv(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryNetworkRecv(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           this.networkDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
-            return (timeNow.getMonth() + 1) + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
           })
           for (const res of data.data.result) {
             let itemDatas = []
             itemDatas = res.values.map(function (item) {
-                return (Number(item[1]) / 1000).toFixed(0)
+              return (Number(item[1]) / 1000).toFixed(0)
             })
             this.networkValueList.push(this.addSeries(itemDatas, "Recv " + res.metric.device))
           }
@@ -268,11 +270,11 @@ export default {
         })
       })
       let trans = new Promise((resolve) => {
-        QueryNetworkTrans(this.clusterName, (this.selectNode + ":9100"), start.toString(), end.toString()).then(data => {
+        QueryNetworkTrans(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           for (const res of data.data.result) {
             let itemDatas = []
             itemDatas = res.values.map(function (item) {
-                return -(Number(item[1]) / 1000).toFixed(0)
+              return -(Number(item[1]) / 1000).toFixed(0)
             })
             this.networkValueList.push(this.addSeries(itemDatas, "Trans " + res.metric.device))
           }
@@ -286,53 +288,58 @@ export default {
     initCharts(chartName, title, xDatas, yDatas, formatStr) {
       const lineChart = echarts.init(document.getElementById(chartName))
       const option = {
-        title: [{
-          left: "center",
-          text: title
-        }],
+        title: [
+          {
+            left: "center",
+            text: title,
+          },
+        ],
         tooltip: {
           trigger: "axis",
           formatter: function (datas) {
             var res = datas[0].name + "<br/>"
             for (const item of datas) {
-               res += item.marker + " " + item.seriesName + "：" + item.data + formatStr + "<br/>"
+              res += item.marker + " " + item.seriesName + "：" + item.data + formatStr + "<br/>"
             }
             return res
           },
-          textStyle:{
-            align:"left"
-          }
+          textStyle: {
+            align: "left",
+          },
         },
-        xAxis: [{
-          data: xDatas,
-          gridIndex: 1
-        }],
-        yAxis: [{
-          axisLabel: {formatter: "{value} "+ formatStr},
-          gridIndex: 1
-        }],
-        grid: [{bottom: "60%"}, {left: "20%"}, {top: "15%"}],
-        series: yDatas
+        xAxis: [
+          {
+            data: xDatas,
+            gridIndex: 1,
+          },
+        ],
+        yAxis: [
+          {
+            axisLabel: { formatter: "{value} " + formatStr },
+            gridIndex: 1,
+          },
+        ],
+        grid: [{ bottom: "60%" }, { left: "20%" }, { top: "15%" }],
+        series: yDatas,
       }
       lineChart.setOption(option, true)
     },
-    addSeries (datas, name) {
+    addSeries(datas, name) {
       return {
         name: name,
         type: "line",
         smooth: true,
         showSymbol: true,
         areaStyle: {},
-        data: datas
+        data: datas,
       }
-    }
+    },
   },
   mounted() {
     this.search()
-  }
+  },
 }
 </script>
 
 <style scoped>
-
 </style>

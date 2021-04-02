@@ -152,9 +152,9 @@
         </div>
 
         <div v-if="toolForm.name === 'grafana'">
-           <el-form-item :label="$t('cluster.detail.tool.password')">
-              <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
-            </el-form-item>
+          <el-form-item :label="$t('cluster.detail.tool.password')">
+            <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
+          </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.password_re')">
             <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
           </el-form-item>
@@ -255,242 +255,241 @@
 </template>
 
 <script>
-  import { listTool, enableTool, disableTool, upgradeTool } from "@/api/cluster/tool"
-  import { listNodeInCluster } from "@/api/cluster/node"
-  import { listNamespace } from "@/api/cluster/namespace"
-  import { listStorageClass } from "@/api/cluster/storage"
-  import { getClusterByName } from "@/api/cluster"
+import { listTool, enableTool, disableTool, upgradeTool } from "@/api/cluster/tool"
+import { listNodeInCluster } from "@/api/cluster/node"
+import { listNamespace } from "@/api/cluster/namespace"
+import { listStorageClass } from "@/api/cluster/storage"
+import { getClusterByName } from "@/api/cluster"
 
-  export default {
-    name: "ClusterTool",
-    data() {
-      return {
-        clusterName: "",
-        currentCluster: {
-          name: "",
-          spec: {
-            architectures: "",
-          }
+export default {
+  name: "ClusterTool",
+  data() {
+    return {
+      clusterName: "",
+      currentCluster: {
+        name: "",
+        spec: {
+          architectures: "",
         },
-        tools: [],
-        dialogEnableVisible: false,
-        dialogFaildVisible: false,
-        dialogDisableVisible: false,
-        dialogUpgradeVisible: false,
-        conditions: "",
-        toolForm: {
-          name: "",
-          version: "",
-          describe: "",
-          status: "",
-          message: "",
-          logo: "",
-          url: "",
-          frame: false,
-          vars: {},
-          higher_version: "",
-        },
-        namespaces: [],
-        nodes: [],
-        nodeNum: 0,
-        storages: [],
-      }
+      },
+      tools: [],
+      dialogEnableVisible: false,
+      dialogFaildVisible: false,
+      dialogDisableVisible: false,
+      dialogUpgradeVisible: false,
+      conditions: "",
+      toolForm: {
+        name: "",
+        version: "",
+        describe: "",
+        status: "",
+        message: "",
+        logo: "",
+        url: "",
+        frame: false,
+        vars: {},
+        higher_version: "",
+      },
+      namespaces: [],
+      nodes: [],
+      nodeNum: 0,
+      storages: [],
+    }
+  },
+  methods: {
+    search() {
+      this.clusterName = this.$route.params.name
+      getClusterByName(this.clusterName).then((data) => {
+        this.currentCluster = data
+      })
+      listTool(this.clusterName).then((data) => {
+        this.tools = data
+      })
     },
-    methods: {
-      search() {
-        this.clusterName = this.$route.params.name
-        getClusterByName(this.clusterName).then(data => {
-          this.currentCluster = data
-        })
-        listTool(this.clusterName).then(data => {
-          this.tools = data
-        })
-      },
-      openFrame(item) {
-        window.open(item.url.replace("{cluster_name}", this.currentCluster.name), "_blank")
-      },
-      onEnable(item) {
-        this.conditions = ""
-        switch (item.name) {
-          case "logging":
-            for (const tool of this.tools) {
-              if (tool.name === "loki") {
-                this.conditions = (tool.status === "Waiting") ? "" : this.$t("cluster.detail.tool.log_err_msg")
-                break
-              }
-            }
-            break
-          case "loki":
-            if (this.currentCluster.spec.architectures === "amd64") {
-              for (const tool of this.tools) {
-                if (tool.name === "logging") {
-                  this.conditions = (tool.status === "Waiting") ? "" : this.$t("cluster.detail.tool.log_err_msg")
-                  break
-                }
-              }
-            }
-            break
-          case "grafana":
-            for (const tool of this.tools) {
-              if (tool.name === "prometheus") {
-                this.conditions = (tool.status === "Running") ? "" : this.$t("cluster.detail.tool.grafana_err_msg")
-                break
-              }
-            }
-            break
-        }
-        if (this.conditions === "") {
-          this.listNamespaces()
-          this.listNodes()
-          this.listStorages()
-          this.toolForm = item
-          this.setDefaultVars(item)
-          this.dialogEnableVisible = true
-        } else {
-          this.dialogFaildVisible = true
-        }
-      },
-      enable(item) {
-        enableTool(this.clusterName, item).then(data => {
-          this.dialogEnableVisible = false
-          this.search()
-          console.log(data)
-        })
-      },
-      onDisable(item) {
-        this.toolForm = item
-        this.dialogDisableVisible = true
-      },
-      disable(item) {
-        disableTool(this.clusterName, item).then(data => {
-          this.dialogDisableVisible = false
-          this.search()
-          console.log(data)
-        })
-      },
-      onUpgrade(item) {
-        this.toolForm = item
-        this.dialogUpgradeVisible = true
-      },
-      upgrade(item) {
-        upgradeTool(this.clusterName, item).then(data => {
-          this.dialogUpgradeVisible = false
-          this.search()
-          console.log(data)
-        })
-      },
-      listNamespaces() {
-        listNamespace(this.clusterName).then(data => {
-          this.namespaces = []
-          data.items.forEach(item => {
-            this.namespaces.push(item.metadata.name)
-          })
-        })
-      },
-      listNodes() {
-        listNodeInCluster(this.clusterName).then(data => {
-          this.nodes = []
-          data.items.forEach(item => {
-            this.nodes.push(item.metadata.name)
-          })
-          this.nodeNum = this.nodes.length
-        })
-      },
-      listStorages() {
-        listStorageClass(this.clusterName).then(data => {
-          this.storages = data.items
-        })
-      },
-      polling() {
-        this.timer = setInterval(() => {
-          let flag = false
-          const needPolling = ["Initializing", "Terminating", "Upgrading"]
-          for (const item of this.tools) {
-            if (needPolling.indexOf(item.status) !== -1) {
-              flag = true
+    openFrame(item) {
+      window.open(item.url.replace("{cluster_name}", this.currentCluster.name), "_blank")
+    },
+    onEnable(item) {
+      this.conditions = ""
+      switch (item.name) {
+        case "logging":
+          for (const tool of this.tools) {
+            if (tool.name === "loki") {
+              this.conditions = tool.status === "Waiting" ? "" : this.$t("cluster.detailtool.log_err_msg")
               break
             }
           }
-          if (flag) {
-            listTool(this.currentCluster.name).then(data => {
-              this.tools = data
-            })
+          break
+        case "loki":
+          if (this.currentCluster.spec.architectures === "amd64") {
+            for (const tool of this.tools) {
+              if (tool.name === "logging") {
+                this.conditions = tool.status === "Waiting" ? "" : this.$t("cluster.detail.tool.log_err_msg")
+                break
+              }
+            }
           }
-        }, 10000)
-      },
-      setDefaultVars(item) {
-        switch (item.name) {
-          case "prometheus":
-            item.vars = {
-              "server.retention": 10,
-              "server.persistentVolume.enabled": false,
-              "server.persistentVolume.size": 10,
-              "server.persistentVolume.storageClass": "",
+          break
+        case "grafana":
+          for (const tool of this.tools) {
+            if (tool.name === "prometheus") {
+              this.conditions = tool.status === "Running" ? "" : this.$t("cluster.detail.tool.grafana_err_msg")
+              break
             }
-            break
-          case "chartmuseum":
-            item.vars = {
-              "persistence.enabled": false,
-              "env.open.DISABLE_API": false,
-              "persistence.storageClass": "",
-              "service.type": "NodePort",
-              "persistence.size": 10,
-            }
-            break
-          case "registry":
-            item.vars = {
-              "persistence.enabled": false,
-              "persistence.storageClass": "",
-              "service.type": "NodePort",
-              "persistence.size": 10,
-            }
-            break
-          case "logging":
-            item.vars = {
-              "elasticsearch.esJavaOpts.item": 1,
-              "elasticsearch.replicas": 1,
-              "elasticsearch.persistence.enabled": false,
-              "elasticsearch.volumeClaimTemplate.resources.requests.storage": 10,
-              "elasticsearch.volumeClaimTemplate.storageClassName": "",
-            }
-            break
-          case "loki":
-            item.vars = {
-              "loki.persistence.enabled": false,
-              "loki.persistence.size": 8,
-              "loki.persistence.storageClassName": "",
-              "promtail.dockerPath": this.currentCluster.spec.dockerStorageDir,
-            }
-            break
-          case "grafana":
-            item.vars = {
-              "persistence.enabled": false,
-              "persistence.size": 10,
-              "persistence.storageClassName": "",
-              "adminPassword": "",
-              "adminPasswordRe": "",
-            }
-            break
-          case "kubeapps":
-            item.vars = {
-              "postgresql.persistence.enabled": false,
-              "postgresql.persistence.size": 10,
-              "global.storageClass": "",
-            }
-            break
-          case "dashboard":
-            item.vars = {}
-            break
-        }
+          }
+          break
+      }
+      if (this.conditions === "") {
+        this.listNamespaces()
+        this.listNodes()
+        this.listStorages()
+        this.toolForm = item
+        this.setDefaultVars(item)
+        this.dialogEnableVisible = true
+      } else {
+        this.dialogFaildVisible = true
       }
     },
-    created() {
-      this.search()
-      this.polling()
-    }
-  }
+    enable(item) {
+      enableTool(this.clusterName, item).then((data) => {
+        this.dialogEnableVisible = false
+        this.search()
+        console.log(data)
+      })
+    },
+    onDisable(item) {
+      this.toolForm = item
+      this.dialogDisableVisible = true
+    },
+    disable(item) {
+      disableTool(this.clusterName, item).then((data) => {
+        this.dialogDisableVisible = false
+        this.search()
+        console.log(data)
+      })
+    },
+    onUpgrade(item) {
+      this.toolForm = item
+      this.dialogUpgradeVisible = true
+    },
+    upgrade(item) {
+      upgradeTool(this.clusterName, item).then((data) => {
+        this.dialogUpgradeVisible = false
+        this.search()
+        console.log(data)
+      })
+    },
+    listNamespaces() {
+      listNamespace(this.clusterName).then((data) => {
+        this.namespaces = []
+        data.items.forEach((item) => {
+          this.namespaces.push(item.metadata.name)
+        })
+      })
+    },
+    listNodes() {
+      listNodeInCluster(this.clusterName).then((data) => {
+        this.nodes = []
+        data.items.forEach((item) => {
+          this.nodes.push(item.metadata.name)
+        })
+        this.nodeNum = this.nodes.length
+      })
+    },
+    listStorages() {
+      listStorageClass(this.clusterName).then((data) => {
+        this.storages = data.items
+      })
+    },
+    polling() {
+      this.timer = setInterval(() => {
+        let flag = false
+        const needPolling = ["Initializing", "Terminating", "Upgrading"]
+        for (const item of this.tools) {
+          if (needPolling.indexOf(item.status) !== -1) {
+            flag = true
+            break
+          }
+        }
+        if (flag) {
+          listTool(this.currentCluster.name).then((data) => {
+            this.tools = data
+          })
+        }
+      }, 10000)
+    },
+    setDefaultVars(item) {
+      switch (item.name) {
+        case "prometheus":
+          item.vars = {
+            "server.retention": 10,
+            "server.persistentVolume.enabled": false,
+            "server.persistentVolume.size": 10,
+            "server.persistentVolume.storageClass": "",
+          }
+          break
+        case "chartmuseum":
+          item.vars = {
+            "persistence.enabled": false,
+            "env.open.DISABLE_API": false,
+            "persistence.storageClass": "",
+            "service.type": "NodePort",
+            "persistence.size": 10,
+          }
+          break
+        case "registry":
+          item.vars = {
+            "persistence.enabled": false,
+            "persistence.storageClass": "",
+            "service.type": "NodePort",
+            "persistence.size": 10,
+          }
+          break
+        case "logging":
+          item.vars = {
+            "elasticsearch.esJavaOpts.item": 1,
+            "elasticsearch.replicas": 1,
+            "elasticsearch.persistence.enabled": false,
+            "elasticsearch.volumeClaimTemplate.resources.requests.storage": 10,
+            "elasticsearch.volumeClaimTemplate.storageClassName": "",
+          }
+          break
+        case "loki":
+          item.vars = {
+            "loki.persistence.enabled": false,
+            "loki.persistence.size": 8,
+            "loki.persistence.storageClassName": "",
+            "promtail.dockerPath": this.currentCluster.spec.dockerStorageDir,
+          }
+          break
+        case "grafana":
+          item.vars = {
+            "persistence.enabled": false,
+            "persistence.size": 10,
+            "persistence.storageClassName": "",
+            adminPassword: "",
+            adminPasswordRe: "",
+          }
+          break
+        case "kubeapps":
+          item.vars = {
+            "postgresql.persistence.enabled": false,
+            "postgresql.persistence.size": 10,
+            "global.storageClass": "",
+          }
+          break
+        case "dashboard":
+          item.vars = {}
+          break
+      }
+    },
+  },
+  created() {
+    this.search()
+    this.polling()
+  },
+}
 </script>
 
 <style scoped>
-
 </style>

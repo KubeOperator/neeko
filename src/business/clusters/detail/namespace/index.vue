@@ -9,8 +9,8 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix/>
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix/>
+      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
+      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix />
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{row}">
           {{ row.metadata.creationTimestamp | datetimeFormat }}
@@ -21,46 +21,43 @@
 </template>
 
 <script>
-  import ComplexTable from "@/components/complex-table"
-  import { listNamespace } from "@/api/cluster/namespace"
+import ComplexTable from "@/components/complex-table"
+import { listNamespace } from "@/api/cluster/namespace"
 
-  export default {
-    name: "ClusterNamespace",
-    components: {ComplexTable},
-    data() {
-      return {
-        paginationConfig: {
-          currentPage: 1,
-          pageSize: 5,
-          total: 0,
-        },
-        clusterName: "",
-        clusterSelection: [], 
-        data: [],
-      }
-    },
-    methods: {
-      search() {
-        this.clusterName = this.$route.params.name
-        listNamespace(this.clusterName).then(data => {
-          this.data = data.items
-          this.paginationConfig.total = data.total
-        })
+export default {
+  name: "ClusterNamespace",
+  components: { ComplexTable },
+  data() {
+    return {
+      paginationConfig: {
+        currentPage: 1,
+        pageSize: 5,
+        total: 0,
       },
-      handleSelectionChange(val) {
-        this.clusterSelection = val
-      },
-      create() {
-      },
-      remove() {
-      }
-    },
-    created() {
-      this.search()
+      clusterName: "",
+      clusterSelection: [],
+      data: [],
     }
-  }
+  },
+  methods: {
+    search() {
+      this.clusterName = this.$route.params.name
+      listNamespace(this.clusterName).then((data) => {
+        this.data = data.items
+        this.paginationConfig.total = data.total
+      })
+    },
+    handleSelectionChange(val) {
+      this.clusterSelection = val
+    },
+    create() {},
+    remove() {},
+  },
+  created() {
+    this.search()
+  },
+}
 </script>
 
 <style scoped>
-
 </style>

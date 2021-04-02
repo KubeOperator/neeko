@@ -55,9 +55,9 @@
         </el-col>
         <el-col :span="6">
           <el-card style="height: 350px">
-          <div slot="header" class="clearfix">
-            <span>统计信息</span>
-          </div>
+            <div slot="header" class="clearfix">
+              <span>统计信息</span>
+            </div>
             <el-col :span="8">
               <ul>Nodes</ul>
               <ul>Namespaces</ul>
@@ -69,7 +69,7 @@
               <ul>{{nodes.length}}</ul>
               <ul>{{namespaces.length}}</ul>
               <ul>{{deployments.length}}</ul>
-              <ul>{{pods.length}}</ul>  
+              <ul>{{pods.length}}</ul>
               <ul>{{containerNumber}}</ul>
             </el-col>
           </el-card>
@@ -93,118 +93,115 @@
 </template>
 
 <script>
-  import { listPod, listDeployment } from "@/api/cluster/cluster"
-  import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
-  import { listNamespace } from "@/api/cluster/namespace"
-  import { getClusterByName } from "@/api/cluster"
+import { listPod, listDeployment } from "@/api/cluster/cluster"
+import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
+import { listNamespace } from "@/api/cluster/namespace"
+import { getClusterByName } from "@/api/cluster"
 
-  export default {
-    name: "ClusterOverview",
-    data() {
-      return {
-        loading: false,
-        clusterName: '',
-        currentCluster: {
-          name: '',
-          spec: {
-            version: '',
-            architectures: '',
-            networkType: '',
-            kubeProxyMode: '',
-            runtimeType: '',
-            flannelBackend: '',
-            calicoIpv4PoolIpip: ''
-          },
-          source: '',
+export default {
+  name: "ClusterOverview",
+  data() {
+    return {
+      loading: false,
+      clusterName: "",
+      currentCluster: {
+        name: "",
+        spec: {
+          version: "",
+          architectures: "",
+          networkType: "",
+          kubeProxyMode: "",
+          runtimeType: "",
+          flannelBackend: "",
+          calicoIpv4PoolIpip: "",
         },
-        namespaces: [],
-        pods: [],
-        nodes: [],
-        deployments: [],
-        containerNumber: 0,
-        cpuTotal: 0,
-        cpuUsage: 0,
-        cpuUsagePercent: 0.0,
-        memTotal: 0,
-        memUsage: 0,
-        memUsagePercent: 0.0,
-        podLimit: 0,
-        podUsagePercent: 0.0,
-        opened: false,
-      }
-    },
-    methods: {
-      downloadKubeConfig() {
-        window.open(`/api/v1/clusters/kubeconfig/${this.clusterName}`, "_blank")
+        source: "",
       },
-      search() {
-        this.loading = true
-        this.clusterName = this.$route.params.name
-        getClusterByName(this.clusterName).then(data => {
-          this.currentCluster = data
-          this.loading = false
-        })
-        this.listNameSpaces()
-        this.listNodes()
-        this.listDeployments()
-      },
-      open() {
-      },
-      newWindow() {
-      },
-      listNameSpaces() {
-        listNamespace(this.clusterName).then(data => {
-          this.namespaces = data.items
-        })
-      },
-      listPods() {
-        listPod(this.clusterName).then(data => {
-          this.pods = data.items
-          this.pods.forEach(pod => {
-            this.containerNumber = this.containerNumber + pod.spec.containers.length
-          })
-          this.podUsagePercent = Math.round((this.pods.length / this.podLimit) * 100)
-        })
-      },
-      listNodes() {
-        listNodeInCluster(this.clusterName).then(data => {
-          this.nodes = data.items
-          this.nodes.forEach(node => {
-            this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)
-            const mem = node.status.capacity.memory.replace("Ki", "")
-            this.memTotal = this.memTotal + Number(mem)
-            this.podLimit = this.podLimit + Number(node.status.capacity.pods)
-          })
-          this.listNodesUsages()
-          this.listPods()
-        })
-      },
-      listDeployments() {
-        listDeployment(this.clusterName).then(data => {
-          this.deployments = data.items
-        })
-      },
-      listNodesUsages() {
-        listNodesUsage(this.clusterName).then(data => {
-          let metrics = data.items
-          metrics.forEach(me => {
-            const c = me.usage.cpu.replace("n", "")
-            this.cpuUsage = this.cpuUsage + Number(c)
-            const m = me.usage.memory.replace("Ki", "")
-            this.memUsage = this.memUsage + Number(m)
-          })
-          this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
-          this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
-          this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)
-        })
-      }
-    },
-    mounted() {
-      this.search()
+      namespaces: [],
+      pods: [],
+      nodes: [],
+      deployments: [],
+      containerNumber: 0,
+      cpuTotal: 0,
+      cpuUsage: 0,
+      cpuUsagePercent: 0.0,
+      memTotal: 0,
+      memUsage: 0,
+      memUsagePercent: 0.0,
+      podLimit: 0,
+      podUsagePercent: 0.0,
+      opened: false,
     }
-  }
+  },
+  methods: {
+    downloadKubeConfig() {
+      window.open(`/api/v1/clusters/kubeconfig/${this.clusterName}`, "_blank")
+    },
+    search() {
+      this.loading = true
+      this.clusterName = this.$route.params.name
+      getClusterByName(this.clusterName).then((data) => {
+        this.currentCluster = data
+        this.loading = false
+      })
+      this.listNameSpaces()
+      this.listNodes()
+      this.listDeployments()
+    },
+    open() {},
+    newWindow() {},
+    listNameSpaces() {
+      listNamespace(this.clusterName).then((data) => {
+        this.namespaces = data.items
+      })
+    },
+    listPods() {
+      listPod(this.clusterName).then((data) => {
+        this.pods = data.items
+        this.pods.forEach((pod) => {
+          this.containerNumber = this.containerNumber + pod.spec.containers.length
+        })
+        this.podUsagePercent = Math.round((this.pods.length / this.podLimit) * 100)
+      })
+    },
+    listNodes() {
+      listNodeInCluster(this.clusterName).then((data) => {
+        this.nodes = data.items
+        this.nodes.forEach((node) => {
+          this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)
+          const mem = node.status.capacity.memory.replace("Ki", "")
+          this.memTotal = this.memTotal + Number(mem)
+          this.podLimit = this.podLimit + Number(node.status.capacity.pods)
+        })
+        this.listNodesUsages()
+        this.listPods()
+      })
+    },
+    listDeployments() {
+      listDeployment(this.clusterName).then((data) => {
+        this.deployments = data.items
+      })
+    },
+    listNodesUsages() {
+      listNodesUsage(this.clusterName).then((data) => {
+        let metrics = data.items
+        metrics.forEach((me) => {
+          const c = me.usage.cpu.replace("n", "")
+          this.cpuUsage = this.cpuUsage + Number(c)
+          const m = me.usage.memory.replace("Ki", "")
+          this.memUsage = this.memUsage + Number(m)
+        })
+        this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
+        this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
+        this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)
+      })
+    },
+  },
+  mounted() {
+    this.search()
+  },
+}
 </script>
 
 <style scoped>
-
 </style>

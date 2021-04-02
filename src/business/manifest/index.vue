@@ -1,6 +1,6 @@
 <template>
   <layout-content>
-    <el-collapse v-for="version in versionList" v-model="activeNames" :key="version.largeVersion" >
+    <el-collapse v-for="version in versionList" v-model="activeNames" :key="version.largeVersion">
       <el-collapse-item style="margin-top: 20px;" :title="version.largeVersion" :name="version.largeVersion">
         <div v-for="versionMini in version.clusterManifests" :key="versionMini.name">
           <el-col :span="6">
@@ -29,36 +29,36 @@
 </template>
 
 <script>
-import {manifestGroup, changeStatus} from "@/api/manifest"
+import { manifestGroup, changeStatus } from "@/api/manifest"
 import LayoutContent from "@/components/layout/LayoutContent"
 
 export default {
   name: "Manifest",
-  components: {LayoutContent},
+  components: { LayoutContent },
   data() {
     return {
       versionList: [],
-      activeNames: []
-    };
+      activeNames: [],
+    }
   },
   methods: {
     search() {
-      manifestGroup().then(data => {
-          this.versionList = data
-          this.versionList.forEach(item => {
-            this.activeNames.push(item.largeVersion)
-          })
+      manifestGroup().then((data) => {
+        this.versionList = data
+        this.versionList.forEach((item) => {
+          this.activeNames.push(item.largeVersion)
+        })
       })
     },
     changeEnable(version) {
-      changeStatus(version.name, version).then(data => {
-        this.$message({message: this.$t('manifest.message', [data.name]), type: "success"})
+      changeStatus(version.name, version).then((data) => {
+        this.$message({ message: this.$t("manifest.message", [data.name]), type: "success" })
         this.search()
       })
-    }
+    },
   },
   mounted() {
     this.search()
-  }
+  },
 }
 </script>

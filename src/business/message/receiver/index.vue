@@ -1,7 +1,7 @@
 <template>
   <layout-content>
     <el-row>
-      <el-col :span="4"><br/></el-col>
+      <el-col :span="4"><br /></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="120px">
@@ -23,44 +23,44 @@
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"><br/></el-col>
+      <el-col :span="4"><br /></el-col>
     </el-row>
   </layout-content>
 </template>
 
 <script>
-  import LayoutContent from "@/components/layout/LayoutContent"
-  import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
+import LayoutContent from "@/components/layout/LayoutContent"
+import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
 
-  export default {
-    name: "HostCreate",
-    components: {LayoutContent},
-    data() {
-      return {
-        form: {
-          name: ''
-        }
-      }
-    },
-    methods: {
-      onSubmit() {
-        updateMessageReceicver(this.form).then(data => {
-          console.log(data)
-        })
+export default {
+  name: "HostCreate",
+  components: { LayoutContent },
+  data() {
+    return {
+      form: {
+        name: "",
       },
-      search() {
-        getMessageReceicver().then(data => {
-          console.log(data)
-        })
-      },
-      onCancel() {
-        this.$router.push({name: "Messages"})
-      }
-    },
-    mounted() {
-      this.search()
     }
-  }
+  },
+  methods: {
+    onSubmit() {
+      updateMessageReceicver(this.form).then((data) => {
+        console.log(data)
+      })
+    },
+    search() {
+      getMessageReceicver().then((data) => {
+        console.log(data)
+      })
+    },
+    onCancel() {
+      this.$router.push({ name: "Messages" })
+    },
+  },
+  mounted() {
+    this.search()
+  },
+}
 </script>
 
 <style scoped>
