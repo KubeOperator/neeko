@@ -35,7 +35,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjects, deleteProject} from "@/api/projects"
+import {deleteProject, searchProject} from "@/api/projects"
 
 export default {
   name: "ProjectList",
@@ -87,9 +87,9 @@ export default {
     }
   },
   methods: {
-    search () {
+    search (condition) {
       const { currentPage, pageSize } = this.paginationConfig
-      listProjects(currentPage, pageSize).then(data => {
+      searchProject(currentPage, pageSize, condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
