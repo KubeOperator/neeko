@@ -19,7 +19,7 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
-        <template v-slot:default="{ row }">{{ row.userName }}</template>
+        <template v-slot:default="{ row }">{{ row.username }}</template>
       </el-table-column>
       <el-table-column :label="$t('user.email')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.email }}</template>
@@ -71,6 +71,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import {listProjectMembers, listUsers, createProjectMember, deleteProjectMember} from "@/api/project-member"
+import {listClusterMembers, createClusterMember} from "@/api/cluster-member"
 
 export default {
   name: "MemberList",
@@ -112,6 +113,13 @@ export default {
           this.paginationConfig.total = data.total
         })
       }
+      if (this.type === "CLUSTER") {
+        listClusterMembers(this.name, currentPage, pageSize).then(data => {
+          this.loading = false
+          this.data = data.items
+          this.paginationConfig.total = data.total
+        })
+      }
     },
     getUsers (query) {
       if (query !== "") {
@@ -131,21 +139,41 @@ export default {
       this.form.names = []
     },
     submit () {
-      createProjectMember(this.name, {
-        userNames: this.form.names
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: this.$t("commons.msg.create_success"),
+      if (this.type === "CLUSTER") {
+        createClusterMember(this.name, {
+          userNames: this.form.names
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.create_success"),
+          })
+          this.cancel()
+          this.getMemberList()
+        }).catch(error => {
+          this.$message({
+            type: "error",
+            message: error.error.msg,
+          })
         })
-        this.cancel()
-        this.getMemberList()
-      }).catch(error => {
-        this.$message({
-          type: "error",
-          message: error.error.msg,
+      }
+
+      if (this.type === "PROJECT") {
+        createProjectMember(this.name, {
+          userNames: this.form.names
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.create_success"),
+          })
+          this.cancel()
+          this.getMemberList()
+        }).catch(error => {
+          this.$message({
+            type: "error",
+            message: error.error.msg,
+          })
         })
-      })
+      }
     },
     openDelete () {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
