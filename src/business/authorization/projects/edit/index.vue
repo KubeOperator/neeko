@@ -50,7 +50,7 @@ export default {
       }).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("msg.save_success")
+            message: this.$t("commons.msg.save_success")
           })
           this.$router.push({ name: "ProjectAuthorizationList" })
         }

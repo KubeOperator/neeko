@@ -113,12 +113,6 @@ export default {
             this.search()
           })
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
-          })
-        })
     },
     create () {
       this.$router.push({ name: "ProjectCreate" })
