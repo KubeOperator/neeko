@@ -1,4 +1,4 @@
-import {get, post} from "@/plugins/request"
+import {del, get, post} from "@/plugins/request"
 
 const clusterMemberUrl = (clusterName) => {
   return `cluster/${clusterName}/members`
@@ -12,3 +12,6 @@ export function createClusterMember (clusterName, data) {
   return post(`${clusterMemberUrl(clusterName)}`, data)
 }
 
+export function deleteClusterMember(clusterName,name) {
+  return del(`${clusterMemberUrl(clusterName)}/${name}`)
+}

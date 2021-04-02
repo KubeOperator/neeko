@@ -71,7 +71,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import {listProjectMembers, listUsers, createProjectMember, deleteProjectMember} from "@/api/project-member"
-import {listClusterMembers, createClusterMember} from "@/api/cluster-member"
+import {listClusterMembers, createClusterMember, deleteClusterMember} from "@/api/cluster-member"
 
 export default {
   name: "MemberList",
@@ -183,7 +183,12 @@ export default {
       }).then(() => {
         const ps = []
         for (const item of this.selects) {
-          ps.push(deleteProjectMember(this.name, item.userName))
+          if (this.type === "PROJECT") {
+            ps.push(deleteProjectMember(this.name, item.username))
+          }
+          if (this.type === "CLUSTER") {
+            ps.push(deleteClusterMember(this.name, item.username))
+          }
         }
         Promise.all(ps).then(() => {
           this.getMemberList()
