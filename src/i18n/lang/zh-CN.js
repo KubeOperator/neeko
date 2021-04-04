@@ -44,7 +44,10 @@ const message = {
       sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
-      import_success: "导入成功"
+      import_success: "导入成功",
+      enable_success: "启用成功",
+      re_enable_success: "重新启用成功",
+      disable_success: "禁用成功",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -231,7 +234,18 @@ const message = {
         node_select_help: "（非必填项）",
         log_err_msg: "logging 和 loki 不支持同时启用！",
         grafana_err_msg: "请先启用 promethues 作为默认数据源！",
-      }
+      },
+      istio: {
+        cpu_limit: "CPU 限制(m)",
+        memory_limit: "Memory 限制(Mb)",
+        cpu_request: "CPU 预留",
+        memory_request: "Memory 预留(Mb)",
+        trace: "跟踪抽样比例(%)",
+        gateways_type: "网关服务类型",
+        enable_istio: "启用 ISTIO",
+        disable_istio: "禁用 ISTIO",
+        resave: "重新保存",
+        ensure_disable_istio: "是否确认禁用集群 istio？",
     }
   },
   host: {
@@ -427,6 +441,7 @@ const message = {
       inputPassword: "请输入密码",
       messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
+  }
   }
 }
 
