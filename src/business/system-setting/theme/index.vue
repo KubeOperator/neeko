@@ -39,7 +39,6 @@ export default {
   methods: {
     onSubmit() {
       this.form.logo = this.logoBase64
-      if (!this.logoBase64 || !window.FileReader) return false;
       importTheme( {
         systemName: this.form.systemName,
         logo: this.form.logo

@@ -33,7 +33,8 @@ const message = {
       jump_to: "转到",
       search: "查询",
       verify: "校验",
-      submit: "提交"
+      submit: "提交",
+      refresh: "刷新"
     },
     msg: {
       success: "{0}成功",
@@ -354,7 +355,8 @@ const message = {
     PROJECT_MANAGER: "项目管理员",
     description: "描述",
     add_project_manager: "添加项目管理员",
-    key_words:"请输入姓名"
+    key_words:"请输入姓名",
+    add_project_resource: "添加资源",
   },
   credential: {
     name: "凭据名称",
@@ -421,13 +423,17 @@ const message = {
         logo: "Logo"
       },
       message: {
+        wechat: "企业微信",
+        dingTalk: "钉钉",
         testUser: "测试用户",
         status: "状态",
         webhookAddress: "webhook地址",
         dingTalkConcept: "钉钉基本概念",
         dingTalkLimit: "钉钉消息频率限制",
         wechatConcept: "企业微信基本概念",
-        wechatLimit: "企业微信消息频率限制"
+        wechatLimit: "企业微信消息频率限制",
+        wechatSetting: "企业微信设置",
+        dingTalkSetting: "钉钉设置",
       }
     },
     option: {

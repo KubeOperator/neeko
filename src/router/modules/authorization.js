@@ -12,6 +12,7 @@ const Authorization = {
       path: "list",
       component: () => import("@/business/authorization"),
       name: "ProjectAuthorizationList",
+      props: true,
       meta: {
         title: "route.project",
         icon: "el-icon-s-data"

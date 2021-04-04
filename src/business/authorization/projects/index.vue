@@ -35,7 +35,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjects, deleteProject} from "@/api/projects"
+import {deleteProject, searchProject} from "@/api/projects"
 
 export default {
   name: "ProjectList",
@@ -88,9 +88,8 @@ export default {
   },
   methods: {
     search (condition) {
-      console.log(condition)
       const { currentPage, pageSize } = this.paginationConfig
-      listProjects(currentPage, pageSize).then(data => {
+      searchProject(currentPage, pageSize, condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
@@ -112,12 +111,7 @@ export default {
               message: this.$t("commons.msg.delete_success")
             })
             this.search()
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
+            this.$emit("refresh")
           })
         })
     },

@@ -25,3 +25,7 @@ export function deleteProject (name) {
 export function allProjects () {
   return get(`${projectUrl}`)
 }
+
+export function searchProject (currentPage, pageSize, condition) {
+  return post(`${projectUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, condition)
+}

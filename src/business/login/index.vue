@@ -8,7 +8,7 @@
               <img src="../../assets/KubeOperator-black.png" alt="">
             </div>
             <div class="login-title">
-              {{ $t('login.title') }}
+              {{ systemName }}
             </div>
             <div class="login-border"></div>
             <div class="login-welcome">
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+  import {getTheme} from "@/api/theme";
+
   export default {
     name: "Login",
     data() {
@@ -64,7 +66,8 @@
         },
         msg: '',
         redirect: undefined,
-        otherQuery: {}
+        otherQuery: {},
+        systemName: this.$t('login.title')
       }
     },
     watch: {
@@ -81,6 +84,7 @@
     },
     created: function () {
       document.addEventListener("keydown", this.watchEnter);
+      this.getSystemName()
     },
 
     destroyed() {
@@ -116,8 +120,15 @@
           }
           return acc
         }, {})
+      },
+      getSystemName() {
+        getTheme().then( data => {
+          if (data.systemName !== ''){
+            this.systemName = data.systemName
+          }
+        }).catch(() => this.systemName = this.$t('login.title'))
       }
-    }
+    },
   }
 </script>
 

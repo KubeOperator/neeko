@@ -1,19 +1,23 @@
 <template>
 
-  <layout-content :header="$t('project.project')" :description="$t('')">
+  <layout-content :header="$t('project.project')" :description="$t('')" v-loading="loading">
     <el-row>
-      <el-col :span="6" v-loading="loadingProject">
+      <el-col :span="6">
         <el-tree
                 class="filter-tree"
                 :data="resources"
                 :props="props"
+                node-key="id"
+                :default-expanded-keys="expendKey"
+                :current-node-key="currentKey"
                 ref="tree"
+                :highlight-current="true"
                 @node-click="toPage">
         </el-tree>
       </el-col>
-      <el-col :span="18" v-loading="loadingResource">
+      <el-col :span="18">
         <management :name="name" :type="type" v-if="type!=='PROJECT_LIST'"></management>
-        <project-list v-if="type==='PROJECT_LIST'"></project-list>
+        <project-list @refresh="getTree" v-if="type==='PROJECT_LIST'"></project-list>
       </el-col>
     </el-row>
   </layout-content>
@@ -30,6 +34,7 @@ import ProjectList from "@/business/authorization/projects"
 export default {
   name: "ProjectAuthorizationList",
   components: { ProjectList, Management, LayoutContent },
+  props: ["expendType", "expendName"],
   data () {
     return {
       resources: [{
@@ -42,10 +47,11 @@ export default {
         children: "children",
         label: "label"
       },
-      loadingProject: false,
-      loadingResource: false,
       type: "PROJECT_LIST",
       name: "",
+      expendKey: [0],
+      currentKey: 0,
+      loading:false
     }
   },
   methods: {
@@ -54,14 +60,36 @@ export default {
       this.name = data.label
     },
     getTree () {
-      this.loadingProject = true
+      this.loading = true
       getResourceTree().then(data => {
-        this.loadingProject = false
+        this.loading = false
         this.resources[0].children = data
+        this.expendKey = [7]
+        if (this.expendName !== undefined && this.expendType !== undefined) {
+          this.type = this.expendType
+          this.name = this.expendName
+          this.getExpendItem(data)
+        }
       })
+    },
+    getExpendItem(data){
+      for (const d of data) {
+        if (d.type === this.expendType && d.label === this.expendName) {
+          this.expendKey = [d.id]
+          this.currentKey = d.id
+          this.$nextTick(function(){
+            this.$refs["tree"].setCurrentKey(this.currentKey);
+          })
+        }else {
+          if (d.children !== null) {
+            this.getExpendItem(d.children)
+          }
+        }
+      }
     }
   },
-  watch: {},
+  watch: {
+  },
   created () {
     this.getTree()
   },

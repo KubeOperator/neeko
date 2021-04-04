@@ -1,18 +1,21 @@
 <template>
   <el-row>
-    <el-tabs tab-position="left" v-model="resourceType" @tab-click="listResourceList(resourceType)">
+    <el-tabs tab-position="left" v-model="resourceType" @tab-click="getProjectResourceList(resourceType)">
       <el-tab-pane :label="$t('host.host')" name="HOST">
         <complex-table
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
-                v-loading="loading">
+                v-loading="loading"
+                @selection-change="handleSelectionChange">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" >{{ $t("commons.button.delete") }}</el-button>
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
+                {{ $t("commons.button.delete") }}
+              </el-button>
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
@@ -44,13 +47,16 @@
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
-                v-loading="loading">
+                v-loading="loading"
+                @selection-change="handleSelectionChange">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small">{{ $t("commons.button.delete") }}</el-button>
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
+                {{ $t("commons.button.delete") }}
+              </el-button>
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
@@ -60,7 +66,7 @@
           <el-table-column :label="$t('automatic.plan.deploy_template')" mix-width="100">
             <template v-slot:default="{ row }">
               <el-tag type="info" size="small">
-                {{ $t("automatic.plan."+row.deployTemplate) }}
+                {{ $t("automatic.plan." + row.deployTemplate) }}
               </el-tag>
             </template>
           </el-table-column>
@@ -74,13 +80,16 @@
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
-                v-loading="loading">
+                v-loading="loading"
+                @selection-change="handleSelectionChange">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small">{{ $t("commons.button.delete") }}</el-button>
+              <el-button size="small" :disabled="selects.length === 0" @click="openDelete()">
+                {{ $t("commons.button.delete") }}
+              </el-button>
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
@@ -97,7 +106,6 @@
             <template v-slot:default="{ row }">
               <el-tag type="info" size="small">
                 {{ row.status }}
-<!--                {{ $t("automatic.plan."+row.deployTemplate) }}-->
               </el-tag>
             </template>
           </el-table-column>
@@ -107,12 +115,50 @@
         </complex-table>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog
+            :visible="openCreatePage"
+            :title="$t('project.add_project_resource')"
+            width="30%"
+            @close="cancel">
+      <el-select
+              v-model="form.names"
+              size="medium"
+              multiple
+              filterable
+              style="width:100%">
+        <el-option
+                v-for="(item,index) in resources"
+                :key="index"
+                :value="item.name">
+          <span style="float: left">{{ item.name }}</span>
+          <span v-if="resourceType==='HOST'" style="color: #8492a6; font-size: 13px">
+            {{ "\u00a0\u00a0\u00a0" + item.ip }}
+          </span>
+          <span v-if="resourceType==='PLAN'" style="color: #8492a6; font-size: 13px">
+            {{ "\u00a0\u00a0\u00a0" + $t("automatic.plan." + item.deployTemplate) }}
+          </span>
+          <span v-if="resourceType==='BACKUP_ACCOUNT'"
+                style="color: #8492a6; font-size: 13px">{{ "\u00a0\u00a0\u00a0" + item.bucket }}</span>
+        </el-option>
+      </el-select>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancel">{{ $t("commons.button.cancel") }}</el-button>
+          <el-button type="primary" @click="submit">{{ $t("commons.button.save") }}</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </el-row>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listProjectResources} from "@/api/project-resource"
+import {
+  listProjectResources,
+  getResourceList,
+  createProjectResource,
+  deleteProjectResource
+} from "@/api/project-resource"
 
 export default {
   name: "ResourceList",
@@ -121,14 +167,7 @@ export default {
   data () {
     return {
       columns: [],
-      buttons: [
-        {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          type: "danger",
-          click: this.openDelete
-        }
-      ],
+      buttons: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -136,14 +175,21 @@ export default {
       },
       data: [],
       resourceType: "HOST",
-      loading: false
+      loading: false,
+      selects: [],
+      openCreatePage: false,
+      searchResourceLoading: false,
+      resources: [],
+      form: {
+        names: []
+      }
     }
   },
   created () {
-    this.listResourceList(this.resourceType)
+    this.getProjectResourceList(this.resourceType)
   },
   methods: {
-    listResourceList (resourceType) {
+    getProjectResourceList (resourceType) {
       this.data = []
       this.loading = true
       this.paginationConfig = {
@@ -151,6 +197,7 @@ export default {
         pageSize: 10,
         total: 0
       }
+      this.selects = []
       const { currentPage, pageSize } = this.paginationConfig
       if (this.type === "PROJECT") {
         listProjectResources(this.name, resourceType, currentPage, pageSize).then(data => {
@@ -160,6 +207,52 @@ export default {
         })
       }
     },
+    handleSelectionChange (val) {
+      this.selects = val
+    },
+    create () {
+      getResourceList(this.name, this.resourceType).then(data => {
+        this.resources = data
+        this.openCreatePage = true
+      })
+    },
+    cancel () {
+      this.openCreatePage = false
+      this.form.names = []
+      this.resources = []
+    },
+    submit () {
+      createProjectResource(this.name, {
+        resourceType: this.resourceType,
+        names: this.form.names
+      }).then(() => {
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.create_success"),
+        })
+        this.getProjectResourceList(this.resourceType)
+        this.cancel()
+      })
+    },
+    openDelete () {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning"
+      }).then(() => {
+        const ps = []
+        for (const item of this.selects) {
+          ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+        }
+        Promise.all(ps).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.getProjectResourceList(this.resourceType)
+        })
+      })
+    }
   },
   computed: {
     resource () {
@@ -173,7 +266,7 @@ export default {
     resource: {
       handler (newValue, oldValue) {
         if (newValue !== oldValue) {
-          this.listResourceList(this.resourceType)
+          this.getProjectResourceList(this.resourceType)
         }
       }
     },
