@@ -15,7 +15,6 @@ export function updateCredentials(name, data) {
   return patch(`${settingUrl}/${name}`,data)
 }
 
-export function deleteCredentials(currentPage, pageSize) {
-  return del(`${settingUrl}/?pageNum=${currentPage}&pageSize=${pageSize}`)
+export function deleteCredentials(name) {
+  return del(`${settingUrl}/${name}`)
 }
-
