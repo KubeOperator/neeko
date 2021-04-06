@@ -250,6 +250,7 @@ const message = {
         ensure_disable_istio: "是否确认禁用集群 istio？",
     }
   },
+  },
   host: {
     host: "主机",
     memory: "内存",
@@ -372,7 +373,6 @@ const message = {
     bucket: "桶",
     type: "类型",
     status: "状态"
-  },
   },
   setting: {
     registry: "仓库",
