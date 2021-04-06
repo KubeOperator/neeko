@@ -204,6 +204,14 @@ const message = {
       overview: {
         source: "来源",
       },
+      event: {
+        msg_info: "信息",
+        msg_type: "类型",
+        component: "组件",
+        enable_npd: "启用 NPD",
+        enable_npd_success: "NPD 启用成功",
+        disable_npd_success: "NPD 禁用成功",
+      },
       log: {
         time: "时间",
         msg_info: "消息内容",
@@ -247,6 +255,7 @@ const message = {
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
         ensure_disable_istio: "是否确认禁用集群 istio？",
+      }
     }
   },
   host: {
@@ -447,7 +456,6 @@ const message = {
       inputPassword: "请输入密码",
       messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
-  }
   }
 }
 
