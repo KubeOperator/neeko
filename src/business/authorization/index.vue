@@ -51,7 +51,7 @@ export default {
       name: "",
       expendKey: [0],
       currentKey: 0,
-      loading:false
+      loading: false
     }
   },
   methods: {
@@ -72,15 +72,15 @@ export default {
         }
       })
     },
-    getExpendItem(data){
+    getExpendItem (data) {
       for (const d of data) {
         if (d.type === this.expendType && d.label === this.expendName) {
           this.expendKey = [d.id]
           this.currentKey = d.id
-          this.$nextTick(function(){
-            this.$refs["tree"].setCurrentKey(this.currentKey);
+          this.$nextTick(function () {
+            this.$refs["tree"].setCurrentKey(this.currentKey)
           })
-        }else {
+        } else {
           if (d.children !== null) {
             this.getExpendItem(d.children)
           }
@@ -88,8 +88,7 @@ export default {
       }
     }
   },
-  watch: {
-  },
+  watch: {},
   created () {
     this.getTree()
   },
