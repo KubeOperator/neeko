@@ -160,6 +160,12 @@ import {
   deleteProjectResource
 } from "@/api/project-resource"
 
+import {
+  listClusterResources,
+  createClusterResource,
+  deleteClusterResource
+} from "@/api/cluster-resource"
+
 export default {
   name: "ResourceList",
   components: { ComplexTable },
@@ -206,6 +212,13 @@ export default {
           this.loading = false
         })
       }
+      if (this.type === "CLUSTER") {
+        listClusterResources(this.name, resourceType, currentPage, pageSize).then(data => {
+          this.data = data.items
+          this.paginationConfig.total = data.total
+          this.loading = false
+        })
+      }
     },
     handleSelectionChange (val) {
       this.selects = val
@@ -222,17 +235,32 @@ export default {
       this.resources = []
     },
     submit () {
-      createProjectResource(this.name, {
-        resourceType: this.resourceType,
-        names: this.form.names
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: this.$t("commons.msg.create_success"),
+      if (this.type === "PROJECT") {
+        createProjectResource(this.name, {
+          resourceType: this.resourceType,
+          names: this.form.names
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.create_success"),
+          })
+          this.getProjectResourceList(this.resourceType)
+          this.cancel()
         })
-        this.getProjectResourceList(this.resourceType)
-        this.cancel()
-      })
+      }
+      if (this.type === "CLUSTER") {
+        createClusterResource(this.name, {
+          resourceType: this.resourceType,
+          names: this.form.names
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.create_success"),
+          })
+          this.getProjectResourceList(this.resourceType)
+          this.cancel()
+        })
+      }
     },
     openDelete () {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
@@ -242,7 +270,12 @@ export default {
       }).then(() => {
         const ps = []
         for (const item of this.selects) {
-          ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+          if (this.type === "PROJECT") {
+            ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+          }
+          if (this.type === "CLUSTER") {
+            ps.push(deleteClusterResource(this.name, item.name, this.resourceType))
+          }
         }
         Promise.all(ps).then(() => {
           this.$message({

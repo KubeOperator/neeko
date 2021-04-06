@@ -5,13 +5,13 @@
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item :label="$t('message.dingding_phone')">
+            <el-form-item :label="$t('message.dingTalk_phone')">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('message.dingding_phone_help')}}</span></div>
+              <div><span class="input-help">{{$t('message.dingTalk_phone_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('message.work_wechart_id')">
+            <el-form-item :label="$t('message.work_wechat_id')">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('message.work_wechart_id_help')}}</span></div>
+              <div><span class="input-help">{{$t('message.work_wechat_id_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('message.email')">
               <el-input v-model="form.name"></el-input>
@@ -33,7 +33,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
 
 export default {
-  name: "HostCreate",
+  name: "MessageReceiver",
   components: { LayoutContent },
   data() {
     return {
