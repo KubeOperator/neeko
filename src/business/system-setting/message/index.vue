@@ -79,8 +79,8 @@
           <p style="font-size: 12px;color: #4E5051">{{ $t('setting.helpInfo.messageInfo')}}</p>
         </el-form-item>
         <el-form-item>
-          <el-button type="success" @click="dingTalkVerify" :disabled="!btnSelectDk">{{$t('commons.button.verify')}}</el-button>
-          <el-button type="primary" @click="dingTalkOnSubmit" :disabled="btn">{{$t('commons.button.submit')}}</el-button>
+          <el-button type="success" @click="dingTalkVerify" :disabled="btnSelectDk">{{$t('commons.button.verify')}}</el-button>
+          <el-button type="primary" @click="dingTalkOnSubmit" :disabled="btnDk">{{$t('commons.button.submit')}}</el-button>
         </el-form-item>
       </el-form>
       </el-card>
@@ -103,7 +103,8 @@ export default {
         vars: {},
         tab: ''
       },
-      btn: false
+      btn: false,
+      btnDk: false
     }
   },
   methods: {
@@ -162,7 +163,7 @@ export default {
           type: 'success',
           message: this.$t('commons.msg.verify_success')
         });
-        this.btn = false
+        this.btnDk = false
       })
     },
     getWechat() {
@@ -192,7 +193,7 @@ export default {
       }
     },
     btnSelectDk(){
-      let status = this.dingTalk.vars['DING_TALK']
+      let status = this.dingTalk.vars['DING_TALK_STATUS']
       if (status == "ENABLE"){
         return false
       }else {
