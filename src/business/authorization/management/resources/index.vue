@@ -162,7 +162,8 @@ import {
 
 import {
   listClusterResources,
-  createClusterResource
+  createClusterResource,
+  deleteClusterResource
 } from "@/api/cluster-resource"
 
 export default {
@@ -269,7 +270,12 @@ export default {
       }).then(() => {
         const ps = []
         for (const item of this.selects) {
-          ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+          if (this.type === "PROJECT") {
+            ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+          }
+          if (this.type === "CLUSTER") {
+            ps.push(deleteClusterResource(this.name, item.name, this.resourceType))
+          }
         }
         Promise.all(ps).then(() => {
           this.$message({
