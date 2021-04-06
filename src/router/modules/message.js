@@ -5,6 +5,7 @@ const Message = {
   sort: 7,
   component: Layout,
   name: "message",
+  props: true,
   meta: {
     title: "route.message",
     icon: "el-icon-message",
@@ -12,31 +13,49 @@ const Message = {
   },
   children: [
     {
-      path: "messages",
+      path: "/message",
       component: () => import("@/business/message/index"),
-      name: "Messages",
+      name: "messages",
       meta: {
         title: "route.message",
         roles: ["admin"]
-      }
-    },
-    {
-      path: "receiver",
-      component: () => import("@/business/message/receiver/index"),
-      name: "Receivers",
-      meta: {
-        title: "route.message_receiver",
-        roles: ["admin"]
-      }
-    },
-    {
-      path: "subscribe",
-      component: () => import("@/business/message/subscribe/index"),
-      name: "Subscribes",
-      meta: {
-        title: "route.message_subscribe",
-        roles: ["admin"]
-      }
+      },
+      hidden: true,
+      redirect: to => {
+        return {
+          name: 'MessagesCenter',
+          params: to.params,
+        }
+      },
+      children: [
+        {
+          path: "message-center",
+          component: () => import("@/business/message/message-center"),
+          name: "MessagesCenter",
+          meta: {
+            title: "route.message",
+            roles: ["admin"]
+          }
+        },
+        {
+          path: "receiver",
+          component: () => import("@/business/message/receiver/index"),
+          name: "Receivers",
+          meta: {
+            title: "route.message_receiver",
+            roles: ["admin"]
+          }
+        },
+        {
+          path: "subscribe",
+          component: () => import("@/business/message/subscribe/index"),
+          name: "Subscribes",
+          meta: {
+            title: "route.message_subscribe",
+            roles: ["admin"]
+          }
+        }
+      ]
     }
   ]
 }

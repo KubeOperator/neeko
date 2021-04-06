@@ -3,7 +3,7 @@ import Layout from "@/business/app-layout/horizontal-layout";
 const SystemSetting = {
   path: '/setting',
   component: Layout,
-  name: 'SystemSetting',
+  name: 'systemSetting',
   props: true,
   meta: {
     title: "route.system_setting",
@@ -13,6 +13,12 @@ const SystemSetting = {
   children: [
     {
       path: '/setting',
+      name: "SystemSetting",
+      component: () => import('@/business/system-setting/index'),
+      meta: {
+        activeMenu: "/setting",
+        roles: ['admin']
+      },
       hidden: true,
       props: true,
       redirect: to => {
@@ -112,12 +118,6 @@ const SystemSetting = {
           }
         }
       ],
-      name: "SystemSetting",
-      component: () => import('@/business/system-setting/index'),
-      meta: {
-        activeMenu: "/setting",
-        roles: ['admin']
-      }
     },
     {
       name: "RegistryCreate",
