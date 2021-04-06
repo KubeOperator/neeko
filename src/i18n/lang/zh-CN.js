@@ -79,6 +79,7 @@ const message = {
       description: "描述",
       create_time: "创建时间",
       type: "类型",
+      username: "用户名"
     },
     status: {
       running: "运行中",
@@ -372,6 +373,7 @@ const message = {
     type: "类型",
     status: "状态"
   },
+  },
   setting: {
     registry: "仓库",
     ntp: "NTP",
@@ -448,7 +450,7 @@ const message = {
       messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
   }
-  }
+
 }
 
 export default {
