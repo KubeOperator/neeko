@@ -182,6 +182,28 @@ const Cluster = {
           }
         },
         {
+          path: "storage-provisioner-create",
+          name: "ClusterStorageProvionerCreate",
+          hidden: true,
+          props: true,
+          component: () => import("@/business/clusters/detail/storage/provisioner-create"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["admin"]
+          }
+        },
+        {
+          path: "storage-class-create",
+          name: "ClusterStorageClassCreate",
+          hidden: true,
+          props: true,
+          component: () => import("@/business/clusters/detail/storage/class-create"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["admin"]
+          }
+        },
+        {
           path: "grade",
           name: "ClusterGrade",
           hidden: true,
