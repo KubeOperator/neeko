@@ -13,6 +13,11 @@
                 ref="tree"
                 :highlight-current="true"
                 @node-click="toPage">
+          <span class="custom-tree-node"  slot-scope="{ node,data }">
+              <i v-if="data.type ==='CLUSTER'" class="el-icon-c-scale-to-original"></i>
+              <i v-if="data.type !=='CLUSTER'" class="el-icon-s-data"></i>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ node.label }}</span>
+          </span>
         </el-tree>
       </el-col>
       <el-col :span="18">
@@ -59,7 +64,7 @@ export default {
   },
   methods: {
     toPage (data) {
-      this.setParam(data.type,data.label)
+      this.setParam(data.type, data.label)
       this.type = data.type
       this.name = data.label
     },
@@ -69,7 +74,7 @@ export default {
         this.loading = false
         this.resources[0].children = data
         if (this.expendName !== undefined && this.expendType !== undefined) {
-          this.setParam(this.expendType,this.expendName)
+          this.setParam(this.expendType, this.expendName)
           this.getExpendItem(data)
         }
       })
