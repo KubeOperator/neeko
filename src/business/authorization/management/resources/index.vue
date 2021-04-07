@@ -43,7 +43,7 @@
           </el-table-column>
         </complex-table>
       </el-tab-pane>
-      <el-tab-pane :label="$t('automatic.plan.name')" name="PLAN">
+      <el-tab-pane :label="$t('automatic.plan.name')" name="PLAN" v-if="authObj">
         <complex-table
                 :data="data"
                 :colums="columns"
@@ -61,7 +61,7 @@
               </el-button>
             </el-button-group>
           </template>
-          <el-table-column type="selection" fix v-if="authObj.type !== 'CLUSTER'"></el-table-column>
+          <el-table-column type="selection" fix></el-table-column>
           <el-table-column :label="$t('commons.table.name')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
@@ -166,7 +166,8 @@ import {
 import {
   listClusterResources,
   createClusterResource,
-  deleteClusterResource
+  deleteClusterResource,
+  getResourceAddList
 } from "@/api/cluster-resource"
 
 export default {
@@ -222,10 +223,18 @@ export default {
       this.selects = val
     },
     create () {
-      getResourceList(this.authObj.projectName, this.resourceType).then(data => {
-        this.resources = data
-        this.openCreatePage = true
-      })
+      if (this.authObj.type === "PROJECT") {
+        getResourceList(this.authObj.projectName, this.resourceType).then(data => {
+          this.resources = data
+          this.openCreatePage = true
+        })
+      }
+      if (this.authObj.type === "CLUSTER") {
+        getResourceAddList(this.authObj.projectName, this.authObj.clusterName, this.resourceType).then(data => {
+          this.resources = data
+          this.openCreatePage = true
+        })
+      }
     },
     cancel () {
       this.openCreatePage = false
@@ -284,7 +293,7 @@ export default {
         })
       })
     },
-    changeTab() {
+    changeTab () {
       this.paginationConfig = {
         currentPage: 1,
         pageSize: 10,

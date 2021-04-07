@@ -2,10 +2,10 @@
   <el-row>
     <el-tabs v-model="active" @tab-click="changeItem" type="border-card">
       <el-tab-pane :label="$t('project.member')" name="member">
-        <member-list :auth-obj.sync="authObj"></member-list>
+        <member-list :auth-obj="authObj"></member-list>
       </el-tab-pane>
       <el-tab-pane :label="$t('project.resource')" name="resource">
-        <resource-list :auth-obj.sync="authObj"></resource-list>
+        <resource-list :auth-obj="authObj"></resource-list>
       </el-tab-pane>
     </el-tabs>
   </el-row>
