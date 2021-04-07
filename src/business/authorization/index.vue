@@ -16,8 +16,8 @@
         </el-tree>
       </el-col>
       <el-col :span="18">
-        <management :name="name" :type="type" v-if="type!=='PROJECT_LIST'"></management>
-        <project-list @refresh="getTree" v-if="type==='PROJECT_LIST'"></project-list>
+        <management :auth-obj.sync="authObj" v-if="authObj.type!=='PROJECT_LIST'"></management>
+        <project-list @refresh="getTree" v-if="authObj.type==='PROJECT_LIST'"></project-list>
       </el-col>
     </el-row>
   </layout-content>
@@ -47,15 +47,19 @@ export default {
         children: "children",
         label: "label"
       },
-      type: "PROJECT_LIST",
-      name: "",
       expendKey: [0],
       currentKey: 0,
-      loading: false
+      loading: false,
+      authObj: {
+        type: "PROJECT_LIST",
+        projectName: "",
+        clusterName: "",
+      }
     }
   },
   methods: {
     toPage (data) {
+      this.setParam(data.type,data.label)
       this.type = data.type
       this.name = data.label
     },
@@ -64,10 +68,8 @@ export default {
       getResourceTree().then(data => {
         this.loading = false
         this.resources[0].children = data
-        this.expendKey = [7]
         if (this.expendName !== undefined && this.expendType !== undefined) {
-          this.type = this.expendType
-          this.name = this.expendName
+          this.setParam(this.expendType,this.expendName)
           this.getExpendItem(data)
         }
       })
@@ -83,6 +85,29 @@ export default {
         } else {
           if (d.children !== null) {
             this.getExpendItem(d.children)
+          }
+        }
+      }
+    },
+    setParam (type, name) {
+      if (type !== "CLUSTER") {
+        this.authObj = {
+          type: type,
+          projectName: name
+        }
+      } else {
+        for (const resource of this.resources[0].children) {
+          const projectName = resource.label
+          if (resource.children !== null) {
+            for (const cluster of resource.children) {
+              if (cluster.label === name) {
+                this.authObj = {
+                  type: type,
+                  projectName: projectName,
+                  clusterName: name
+                }
+              }
+            }
           }
         }
       }

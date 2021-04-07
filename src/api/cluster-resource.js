@@ -1,7 +1,7 @@
 import {del, get, post} from "@/plugins/request"
 
-const clusterResourceUrl = (cluster_name) => {
-  return `/cluster/${cluster_name}/resources`
+const clusterResourceUrl = (projectName,clusterName) => {
+  return `/project/${projectName}/cluster/${clusterName}/resources`
 }
 
 export function listClusterResources (clusterName, resourceType, currentPage, pageSize) {
