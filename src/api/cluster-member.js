@@ -1,17 +1,17 @@
 import {del, get, post} from "@/plugins/request"
 
-const clusterMemberUrl = (clusterName) => {
-  return `cluster/${clusterName}/members`
+const clusterMemberUrl = (projectName, clusterName) => {
+  return `/project/${projectName}/cluster/${clusterName}/members`
 }
 
-export function listClusterMembers (clusterName, currentPage, pageSize) {
-  return get(`${clusterMemberUrl(clusterName)}?pageNum=${currentPage}&pageSize=${pageSize}`)
+export function listClusterMembers (projectName, clusterName, currentPage, pageSize) {
+  return get(`${clusterMemberUrl(projectName, clusterName)}?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
-export function createClusterMember (clusterName, data) {
-  return post(`${clusterMemberUrl(clusterName)}`, data)
+export function createClusterMember (projectName, clusterName, data) {
+  return post(`${clusterMemberUrl(projectName, clusterName)}`, data)
 }
 
-export function deleteClusterMember(clusterName,name) {
-  return del(`${clusterMemberUrl(clusterName)}/${name}`)
+export function deleteClusterMember (projectName, clusterName, name) {
+  return del(`${clusterMemberUrl(projectName, clusterName)}/${name}`)
 }

@@ -1,13 +1,14 @@
 <template>
   <el-row>
-    <el-tabs tab-position="left" v-model="resourceType" @tab-click="getProjectResourceList(resourceType)">
+    <el-tabs tab-position="left" v-model="resourceType" @tab-click="changeTab()">
       <el-tab-pane :label="$t('host.host')" name="HOST">
         <complex-table
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
@@ -42,14 +43,15 @@
           </el-table-column>
         </complex-table>
       </el-tab-pane>
-      <el-tab-pane :label="$t('automatic.plan.name')" name="PLAN">
+      <el-tab-pane :label="$t('automatic.plan.name')" name="PLAN" v-if="authObj">
         <complex-table
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
-          <template #header>
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
+          <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
@@ -81,7 +83,8 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
@@ -163,13 +166,14 @@ import {
 import {
   listClusterResources,
   createClusterResource,
-  deleteClusterResource
+  deleteClusterResource,
+  getResourceAddList
 } from "@/api/cluster-resource"
 
 export default {
   name: "ResourceList",
   components: { ComplexTable },
-  props: ["name", "type"],
+  props: ["authObj"],
   data () {
     return {
       columns: [],
@@ -192,28 +196,23 @@ export default {
     }
   },
   created () {
-    this.getProjectResourceList(this.resourceType)
+    this.getProjectResourceList()
   },
   methods: {
-    getProjectResourceList (resourceType) {
+    getProjectResourceList () {
       this.data = []
       this.loading = true
-      this.paginationConfig = {
-        currentPage: 1,
-        pageSize: 10,
-        total: 0
-      }
       this.selects = []
       const { currentPage, pageSize } = this.paginationConfig
-      if (this.type === "PROJECT") {
-        listProjectResources(this.name, resourceType, currentPage, pageSize).then(data => {
+      if (this.authObj.type === "PROJECT") {
+        listProjectResources(this.authObj.projectName, this.resourceType, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
           this.loading = false
         })
       }
-      if (this.type === "CLUSTER") {
-        listClusterResources(this.name, resourceType, currentPage, pageSize).then(data => {
+      if (this.authObj.type === "CLUSTER") {
+        listClusterResources(this.authObj.projectName, this.authObj.clusterName, this.resourceType, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
           this.loading = false
@@ -224,10 +223,18 @@ export default {
       this.selects = val
     },
     create () {
-      getResourceList(this.name, this.resourceType).then(data => {
-        this.resources = data
-        this.openCreatePage = true
-      })
+      if (this.authObj.type === "PROJECT") {
+        getResourceList(this.authObj.projectName, this.resourceType).then(data => {
+          this.resources = data
+          this.openCreatePage = true
+        })
+      }
+      if (this.authObj.type === "CLUSTER") {
+        getResourceAddList(this.authObj.projectName, this.authObj.clusterName, this.resourceType).then(data => {
+          this.resources = data
+          this.openCreatePage = true
+        })
+      }
     },
     cancel () {
       this.openCreatePage = false
@@ -235,8 +242,8 @@ export default {
       this.resources = []
     },
     submit () {
-      if (this.type === "PROJECT") {
-        createProjectResource(this.name, {
+      if (this.authObj.type === "PROJECT") {
+        createProjectResource(this.authObj.projectName, {
           resourceType: this.resourceType,
           names: this.form.names
         }).then(() => {
@@ -244,12 +251,12 @@ export default {
             type: "success",
             message: this.$t("commons.msg.create_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
           this.cancel()
         })
       }
-      if (this.type === "CLUSTER") {
-        createClusterResource(this.name, {
+      if (this.authObj.type === "CLUSTER") {
+        createClusterResource(this.authObj.projectName, this.authObj.clusterName, {
           resourceType: this.resourceType,
           names: this.form.names
         }).then(() => {
@@ -257,7 +264,7 @@ export default {
             type: "success",
             message: this.$t("commons.msg.create_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
           this.cancel()
         })
       }
@@ -270,11 +277,11 @@ export default {
       }).then(() => {
         const ps = []
         for (const item of this.selects) {
-          if (this.type === "PROJECT") {
-            ps.push(deleteProjectResource(this.name, item.name, this.resourceType))
+          if (this.authObj.type === "PROJECT") {
+            ps.push(deleteProjectResource(this.authObj.projectName, item.name, this.resourceType))
           }
-          if (this.type === "CLUSTER") {
-            ps.push(deleteClusterResource(this.name, item.name, this.resourceType))
+          if (this.authObj.type === "CLUSTER") {
+            ps.push(deleteClusterResource(this.authObj.projectName, this.authObj.clusterName, item.name, this.resourceType))
           }
         }
         Promise.all(ps).then(() => {
@@ -282,26 +289,23 @@ export default {
             type: "success",
             message: this.$t("commons.msg.delete_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
         })
       })
-    }
-  },
-  computed: {
-    resource () {
-      const { name, type } = this
-      return {
-        name, type
+    },
+    changeTab () {
+      this.paginationConfig = {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
       }
+      this.getProjectResourceList()
     }
   },
+  computed: {},
   watch: {
-    resource: {
-      handler (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          this.getProjectResourceList(this.resourceType)
-        }
-      }
+    authObj () {
+      this.getProjectResourceList()
     },
   }
 }
