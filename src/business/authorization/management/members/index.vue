@@ -5,7 +5,8 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
-            @selection-change="handleSelectionChange">
+            @selection-change="handleSelectionChange"
+            @search="getMemberList">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="openCreate()">

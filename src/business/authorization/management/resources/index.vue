@@ -1,13 +1,14 @@
 <template>
   <el-row>
-    <el-tabs tab-position="left" v-model="resourceType" @tab-click="getProjectResourceList(resourceType)">
+    <el-tabs tab-position="left" v-model="resourceType" @tab-click="changeTab()">
       <el-tab-pane :label="$t('host.host')" name="HOST">
         <complex-table
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
@@ -48,8 +49,9 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
-          <template #header>
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
+          <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
               <el-button size="small" @click="create()">
                 {{ $t("commons.button.create") }}
@@ -59,7 +61,7 @@
               </el-button>
             </el-button-group>
           </template>
-          <el-table-column type="selection" fix></el-table-column>
+          <el-table-column type="selection" fix v-if="authObj.type !== 'CLUSTER'"></el-table-column>
           <el-table-column :label="$t('commons.table.name')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
@@ -81,7 +83,8 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @search="getProjectResourceList">
           <template #header>
             <el-button-group>
               <el-button size="small" @click="create()">
@@ -192,28 +195,23 @@ export default {
     }
   },
   created () {
-    this.getProjectResourceList(this.resourceType)
+    this.getProjectResourceList()
   },
   methods: {
-    getProjectResourceList (resourceType) {
+    getProjectResourceList () {
       this.data = []
       this.loading = true
-      this.paginationConfig = {
-        currentPage: 1,
-        pageSize: 10,
-        total: 0
-      }
       this.selects = []
       const { currentPage, pageSize } = this.paginationConfig
       if (this.authObj.type === "PROJECT") {
-        listProjectResources(this.authObj.projectName, resourceType, currentPage, pageSize).then(data => {
+        listProjectResources(this.authObj.projectName, this.resourceType, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
           this.loading = false
         })
       }
       if (this.authObj.type === "CLUSTER") {
-        listClusterResources(this.authObj.projectName,this.authObj.clusterName, resourceType, currentPage, pageSize).then(data => {
+        listClusterResources(this.authObj.projectName, this.authObj.clusterName, this.resourceType, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
           this.loading = false
@@ -244,12 +242,12 @@ export default {
             type: "success",
             message: this.$t("commons.msg.create_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
           this.cancel()
         })
       }
       if (this.authObj.type === "CLUSTER") {
-        createClusterResource(this.authObj.projectName,this.authObj.clusterName, {
+        createClusterResource(this.authObj.projectName, this.authObj.clusterName, {
           resourceType: this.resourceType,
           names: this.form.names
         }).then(() => {
@@ -257,7 +255,7 @@ export default {
             type: "success",
             message: this.$t("commons.msg.create_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
           this.cancel()
         })
       }
@@ -274,7 +272,7 @@ export default {
             ps.push(deleteProjectResource(this.authObj.projectName, item.name, this.resourceType))
           }
           if (this.authObj.type === "CLUSTER") {
-            ps.push(deleteClusterResource(this.authObj.projectName,this.authObj.clusterName, item.name, this.resourceType))
+            ps.push(deleteClusterResource(this.authObj.projectName, this.authObj.clusterName, item.name, this.resourceType))
           }
         }
         Promise.all(ps).then(() => {
@@ -282,16 +280,23 @@ export default {
             type: "success",
             message: this.$t("commons.msg.delete_success"),
           })
-          this.getProjectResourceList(this.resourceType)
+          this.getProjectResourceList()
         })
       })
+    },
+    changeTab() {
+      this.paginationConfig = {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
+      }
+      this.getProjectResourceList()
     }
   },
-  computed: {
-  },
+  computed: {},
   watch: {
-    authObj() {
-      this.getProjectResourceList(this.resourceType)
+    authObj () {
+      this.getProjectResourceList()
     },
   }
 }
