@@ -307,7 +307,7 @@ export default {
       })
     },
     openFrame(item) {
-      window.open(item.url.replace("{cluster_name}", this.currentCluster.name), "_blank")
+      window.open(item.url.replace("{cluster_name}", this.clusterName), "_blank")
     },
     onEnable(item) {
       this.conditions = ""
@@ -412,7 +412,7 @@ export default {
           }
         }
         if (flag) {
-          listTool(this.currentCluster.name).then((data) => {
+          listTool(this.clusterName).then((data) => {
             this.tools = data
           })
         }

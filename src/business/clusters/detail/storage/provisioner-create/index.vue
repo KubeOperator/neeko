@@ -235,6 +235,9 @@ export default {
           this.form.vars["oceanstor_controller_type"] = "single"
           this.form.vars["oceanstor_is_multipath"] = "no"
           break
+        case "vsphere":
+          this.form.name = "csi.vsphere.vmware.com"
+          break
       }
     },
     changeBlockEnable() {

@@ -1,16 +1,17 @@
 <template>
   <layout-content>
     <el-row style="margin-top: 20px">
-      <el-col :span="4"><br /></el-col>
+      <el-col :span="3"><br /></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" label-width="120px">
+          <el-form :model="form" label-width="200px">
             <el-form-item :label="$t('commons.table.name')">
-              <el-input size="small" v-model="createName"></el-input>
+              <el-input size="small" v-model="form.metadata.name"></el-input>
+              <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.provisioner_short')">
-              <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="createInfo">
-                <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="selectShow" :value="item">[{{item.type}}]{{item.name}}</el-option>
+              <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name">
+                <el-option v-for="item of provisioners" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
 
@@ -67,25 +68,21 @@
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.class.storage_policy_type')">
                 <el-radio-group v-model="form.parameters['storagePolicyType']">
-                  <el-radio value="BuiltIn" :label="$t('cluster.detail.storage.class.build_in')">{{$t('cluster.detail.storage.build_in')}}</el-radio>
-                  <el-radio value="Custom" :label="$t('cluster.detail.storage.custom')">{{$t('cluster.detail.storage.custom')}}</el-radio>
+                  <el-radio label="BuiltIn">{{$t('cluster.detail.storage.class.build_in')}}</el-radio>
+                  <el-radio label="Custom">{{$t('cluster.detail.storage.class.custom')}}</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item v-if="form.parameters['storagePolicyType']==='BuiltIn'" :label="$t('cluster.detail.storage.class.storage_policy')">
-                <el-select style="width: 100%" v-model="form.vars['storagePolicyName']">
+                <el-select style="width: 100%" v-model="form.parameters['storagePolicyName']">
                   <el-option value='vSAN Default Storage Policy' label='vSAN Default Storage Policy' />
                   <el-option value='Management Storage Policy - Large' label='Management Storage Policy - Large' />
-                  <el-option value='Management Storage Policy - Single
-                                Node' label='Management Storage Policy - Single
-                                Node' />
+                  <el-option value='Management Storage Policy - Single Node' label='Management Storage Policy - Single Node' />
                   <el-option value='Management Storage policy - Thin' label='Management Storage policy - Thin' />
-                  <el-option value='Management Storage Policy -
-                                Stretched' label='Management Storage Policy -
-                                Stretched' />
+                  <el-option value='Management Storage Policy - Stretched' label='Management Storage Policy - Stretched' />
                 </el-select>
               </el-form-item>
               <el-form-item v-if="form.parameters['storagePolicyType']==='Custom'" :label="$t('cluster.detail.storage.class.storage_policy')">
-                <el-input style="width: 100%" v-model="form.vars['storagePolicyName']" />
+                <el-input style="width: 100%" v-model="form.parameters['storagePolicyName']" />
               </el-form-item>
             </div>
             <div v-if="createType === 'glusterfs'">
@@ -99,7 +96,7 @@
                 <el-input v-model="form.parameters['restuser']" placeholder="eg: admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="REST PASSWORD">
-                <el-input v-model="form.parameters['restuserkey']" name="restuserkey" clearable></el-input>
+                <el-input v-model="form.parameters['restuserkey']" type="password" name="restuserkey" clearable></el-input>
               </el-form-item>
               <el-form-item label="Namespace">
                 <el-input @change="checkSecrets()" v-model="form.parameters['secretNamespace']" placeholder="eg: kube-system" clearable></el-input>
@@ -126,30 +123,30 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="volumeType">
-                <el-select style="width: 100%" v-model="form.vars['volumeType']">
+                <el-select style="width: 100%" v-model="form.parameters['volumeType']">
                   <el-option value='lun' label='lun'>lun</el-option>
                   <el-option value='fs' label='fs'>fs</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item v-if="form.vars['volumeType'] === 'fs'" label="authClient">
-                <el-input v-model="form.vars['authClient']" placeholder="demo1,demo2" />
+              <el-form-item v-if="form.parameters['volumeType'] === 'fs'" label="authClient">
+                <el-input v-model="form.parameters['authClient']" placeholder="demo1,demo2" />
               </el-form-item>
               <el-form-item label="allocType">
-                <el-select style="width: 100%" v-model="form.vars['allocType']">
+                <el-select style="width: 100%" v-model="form.parameters['allocType']">
                   <el-option value='thin' label='thin'>thin</el-option>
                   <el-option value='thick' label='thick'>thick</el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="cloneFrom">
-                <el-input v-model="form.vars['cloneFrom']" clearable />
-                <div><span class="input-help">{{$t('cluster.detail.storage.clone_form_helper')}}</span></div>
+                <el-input v-model="form.parameters['cloneFrom']" clearable />
+                <div><span class="input-help">{{$t('cluster.detail.storage.class.clone_form_helper')}}</span></div>
               </el-form-item>
               <el-form-item label="cloneSpeed">
-                <el-input v-model="form.vars['cloneSpeed']" placeholder="1-4" />
-                <div><span class="input-help">{{$t('cluster.detail.storage.clone_speed_helper')}}</span></div>
+                <el-input v-model="form.parameters['cloneSpeed']" placeholder="1-4" />
+                <div><span class="input-help">{{$t('cluster.detail.storage.class.clone_speed_helper')}}</span></div>
               </el-form-item>
               <el-form-item label="fsType">
-                <el-select style="width: 100%" v-model="form.vars['fsType']">
+                <el-select style="width: 100%" v-model="form.parameters['fsType']">
                   <el-option value='ext2' label='ext2'>ext2</el-option>
                   <el-option value='ext3' label='ext3'>ext3</el-option>
                   <el-option value='ext4' label='ext4'>ext4</el-option>
@@ -158,8 +155,8 @@
               </el-form-item>
             </div>
             <el-form-item>
-              <el-button @click="onCancel()">取消</el-button>
-              <el-button type="primary" @click="onSubmit">创建</el-button>
+              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+              <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -171,7 +168,7 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listProvisioner, createProvisioner } from "@/api/cluster/storage"
+import { listProvisioner, createStorageClass, createSecret, getSecretByName } from "@/api/cluster/storage"
 
 export default {
   name: "ProvisionerCreate",
@@ -182,7 +179,7 @@ export default {
       isSecretsExit: false,
       createType: "",
       createName: "",
-      createInfo: {},
+      provisioner: {},
       form: {
         apiVersion: "storage.k8s.io/v1",
         kind: "StorageClass",
@@ -190,8 +187,9 @@ export default {
           name: "",
         },
         provisioner: "",
-        parameters: {},
-        selectShow: "",
+        parameters: {
+          storagePolicyType: "",
+        },
       },
     }
   },
@@ -202,59 +200,104 @@ export default {
         this.provisioners.push({
           name: "kubernetes.io/no-provisioner",
           type: "local-storage",
-          vars: {},
+          parameters: {},
           status: "Running",
         })
         this.dialogClassVisible = true
       })
     },
     onSubmit() {
-      this.form.type = this.createType
-      createProvisioner(this.clusterName, this.form).then((data) => {
-        console.log(data)
-        this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
-        this.$router.push({ name: "ClusterStorage" })
-      })
+      if (this.provisioner.type === "glusterfs") {
+        const mySecret = this.newV1Secrets()
+        createSecret(this.clusterName, this.form.parameters["secretNamespace"], mySecret).then((data) => {
+          console.log(data)
+          if (this.item.parameters["restuserkey"]) {
+            delete this.item.parameters["restuserkey"]
+          }
+          this.addStorageClass()
+        })
+      } else {
+        this.addStorageClass()
+      }
+    },
+    addStorageClass() {
+      if (this.form.parameters["storagePolicyType"]) {
+        delete this.form.parameters["storagePolicyType"]
+      }
+      createStorageClass(this.clusterName, this.form).then(
+        (data) => {
+          this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
+          this.$router.push({ name: "ClusterStorage" })
+          console.log(data)
+        },
+        (error) => {
+          this.$message({ type: "error", message: error.error })
+        }
+      )
     },
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
     },
-    checkSecrets() {},
-    changeClassType() {
-        this.selectShow = this.createInfo.type
-        this.createType = this.createInfo.type
+    checkSecrets() {
+      console.log("zouiosadqwdq")
+      getSecretByName(this.clusterName, this.form.parameters["secretName"], this.form.parameters["secretNamespace"]).then(
+        (data) => {
+          console.log(data)
+          this.isSecretsExit = true
+        },
+        (error) => {
+          console.log(error)
+          this.isSecretsExit = false
+          return
+        }
+      )
     },
-    changeSelection() {
+    changeClassType() {
+      this.createType = this.provisioner.type
+      this.form.provisioner = this.provisioner.name
       switch (this.createType) {
-        case "external-ceph":
-          this.form.name = "external-ceph"
-          break
         case "rook-ceph":
-          this.form.name = "rook-ceph.rbd.csi.ceph.com"
+          this.form.parameters["clusterID"] = "rook-ceph"
+          this.form.parameters["pool"] = "replicapool"
+          this.form.parameters["imageFormat"] = "2"
+          this.form.parameters["imageFeatures"] = "layering"
+          this.form.parameters["csi.storage.k8s.io/provisioner-secret-name"] = "rook-csi-rbd-provisioner"
+          this.form.parameters["csi.storage.k8s.io/provisioner-secret-namespace"] = "rook-ceph"
+          this.form.parameters["csi.storage.k8s.io/controller-expand-secret-name"] = "rook-csi-rbd-provisioner"
+          this.form.parameters["csi.storage.k8s.io/controller-expand-secret-namespace"] = "rook-ceph"
+          this.form.parameters["csi.storage.k8s.io/node-stage-secret-name"] = "rook-csi-rbd-node"
+          this.form.parameters["csi.storage.k8s.io/node-stage-secret-namespace"] = "rook-ceph"
+          this.form.parameters["csi.storage.k8s.io/fstype"] = "ext4"
           break
-        case "cinder":
-          this.form.name = "cinder.csi.openstack.org"
-          this.form.vars["enable_blockstorage"] = "disable"
+        case "vsphere":
+          this.form.parameters["datastore"] = this.provisioner.vars["datastore"]
+          this.form.parameters["storagePolicyName"] = "vSAN Default Storage Policy"
+          this.form.parameters["storagePolicyType"] = "BuiltIn"
           break
         case "glusterfs":
-          this.form.name = "kubernetes.io/glusterfs"
+          this.form.parameters["secretNamespace"] = "kube-system"
+          this.form.parameters["restauthenabled"] = "true"
+          this.form.parameters["gidMin"] = "40000"
+          this.form.parameters["gidMax"] = "50000"
+          this.form.parameters["volumetype"] = "replicate:3"
           break
-        case "oceanstor":
-          this.form.name = "csi.huawei.com"
-          this.form.vars["oceanstor_controller_type"] = "single"
-          this.form.vars["oceanstor_is_multipath"] = "no"
+        case "cinder":
+          this.form.allowVolumeExpansion = true
           break
       }
     },
-    newV1StorageClass() {
+    newV1Secrets() {
       return {
-        apiVersion: "storage.k8s.io/v1",
-        kind: "StorageClass",
+        apiVersion: "v1",
+        kind: "Secret",
         metadata: {
-          name: "",
+          name: this.form.parameters["secretName"],
+          namespace: this.form.parameters["secretNamespace"],
         },
-        provisioner: "",
-        parameters: {},
+        stringData: {
+          key: this.form.parameters["restuserkey"],
+        },
+        type: "kubernetes.io/glusterfs",
       }
     },
   },

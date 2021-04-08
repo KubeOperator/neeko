@@ -215,6 +215,7 @@ const message = {
         provisioner: "存储提供商",
         provisioner_short: "提供商",
         provisioner_create: "添加存储提供商",
+        storage_class_exist: "此存储提供商已经绑定到存储类，不能删除！",
         provisioner_name_helper: "支持小写英文、数字和-",
         disk_name: "磁盘名称",
         disk_name_helper: "填写磁盘名称，多块磁盘使用逗号分隔，例如：'sdb,sdc'",

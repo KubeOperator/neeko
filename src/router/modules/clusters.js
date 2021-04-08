@@ -204,6 +204,17 @@ const Cluster = {
           }
         },
         {
+          path: "pv-create",
+          name: "ClusterStoragePvCreate",
+          hidden: true,
+          props: true,
+          component: () => import("@/business/clusters/detail/storage/pv-create"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["admin"]
+          }
+        },
+        {
           path: "grade",
           name: "ClusterGrade",
           hidden: true,

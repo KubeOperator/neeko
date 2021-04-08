@@ -11,6 +11,7 @@ const persistentVolumesOpUrl = "api/v1/persistentvolumes/{name}"
 const storageClassOpUrl = "apis/storage.k8s.io/v1/storageclasses/{name}"
 
 const provisionerUrl = "/clusters/provisioner/{cluster_name}"
+const secretUrl = "namespaces/{namespace}/secrets"
 
 export function listProvisioner(clusterName) {
   return get(provisionerUrl.replace("{cluster_name}", clusterName))
@@ -83,5 +84,20 @@ export function deleteStorageClass(clusterName, name) {
 
 export function deletePersistentVolume(clusterName, name) {
   const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", persistentVolumesOpUrl).replace("{name}", name)
+  return del(url)
+}
+
+export function createSecret(clusterName,namespace, item) {
+  const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", secretUrl.replace("{namespace}", namespace))
+  return post(url, item)
+}
+
+export function getSecretByName(clusterName, secretsName, namespace) {
+  const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", secretUrl.replace("{namespace}", namespace) + "/" + secretsName)
+  return get(url)
+}
+
+export function deleteSecret(clusterName, namespace, secretsName) {
+  const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", secretUrl.replace("{namespace}", namespace) + "/" + secretsName)
   return del(url)
 }
