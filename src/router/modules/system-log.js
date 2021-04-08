@@ -8,7 +8,7 @@ const SystemLog = {
   meta: {
     title: "route.system_log",
     icon: 'el-icon-notebook-2',
-    roles: ['ADMIN', "PROJECT_MANAGER"]
+    roles: ['ADMIN', "PROJECT_MANAGER","CLUSTER_MANAGER"]
   },
   children: [
     {
@@ -17,7 +17,7 @@ const SystemLog = {
       name: "Logs",
       meta: {
         title: "route.system_log",
-        roles: ['ADMIN', "PROJECT_MANAGER"]
+        roles: ['ADMIN', "PROJECT_MANAGER","CLUSTER_MANAGER"]
       }
     }
   ]
