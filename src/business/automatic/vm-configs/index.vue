@@ -1,13 +1,14 @@
 <template>
   <layout-content :header="$t('automatic.vm_config.name')">
     <complex-table
+            v-loading="loading"
             :data="data"
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             @search="search">
       <template #header>
-        <el-button size="small" @click="create()">
+        <el-button size="small" @click="create()" v-permission="['ADMIN']">
           {{ $t("commons.button.create") }}
         </el-button>
         <!--          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>-->
@@ -77,13 +78,16 @@ export default {
         pageSize: 10,
         total: 0
       },
-      data: []
+      data: [],
+      loading: false
     }
   },
   methods: {
     search (condition) {
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       searchVmConfigs(currentPage, pageSize,condition).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })

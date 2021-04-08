@@ -13,7 +13,7 @@
                 ref="tree"
                 :highlight-current="true"
                 @node-click="toPage">
-          <span class="custom-tree-node"  slot-scope="{ node,data }">
+          <span class="custom-tree-node" slot-scope="{ node,data }">
               <i v-if="data.type ==='CLUSTER'" class="el-icon-c-scale-to-original"></i>
               <i v-if="data.type !=='CLUSTER'" class="el-icon-s-data"></i>
             &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ node.label }}</span>
@@ -59,14 +59,13 @@ export default {
         type: "PROJECT_LIST",
         projectName: "",
         clusterName: "",
+        permission: ["ADMIN"]
       }
     }
   },
   methods: {
     toPage (data) {
       this.setParam(data.type, data.label)
-      this.type = data.type
-      this.name = data.label
     },
     getTree () {
       this.loading = true
@@ -98,7 +97,8 @@ export default {
       if (type !== "CLUSTER") {
         this.authObj = {
           type: type,
-          projectName: name
+          projectName: name,
+          permission: ["ADMIN"]
         }
       } else {
         for (const resource of this.resources[0].children) {
@@ -109,7 +109,8 @@ export default {
                 this.authObj = {
                   type: type,
                   projectName: projectName,
-                  clusterName: name
+                  clusterName: name,
+                  permission: ["PROJECT_MANAGER"]
                 }
               }
             }
