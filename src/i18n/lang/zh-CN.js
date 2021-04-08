@@ -12,7 +12,7 @@ const message = {
       delete: "删除"
     },
     confirm_message: {
-      delete: "此操作不可撤销, 是否继续?"
+      delete: "此操作不可撤销, 是否继续?",
     },
     button: {
       login: "登录",
@@ -102,7 +102,9 @@ const message = {
     form: {
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
-      ip_range_error: "Ip范围无效"
+      ip_range_error: "Ip范围无效",
+      yes: "是",
+      no: "否",
     }
   },
   login: {
@@ -202,6 +204,53 @@ const message = {
       },
       overview: {
         source: "来源",
+      },
+      storage: {
+        type: "类型",
+        pv: "持久卷",
+        pv_create: "添加持久卷",
+        storage_class: "存储类",
+        storage_clas_create: "添加存储类",
+        provisioner_name: "提供商名称",
+        provisioner: "存储提供商",
+        provisioner_short: "提供商",
+        provisioner_create: "添加存储提供商",
+        storage_class_exist: "此存储提供商已经绑定到存储类，不能删除！",
+        provisioner_name_helper: "支持小写英文、数字和-",
+        disk_name: "磁盘名称",
+        disk_name_helper: "填写磁盘名称，多块磁盘使用逗号分隔，例如：'sdb,sdc'",
+        is_block_enable: "是否启用块存储",
+        cinder_version_helper: "当前仅支持v3版本",
+        vsphere_select_helper: "VMware 环境最低要求：1. vCenter 6.7 Update 3， 2. ESXi v6.7.0",
+        deploy_mode: "部署类型",
+        multi_path_networking: "多路径组网",
+        product: "产品",
+        manage_url: "管理 URL",
+        user_name: "用户名",
+        password: "密码",
+        storage_pool: "存储池",
+        logic_port: "逻辑端口IP",
+        business_ip: "iscsi业务IP",
+        logic_port_helper: "多个逻辑端口IP使用逗号分隔，例如：'test1,test2'",
+        business_ip_helper: "多个业务IP使用逗号分隔，例如：'10.1.1.1,10.1.1.2'",
+        vcenter_host: "vCenter 主机",
+        vcenter_port: "vCenter 端口",
+        vcenter_username: "vCenter 用户名",
+        vcenter_password: "vCenter 密码",
+        ensure_provisioner_sync: "是否确认同步下列存储提供商？",
+        start_provisioner_sync: "存储提供商同步已开始，请稍候...",
+        reclaim_policy: "回收策略",
+        volume_binding_mode: "卷绑定模式",
+        capacity: "容量",
+        source: "来源",
+        class: {
+          clone_form_helper: "可选，格式为存储后端名.原卷名",
+          clone_speed_helper: "可选，默认值3，支持1~4，4速度最快",
+          storage_policy_type: "存储策略类型",
+          storage_policy: "存储策略",
+          build_in: "内置",
+          custom: "自定义",
+        },
       },
       event: {
         msg_info: "信息",
