@@ -205,6 +205,9 @@ const message = {
       overview: {
         source: "来源",
       },
+      node: {
+        increment: "增量",
+      },
       storage: {
         type: "类型",
         pv: "持久卷",

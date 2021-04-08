@@ -171,7 +171,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { listProvisioner, createStorageClass, createSecret, getSecretByName } from "@/api/cluster/storage"
 
 export default {
-  name: "ProvisionerCreate",
+  name: "ClusterStorageClassCreate",
   components: { LayoutContent },
   data() {
     return {

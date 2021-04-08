@@ -169,8 +169,10 @@ export default {
               if (isClassExist) {
                 this.$message({ type: "error", message: this.$t("cluster.detail.storage.storage_class_exist") })
               } else {
-                deleteProvisioner(this.clusterName, row).then(this.$message({ type: "success", message: this.$t("commons.msg.delete_success") }))
-                this.search()
+                deleteProvisioner(this.clusterName, row).then(() => {
+                  this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+                  this.search()
+                })
               }
             })
             break

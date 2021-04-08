@@ -99,7 +99,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { listStorageClass, createPersistentVolume } from "@/api/cluster/storage"
 
 export default {
-  name: "ProvisionerCreate",
+  name: "ClusterStoragePvCreate",
   components: { LayoutContent },
   data() {
     return {
