@@ -84,7 +84,7 @@
             </div>
             <el-form-item>
               <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              <el-button type="primary" :disabled="!pvType" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
