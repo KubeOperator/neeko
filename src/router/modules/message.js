@@ -9,7 +9,7 @@ const Message = {
   meta: {
     title: "route.message",
     icon: "el-icon-message",
-    roles: ["admin"]
+    roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
   },
   children: [
     {
@@ -18,7 +18,7 @@ const Message = {
       name: "messages",
       meta: {
         title: "route.message",
-        roles: ["admin"]
+        roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
       },
       hidden: true,
       redirect: to => {
@@ -34,7 +34,7 @@ const Message = {
           name: "MessagesCenter",
           meta: {
             title: "route.message",
-            roles: ["admin"]
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }
         },
         {
@@ -43,7 +43,7 @@ const Message = {
           name: "Receivers",
           meta: {
             title: "route.message_receiver",
-            roles: ["admin"]
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }
         },
         {
@@ -52,7 +52,7 @@ const Message = {
           name: "Subscribes",
           meta: {
             title: "route.message_subscribe",
-            roles: ["admin"]
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }
         }
       ]

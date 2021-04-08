@@ -13,7 +13,7 @@ const Host = {
       meta: {
         title: "route.host",
         icon: 'el-icon-c-scale-to-original',
-        roles: ['admin']
+        roles: ['ADMIN', "PROJECT_MANAGER"]
       },
     },
     {
@@ -22,7 +22,7 @@ const Host = {
       component: () => import('@/business/hosts/create'),
       meta: {
         activeMenu: "/hosts/list",
-        roles: ['admin']
+        roles: ['ADMIN']
       },
     }
   ]

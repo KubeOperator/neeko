@@ -17,7 +17,7 @@ const SystemSetting = {
       component: () => import('@/business/system-setting/index'),
       meta: {
         activeMenu: "/setting",
-        roles: ['admin']
+        roles: ['ADMIN']
       },
       hidden: true,
       props: true,
@@ -36,7 +36,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/registry'),
           meta: {
             // activeMenu: "/setting",
-            roles: ['admin'],
+            roles: ['ADMIN'],
             // requireLicense: true,
           },
         },
@@ -48,7 +48,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/ntp'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -59,7 +59,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/credential'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -70,7 +70,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/email'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -81,7 +81,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/ldap'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -92,7 +92,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/license'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -103,7 +103,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/theme'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         },
         {
@@ -114,7 +114,7 @@ const SystemSetting = {
           component: () => import('@/business/system-setting/message'),
           meta: {
             activeMenu: "/setting",
-            roles: ['admin']
+            roles: ['ADMIN']
           }
         }
       ],
@@ -126,7 +126,7 @@ const SystemSetting = {
       component: () => import('@/business/system-setting/registry/create'),
       meta: {
         // activeMenu: "/setting",
-        roles: ['admin']
+        roles: ['ADMIN']
       },
     },{
       name: "RegistryEdit",
@@ -136,7 +136,7 @@ const SystemSetting = {
       component: () => import('@/business/system-setting/registry/edit'),
       meta: {
         // activeMenu: "/setting",
-        roles: ['admin']
+        roles: ['ADMIN']
       }
     },{
       name: "CredentialCreate",
@@ -144,7 +144,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/credential/create'),
       meta: {
-        roles: ['admin']
+        roles: ['ADMIN']
       },
     },{
       name: "CredentialEdit",
@@ -153,7 +153,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/credential/edit'),
       meta: {
-        roles: ['admin']
+        roles: ['ADMIN']
       }
     },
   ]
