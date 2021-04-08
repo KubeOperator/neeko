@@ -8,7 +8,7 @@ const Manifest = {
   meta: {
     title: "route.manifest",
     icon: "el-icon-s-grid",
-    roles: ["admin"]
+    roles: ["ADMIN","PROJECT_MANAGER"]
   },
   children: [
     {
@@ -17,7 +17,7 @@ const Manifest = {
       name: "Manifests",
       meta: {
         title: "route.manifest",
-        roles: ["admin"]
+        roles: ["ADMIN","PROJECT_MANAGER"]
       }
     }
   ]

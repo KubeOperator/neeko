@@ -1,7 +1,7 @@
 import {del, get, post} from "@/plugins/request"
 
 const clusterMemberUrl = (projectName, clusterName) => {
-  return `/project/${projectName}/cluster/${clusterName}/members`
+  return `/projects/${projectName}/clusters/${clusterName}/members`
 }
 
 export function listClusterMembers (projectName, clusterName, currentPage, pageSize) {
