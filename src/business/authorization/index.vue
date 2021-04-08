@@ -119,7 +119,8 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+  },
   created () {
     this.getTree()
   },
