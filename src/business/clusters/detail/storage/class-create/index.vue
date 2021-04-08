@@ -156,7 +156,7 @@
             </div>
             <el-form-item>
               <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              <el-button type="primary" :disabled="!(createType || form.metadata.name)" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -171,7 +171,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { listProvisioner, createStorageClass, createSecret, getSecretByName } from "@/api/cluster/storage"
 
 export default {
-  name: "ProvisionerCreate",
+  name: "ClusterStorageClassCreate",
   components: { LayoutContent },
   data() {
     return {

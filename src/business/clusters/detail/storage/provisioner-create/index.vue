@@ -75,11 +75,11 @@
                 <el-input v-model="form.vars['cinder_domain_name']" placeholder="eg: Default" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-                <el-switch style="width: 80%" v-model="form.vars['enable_blockstorage']"></el-switch>
+                <el-switch style="width: 80%" @change="changeBlockEnable()" active-value="enable" inactive-value="disable" v-model="enableBlockStorage" />
               </el-form-item>
-              <div v-if="form.vars['enable_blockstorage']">
+              <div v-if="enableBlockStorage === 'enable'">
                 <el-form-item label="Version">
-                  <el-select style="width: 100%" @change="changeBlockEnable()" v-model="form.vars['cinder_blockstorage_version']">
+                  <el-select style="width: 100%" v-model="form.vars['cinder_blockstorage_version']">
                     <el-option value='V3' label='V3'>V3</el-option>
                   </el-select>
                   <div><span class="input-help">{{$t('cluster.detail.storage.cinder_version_helper')}}</span></div>
@@ -176,7 +176,7 @@
             </div>
             <el-form-item>
               <el-button @click="onCancel()">取消</el-button>
-              <el-button type="primary" @click="onSubmit">创建</el-button>
+              <el-button :disabled="!createType" type="primary" @click="onSubmit">创建</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -191,7 +191,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { createProvisioner } from "@/api/cluster/storage"
 
 export default {
-  name: "ProvisionerCreate",
+  name: "ClusterStorageProvionerCreate",
   components: { LayoutContent },
   data() {
     return {
@@ -201,13 +201,16 @@ export default {
         type: "",
         vars: {},
       },
+      enableBlockStorage: "disable",
     }
   },
   methods: {
     onSubmit() {
       this.form.type = this.createType
-      createProvisioner(this.clusterName, this.form).then((data) => {
-        console.log(data)
+      if(this.form.type === "conder") {
+        this.form.vars["enable_blockstorage"] = this.enableBlockStorage
+      }
+      createProvisioner(this.clusterName, this.form).then(() => {
         this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
         this.$router.push({ name: "ClusterStorage" })
       })
@@ -216,6 +219,7 @@ export default {
       this.$router.push({ name: "ClusterStorage" })
     },
     changeSelection() {
+      this.form.vars = {}
       switch (this.createType) {
         case "external-ceph":
           this.form.name = "external-ceph"
@@ -225,7 +229,7 @@ export default {
           break
         case "cinder":
           this.form.name = "cinder.csi.openstack.org"
-          this.form.vars["enable_blockstorage"] = "disable"
+          this.enableBlockStorage = "disable"
           break
         case "glusterfs":
           this.form.name = "kubernetes.io/glusterfs"
@@ -241,7 +245,7 @@ export default {
       }
     },
     changeBlockEnable() {
-      if (this.form.vars["enable_blockstorage"] === "disable") {
+      if (this.enableBlockStorage === "disable") {
         this.form.vars["cinder_blockstorage_version"] = ""
         this.form.vars["node_volume_attach_limit"] = ""
       } else {
