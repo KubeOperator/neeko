@@ -1,57 +1,57 @@
 import Layout from "@/business/app-layout/horizontal-layout"
 
 const Message = {
-  path: "/message",
+  path: "/message-center",
   sort: 7,
   component: Layout,
-  name: "message",
+  name: "MessageCenter",
   props: true,
   meta: {
-    title: "route.message",
+    title: "route.message_center",
     icon: "el-icon-message",
     roles: ["admin"]
   },
   children: [
     {
-      path: "/message",
-      component: () => import("@/business/message/index"),
-      name: "messages",
+      path: "/message-center",
+      component: () => import("@/business/message-center/index"),
+      name: "message-center",
       meta: {
-        title: "route.message",
+        title: "route.message_center",
         roles: ["admin"]
       },
       hidden: true,
       redirect: to => {
         return {
-          name: 'MessagesCenter',
+          name: 'Messages',
           params: to.params,
         }
       },
       children: [
         {
-          path: "message-center",
-          component: () => import("@/business/message/message-center"),
-          name: "MessagesCenter",
+          path: "message",
+          component: () => import("@/business/message-center/message"),
+          name: "Messages",
           meta: {
-            title: "route.message",
+            title: "message.message",
             roles: ["admin"]
           }
         },
         {
           path: "receiver",
-          component: () => import("@/business/message/receiver/index"),
-          name: "Receivers",
+          component: () => import("@/business/message-center/receiver/index"),
+          name: "MessageReceiver",
           meta: {
-            title: "route.message_receiver",
+            title: "message.message_receiver",
             roles: ["admin"]
           }
         },
         {
           path: "subscribe",
-          component: () => import("@/business/message/subscribe/index"),
-          name: "Subscribes",
+          component: () => import("@/business/message-center/subscribe/index"),
+          name: "MessageSubscribes",
           meta: {
-            title: "route.message_subscribe",
+            title: "message.message_subscribe",
             roles: ["admin"]
           }
         }
