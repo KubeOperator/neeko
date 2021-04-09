@@ -9,9 +9,9 @@
 
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
-        <template slot-scope="scope">
-          <span style="margin: 12px">{{scope.row.status.phase}}
-            <i v-if="scope.row.status.phase === 'Terminating'" class="el-icon-loading" />
+        <template v-slot:default="{row}">
+          <span style="margin: 12px">{{row.status.phase}}
+            <i v-if="row.status.phase === 'Terminating'" class="el-icon-loading" />
           </span>
         </template>
       </el-table-column>
@@ -21,8 +21,8 @@
         </template>
       </el-table-column>
       <el-table-column fixed="right" :label="$t('commons.table.action')">
-        <template slot-scope="scope">
-          <el-button :disabled="isInSystemSpace(scope.row)" @click="goDelete(scope.row)" type="danger" circle icon="el-icon-delete" size="small" />
+        <template v-slot:default="{row}">
+          <el-button :disabled="isInSystemSpace(row)" @click="goDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
         </template>
       </el-table-column>
     </complex-table>
