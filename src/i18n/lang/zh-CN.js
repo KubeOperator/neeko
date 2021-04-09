@@ -446,7 +446,9 @@ const message = {
     description: "描述",
     add_project_manager: "添加项目管理员",
     add_project_resource: "添加资源",
-    key_words: "请输入姓名"
+    key_words: "请输入姓名",
+    list:"项目列表",
+    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
   },
   credential: {
     name: "凭据名称",
