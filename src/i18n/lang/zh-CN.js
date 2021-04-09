@@ -313,6 +313,18 @@ const message = {
         match_info: "匹配内容",
         match_info_quick: "按 匹配内容 查询",
       },
+      grade: {
+        danger: "严重",
+        warning: "警告",
+        pass: "通过",
+        total: "总量",
+        health_checks: "健康检查",
+        images: "镜像",
+        networking: "网络",
+        reliability: "可靠性",
+        resources: "资源",
+        security: "安全",
+      },
       tool: {
         enable_title: "启用工具",
         disable_title: "禁用工具",
