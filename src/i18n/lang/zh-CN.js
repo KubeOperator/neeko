@@ -33,6 +33,7 @@ const message = {
       jump_to: "转到",
       search: "查询",
       verify: "校验",
+      management: "管理",
       submit: "提交",
       refresh: "刷新"
     },
@@ -124,7 +125,8 @@ const message = {
     message_center: "消息中心",
     system_log: "系统日志",
     complex_table: "复合表格",
-    user: "用户"
+    user: "用户",
+    multi_cluster: "多集群管理"
   },
   cluster: {
     cluster: "集群",
@@ -382,8 +384,12 @@ const message = {
       host: "主机",
       name: "名称",
       type: "类型",
-      kind: "组件",
-      Detail: "详情"
+      kind: "类别",
+      component: "组件",
+      Detail: "详情",
+      namespace: "命名空间",
+      cause: "原因",
+      time: "时间"
     },
     READ: "已读",
     UNREAD: "未读"
@@ -467,8 +473,8 @@ const message = {
     PROJECT_MANAGER: "项目管理员",
     description: "描述",
     add_project_manager: "添加项目管理员",
-    key_words:"请输入姓名",
     add_project_resource: "添加资源",
+    key_words: "请输入姓名"
   },
   credential: {
     name: "凭据名称",
@@ -559,6 +565,18 @@ const message = {
       inputPassword: "请输入密码",
       messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
+  },
+  multi_cluster: {
+    multi_cluster: "多集群",
+    repository_setting: "仓库设置",
+    senior_setting: "高级设置",
+    address: "地址",
+    branch: "分支",
+    auth: "认证",
+    username: "用户名",
+    password: "密码",
+    sync_interval: "同步间隔",
+    pull_timeout: "拉取超时时间",
   }
 }
 
