@@ -2,7 +2,7 @@ import Layout from "@/business/app-layout/horizontal-layout"
 
 const XPack = {
   path: "/xpack",
-  sort: 7,
+  sort: 8,
   name: "XPack",
   component: Layout,
   meta: {
@@ -67,12 +67,51 @@ const XPack = {
     },
     {
       path: "message-center",
-      component: () => import("@/business/message"),
-      name: "MessageCenter",
+      component: () => import("@/business/message-center/index"),
+      name: "message-center",
       meta: {
-        title: "route.message"
-      }
-    },
+        title: "route.message_center",
+        roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+      },
+      redirect: to => {
+        return {
+          name: 'Messages',
+          params: to.params,
+        }
+      },
+      children: [
+        {
+          path: "message",
+          component: () => import("@/business/message-center/message"),
+          name: "Messages",
+          hidden: true,
+          meta: {
+            title: "message.message",
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        },
+        {
+          path: "receiver",
+          component: () => import("@/business/message-center/receiver/index"),
+          name: "MessageReceiver",
+          hidden: true,
+          meta: {
+            title: "message.message_receiver",
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        },
+        {
+          path: "subscribe",
+          hidden: true,
+          component: () => import("@/business/message-center/subscribe/index"),
+          name: "MessageSubscribes",
+          meta: {
+            title: "message.message_subscribe",
+            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        }
+      ]
+    }
   ]
 }
 export default XPack

@@ -23,7 +23,6 @@
           </el-row>
         </template>
       </el-table-column>
-      <!--      <el-table-column label="IP" min-width="100" prop="ip" fix/>-->
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
           <el-tag v-if="row.status === 'active'" type="success" size="small">{{$t('commons.status.active')}}</el-tag>
@@ -99,7 +98,7 @@
         },
         paginationConfig: {
           currentPage: 1,
-          pageSize: 5,
+          pageSize: 10,
           total: 0,
         },
         data: [],
