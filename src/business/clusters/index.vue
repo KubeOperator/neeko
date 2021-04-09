@@ -11,8 +11,8 @@
 
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
-        <template slot-scope="scope">
-          <el-button v-if="scope.row.status === 'Running'" @click="goForDetail(scope.row)" type="text">{{scope.row.name}}</el-button>
+        <template v-slot:default="{row}">
+          <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text">{{row.name}}</el-button>
         </template>
       </el-table-column>
       <el-table-column :label="$t('cluster.version')" min-width="100" prop="spec.version" fix />
