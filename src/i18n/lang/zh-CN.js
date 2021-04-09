@@ -354,8 +354,12 @@ const message = {
       host: "主机",
       name: "名称",
       type: "类型",
-      kind: "组件",
-      Detail: "详情"
+      kind: "类别",
+      component: "组件",
+      Detail: "详情",
+      namespace: "命名空间",
+      cause: "原因",
+      time: "时间"
     },
     READ: "已读",
     UNREAD: "未读"

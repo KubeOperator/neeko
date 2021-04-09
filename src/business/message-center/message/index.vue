@@ -40,15 +40,21 @@
       :before-close="handleClose">
       <span>{{ $t('message.detail.basicInformation') }}</span>
       <el-divider></el-divider>
-      <div>
-        <ul id="v-for-object" class="demo">
+      <div v-if="detail.message.title === 'CLUSTER_EVENT_WARNING'">
           <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
           <p>{{ $t('message.detail.host') }}: {{detail.msgContent.host}}</p>
           <p>{{ $t('message.detail.name') }}: {{detail.msgContent.name}}</p>
           <p>{{ $t('message.detail.type') }}: {{detail.msgContent.type}}</p>
-          <p>{{ $t('message.detail.kind') }}: {{detail.msgContent.kind}}</p>
+          <p>{{ $t('message.detail.component') }}: {{detail.msgContent.component}}</p>
           <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent.message}}</p>
-        </ul>
+          <p>{{ $t('message.detail.kind') }}: {{detail.msgContent.kind}}</p>
+          <p>{{ $t('message.detail.cause') }}: {{detail.msgContent.reason}}</p>
+          <p>{{ $t('message.detail.time') }}: {{detail.msgContent.createdAt | datetimeFormat }}</p>
+      </div>
+      <div v-if="detail.message.title !== 'CLUSTER_EVENT_WARNING'">
+          <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
+          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent.message}}</p>
+          <p>{{ $t('message.detail.time') }}: {{detail.createdAt | datetimeFormat }}</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -88,8 +94,15 @@ export default {
       detail: {
         message: {},
         readStatus: '',
-        msgContent: {},
-        clusterName: ''
+        msgContent: {
+          createdAt: '',
+          host: '',
+          kind: '',
+          component: '',
+          message: '',
+          reason: '',
+        },
+        clusterName: '',
       }
     }
   },
