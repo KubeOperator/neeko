@@ -49,6 +49,7 @@ const message = {
       enable_success: "启用成功",
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
+      update_success: "更新成功"
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -120,7 +121,7 @@ const message = {
     host: "主机",
     system_setting: "系统设置",
     manifest: "版本管理",
-    message: "消息中心",
+    message_center: "消息中心",
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户"
@@ -332,6 +333,7 @@ const message = {
     gpu: "GPU(个)"
   },
   message: {
+    message: "消息",
     message_center: "消息中心",
     message_receiver: "接受源",
     message_subscribe: "消息订阅",
@@ -349,6 +351,22 @@ const message = {
     mail: "邮件",
     work_wechat: "企业微信",
     dingTalk: "钉钉",
+    title: {
+      CLUSTER_EVENT_WARNING: "集群事件告警",
+      CLUSTER_INSTALL: "集群安装"
+    },
+    detail: {
+      basicInformation: "基本信息",
+      messageDetail: "消息详情",
+      clusterName: "集群",
+      host: "主机",
+      name: "名称",
+      type: "类型",
+      kind: "组件",
+      Detail: "详情"
+    },
+    READ: "已读",
+    UNREAD: "未读"
   },
   user: {
     username: "用户名",
