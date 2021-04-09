@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
+import { getMessageReceicver, updateMessageReceicver } from "@/api/xpack/message"
 
 export default {
   name: "MessageReceiver",

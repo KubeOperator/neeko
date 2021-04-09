@@ -26,7 +26,7 @@
 
 <script>
   import ComplexTable from "@/components/complex-table"
-  import { getMessageOfSubscribe, updateMessageOfSubscribe } from "@/api/message"
+  import { getMessageOfSubscribe, updateMessageOfSubscribe } from "@/api/xpack/message"
 
   export default {
     name: "MessageSubscribes",

@@ -30,7 +30,7 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { getMessageReceicver, updateMessageReceicver } from "@/api/message"
+import { getMessageReceicver, updateMessageReceicver } from "@/api/xpack/message"
 
 export default {
   name: "MessageReceiver",

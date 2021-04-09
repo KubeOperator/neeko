@@ -2,9 +2,9 @@
   <div>
     <complex-table :header="$t('message.message')" @selection-change="handleSelectionChange"
                    :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search">
-      <template #header>
+      <template  #header>
         <el-button-group>
-          <el-button size="small" :disabled="Selection.length < 1"  @click="markAsRead()">
+          <el-button size="small" :disabled="Selection.length < 1"  @click="markAsRead(row)">
             {{ $t("message.mark_as_read") }}</el-button>
           <el-button size="small" :disabled="Selection.length < 1"  @click="remove()">
             {{ $t("commons.button.delete") }}</el-button>
@@ -66,7 +66,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table";
-import {getMessagesByUser, updateMessageStatus} from "@/api/message";
+import {getMessagesByUser, updateMessageStatus} from "@/api/xpack/message";
 
 export default {
   name: "MessageCenter",
@@ -110,7 +110,9 @@ export default {
     handleSelectionChange(val) {
       this.Selection = val
     },
-    markAsRead() {},
+    markAsRead(data) {
+      console.log(123,data)
+    },
     del() {},
     search() {
       const { currentPage, pageSize } = this.paginationConfig
@@ -129,7 +131,6 @@ export default {
           operation: "update"
         })
       }
-      console.log(123,data)
       this.detail = data
       this.dialogVisible = true
     },
