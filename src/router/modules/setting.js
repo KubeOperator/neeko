@@ -8,7 +8,7 @@ const SystemSetting = {
   meta: {
     title: "route.system_setting",
     icon: 'el-icon-setting',
-    roles: ['admin']
+    roles: ['ADMIN']
   },
   children: [
     {
