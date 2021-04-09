@@ -208,6 +208,9 @@ const message = {
       node: {
         increment: "增量",
       },
+      namespace: {
+        before_delete: "删除失败,该命名空间下已存在工具：",
+      },
       storage: {
         type: "类型",
         pv: "持久卷",

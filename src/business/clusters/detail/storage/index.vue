@@ -113,7 +113,6 @@ export default {
       storageClassDatas: [],
       clusterName: "",
       provisionerSelection: [],
-      dialogDeleteVisible: false,
       dialogSyncVisible: false,
       activeName: this.$t("cluster.detail.storage.pv"),
     }
@@ -194,7 +193,6 @@ export default {
             })
             break
         }
-        this.dialogDeleteVisible = false
       })
     },
     deleteClass(deleteName) {
