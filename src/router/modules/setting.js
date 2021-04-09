@@ -8,7 +8,7 @@ const SystemSetting = {
   meta: {
     title: "route.system_setting",
     icon: 'el-icon-setting',
-    roles: ['ADMIN']
+    roles: ["ADMIN"]
   },
   children: [
     {
@@ -35,9 +35,7 @@ const SystemSetting = {
           props: true,
           component: () => import('@/business/system-setting/registry'),
           meta: {
-            // activeMenu: "/setting",
             roles: ['ADMIN'],
-            // requireLicense: true,
           },
         },
         {

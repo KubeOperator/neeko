@@ -20,8 +20,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template v-slot:default="{row}">
-                <el-button @click="goDelete(row, 'pv')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template slot-scope="scope">
+                <el-button @click="goDelete(scope.row, 'pv')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -45,8 +45,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template v-slot:default="{row}">
-                <el-button @click="goDelete(row, 'class')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template slot-scope="scope">
+                <el-button @click="goDelete(scope.row, 'class')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -65,9 +65,9 @@
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template v-slot:default="{row}">
-                <span style="margin: 12px">{{row.status}}
-                  <i v-if="row.status === 'Initializing' || row.status === 'Terminating' || row.status === 'Synchronizing' || row.status === 'Waiting'" class="el-icon-loading" />
+              <template slot-scope="scope">
+                <span style="margin: 12px">{{scope.row.status}}
+                  <i v-if="scope.row.status === 'Initializing' || scope.row.status === 'Terminating' || scope.row.status === 'Synchronizing' || scope.row.status === 'Waiting'" class="el-icon-loading" />
                 </span>
               </template>
             </el-table-column>
@@ -77,8 +77,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template v-slot:default="{row}">
-                <el-button @click="goDelete(row, 'provisioner')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template slot-scope="scope">
+                <el-button @click="goDelete(scope.row, 'provisioner')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -113,6 +113,7 @@ export default {
       storageClassDatas: [],
       clusterName: "",
       provisionerSelection: [],
+      dialogDeleteVisible: false,
       dialogSyncVisible: false,
       activeName: this.$t("cluster.detail.storage.pv"),
     }
@@ -193,6 +194,7 @@ export default {
             })
             break
         }
+        this.dialogDeleteVisible = false
       })
     },
     deleteClass(deleteName) {
