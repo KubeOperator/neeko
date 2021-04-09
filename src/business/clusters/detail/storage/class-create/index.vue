@@ -224,13 +224,10 @@ export default {
       if (this.form.parameters["storagePolicyType"]) {
         delete this.form.parameters["storagePolicyType"]
       }
-      createStorageClass(this.clusterName, this.form).then(
-        (data) => {
+      createStorageClass(this.clusterName, this.form).then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
           this.$router.push({ name: "ClusterStorage" })
-          console.log(data)
-        },
-        (error) => {
+        },(error) => {
           this.$message({ type: "error", message: error.error })
         }
       )

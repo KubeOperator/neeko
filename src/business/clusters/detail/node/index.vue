@@ -11,13 +11,13 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
       <el-table-column label="IP" min-width="100" prop="ip" fix>
-        <template slot-scope="scope">{{getInternalIp(scope.row)}}</template>
+        <template v-slot:default="{row}">{{getInternalIp(row)}}</template>
       </el-table-column>
       <el-table-column :label="$t('cluster.version')" min-width="100" prop="ip" fix>
-        <template slot-scope="scope">{{getVersion(scope.row)}}</template>
+        <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
       <el-table-column label="Roles" min-width="100" prop="ip" fix>
-        <template slot-scope="scope">{{getNodeRoles(scope.row)}}</template>
+        <template v-slot:default="{row}">{{getNodeRoles(row)}}</template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix />
       <el-table-column :label="$t('commons.table.create_time')">

@@ -199,7 +199,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        csi: "csi扫描",
+        security: "cis 扫描",
         grade: "集群评分",
       },
       overview: {
@@ -265,6 +265,14 @@ const message = {
         enable_npd: "启用 NPD",
         enable_npd_success: "NPD 启用成功",
         disable_npd_success: "NPD 禁用成功",
+      },
+      security: {
+        start_time: "开始时间",
+        end_time: "结束时间",
+        cis_result: "Cis 扫描结果",
+        code: "编号",
+        description: "描述",
+        advise: "建议",
       },
       log: {
         time: "时间",
