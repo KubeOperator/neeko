@@ -35,6 +35,7 @@ const message = {
       verify: "校验",
       management: "管理",
       submit: "提交",
+      update: "更新",
       refresh: "刷新"
     },
     msg: {
@@ -296,6 +297,12 @@ const message = {
         code: "编号",
         description: "描述",
         advise: "建议",
+      },
+      f5: {
+        big_ip_addr: "BIG-IP 地址",
+        big_ip_user_name: "BIG-IP 用户名",
+        big_ip_password: "BIG-IP 密码",
+        big_ip_public: "BIG-IP 外网IP",
       },
       log: {
         time: "时间",

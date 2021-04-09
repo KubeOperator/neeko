@@ -12,7 +12,11 @@
           <span v-if="row.status !=='Success'" />
         </template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix />
+      <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
+        <template v-slot:default="{row}">
+          {{ row.startTime | datetimeFormat }}
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('cluster.detail.security.end_time')" min-width="100" prop="endTime" fix>
         <template v-slot:default="{row}">
           <span v-if="row.status !=='Running'">{{ row.endTime | datetimeFormat }}</span>
@@ -93,7 +97,7 @@ export default {
           this.search()
         },
         (error) => {
-          this.$message({ type: "error", message: error.error })
+          this.$message({ type: "error", message: error })
         }
       )
     },
@@ -109,7 +113,7 @@ export default {
             this.search()
           },
           (error) => {
-            this.$message({ type: "error", message: error.error })
+            this.$message({ type: "error", message: error })
           }
         )
       })
