@@ -1,6 +1,7 @@
 <template>
   <el-row>
     <complex-table
+            :key="key"
             :data="data"
             :colums="columns"
             :pagination-config="paginationConfig"
@@ -9,12 +10,11 @@
             @search="getMemberList">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="openCreate()">
+          <el-button size="small" @click="openCreate()" v-permission="role">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="openDelete" :disabled="selects.length===0">{{
-              $t("commons.button.delete")
-            }}
+          <el-button size="small" @click="openDelete" :disabled="selects.length===0" v-permission="role">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -96,6 +96,7 @@ export default {
         names: []
       },
       selects: [],
+      key: 0,
     }
   },
   created () {
@@ -113,7 +114,7 @@ export default {
         })
       }
       if (this.authObj.type === "CLUSTER") {
-        listClusterMembers(this.authObj.projectName,this.authObj.clusterName, currentPage, pageSize).then(data => {
+        listClusterMembers(this.authObj.projectName, this.authObj.clusterName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -139,7 +140,7 @@ export default {
     },
     submit () {
       if (this.authObj.type === "CLUSTER") {
-        createClusterMember(this.authObj.projectName,this.authObj.clusterName, {
+        createClusterMember(this.authObj.projectName, this.authObj.clusterName, {
           userNames: this.form.names
         }).then(() => {
           this.$message({
@@ -155,7 +156,6 @@ export default {
           })
         })
       }
-
       if (this.authObj.type === "PROJECT") {
         createProjectMember(this.authObj.projectName, {
           userNames: this.form.names
@@ -186,7 +186,7 @@ export default {
             ps.push(deleteProjectMember(this.authObj.projectName, item.username))
           }
           if (this.authObj.type === "CLUSTER") {
-            ps.push(deleteClusterMember(this.authObj.projectName,this.authObj.clusterName, item.username))
+            ps.push(deleteClusterMember(this.authObj.projectName, this.authObj.clusterName, item.username))
           }
         }
         Promise.all(ps).then(() => {
@@ -203,10 +203,18 @@ export default {
     }
   },
   computed: {
+    role: function () {
+      if (this.authObj.type === "PROJECT") {
+        return ["ADMIN"]
+      } else {
+        return ["ADMIN", "PROJECT_MANAGER"]
+      }
+    }
   },
   watch: {
-    authObj() {
-        this.getMemberList()
+    authObj () {
+      this.key++
+      this.getMemberList()
     }
   }
 }

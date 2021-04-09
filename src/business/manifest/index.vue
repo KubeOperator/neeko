@@ -18,7 +18,7 @@
                     <span>{{vars.name}} : {{vars.version}}</span>
                   </ul>
                 </div>
-                <el-switch style="margin-bottom: 10px; float: right" :active-text="$t('manifest.enable')" @change="changeEnable(versionMini)" v-model="versionMini.isActive"></el-switch>
+                <el-switch style="margin-bottom: 10px; float: right" :active-text="$t('manifest.enable')" @change="changeEnable(versionMini)" v-model="versionMini.isActive" v-permission="['ADMIN']"></el-switch>
               </el-col>
             </el-card>
           </el-col>

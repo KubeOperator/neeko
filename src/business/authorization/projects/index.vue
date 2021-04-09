@@ -9,7 +9,7 @@
               :search-config="searchConfig"
               @search="search">
         <template #header>
-          <el-button size="small" @click="create()">
+          <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
           <!--          <el-button size="small">{{ $t("commons.button.delete") }}</el-button>-->
