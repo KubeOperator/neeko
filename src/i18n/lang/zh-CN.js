@@ -340,8 +340,8 @@ const message = {
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
         ensure_disable_istio: "是否确认禁用集群 istio？",
+      }
     }
-  },
   },
   host: {
     host: "主机",
@@ -473,8 +473,10 @@ const message = {
     PROJECT_MANAGER: "项目管理员",
     description: "描述",
     add_project_manager: "添加项目管理员",
-    key_words:"请输入姓名",
     add_project_resource: "添加资源",
+    key_words: "请输入姓名",
+    list:"项目列表",
+    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
   },
   credential: {
     name: "凭据名称",
@@ -578,7 +580,6 @@ const message = {
     sync_interval: "同步间隔",
     pull_timeout: "拉取超时时间",
   }
-
 }
 
 export default {

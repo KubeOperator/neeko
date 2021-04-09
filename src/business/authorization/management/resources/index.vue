@@ -192,7 +192,8 @@ export default {
       resources: [],
       form: {
         names: []
-      }
+      },
+      key: 0,
     }
   },
   created () {
