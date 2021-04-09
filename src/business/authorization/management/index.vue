@@ -2,10 +2,10 @@
   <el-row>
     <el-tabs v-model="active" @tab-click="changeItem" type="border-card">
       <el-tab-pane :label="$t('project.member')" name="member">
-        <member-list :name="name" :type="type"></member-list>
+        <member-list :auth-obj="authObj"></member-list>
       </el-tab-pane>
       <el-tab-pane :label="$t('project.resource')" name="resource">
-        <resource-list :name="name" :type="type"></resource-list>
+        <resource-list :auth-obj="authObj"></resource-list>
       </el-tab-pane>
     </el-tabs>
   </el-row>
@@ -18,7 +18,7 @@ import ResourceList from "@/business/authorization/management/resources"
 export default {
   name: "Management",
   components: { ResourceList, MemberList},
-  props: ["name", "type"],
+  props: ["authObj"],
   data () {
     return {
       active: "member",

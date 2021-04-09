@@ -85,7 +85,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { listIstio, enableIstio, disableIstio } from "@/api/cluster/istio"
 
 export default {
-  name: "Manifest",
+  name: "ClusterIstio",
   components: { LayoutContent },
   data() {
     return {

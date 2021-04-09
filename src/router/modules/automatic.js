@@ -7,7 +7,8 @@ const Automatic = {
   name: "Automatic",
   meta: {
     title: "automatic.name",
-    icon: "el-icon-date"
+    icon: "el-icon-date",
+    roles: ["ADMIN", "PROJECT_MANAGER"]
   },
   children: [
     {
@@ -15,7 +16,8 @@ const Automatic = {
       component: () => import("@/business/automatic/regions"),
       name: "RegionList",
       meta: {
-        title: "automatic.region.name"
+        title: "automatic.region.name",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -25,7 +27,7 @@ const Automatic = {
       component: () => import("@/business/automatic/regions/create"),
       meta: {
         activeMenu: "/automatic/regions",
-        roles: ["admin"]
+        roles: ["ADMIN"]
       }
     },
     {
@@ -33,7 +35,8 @@ const Automatic = {
       component: () => import("@/business/automatic/zones"),
       name: "ZoneList",
       meta: {
-        title: "automatic.zone.name"
+        title: "automatic.zone.name",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -41,7 +44,8 @@ const Automatic = {
       component: () => import("@/business/automatic/plans"),
       name: "PlanList",
       meta: {
-        title: "automatic.plan.name"
+        title: "automatic.plan.name",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     },
     {
@@ -49,7 +53,8 @@ const Automatic = {
       component: () => import("@/business/automatic/vm-configs"),
       name: "VmConfigList",
       meta: {
-        title: "automatic.vm_config.name"
+        title: "automatic.vm_config.name",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     },
     {
@@ -58,7 +63,8 @@ const Automatic = {
       name: "VmConfigCreate",
       hidden: true,
       meta: {
-        activeMenu: "/automatic/vmconfigs"
+        activeMenu: "/automatic/vmconfigs",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -68,7 +74,8 @@ const Automatic = {
       name: "VmConfigEdit",
       hidden: true,
       meta: {
-        activeMenu: "/automatic/vmconfigs"
+        activeMenu: "/automatic/vmconfigs",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -76,7 +83,8 @@ const Automatic = {
       component: () => import("@/business/automatic/ip-pools"),
       name: "IpPoolList",
       meta: {
-        title: "automatic.ip_pool.name"
+        title: "automatic.ip_pool.name",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -85,7 +93,8 @@ const Automatic = {
       component: () => import("@/business/automatic/ip-pools/create"),
       name: "IpPoolCreate",
       meta: {
-        activeMenu: "/automatic/ippools"
+        activeMenu: "/automatic/ippools",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -95,7 +104,8 @@ const Automatic = {
       component: () => import("@/business/automatic/ip-pools/ips"),
       name: "IpList",
       meta: {
-        activeMenu: "/automatic/ippools"
+        activeMenu: "/automatic/ippools",
+        roles: ["ADMIN"]
       }
     },
     {
@@ -105,7 +115,8 @@ const Automatic = {
       component: () => import("@/business/automatic/ip-pools/ips/create"),
       name: "IpCreate",
       meta: {
-        activeMenu: "ippools/:name/ips"
+        activeMenu: "ippools/:name/ips",
+        roles: ["ADMIN"]
       }
     }
   ]

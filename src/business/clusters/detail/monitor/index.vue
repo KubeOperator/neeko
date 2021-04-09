@@ -7,10 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('commons.search.time')">
-        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" 
-          :range-separator="$t('commons.search.time_range')" 
-          :start-placeholder="$t('commons.search.time_start')" 
-          :end-placeholder="$t('commons.search.time_end')">
+        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
         </el-date-picker>
       </el-form-item>
     </el-form>
@@ -48,7 +45,7 @@ let echarts = require("echarts/lib/echarts")
 import { QueryCPU, QueryMemeryTotal, QueryMemeryUsed, QueryMemeryCacheBuffer, QueryMemeryFree, QueryMemerySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
 
 export default {
-  name: "SystemLog",
+  name: "ClusterMonitor",
   components: { LayoutContent },
   data() {
     return {

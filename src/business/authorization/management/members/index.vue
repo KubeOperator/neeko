@@ -1,19 +1,20 @@
 <template>
   <el-row>
     <complex-table
+            :key="key"
             :data="data"
             :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
-            @selection-change="handleSelectionChange">
+            @selection-change="handleSelectionChange"
+            @search="getMemberList">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="openCreate()">
+          <el-button size="small" @click="openCreate()" v-permission="role">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="openDelete" :disabled="selects.length===0">{{
-              $t("commons.button.delete")
-            }}
+          <el-button size="small" @click="openDelete" :disabled="selects.length===0" v-permission="role">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -76,7 +77,7 @@ import {listClusterMembers, createClusterMember, deleteClusterMember} from "@/ap
 export default {
   name: "MemberList",
   components: { ComplexTable },
-  props: ["name", "type"],
+  props: ["authObj"],
   data () {
     return {
       columns: [],
@@ -95,26 +96,25 @@ export default {
         names: []
       },
       selects: [],
+      key: 0,
     }
   },
   created () {
-    if (this.type === "PROJECT") {
-      this.getMemberList()
-    }
+    this.getMemberList()
   },
   methods: {
     getMemberList () {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      if (this.type === "PROJECT") {
-        listProjectMembers(this.name, currentPage, pageSize).then(data => {
+      if (this.authObj.type === "PROJECT") {
+        listProjectMembers(this.authObj.projectName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
         })
       }
-      if (this.type === "CLUSTER") {
-        listClusterMembers(this.name, currentPage, pageSize).then(data => {
+      if (this.authObj.type === "CLUSTER") {
+        listClusterMembers(this.authObj.projectName, this.authObj.clusterName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -124,7 +124,7 @@ export default {
     getUsers (query) {
       if (query !== "") {
         this.searchUserLoading = true
-        listUsers(this.name, query).then(data => {
+        listUsers(this.authObj.projectName, query).then(data => {
           this.searchUserLoading = false
           this.users = data.items
         })
@@ -139,8 +139,8 @@ export default {
       this.form.names = []
     },
     submit () {
-      if (this.type === "CLUSTER") {
-        createClusterMember(this.name, {
+      if (this.authObj.type === "CLUSTER") {
+        createClusterMember(this.authObj.projectName, this.authObj.clusterName, {
           userNames: this.form.names
         }).then(() => {
           this.$message({
@@ -156,9 +156,8 @@ export default {
           })
         })
       }
-
-      if (this.type === "PROJECT") {
-        createProjectMember(this.name, {
+      if (this.authObj.type === "PROJECT") {
+        createProjectMember(this.authObj.projectName, {
           userNames: this.form.names
         }).then(() => {
           this.$message({
@@ -183,11 +182,11 @@ export default {
       }).then(() => {
         const ps = []
         for (const item of this.selects) {
-          if (this.type === "PROJECT") {
-            ps.push(deleteProjectMember(this.name, item.username))
+          if (this.authObj.type === "PROJECT") {
+            ps.push(deleteProjectMember(this.authObj.projectName, item.username))
           }
-          if (this.type === "CLUSTER") {
-            ps.push(deleteClusterMember(this.name, item.username))
+          if (this.authObj.type === "CLUSTER") {
+            ps.push(deleteClusterMember(this.authObj.projectName, this.authObj.clusterName, item.username))
           }
         }
         Promise.all(ps).then(() => {
@@ -204,21 +203,19 @@ export default {
     }
   },
   computed: {
-    member () {
-      const { name, type } = this
-      return {
-        name, type
+    role: function () {
+      if (this.authObj.type === "PROJECT") {
+        return ["ADMIN"]
+      } else {
+        return ["ADMIN", "PROJECT_MANAGER"]
       }
     }
   },
   watch: {
-    member: {
-      handler (newValue, oldValue) {
-        if (newValue !== oldValue) {
-          this.getMemberList()
-        }
-      }
-    },
+    authObj () {
+      this.key++
+      this.getMemberList()
+    }
   }
 }
 </script>

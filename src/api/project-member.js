@@ -1,7 +1,7 @@
 import {del, get, post} from "@/plugins/request"
 
 const projectMemberUrl = (project_name) => {
-  return `/project/${project_name}/members`
+  return `/projects/${project_name}/members`
 }
 
 

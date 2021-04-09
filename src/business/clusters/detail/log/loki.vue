@@ -2,10 +2,7 @@
   <div v-loading="loading">
     <el-form :inline="true">
       <el-form-item :label="$t('commons.search.time')">
-        <el-date-picker v-model="searchruleForm.timeRange" type="daterange" 
-          :range-separator="$t('commons.search.time_range')" 
-          :start-placeholder="$t('commons.search.date_start')" 
-          :end-placeholder="$t('commons.search.date_end')">
+        <el-date-picker v-model="searchruleForm.timeRange" type="daterange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.date_start')" :end-placeholder="$t('commons.search.date_end')">
         </el-date-picker>
       </el-form-item>
       <el-form-item :label="$t('cluster.detail.log.label')">

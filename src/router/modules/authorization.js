@@ -15,7 +15,8 @@ const Authorization = {
       props: true,
       meta: {
         title: "route.project",
-        icon: "el-icon-s-data"
+        icon: "el-icon-s-data",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     },
     {
@@ -24,7 +25,8 @@ const Authorization = {
       name: "Resource",
       hidden: true,
       meta: {
-        activeMenu: "/authorization/list"
+        activeMenu: "/authorization/list",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       },
     },
     {
@@ -33,7 +35,8 @@ const Authorization = {
       name: "ProjectCreate",
       hidden: true,
       meta: {
-        activeMenu: "/authorization/list"
+        activeMenu: "/authorization/list",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     },
     {
@@ -43,7 +46,8 @@ const Authorization = {
       name: "ProjectEdit",
       hidden: true,
       meta: {
-        activeMenu: "/authorization/list"
+        activeMenu: "/authorization/list",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     }
   ]
