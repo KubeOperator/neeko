@@ -31,7 +31,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { getF5, createF5, updateF5 } from "@/api/cluster/f5"
 
 export default {
-  name: "ClusterIstio",
+  name: "ClusterF5",
   components: { LayoutContent },
   data() {
     return {

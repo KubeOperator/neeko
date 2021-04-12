@@ -108,7 +108,7 @@ import ComplexTable from "@/components/complex-table"
 import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestore, getBackupLog } from "@/api/cluster/backup"
 
 export default {
-  name: "ClusterEvent",
+  name: "ClusterBackup",
   components: { ComplexTable },
   data() {
     return {
