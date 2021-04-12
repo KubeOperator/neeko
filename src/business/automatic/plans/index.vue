@@ -6,12 +6,18 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
+            @selection-change="handleSelectionChange"
             @search="search">
       <template #header>
-        <el-button size="small" @click="create()" v-permission="['ADMIN']">
-          {{ $t("commons.button.create") }}
-        </el-button>
-        <!--          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>-->
+        <el-button-group>
+          <el-button size="small" @click="create()" v-permission="['ADMIN']">
+            {{ $t("commons.button.create") }}
+          </el-button>
+          <el-button size="small" @click="del()" :disabled="selects.length === 0">{{
+              $t("commons.button.delete")
+            }}
+          </el-button>
+        </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
@@ -27,7 +33,7 @@
               :label="$t('automatic.zone.name')"
               mix-width="100"
               v-slot:default="{ row }">
-        <span v-for="zoneName in row.zoneNames" v-bind:key="zoneName">{{zoneName}},</span>
+        <span v-for="zoneName in row.zoneNames" v-bind:key="zoneName">{{ zoneName }},</span>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -57,7 +63,9 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           type: "danger",
-          click: this.openDelete
+          click: (row) => {
+            this.del(row.name)
+          }
         }
       ],
       searchConfig: {
@@ -92,7 +100,8 @@ export default {
         pageSize: 10,
         total: 0
       },
-      data: []
+      data: [],
+      selects: []
     }
   },
   methods: {
@@ -105,7 +114,7 @@ export default {
         this.paginationConfig.total = data.total
       })
     },
-    openDelete (row) {
+    del (name) {
       this.$confirm(
         this.$t("commons.confirm_message.delete"),
         this.$t("commons.message_box.prompt"),
@@ -116,19 +125,27 @@ export default {
         }
       )
         .then(() => {
-          deletePlanBy(row.name).then(() => {
+          const ps = []
+          if (name) {
+            ps.push(deletePlanBy(name))
+          } else {
+            for (const item of this.selects) {
+              ps.push(deletePlanBy(item.name))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
             })
+          }).catch(() => {
+            this.search()
           })
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
-          })
-        })
+    },
+    handleSelectionChange (val) {
+      this.selects = val
     }
   },
   created () {
