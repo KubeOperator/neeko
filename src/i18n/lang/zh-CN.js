@@ -58,6 +58,11 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
+      email: "邮箱格式不正确",
+      name_validate_msg: "支持英文和数字",
+      required_msg: "输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
+      ip_range_error: "Ip范围无效",
     },
     search: {
       name: "",
@@ -103,9 +108,6 @@ const message = {
       user: "用户"
     },
     form: {
-      required_msg: "输入项不能为空",
-      ip_error: "请输入正确的Ip地址",
-      ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
     }
@@ -464,7 +466,6 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
-      name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
     },
