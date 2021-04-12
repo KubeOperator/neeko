@@ -91,7 +91,7 @@ export default {
         },
         (error) => {
           this.isNPDon = op === "delete"
-          this.$message({ type: "error", message: error.error.msg })
+          this.$message({ type: "error", message: error })
         }
       )
     },

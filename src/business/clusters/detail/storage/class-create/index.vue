@@ -225,21 +225,18 @@ export default {
         delete this.form.parameters["storagePolicyType"]
       }
       createStorageClass(this.clusterName, this.form).then(
-        (data) => {
+        () => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
           this.$router.push({ name: "ClusterStorage" })
-          console.log(data)
+        },(error) => {
+          this.$message({ type: "error", message: error })
         },
-        (error) => {
-          this.$message({ type: "error", message: error.error })
-        }
       )
     },
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
     },
     checkSecrets() {
-      console.log("zouiosadqwdq")
       getSecretByName(this.clusterName, this.form.parameters["secretName"], this.form.parameters["secretNamespace"]).then(
         (data) => {
           console.log(data)

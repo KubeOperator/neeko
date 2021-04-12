@@ -71,13 +71,30 @@
           </el-table-column>
         </complex-table>
       </el-tab-pane>
+
       <el-tab-pane :label="$t('cluster.detail.backup.backup_log')" :name="$t('cluster.detail.backup.backup_log')">
-        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data" @search="search" :pagination-config="paginationConfig">
-          <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
-          <el-table-column :label="$t('cluster.detail.backup.backup_location')" min-width="100" prop="folder" fix />
+        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data">
+          <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
+          <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
+            <template v-slot:default="{row}">
+              {{ row.startTime | datetimeFormat }}
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('cluster.detail.security.end_time')" min-width="100" prop="endTime" fix>
+            <template v-slot:default="{row}">
+              <span v-if="row.status ==='FAILED' || row.status ==='SUCCESS'">{{ row.endTime | datetimeFormat }}</span>
+              <span v-if="row.status !=='FAILED' && row.status !=='SUCCESS'">-</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+            <template v-slot:default="{row}">
+              <el-button v-if="row.status==='FAILED'" type="text" @click="getLogDetail()">{{row.status}}</el-button>
+              <span v-if="row.status !== 'FAILED'">{{row.status}}</span>
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('cluster.detail.log.time')">
             <template v-slot:default="{row}">
-              {{ row.firstTimestamp | datetimeFormat }}
+              {{ row.createdAt | datetimeFormat }}
             </template>
           </el-table-column>
         </complex-table>

@@ -35,6 +35,7 @@ const message = {
       verify: "校验",
       management: "管理",
       submit: "提交",
+      update: "更新",
       refresh: "刷新"
     },
     msg: {
@@ -297,6 +298,12 @@ const message = {
         description: "描述",
         advise: "建议",
       },
+      f5: {
+        big_ip_addr: "BIG-IP 地址",
+        big_ip_user_name: "BIG-IP 用户名",
+        big_ip_password: "BIG-IP 密码",
+        big_ip_public: "BIG-IP 外网IP",
+      },
       log: {
         time: "时间",
         msg_info: "消息内容",
@@ -305,6 +312,18 @@ const message = {
         value: "标签值",
         match_info: "匹配内容",
         match_info_quick: "按 匹配内容 查询",
+      },
+      grade: {
+        danger: "严重",
+        warning: "警告",
+        pass: "通过",
+        total: "总量",
+        health_checks: "健康检查",
+        images: "镜像",
+        networking: "网络",
+        reliability: "可靠性",
+        resources: "资源",
+        security: "安全",
       },
       tool: {
         enable_title: "启用工具",
