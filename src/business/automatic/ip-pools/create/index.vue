@@ -43,6 +43,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import {createIpPool} from "@/api/ip-pool"
+import Rule from "@/utils/rules"
 
 var ipaddr = require("ipaddr.js")
 
@@ -50,21 +51,6 @@ export default {
   name: "IpPoolCreate",
   components: { LayoutContent },
   data () {
-    var checkEmpty = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(this.$t("commons.form.required_msg")))
-      }
-      callback()
-    }
-    var checkIp = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(this.$t("commons.form.required_msg")))
-      }
-      if (!ipaddr.isValid(value)) {
-        return callback(new Error(this.$t("commons.form.ip_error")))
-      }
-      callback()
-    }
     return {
       form: {
         name: "",
@@ -77,13 +63,13 @@ export default {
         dns2: "",
       },
       rules: {
-        name: [{ validator: checkEmpty, required: true, trigger: "blur" }],
-        subnet: [{ validator: checkIp, required: true, trigger: "blur" }],
-        ipStart: [{ validator: checkIp, required: true, trigger: "blur" }],
-        ipEnd: [{ validator: checkIp, required: true, trigger: "blur" }],
-        gateway: [{ validator: checkIp, required: true, trigger: "blur" }],
-        dns1: [{ validator: checkIp, required: true, trigger: "blur" }],
-        dns2: [{ validator: checkIp, required: true, trigger: "blur" }]
+        name: [Rule.NameRule],
+        subnet: [Rule.IpRule],
+        ipStart: [Rule.IpRule],
+        ipEnd: [Rule.IpRule],
+        gateway: [Rule.IpRule],
+        dns1: [Rule.IpRule],
+        dns2: [Rule.IpRule]
       }
     }
   },
@@ -97,7 +83,7 @@ export default {
         if (!this.checkNetwork()) {
           this.$message({
             type: "error",
-            message: this.$t("commons.form.ip_range_error")
+            message: this.$t("commons.validate.ip_range_error")
           })
           return false
         }
