@@ -6,14 +6,14 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
-            @selection-change="handleSelectionChange"
-            @search="search">
+            @search="search"
+            :selects.sync="selects">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()" :disabled="selects.length === 0">{{
+          <el-button size="small" @click="del()" :disabled="selects.length===0">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -144,9 +144,6 @@ export default {
           })
         })
     },
-    handleSelectionChange (val) {
-      this.selects = val
-    }
   },
   created () {
     this.search()
