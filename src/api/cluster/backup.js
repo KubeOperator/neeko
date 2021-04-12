@@ -18,8 +18,8 @@ export function getBackupLog(clusterName) {
 }
 
 export function createStrategy(data) {
-    const itemUrl = `${this.strategyUrl}`;
-    return post(itemUrl, data);
+    const itemUrl = `${strategyUrl}`
+    return post(itemUrl, data)
 }
 export function startBackup(data) {
     const itemUrl = `${fileUrl}/backup`

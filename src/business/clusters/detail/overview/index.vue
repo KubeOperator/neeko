@@ -7,32 +7,34 @@
             <div slot="header" class="clearfix">
               <span>基本信息</span>
             </div>
-            <el-col :span="8">
-              <ul>{{$t('cluster.creation.name')}}</ul>
-              <ul>{{$t('cluster.version')}}</ul>
-              <ul>{{$t('cluster.creation.arch')}}</ul>
-              <ul>{{$t('cluster.creation.network_type')}}</ul>
-              <div v-if="currentCluster.source === 'local'">
-                <ul>{{$t('cluster.creation.flannel_backend')}}</ul>
-                <ul>{{$t('cluster.creation.proxy_mode')}}</ul>
-              </div>
-              <ul>{{$t('cluster.creation.runtime_type')}}</ul>
-              <ul>{{$t('cluster.detail.overview.source')}}</ul>
-            </el-col>
-            <el-col :span="12">
-              <ul>{{currentCluster.name}}</ul>
-              <ul>{{currentCluster.spec.version}}</ul>
-              <ul>{{currentCluster.spec.architectures}}</ul>
-              <ul>{{currentCluster.spec.networkType}}</ul>
-              <div v-if="currentCluster.source === 'local'">
-                <ul v-if="currentCluster.spec.networkType === 'flannel'">{{currentCluster.spec.flannelBackend}}</ul>
-                <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'off'">bgp</ul>
-                <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'Always'">ipip</ul>
-                <ul>{{currentCluster.spec.kubeProxyMode}}</ul>
-              </div>
-              <ul>{{currentCluster.spec.runtimeType}}</ul>
-              <ul>{{currentCluster.source}}</ul>
-            </el-col>
+            <div align="center">
+              <el-col :span="8">
+                <ul>{{$t('cluster.creation.name')}}</ul>
+                <ul>{{$t('cluster.version')}}</ul>
+                <ul>{{$t('cluster.creation.arch')}}</ul>
+                <ul>{{$t('cluster.creation.network_type')}}</ul>
+                <div v-if="currentCluster.source === 'local'">
+                  <ul>{{$t('cluster.creation.flannel_backend')}}</ul>
+                  <ul>{{$t('cluster.creation.proxy_mode')}}</ul>
+                </div>
+                <ul>{{$t('cluster.creation.runtime_type')}}</ul>
+                <ul>{{$t('cluster.detail.overview.source')}}</ul>
+              </el-col>
+              <el-col :span="12">
+                <ul>{{currentCluster.name}}</ul>
+                <ul>{{currentCluster.spec.version}}</ul>
+                <ul>{{currentCluster.spec.architectures}}</ul>
+                <ul>{{currentCluster.spec.networkType}}</ul>
+                <div v-if="currentCluster.source === 'local'">
+                  <ul v-if="currentCluster.spec.networkType === 'flannel'">{{currentCluster.spec.flannelBackend}}</ul>
+                  <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'off'">bgp</ul>
+                  <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'Always'">ipip</ul>
+                  <ul>{{currentCluster.spec.kubeProxyMode}}</ul>
+                </div>
+                <ul>{{currentCluster.spec.runtimeType}}</ul>
+                <ul>{{currentCluster.source}}</ul>
+              </el-col>
+            </div>
           </el-card>
         </el-col>
         <el-col :span="12">
@@ -58,20 +60,22 @@
             <div slot="header" class="clearfix">
               <span>统计信息</span>
             </div>
-            <el-col :span="8">
-              <ul>Nodes</ul>
-              <ul>Namespaces</ul>
-              <ul>Deployments</ul>
-              <ul>Pods</ul>
-              <ul>Containers</ul>
-            </el-col>
-            <el-col :span="8">
-              <ul>{{nodes.length}}</ul>
-              <ul>{{namespaces.length}}</ul>
-              <ul>{{deployments.length}}</ul>
-              <ul>{{pods.length}}</ul>
-              <ul>{{containerNumber}}</ul>
-            </el-col>
+            <div align="center">
+              <el-col :span="8">
+                <ul>Nodes</ul>
+                <ul>Namespaces</ul>
+                <ul>Deployments</ul>
+                <ul>Pods</ul>
+                <ul>Containers</ul>
+              </el-col>
+              <el-col :span="12">
+                <ul>{{nodes.length}}</ul>
+                <ul>{{namespaces.length}}</ul>
+                <ul>{{deployments.length}}</ul>
+                <ul>{{pods.length}}</ul>
+                <ul>{{containerNumber}}</ul>
+              </el-col>
+            </div>
           </el-card>
         </el-col>
       </el-row>

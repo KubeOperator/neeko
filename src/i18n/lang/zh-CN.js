@@ -108,6 +108,7 @@ const message = {
       user: "用户"
     },
     form: {
+      password_min_length: "密码不允许小于6位",
       yes: "是",
       no: "否",
     }
