@@ -57,7 +57,7 @@
 import * as echarts from "echarts"
 
 export default {
-  name: "ClusterStorage",
+  name: "ClusterGrade",
   data() {
     return {
       gradeInfo: {

@@ -105,6 +105,7 @@ const message = {
     form: {
       required_msg: "输入项不能为空",
       password_min_length: "密码不允许小于6位",
+      number_validate: "请输入正确的数字",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
@@ -350,6 +351,7 @@ const message = {
         grafana_err_msg: "请先启用 promethues 作为默认数据源！",
       },
       istio: {
+        err_title: "错误信息",
         cpu_limit: "CPU 限制(m)",
         memory_limit: "Memory 限制(Mb)",
         cpu_request: "CPU 预留",

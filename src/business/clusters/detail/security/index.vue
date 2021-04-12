@@ -66,7 +66,7 @@ import ComplexTable from "@/components/complex-table"
 import { listCisByPage, cisCreate, cisDelete } from "@/api/cluster/security"
 
 export default {
-  name: "ClusterStorage",
+  name: "ClusterSecurity",
   components: { ComplexTable },
   data() {
     return {
