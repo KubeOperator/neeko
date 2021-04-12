@@ -104,6 +104,7 @@ const message = {
     },
     form: {
       required_msg: "输入项不能为空",
+      password_min_length: "密码不允许小于6位",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",

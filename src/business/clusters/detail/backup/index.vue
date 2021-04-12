@@ -4,34 +4,34 @@
       <el-tab-pane :label="$t('cluster.detail.backup.backup_recover')" :name="$t('cluster.detail.backup.backup_recover')">
         <el-row type="flex">
           <el-col :span="12">
-            <el-form :model="strategyForm" label-width="150px">
+            <el-form :model="strategyForm" ref="strategyForm" :rules="rules" label-width="150px">
               <el-card style="height: 450px">
                 <div slot="header" class="clearfix">
                   <span>{{$t('cluster.detail.backup.backup_strategy')}}</span>
                 </div>
-                <el-form-item :label="$t('cluster.detail.backup.backup_interval')">
-                  <el-input style="width:80%" type="number" :min="1" :max="300" v-model="strategyForm.cron" clearable />
+                <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
+                  <el-input style="width:80%" type="number" v-model.number="strategyForm.cron" clearable />
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.retained_number')">
-                  <el-input style="width:80%" type="number" :min="1" :max="300" v-model="strategyForm.saveNum" clearable />
+                <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
+                  <el-input style="width:80%" type="number" v-model.number="strategyForm.saveNum" clearable />
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.backup_account')">
+                <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
                   <el-select style="width:80%" size="small" allow-create filterable v-model="strategyForm.backupAccountName">
                     <el-option v-for="item in backupAccounts" :key="item.name" :label="item.name" :value="item.name">{{b.name}}({{ b.bucket}})</el-option>
                   </el-select>
                   <div><span class="input-help">{{$t('cluster.detail.backup.backup_account_helper')}}</span></div>
                 </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.status')">
+                <el-form-item :label="$t('cluster.detail.backup.status')" prop="status">
                   <el-select style="width:80%" size="small" v-model="strategyForm.status">
                     <el-option :label="$t('commons.button.enable')" value="ENABLE">{{$t('commons.button.enable')}}</el-option>
                     <el-option :label="$t('commons.button.disable')" value="DISABLE">{{$t('commons.button.disable')}}</el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button :disabled="strategyForm.id == ''" @click="backupNow()">{{$t('cluster.detail.backup.backup_now')}}</el-button>
-                  <el-button type="primary" @click="onSubmit()">{{$t('commons.button.submit')}}</el-button>
+                  <el-button :disabled="strategyForm.id == ''" @click="backupNow('strategyForm')">{{$t('cluster.detail.backup.backup_now')}}</el-button>
+                  <el-button type="primary" @click="onSubmit('strategyForm')">{{$t('commons.button.submit')}}</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -119,10 +119,22 @@ export default {
       strategyForm: {
         id: "",
         cron: 1,
-        saveNum: "",
+        saveNum: 1,
         backupAccountName: "",
         status: "",
         clusterName: "",
+      },
+      rules: {
+        cron: [
+          { required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" },
+          { pattern: /^([1-9]|[1-9]\d|1\d\d|2\d\d|300)$/, message: "范围在0-300", trigger: "blur" },
+        ],
+        saveNum: [
+          { required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" },
+          { pattern: /^([1-9]|[1-9]\d|1\d\d|2\d\d|300)$/, message: "范围在0-300", trigger: "blur" },
+        ],
+        backupAccountName: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        status: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
       },
       file: {},
       paginationConfig: {
@@ -149,34 +161,46 @@ export default {
       }
     },
     backupNow() {
-      const backupFile = {
-        name: "",
-        clusterName: this.clusterName,
-        clusterBackupStrategyID: this.strategyForm.id,
-        folder: "",
-      }
-      startBackup(backupFile).then(
-        () => {
-          this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
+      this.$refs['strategyForm'].validate((valid) => {
+        if (valid) {
+          const backupFile = {
+            name: "",
+            clusterName: this.clusterName,
+            clusterBackupStrategyID: this.strategyForm.id,
+            folder: "",
+          }
+          startBackup(backupFile).then(
+            () => {
+              this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
+            },
+            (error) => {
+              this.$message({ type: "error", message: error })
+            }
+          )
+        } else {
+          return false
         }
-      )
+      })
     },
     handleClick() {
       this.search()
     },
     onSubmit() {
-      createStrategy(this.strategyForm).then(
-        () => {
-          this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-          this.getBackupStrategy()
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
+      this.$refs['strategyForm'].validate((valid) => {
+        if (valid) {
+          createStrategy(this.strategyForm).then(
+            () => {
+              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.getBackupStrategy()
+            },
+            (error) => {
+              this.$message({ type: "error", message: error })
+            }
+          )
+        } else {
+          return false
         }
-      )
+      })
     },
     getBackupStrategy() {
       getStrategy(this.clusterName).then((data) => {

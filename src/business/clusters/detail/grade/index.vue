@@ -5,8 +5,12 @@
         <el-card>
           <el-row type="flex" justify="center">
             <el-col :span="12">
-              <span style="font-size: 144px">{{gradeInfo.grade}}</span><br /><br />
-              <span style="font-size: 24px">{{gradeInfo.score}}</span>
+              <div align="center">
+                <span style="font-size: 144px; ">{{gradeInfo.grade}}</span><br /><br />
+              </div>
+              <div align="center">
+                <span style="font-size: 24px">{{gradeInfo.score}}</span>
+              </div>
             </el-col>
             <el-col :span="12">
               <div id="pieChartOptions" style="width: 100%;height: 250px;margin-top: 40px;"></div>
@@ -29,14 +33,14 @@
           <el-collapse-item :title="re.kind + ':' + re.name" :name="re.name">
             <el-row>
               <el-col :span="12">
-                  <span style="font-size: 24px">Pod Sec</span>
+                <span style="font-size: 24px">Pod Sec</span>
               </el-col>
               <el-col :span="12">
                 <ul class="list-unstyled">
                   <li v-for="pr of re.podResults" :key="pr.name">
-                    <span v-if="pr.severity==='danger'"><i class="el-icon-warning" style="color: red"/>{{pr.message}}</span>
-                    <span v-if="pr.severity==='warning'"><i class="el-icon-question"  style="color: blue"/>{{pr.message}}</span>
-                    <span v-if="pr.severity==='pass'"><i class="el-icon-success"  style="color: green"/>{{pr.message}}</span>
+                    <span v-if="pr.severity==='danger'"><i class="el-icon-warning" style="color: red" />{{pr.message}}</span>
+                    <span v-if="pr.severity==='warning'"><i class="el-icon-question" style="color: blue" />{{pr.message}}</span>
+                    <span v-if="pr.severity==='pass'"><i class="el-icon-success" style="color: green" />{{pr.message}}</span>
                   </li>
                 </ul>
               </el-col>
