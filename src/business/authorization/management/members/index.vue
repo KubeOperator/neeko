@@ -5,7 +5,7 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
-            @selection-change="handleSelectionChange"
+            :selects.sync="selects"
             @search="getMemberList">
       <template #header>
         <el-button-group>
@@ -197,9 +197,6 @@ export default {
         })
       })
     },
-    handleSelectionChange (val) {
-      this.selects = val
-    }
   },
   computed: {},
   watch: {

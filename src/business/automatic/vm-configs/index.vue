@@ -15,7 +15,7 @@
               $t("commons.button.create")
             }}
           </el-button>
-          <el-button size="small" :disabled="selects.length===0" @click="del()">
+          <el-button size="small" :disabled="selects.length===0"  v-permission="['ADMIN']" @click="del()">
             {{
               $t("commons.button.delete")
             }}
@@ -47,6 +47,7 @@
 import ComplexTable from "@/components/complex-table"
 import {searchVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
+import {checkPermission} from "@/utils/permisstion"
 
 export default {
   name: "VmConfigList",
@@ -60,7 +61,8 @@ export default {
           icon: "el-icon-edit",
           click: (row) => {
             this.$router.push({ name: "VmConfigEdit", params: { name: row.name } })
-          }
+          },
+          disabled: !checkPermission('ADMIN')
         },
         {
           label: this.$t("commons.button.delete"),
@@ -68,7 +70,8 @@ export default {
           type: "danger",
           click: (row) => {
             this.del(row.name)
-          }
+          },
+          disabled: !checkPermission('ADMIN')
         }
       ],
       searchConfig: {

@@ -7,7 +7,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange"
+                :selects.sync="selects"
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
@@ -219,9 +219,6 @@ export default {
           this.loading = false
         })
       }
-    },
-    handleSelectionChange (val) {
-      this.selects = val
     },
     create () {
       if (this.authObj.type === "PROJECT") {
