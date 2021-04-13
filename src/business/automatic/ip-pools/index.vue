@@ -32,7 +32,7 @@
               :label="$t('automatic.ip_pool.ip_usage')"
               mix-width="100"
               v-slot:default="{ row }">
-        <el-link type="primary" @click="openIpList(row.name)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
+        <el-link type="primary" @click="openIpList(row)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -123,7 +123,7 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success")
             })
-          }).catch(()=>{
+          }).catch(() => {
             this.search()
           })
         })
@@ -131,8 +131,8 @@ export default {
     create () {
       this.$router.push({ name: "IpPoolCreate" })
     },
-    openIpList (name) {
-      this.$router.push({ name: "IpList", params: { name: name } })
+    openIpList (row) {
+      this.$router.push({ name: "IpList", params: { name: row.name, subnet: row.subnet } })
     }
   },
   created () {

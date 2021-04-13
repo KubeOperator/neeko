@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'VmConfigList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -31,7 +31,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import {getVmConfig, updateVmConfig} from "@/api/vm-config"
 
 export default {
-  name: "UserEdit",
+  name: "VmConfigEdit",
   props: ["name"],
   components: { LayoutContent },
   data () {

@@ -15,10 +15,10 @@ var checkName = (rule, value, callback) => {
 
 var checkIp = (rule, value, callback) => {
   if (!value) {
-    return callback(new Error(this.$t("commons.validate.required_msg")))
+    return callback(new Error(i18n.t("commons.validate.required_msg")))
   }
   if (!ipaddr.isValid(value)) {
-    return callback(new Error(this.$t("commons.validate.ip_error")))
+    return callback(new Error(i18n.t("commons.validate.ip_error")))
   }
   callback()
 }
