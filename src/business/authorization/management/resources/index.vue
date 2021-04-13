@@ -49,7 +49,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange"
+                :selects.sync="selects"
                 @search="getProjectResourceList">
           <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
@@ -83,7 +83,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                @selection-change="handleSelectionChange"
+                :selects.sync="selects"
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>

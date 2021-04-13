@@ -6,7 +6,7 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
-            @selection-change="handleSelectionChange"
+            :selects.sync="selects"
             @search="search">
       <template #header>
         <el-button-group>
@@ -138,9 +138,6 @@ export default {
     create () {
       this.$router.push({ name: "VmConfigCreate" })
     },
-    handleSelectionChange (val) {
-      this.selects = val
-    }
   },
   created () {
     this.search()
