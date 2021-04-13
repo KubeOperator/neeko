@@ -1,9 +1,10 @@
 <template>
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" @click="del()" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
@@ -33,6 +34,7 @@ export default {
   data() {
     return{
       columns: [],
+      selects: [],
       formLabelWidth: '120px',
       buttons: [
         {
@@ -86,7 +88,7 @@ export default {
         } else {
           const ps = []
           for (const item of this.selects) {
-            ps.push(deleteRegistry(item.name))
+            ps.push(deleteRegistry(item.architecture))
           }
           Promise.all(ps).then(() => {
             this.search()
