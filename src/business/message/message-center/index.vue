@@ -1,11 +1,11 @@
 <template>
     <layout-content>
-      <complex-table :header="$t('route.message')" @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">
+      <complex-table :header="$t('route.message')" :selects.sync="selects" :data="data" :pagination-config="paginationConfig">
         <template #header>
           <el-button-group>
-            <el-button size="small" :disabled="Selection.length < 1" round @click="markAsRead()">
+            <el-button size="small" :disabled="selects.length < 1" round @click="markAsRead()">
               {{ $t("message.mark_as_read") }}</el-button>
-            <el-button size="small" :disabled="Selection.length < 1" round @click="remove()">
+            <el-button size="small" :disabled="selects.length < 1" round @click="remove()">
               {{ $t("commons.button.delete") }}</el-button>
           </el-button-group>
         </template>
@@ -27,7 +27,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
 import ComplexTable from "@/components/complex-table";
-import {getMessagesByUser} from "@/api/message";
+import {getMessagesByUser} from "@/api/xpack/message";
 
 export default {
   name: "MessageCenter",
@@ -42,14 +42,11 @@ export default {
         pageSize: 5,
         total: 0,
       },
-      Selection: [],
+      selects: [],
       data: [],
     }
   },
   methods: {
-    handleSelectionChange(val) {
-      this.Selection = val
-    },
     markAsRead() {},
     remove() {},
     search() {

@@ -8,7 +8,7 @@
               <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="pvDatas">
+          <complex-table style="margin-top: 20px" :data="pvDatas">
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity['storage']" fix />
             <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
@@ -25,6 +25,8 @@
               </template>
             </el-table-column>
           </complex-table>
+
+          <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
@@ -34,7 +36,7 @@
               <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="storageClassDatas">
+          <complex-table style="margin-top: 20px" :data="storageClassDatas">
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
             <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
@@ -50,6 +52,8 @@
               </template>
             </el-table-column>
           </complex-table>
+
+          <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
@@ -60,7 +64,7 @@
               <el-button size="small" :disabled="provisionerSelection.length < 1" @click="goSync()">{{$t('commons.button.sync')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="provisionerDatas">
+          <complex-table style="margin-top: 20px" :selects.sync="provisionerSelection" :data="provisionerDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
@@ -101,13 +105,22 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
+import K8sPage from "@/components/k8s-page"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable },
+  components: { ComplexTable, K8sPage },
   data() {
     return {
+      pvPage: {
+        continueToken: "",
+        nextToken: "",
+      },
+      classPage: {
+        continueToken: "",
+        nextToken: "",
+      },
       provisionerDatas: [],
       pvDatas: [],
       storageClassDatas: [],
@@ -121,12 +134,14 @@ export default {
   methods: {
     search() {
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
-        listPersistentVolumes(this.clusterName).then((data) => {
+        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false).then((data) => {
           this.pvDatas = data.items
+          this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
-        listStorageClass(this.clusterName).then((data) => {
+        listStorageClass(this.clusterName, this.classPage.continueToken, false).then((data) => {
           this.storageClassDatas = data.items
+          this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
         listProvisioner(this.clusterName).then((data) => {
@@ -134,8 +149,13 @@ export default {
         })
       }
     },
-    handleSelectionChange(val) {
-      this.provisionerSelection = val
+    classPageChange(continueToken) {
+      this.classPage.continueToken = continueToken
+      this.search()
+    },
+    pvPageChange(continueToken) {
+      this.pvPage.continueToken = continueToken
+      this.search()
     },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
