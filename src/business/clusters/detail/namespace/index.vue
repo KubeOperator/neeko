@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">
+    <complex-table :selects.sync="selects" :data="data">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -51,11 +51,6 @@ export default {
   components: { ComplexTable },
   data() {
     return {
-      paginationConfig: {
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-      },
       form: {
         apiVersion: "v1",
         kind: "Namespace",
@@ -66,7 +61,7 @@ export default {
       namespace: "",
       dialogCreateVisible: false,
       clusterName: "",
-      clusterSelection: [],
+      selects: [],
       data: [],
     }
   },
@@ -75,11 +70,7 @@ export default {
       this.clusterName = this.$route.params.name
       listNamespace(this.clusterName).then((data) => {
         this.data = data.items
-        this.paginationConfig.total = data.total
       })
-    },
-    handleSelectionChange(val) {
-      this.clusterSelection = val
     },
     create() {
       this.dialogCreateVisible = true

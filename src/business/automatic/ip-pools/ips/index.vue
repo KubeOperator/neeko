@@ -1,9 +1,5 @@
 <template>
-  <layout-content v-loading="loading">
-    <br>
-    <el-page-header @back="goBack" :content="$t('automatic.ip_pool.ip_list')">
-    </el-page-header>
-    <br>
+  <layout-content v-loading="loading" :header="$t('automatic.ip_pool.ip_list')" :back-to="{ name: 'IpPoolList' }">
     <complex-table
             :data="data"
             :colums="columns"
@@ -16,7 +12,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()">
+          <el-button size="small" :disabled="selects.length===0" @click="del()">
             {{ $t("commons.button.delete") }}
           </el-button>
           <el-button size="small" @click="sync()">
@@ -70,7 +66,7 @@ import {deleteIpBy, syncIp, searchIp} from "@/api/ip-pool"
 export default {
   name: "IpList",
   components: { ComplexTable, LayoutContent },
-  props: ["name"],
+  props: ["name", "subnet"],
   data () {
     return {
       columns: [],
@@ -129,7 +125,7 @@ export default {
       })
     },
     create () {
-      this.$router.push({ name: "IpCreate", params: { name: this.name } })
+      this.$router.push({ name: "IpCreate", params: { name: this.name, subnet: this.subnet } })
     },
     del (address) {
       this.$confirm(
@@ -144,10 +140,10 @@ export default {
         .then(() => {
           const ps = []
           if (address) {
-            ps.push(deleteIpBy(this.name,address))
+            ps.push(deleteIpBy(this.name, address))
           } else {
             for (const item of this.selects) {
-              ps.push(deleteIpBy(this.name,item.address))
+              ps.push(deleteIpBy(this.name, item.address))
             }
           }
           Promise.all(ps).then(() => {
@@ -160,9 +156,6 @@ export default {
             this.search()
           })
         })
-    },
-    goBack () {
-      this.$router.push({ name: "IpPoolList" })
     },
     sync () {
       this.loading = true

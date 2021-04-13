@@ -1,12 +1,12 @@
 <template>
   <div>
-    <complex-table :header="$t('message.message')" @selection-change="handleSelectionChange"
+    <complex-table :header="$t('message.message')" :selects.sync="selects"
                    :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search">
-      <template  #header>
+      <template #header>
         <el-button-group>
-          <el-button size="small" :disabled="Selection.length < 1"  @click="markAsRead(row)">
+          <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
             {{ $t("message.mark_as_read") }}</el-button>
-          <el-button size="small" :disabled="Selection.length < 1"  @click="remove()">
+          <el-button size="small" :disabled="selects.length < 1"  @click="remove()">
             {{ $t("commons.button.delete") }}</el-button>
         </el-button-group>
       </template>
@@ -66,7 +66,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table";
-import {getMessagesByUser, updateMessageStatus} from "@/api/xpack/message";
+import {getMessagesByUser, updateMessageStatus} from "@/api/message";
 
 export default {
   name: "MessageCenter",
@@ -80,7 +80,7 @@ export default {
         pageSize: 8,
         total: 0,
       },
-      Selection: [],
+      selects: [],
       data: [],
       buttons: [
          {
@@ -108,11 +108,9 @@ export default {
   },
   methods: {
     handleSelectionChange(val) {
-      this.Selection = val
+      this.selects = val
     },
-    markAsRead(data) {
-      console.log(123,data)
-    },
+    markAsRead() {},
     del() {},
     search() {
       const { currentPage, pageSize } = this.paginationConfig
@@ -131,6 +129,7 @@ export default {
           operation: "update"
         })
       }
+      console.log(123,data)
       this.detail = data
       this.dialogVisible = true
     },
