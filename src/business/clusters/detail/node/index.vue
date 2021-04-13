@@ -1,10 +1,10 @@
 <template>
   <div>
-    <complex-table @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">
+    <complex-table :selects.sync="selects" :data="data" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="clusterSelection.length < 1" @click="remove()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1" @click="remove()">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
@@ -57,7 +57,7 @@ export default {
       },
       dialogCreateVisible: false,
       clusterName: "",
-      clusterSelection: [],
+      selects: [],
       data: [],
       form: {
         hosts: [],
@@ -76,9 +76,6 @@ export default {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
-    },
-    handleSelectionChange(val) {
-      this.clusterSelection = val
     },
     create() {
       this.dialogCreateVisible = true

@@ -1,6 +1,6 @@
 <template>
   <layout-content>
-    <complex-table :header="$t('cluster.cluster')" @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">
+    <complex-table :header="$t('cluster.cluster')" :selects.sync="clusterSelection" :data="data" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>

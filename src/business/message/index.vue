@@ -1,6 +1,6 @@
 <template>
 <!--  <layout-content>-->
-<!--    <complex-table :header="$t('route.message')" @selection-change="handleSelectionChange" :data="data" :pagination-config="paginationConfig">-->
+<!--    <complex-table :header="$t('route.message')" :selects.sync="selects" :data="data" :pagination-config="paginationConfig">-->
 <!--      <template #header>-->
 <!--        <el-button-group>-->
 <!--          <el-button size="small" :disabled="Selection.length < 1" round @click="markAsRead()">-->
