@@ -6,12 +6,21 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
+            :selects.sync="selects"
             @search="search">
       <template #header>
-        <el-button size="small" @click="create()" v-permission="['ADMIN']">
-          {{ $t("commons.button.create") }}
-        </el-button>
-        <!--          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>-->
+        <el-button-group>
+          <el-button size="small" @click="create()" v-permission="['ADMIN']">
+            {{
+              $t("commons.button.create")
+            }}
+          </el-button>
+          <el-button size="small" :disabled="selects.length===0"  v-permission="['ADMIN']" @click="del()">
+            {{
+              $t("commons.button.delete")
+            }}
+          </el-button>
+        </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
@@ -38,6 +47,7 @@
 import ComplexTable from "@/components/complex-table"
 import {searchVmConfigs, deleteVmConfigBy} from "@/api/vm-config"
 import LayoutContent from "@/components/layout/LayoutContent"
+import {checkPermission} from "@/utils/permisstion"
 
 export default {
   name: "VmConfigList",
@@ -51,13 +61,17 @@ export default {
           icon: "el-icon-edit",
           click: (row) => {
             this.$router.push({ name: "VmConfigEdit", params: { name: row.name } })
-          }
+          },
+          disabled: !checkPermission('ADMIN')
         },
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           type: "danger",
-          click: this.openDelete
+          click: (row) => {
+            this.del(row.name)
+          },
+          disabled: !checkPermission('ADMIN')
         }
       ],
       searchConfig: {
@@ -79,20 +93,21 @@ export default {
         total: 0
       },
       data: [],
-      loading: false
+      loading: false,
+      selects: []
     }
   },
   methods: {
     search (condition) {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      searchVmConfigs(currentPage, pageSize,condition).then(data => {
+      searchVmConfigs(currentPage, pageSize, condition).then(data => {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })
     },
-    openDelete (row) {
+    del (name) {
       this.$confirm(
         this.$t("commons.confirm_message.delete"),
         this.$t("commons.message_box.prompt"),
@@ -103,23 +118,26 @@ export default {
         }
       )
         .then(() => {
-          deleteVmConfigBy(row.name).then(() => {
+          const ps = []
+          if (name) {
+            ps.push(deleteVmConfigBy(name))
+          } else {
+            for (const item of this.selects) {
+              ps.push(deleteVmConfigBy(item.name))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
             })
           })
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
-          })
-        })
     },
     create () {
       this.$router.push({ name: "VmConfigCreate" })
-    }
+    },
   },
   created () {
     this.search()

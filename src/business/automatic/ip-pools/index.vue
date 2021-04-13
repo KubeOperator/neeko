@@ -5,13 +5,17 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
-            @search="search">
+            @search="search"
+            :selects.sync="selects">
       <template #header>
         <el-button-group>
-          <el-button size="small" round @click="create()">
+          <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" round>{{ $t("commons.button.delete") }}</el-button>
+          <el-button size="small" :disabled="selects.length===0" @click="del()">{{
+              $t("commons.button.delete")
+            }}
+          </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
@@ -51,28 +55,27 @@ export default {
       columns: [],
       buttons: [
         {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          type: "danger",
-          click: this.openDelete
-        }
+          label: this.$t("commons.button.delete"), icon: "el-icon-delete", type: "danger", click: (row) => {
+            this.del(row.name)
+          }
+        },
       ],
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: this.$t('commons.table.name'),
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
           {
             field: "subnet",
-            label: this.$t('automatic.ip_pool.subnet'),
+            label: this.$t("automatic.ip_pool.subnet"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
-          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -82,19 +85,20 @@ export default {
       },
       data: [],
       loading: false,
+      selects: [],
     }
   },
   methods: {
     search (condition) {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      searchIpPool(currentPage, pageSize,condition).then(data => {
+      searchIpPool(currentPage, pageSize, condition).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
         this.loading = false
       })
     },
-    openDelete (row) {
+    del (name) {
       this.$confirm(
         this.$t("commons.confirm_message.delete"),
         this.$t("commons.message_box.prompt"),
@@ -105,17 +109,22 @@ export default {
         }
       )
         .then(() => {
-          deleteIpPoolBy(row.name).then(() => {
+          const ps = []
+          if (name) {
+            ps.push(deleteIpPoolBy(name))
+          } else {
+            for (const item of this.selects) {
+              ps.push(deleteIpPoolBy(item.name))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
             })
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
+          }).catch(()=>{
+            this.search()
           })
         })
     },
