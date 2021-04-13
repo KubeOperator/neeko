@@ -5,8 +5,8 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
-            @selection-change="handleSelectionChange"
-            @search="search">
+            @search="search"
+            :selects.sync="selects">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">
@@ -133,9 +133,6 @@ export default {
     },
     openIpList (name) {
       this.$router.push({ name: "IpList", params: { name: name } })
-    },
-    handleSelectionChange (val) {
-      this.selects = val
     }
   },
   created () {

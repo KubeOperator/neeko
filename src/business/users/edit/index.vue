@@ -17,12 +17,6 @@
                 <el-radio label="user">{{$t('commons.role.user')}}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item :label="$t('user.role')">
-              <el-radio-group v-model="form.role">
-                <el-radio label="admin">{{$t('commons.role.admin')}}</el-radio>
-                <el-radio label="user">{{$t('commons.role.user')}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
               <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>

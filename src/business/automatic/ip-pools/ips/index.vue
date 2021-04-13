@@ -9,7 +9,7 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
-            @selection-change="handleSelectionChange"
+            :selects.sync="selects"
             @search="search">
       <template #header>
         <el-button-group>
@@ -142,8 +142,6 @@ export default {
         }
       )
         .then(() => {
-
-
           const ps = []
           if (address) {
             ps.push(deleteIpBy(this.name,address))
@@ -175,9 +173,6 @@ export default {
           message: this.$t("commons.msg.sync_success")
         })
       })
-    },
-    handleSelectionChange (val) {
-      this.selects = val
     }
   },
   created () {

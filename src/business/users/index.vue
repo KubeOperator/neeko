@@ -1,8 +1,8 @@
 <template>
   <layout-content :header="$t('user.user')">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
-                   @selection-change="handleSelectionChange"
-                   :pagination-config="paginationConfig" @search="search" v-loading="loading">
+                   :pagination-config="paginationConfig" @search="search" v-loading="loading"
+                   :selects.sync="selects">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -153,9 +153,6 @@ export default {
         }
       })
     },
-    handleSelectionChange (val) {
-      this.selects = val
-    }
   },
   created () {
     this.search()

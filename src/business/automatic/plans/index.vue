@@ -69,30 +69,15 @@ export default {
         }
       ],
       searchConfig: {
-        quickPlaceholder: "按 姓名/邮箱 搜索",
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           {
             field: "name",
-            label: "姓名",
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
-          {
-            field: "status",
-            label: "状态",
-            component: "FuComplexSelect",
-            options: [
-              { label: "运行中", value: "Running" },
-              { label: "成功", value: "Success" },
-              { label: "失败", value: "Fail" }
-            ],
-            multiple: true
-          },
-          {
-            field: "create_time",
-            label: "创建时间",
-            component: "FuComplexDateTime"
-          }
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" }
         ]
       },
       paginationConfig: {
