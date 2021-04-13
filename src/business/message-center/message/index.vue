@@ -66,7 +66,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table";
-import {getMessagesByUser, updateMessageStatus} from "@/api/message";
+import {getMessagesByUser, updateMessageStatus} from "@/api/xpack/message";
 
 export default {
   name: "MessageCenter",
