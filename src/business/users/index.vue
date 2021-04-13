@@ -40,7 +40,6 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
   </layout-content>
@@ -62,7 +61,6 @@ export default {
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
-
           }
         },
         {
@@ -109,9 +107,6 @@ export default {
     }
   },
   methods: {
-    select (selection) {
-      console.log(selection)
-    },
     create () {
       this.$router.push({ name: "UserCreate" })
     },

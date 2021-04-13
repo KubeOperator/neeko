@@ -25,7 +25,7 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.save") }}</el-button>
+              <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -58,18 +58,23 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
-      createUser({
-        name: this.form.name,
-        password: this.form.password,
-        email: this.form.email,
-        role: "user",
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: `创建成功`
+    onSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        createUser({
+          name: this.form.name,
+          password: this.form.password,
+          email: this.form.email,
+          role: "user",
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: `创建成功`
+          })
+          this.$router.push({ name: "UserList" })
         })
-        this.$router.push({ name: "UserList" })
       })
     },
     onCancel () {
