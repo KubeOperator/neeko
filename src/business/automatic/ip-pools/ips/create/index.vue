@@ -5,6 +5,9 @@
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon>
+            <el-form-item :label="$t('automatic.ip_pool.subnet')">
+              <el-input disabled :placeholder="subnet"></el-input>
+            </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.ip_start')" prop="ipStart">
               <el-input v-model="form.ipStart"></el-input>
             </el-form-item>
@@ -42,7 +45,7 @@ var ipaddr = require("ipaddr.js")
 export default {
   name: "IpCreate",
   components: { LayoutContent },
-  props: ["name"],
+  props: ["name","subnet"],
   data () {
     return {
       form: {
@@ -64,7 +67,6 @@ export default {
   },
   methods: {
     onSubmit (formName) {
-
       this.$refs[formName].validate((valid) => {
         if (!valid) {
           return false
@@ -86,7 +88,7 @@ export default {
         }).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("save_success")
+            message: this.$t("commons.msg.save_success")
           })
           this.$router.push({ name: "IpList" })
         })
