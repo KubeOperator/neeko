@@ -1,74 +1,93 @@
 <template>
   <layout-content>
     <div>
-      <el-form ref="form" label-width="200px">
-        <el-collapse v-model="activeNames">
-          <el-collapse-item title="istio-pilot" name="1">
-            <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" required>
-              <el-input type="number" v-model="pilotCfg.vars['pilot.resources.limits.cpu']"></el-input>
+      <el-collapse v-model="activeNames">
+        <el-collapse-item title="istio-pilot" name="1">
+          <el-form :model="pilotCfg" ref="pilotCfg" label-width="200px">
+            <el-form-item v-if="pilotCfg.cluster_istio.message">
+              <el-tooltip class="item" effect="light" :content="pilotCfg.cluster_istio.message" placement="right-end">
+                <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
+              </el-tooltip>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" required>
-              <el-input type="number" v-model="pilotCfg.vars['pilot.resources.limits.memory']"></el-input>
+            <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.pilot_resources_limits_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+              <el-input type="number" v-model.number="pilotCfg.vars.pilot_resources_limits_cpu"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" required>
-              <el-input type="number" v-model="pilotCfg.vars['pilot.resources.requests.cpu']"></el-input>
+            <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" prop="vars.pilot_resources_limits_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+              <el-input type="number" v-model="pilotCfg.vars['pilot_resources_limits_memory']"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" required>
-              <el-input type="number" v-model="pilotCfg.vars['pilot.resources.requests.memory']"></el-input>
+            <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" prop="vars.pilot_resources_requests_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+              <el-input type="number" v-model="pilotCfg.vars['pilot_resources_requests_cpu']"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.trace')" style="width: 80%" required>
-              <el-input type="number" v-model="pilotCfg.vars['pilot.traceSampling']"></el-input>
+            <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.pilot_resources_requests_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+              <el-input type="number" v-model="pilotCfg.vars['pilot_resources_requests_memory']"></el-input>
             </el-form-item>
-          </el-collapse-item>
-          <el-collapse-item title="istio-ingress" name="2">
-            <el-switch v-model="ingressCfg.enable"></el-switch>
-            <div v-if="ingressCfg.enable">
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" required>
-                <el-input type="number" v-model="ingressCfg.vars['gateways.istio-ingressgateway.resources.limits.cpu']"></el-input>
+            <el-form-item :label="$t('cluster.detail.istio.trace')" style="width: 80%" prop="vars.pilot_traceSampling" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+              <el-input type="number" v-model="pilotCfg.vars['pilot_traceSampling']"></el-input>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+        <el-collapse-item title="istio-ingress" name="2">
+          <el-switch v-model="ingressCfg.enable"></el-switch>
+          <div v-if="ingressCfg.enable">
+            <el-form :model="ingressCfg" ref="ingressCfg" label-width="200px">
+              <el-form-item v-if="ingressCfg.cluster_istio.message">
+                <el-tooltip class="item" effect="light" :content="ingressCfg.cluster_istio.message" placement="right-end">
+                  <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
+                </el-tooltip>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" required>
-                <el-input type="number" v-model="ingressCfg.vars['gateways.istio-ingressgateway.resources.limits.memory']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_limits_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_cpu']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" required>
-                <el-input type="number" v-model="ingressCfg.vars['gateways.istio-ingressgateway.resources.requests.cpu']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_limits_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_memory']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" required>
-                <el-input type="number" v-model="ingressCfg.vars['gateways.istio-ingressgateway.resources.requests.memory']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_requests_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_cpu']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.gateways_type')" style="width: 80%" required>
-                <el-select style="width: 100%" v-model="ingressCfg.vars['gateways.istio-ingressgateway.type']" clearable>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_requests_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_memory']"></el-input>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.istio.gateways_type')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_type" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'change' }]">
+                <el-select style="width: 100%" v-model="ingressCfg.vars['gateways_istio__ingressgateway_type']" clearable>
                   <el-option value="NodePort">NodePort</el-option>
                   <el-option value="LoadBalancer">LoadBalancer</el-option>
                 </el-select>
               </el-form-item>
-            </div>
-          </el-collapse-item>
-          <el-collapse-item title="istio-egress" name="3">
-            <el-switch v-model="egressCfg.enable"></el-switch>
-            <div v-if="egressCfg.enable">
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" required>
-                <el-input type="number" v-model="egressCfg.vars['gateways.istio-egressgateway.resources.limits.cpu']"></el-input>
+            </el-form>
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="istio-egress" name="3">
+          <el-switch v-model="egressCfg.enable"></el-switch>
+          <div v-if="egressCfg.enable">
+            <el-form :model="egressCfg" ref="egressCfg" label-width="200px">
+              <el-form-item v-if="egressCfg.cluster_istio.message">
+                <el-tooltip class="item" effect="light" :content="egressCfg.cluster_istio.message" placement="right-end">
+                  <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
+                </el-tooltip>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" required>
-                <el-input type="number" v-model="egressCfg.vars['gateways.istio-egressgateway.resources.limits.memory']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_limits_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_cpu']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" required>
-                <el-input type="number" v-model="egressCfg.vars['gateways.istio-egressgateway.resources.requests.cpu']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_limits_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_memory']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" required>
-                <el-input type="number" v-model="egressCfg.vars['gateways.istio-egressgateway.resources.requests.memory']"></el-input>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_requests_cpu" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_cpu']"></el-input>
               </el-form-item>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <div v-if="baseCfg.cluster_istio.status === 'Waiting'">
-          <el-button @click="onSubmit('start')" :disabled="btnStartDisable" type="primary" size="mini">{{$t('cluster.detail.istio.enable_istio')}}</el-button>
-        </div>
-        <div v-if="baseCfg.cluster_istio.status === 'Running'">
-          <el-button @click="onSubmit('restart')" :disabled="btnStartDisable" type="primary" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
-          <el-button @click="onDisable()" type="danger" size="mini">{{$t('cluster.detail.istio.disable_istio')}}</el-button>
-        </div>
-      </el-form>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_requests_memory" :rules="[{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: 'blur' }]">
+                <el-input type="number" v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_memory']"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+      <div v-if="baseCfg.cluster_istio.status === 'Waiting'">
+        <el-button @click="onSubmit('start')" :disabled="btnStartDisable" type="primary" size="mini">{{$t('cluster.detail.istio.enable_istio')}}</el-button>
+      </div>
+      <div v-if="baseCfg.cluster_istio.status === 'Running'">
+        <el-button @click="onSubmit('restart')" :disabled="btnStartDisable" type="primary" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
+        <el-button @click="onDisable()" type="danger" size="mini">{{$t('cluster.detail.istio.disable_istio')}}</el-button>
+      </div>
       <el-dialog :title="$t('cluster.detail.istio.disable_istio')" width="30%" :visible.sync="dialogShutupVisible">
         <span>{{$t('cluster.detail.istio.ensure_disable_istio')}}</span>
         <div slot="footer" class="dialog-footer">
@@ -83,6 +102,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listIstio, enableIstio, disableIstio } from "@/api/cluster/istio"
+import { changeUnderLineToPoint, changePointToUnderLine } from "@/utils/format_conversion"
 
 export default {
   name: "ClusterIstio",
@@ -127,7 +147,7 @@ export default {
           switch (item.cluster_istio.name) {
             case "base":
               if (item.cluster_istio.status !== "Waiting") {
-                this.baseCfg.vars = JSON.parse(item.cluster_istio.vars)
+                this.baseCfg.vars = changePointToUnderLine(JSON.parse(item.cluster_istio.vars))
               } else {
                 this.setDefaultBaseCfg()
               }
@@ -136,7 +156,7 @@ export default {
               break
             case "pilot":
               if (item.cluster_istio.status !== "Waiting") {
-                this.pilotCfg.vars = JSON.parse(item.cluster_istio.vars)
+                this.pilotCfg.vars = changePointToUnderLine(JSON.parse(item.cluster_istio.vars))
               } else {
                 this.setDefaultPilotCfg()
               }
@@ -145,7 +165,7 @@ export default {
               break
             case "ingress":
               if (item.cluster_istio.status !== "Waiting") {
-                this.ingressCfg.vars = JSON.parse(item.cluster_istio.vars)
+                this.ingressCfg.vars = changePointToUnderLine(JSON.parse(item.cluster_istio.vars))
               } else {
                 this.setDefaultIngressCfg()
               }
@@ -154,7 +174,7 @@ export default {
               break
             case "egress":
               if (item.cluster_istio.status !== "Waiting") {
-                this.egressCfg.vars = JSON.parse(item.cluster_istio.vars)
+                this.egressCfg.vars = changePointToUnderLine(JSON.parse(item.cluster_istio.vars))
               } else {
                 this.setDefaultEgressCfg()
               }
@@ -166,6 +186,10 @@ export default {
       })
     },
     onSubmit(operation) {
+      this.checkFormValidate()
+      changeUnderLineToPoint(this.pilotCfg.vars)
+      changeUnderLineToPoint(this.ingressCfg.vars)
+      changeUnderLineToPoint(this.egressCfg.vars)
       this.btnStartDisable = true
       var items = []
       if (operation === "start") {
@@ -177,8 +201,7 @@ export default {
       this.getOperation(items, this.ingressCfg)
       this.getOperation(items, this.egressCfg)
       enableIstio(this.clusterName, items).then(
-        (data) => {
-          console.log(data)
+        () => {
           if (operation === "start") {
             this.$message({ type: "success", message: this.$t("cluster.detail.istio.enable_istio") })
           } else {
@@ -188,10 +211,34 @@ export default {
           this.search()
         },
         (error) => {
-          console.log(error)
+          this.$message({ type: "error", message: error })
           this.btnStartDisable = false
         }
       )
+    },
+    checkFormValidate() {
+      if (this.pilotCfg.enable) {
+        this.$refs["pilotCfg"].validate((valid) => {
+          if (!valid) {
+            return false
+          }
+        })
+      }
+      if (this.ingressCfg.enable) {
+        this.$refs["ingressCfg"].validate((valid) => {
+          if (!valid) {
+            return false
+          }
+        })
+      }
+      if (this.egressCfg.enable) {
+        this.$refs["egressCfg"].validate((valid) => {
+          if (!valid) {
+            return false
+          }
+        })
+      }
+      return true
     },
     onDisable() {
       this.dialogShutupVisible = true
@@ -204,8 +251,7 @@ export default {
       this.disAble(items, this.ingressCfg)
       this.disAble(items, this.egressCfg)
       disableIstio(this.clusterName, items).then(
-        (data) => {
-          console.log(data)
+        () => {
           this.$message({ type: "success", message: this.$t("cluster.detail.istio.disable_istio") })
           this.isSubmitGoing = false
           this.dialogShutupVisible = false
@@ -240,28 +286,28 @@ export default {
     },
     setDefaultPilotCfg() {
       this.pilotCfg.vars = {
-        "pilot.resources.requests.cpu": 500,
-        "pilot.resources.requests.memory": 2048,
-        "pilot.resources.limits.cpu": 500,
-        "pilot.resources.limits.memory": 2048,
-        "pilot.traceSampling": 1,
+        pilot_resources_requests_cpu: 500,
+        pilot_resources_requests_memory: 2048,
+        pilot_resources_limits_cpu: 500,
+        pilot_resources_limits_memory: 2048,
+        pilot_traceSampling: 1,
       }
     },
     setDefaultIngressCfg() {
       this.ingressCfg.vars = {
-        "gateways.istio-ingressgateway.type": "NodePort",
-        "gateways.istio-ingressgateway.resources.requests.cpu": 100,
-        "gateways.istio-ingressgateway.resources.requests.memory": 128,
-        "gateways.istio-ingressgateway.resources.limits.cpu": 2000,
-        "gateways.istio-ingressgateway.resources.limits.memory": 1024,
+        gateways_istio__ingressgateway_type: "NodePort",
+        gateways_istio__ingressgateway_resources_requests_cpu: 100,
+        gateways_istio__ingressgateway_resources_requests_memory: 128,
+        gateways_istio__ingressgateway_resources_limits_cpu: 2000,
+        gateways_istio__ingressgateway_resources_limits_memory: 1024,
       }
     },
     setDefaultEgressCfg() {
       this.egressCfg.vars = {
-        "gateways.istio-egressgateway.resources.requests.cpu": 100,
-        "gateways.istio-egressgateway.resources.requests.memory": 128,
-        "gateways.istio-egressgateway.resources.limits.cpu": 2000,
-        "gateways.istio-egressgateway.resources.limits.memory": 1024,
+        gateways_istio__egressgateway_resources_requests_cpu: 100,
+        gateways_istio__egressgateway_resources_requests_memory: 128,
+        gateways_istio__egressgateway_resources_limits_cpu: 2000,
+        gateways_istio__egressgateway_resources_limits_memory: 1024,
       }
     },
   },

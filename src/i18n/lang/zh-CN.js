@@ -37,7 +37,8 @@ const message = {
       submit: "提交",
       refresh: "刷新",
       authorize: "授权",
-      getBucket: "获取桶"
+      getBucket: "获取桶",
+      update: "更新"
     },
     msg: {
       success: "{0}成功",
@@ -59,6 +60,11 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
+      email: "邮箱格式不正确",
+      name_validate_msg: "支持英文和数字",
+      required_msg: "输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
+      ip_range_error: "Ip范围无效",
     },
     search: {
       name: "",
@@ -106,7 +112,8 @@ const message = {
       user: "用户"
     },
     form: {
-      required_msg: "输入项不能为空",
+      password_min_length: "密码不允许小于6位",
+      number_validate: "请输入正确的数字",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
@@ -207,7 +214,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        csi: "csi扫描",
+        security: "cis 扫描",
         grade: "集群评分",
       },
       overview: {
@@ -274,6 +281,40 @@ const message = {
         enable_npd_success: "NPD 启用成功",
         disable_npd_success: "NPD 禁用成功",
       },
+      backup: {
+        backup_strategy: "备份策略",
+        backup_interval: "备份间隔(天)",
+        retained_number: "保留份数",
+        backup_account: "备份账号",
+        backup_account_helper: "备份账号需要先授权到项目",
+        status: "状态",
+        local_recover: "本地文件恢复",
+        backup_start: "已经开始备份！请稍后查看日志",
+        recover_start: "已经开始恢复！请稍后查看日志",
+        local_recover_tips: "请上传原始文件，不要上传压缩文件",
+        file: "文件",
+        mo_file_selected: "未选择文件",
+        file_select: "文件选择",
+        backup_now: "立即备份",
+        backup_list: "备份列表",
+        backup_location: "备份位置",
+        backup_recover: "备份/恢复",
+        backup_log: "日志",
+      },
+      security: {
+        start_time: "开始时间",
+        end_time: "结束时间",
+        cis_result: "Cis 扫描结果",
+        code: "编号",
+        description: "描述",
+        advise: "建议",
+      },
+      f5: {
+        big_ip_addr: "BIG-IP 地址",
+        big_ip_user_name: "BIG-IP 用户名",
+        big_ip_password: "BIG-IP 密码",
+        big_ip_public: "BIG-IP 外网IP",
+      },
       log: {
         time: "时间",
         msg_info: "消息内容",
@@ -282,6 +323,18 @@ const message = {
         value: "标签值",
         match_info: "匹配内容",
         match_info_quick: "按 匹配内容 查询",
+      },
+      grade: {
+        danger: "严重",
+        warning: "警告",
+        pass: "通过",
+        total: "总量",
+        health_checks: "健康检查",
+        images: "镜像",
+        networking: "网络",
+        reliability: "可靠性",
+        resources: "资源",
+        security: "安全",
       },
       tool: {
         enable_title: "启用工具",
@@ -307,6 +360,7 @@ const message = {
         grafana_err_msg: "请先启用 promethues 作为默认数据源！",
       },
       istio: {
+        err_title: "错误信息",
         cpu_limit: "CPU 限制(m)",
         memory_limit: "Memory 限制(Mb)",
         cpu_request: "CPU 预留",
@@ -377,7 +431,10 @@ const message = {
     confirm_password: "确认密码",
     role: "角色",
     email: "邮箱",
-    user: "用户"
+    user: "用户",
+    type: "来源",
+    LDAP: "Ldap",
+    LOCAL: "本地"
   },
   manifest: {
     title: "版本管理",
@@ -419,7 +476,6 @@ const message = {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
-      name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
     },
@@ -451,7 +507,9 @@ const message = {
     description: "描述",
     add_project_manager: "添加项目管理员",
     add_project_resource: "添加资源",
-    key_words: "请输入姓名"
+    key_words: "请输入姓名",
+    list: "项目列表",
+    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
   },
   credential: {
     name: "凭据名称",

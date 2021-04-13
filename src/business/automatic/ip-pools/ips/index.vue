@@ -9,14 +9,20 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
+            :selects.sync="selects"
             @search="search">
       <template #header>
-        <el-button size="small" @click="create()">
-          {{ $t("commons.button.create") }}
-        </el-button>
-        <el-button size="small" @click="sync()">
-          {{ $t("commons.button.sync") }}
-        </el-button>
+        <el-button-group>
+          <el-button size="small" @click="create()">
+            {{ $t("commons.button.create") }}
+          </el-button>
+          <el-button size="small" @click="del()">
+            {{ $t("commons.button.delete") }}
+          </el-button>
+          <el-button size="small" @click="sync()">
+            {{ $t("commons.button.sync") }}
+          </el-button>
+        </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('automatic.ip_pool.address')" mix-width="100">
@@ -73,7 +79,9 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           type: "danger",
-          click: this.openDelete
+          click: (row) => {
+            this.del(row.address)
+          }
         }
       ],
       searchConfig: {
@@ -97,7 +105,7 @@ export default {
             ],
             multiple: true
           },
-          {field: "create_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime"},
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -106,7 +114,8 @@ export default {
         total: 0
       },
       data: [],
-      loading: false
+      loading: false,
+      selects: []
     }
   },
   methods: {
@@ -122,7 +131,7 @@ export default {
     create () {
       this.$router.push({ name: "IpCreate", params: { name: this.name } })
     },
-    openDelete (row) {
+    del (address) {
       this.$confirm(
         this.$t("commons.confirm_message.delete"),
         this.$t("commons.message_box.prompt"),
@@ -133,17 +142,22 @@ export default {
         }
       )
         .then(() => {
-          deleteIpBy(this.$route.params["name"], row.address).then(() => {
+          const ps = []
+          if (address) {
+            ps.push(deleteIpBy(this.name,address))
+          } else {
+            for (const item of this.selects) {
+              ps.push(deleteIpBy(this.name,item.address))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success")
             })
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: this.$t("commons.msg.delete_cancel")
+          }).catch(() => {
+            this.search()
           })
         })
     },

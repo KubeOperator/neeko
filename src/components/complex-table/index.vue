@@ -20,7 +20,8 @@
     </div>
 
     <div class="complex-table__body">
-      <fu-table v-on="$listeners" v-bind="$attrs" :columns="columns" :local-key="localKey">
+      <fu-table v-on="$listeners" v-bind="$attrs" :columns="columns" :local-key="localKey"
+                @selection-change="handleSelectionChange">
         <slot></slot>
       </fu-table>
     </div>
@@ -38,32 +39,37 @@
 
 <script>
 
-  export default {
-    name: "ComplexTable",
-    props: {
-      columns: {
-        type: Array,
-        default: () => []
-      },
-      localKey: String, // 如果需要记住选择的列，则这里添加一个唯一的Key
-      header: String,
-      searchConfig: Object,
-      paginationConfig: Object,
+export default {
+  name: "ComplexTable",
+  props: {
+    columns: {
+      type: Array,
+      default: () => []
     },
-    data() {
-      return {
-        condition: {}
+    localKey: String, // 如果需要记住选择的列，则这里添加一个唯一的Key
+    header: String,
+    searchConfig: Object,
+    paginationConfig: Object,
+    selects:Array
+  },
+  data () {
+    return {
+      condition: {},
+    }
+  },
+  methods: {
+    search (condition, e) {
+      if (condition) {
+        this.condition = condition
       }
+      this.$emit("search", this.condition, e)
     },
-    methods: {
-      search(condition, e) {
-        if (condition) {
-          this.condition = condition
-        }
-        this.$emit("search", this.condition, e)
-      }
-    },
-  }
+    handleSelectionChange (val) {
+      // this.selects = val
+      this.$emit("update:selects", val)
+    }
+  },
+}
 </script>
 
 <style lang="scss">
