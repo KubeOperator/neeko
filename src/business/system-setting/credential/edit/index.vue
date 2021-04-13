@@ -83,7 +83,6 @@ export default {
       this.form.username = this.data.username,
       this.form.type = this.data.type,
       this.form.id = this.data.id
-    console.log(this.data.name)
   }
 }
 </script>

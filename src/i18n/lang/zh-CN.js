@@ -35,7 +35,9 @@ const message = {
       verify: "校验",
       management: "管理",
       submit: "提交",
-      refresh: "刷新"
+      refresh: "刷新",
+      authorize: "授权",
+      getBucket: "获取桶"
     },
     msg: {
       success: "{0}成功",
@@ -96,6 +98,8 @@ const message = {
       Initializing: "初始化中",
       Upgrading: "升级中",
       Terminating: "销毁中",
+      normal: "正常",
+      failure: "异常"
     },
     role: {
       admin: "管理员",
@@ -123,6 +127,7 @@ const message = {
     system_setting: "系统设置",
     manifest: "版本管理",
     message_center: "消息中心",
+    backup_account: "备份账号",
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户",
@@ -202,7 +207,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        security: "cis 扫描",
+        csi: "csi扫描",
         grade: "集群评分",
       },
       overview: {
@@ -268,34 +273,6 @@ const message = {
         enable_npd: "启用 NPD",
         enable_npd_success: "NPD 启用成功",
         disable_npd_success: "NPD 禁用成功",
-      },
-      backup: {
-        backup_strategy: "备份策略",
-        backup_interval: "备份间隔(天)",
-        retained_number: "保留份数",
-        backup_account: "备份账号",
-        backup_account_helper: "备份账号需要先授权到项目",
-        status: "状态",
-        local_recover: "本地文件恢复",
-        backup_start: "已经开始备份！请稍后查看日志",
-        recover_start: "已经开始恢复！请稍后查看日志",
-        local_recover_tips: "请上传原始文件，不要上传压缩文件",
-        file: "文件",
-        mo_file_selected: "未选择文件",
-        file_select: "文件选择",
-        backup_now: "立即备份",
-        backup_list: "备份列表",
-        backup_location: "备份位置",
-        backup_recover: "备份/恢复",
-        backup_log: "日志",
-      },
-      security: {
-        start_time: "开始时间",
-        end_time: "结束时间",
-        cis_result: "Cis 扫描结果",
-        code: "编号",
-        description: "描述",
-        advise: "建议",
       },
       log: {
         time: "时间",
@@ -474,9 +451,7 @@ const message = {
     description: "描述",
     add_project_manager: "添加项目管理员",
     add_project_resource: "添加资源",
-    key_words: "请输入姓名",
-    list:"项目列表",
-    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
+    key_words: "请输入姓名"
   },
   credential: {
     name: "凭据名称",
@@ -490,7 +465,26 @@ const message = {
     name: "备份账号",
     bucket: "桶",
     type: "类型",
-    status: "状态"
+    status: "状态",
+    add_backup_account: "添加备份账号",
+    edit_backup_account: "编辑备份账号",
+    select_placeholder: "请选择",
+    table: {
+      name: "名称",
+      bucket: "桶",
+      type: "类型",
+      status: "状态",
+      create_time: "创建时间",
+      endpoint: "Endpoint",
+      region: "区域",
+      accountName: "账户名称",
+      accountKey: "账户密钥",
+      address: "地址",
+      port: "端口",
+      username: "用户名",
+      password: "密码",
+      path: "路径"
+    }
   },
   setting: {
     registry: "仓库",
