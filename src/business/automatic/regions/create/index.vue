@@ -1,28 +1,13 @@
 <template>
   <layout-content>
-    <fu-steps :steps="stepConfig" :submit="submit" :cancel="cancel">
-      <fu-step-content slot="step-content" :index="1">
-        <div slot="content-detail">
-          <el-form :model="form" size="small">
-            <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name"></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
-      </fu-step-content>
-      <fu-step-content :index="2" slot="step-content"></fu-step-content>
-      <fu-step-content :index="3" slot="step-content"></fu-step-content>
-    </fu-steps>
   </layout-content>
 </template>
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import FuSteps from "@/components/fu-steps"
-import FuStepContent from "@/components/fu-steps/fu-step-content"
 export default {
   name: "RegionCreate",
-  components: { LayoutContent, FuSteps, FuStepContent },
+  components: { LayoutContent },
   data() {
     return {
       form: {
