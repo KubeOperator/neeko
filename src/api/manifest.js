@@ -4,6 +4,6 @@ export function manifestGroup() {
   return get("manifests/group")
 }
 
-export function changeStatus(versionName, version) {
-  return patch(`manifests/${versionName}`, version)
+export function changeStatus(versionName, manifest) {
+  return patch(`manifests/${versionName}`, manifest)
 }
