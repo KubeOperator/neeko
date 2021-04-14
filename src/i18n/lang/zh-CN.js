@@ -20,6 +20,7 @@ const message = {
       save: "保存",
       delete: "删除",
       import: "导入",
+      batch_import: "批量导入",
       upgrade: "升级",
       check: "诊断",
       cancel: "取消",
@@ -65,6 +66,7 @@ const message = {
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
+      password_min_length: "密码不允许小于6位",
     },
     search: {
       name: "",
@@ -104,6 +106,7 @@ const message = {
       Initializing: "初始化中",
       Upgrading: "升级中",
       Terminating: "销毁中",
+      synchronizing: "同步中",
       normal: "正常",
       failure: "异常"
     },
@@ -112,12 +115,11 @@ const message = {
       user: "用户"
     },
     form: {
-      password_min_length: "密码不允许小于6位",
-      number_validate: "请输入正确的数字",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
+      file_upload_helper: "将文件拖到此处，或点击上传",
     }
   },
   login: {
@@ -222,6 +224,10 @@ const message = {
       },
       node: {
         increment: "增量",
+        node_detail: "节点详情",
+        base_infomation: "基础信息",
+        label: "标签",
+        status: "状态"
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
@@ -380,7 +386,12 @@ const message = {
     os: "操作系统",
     architecture: "架构",
     port: "端口",
+    ensure_host_sync: "是否确认同步下列主机？",
+    start_host_sync: "主机同步已开始，请稍候...",
+    template_download: "模版下载",
+    not_support_format: "不支持的文件格式",
     new_credential: "新建凭据",
+    credential_name: "凭据",
     exists_credential: "已存在凭据",
     ip: "IP",
     gpu: "GPU(个)"

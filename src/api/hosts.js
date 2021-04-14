@@ -14,15 +14,16 @@ export function listHosts(currentPage, pageSize) {
   return get(`${hostUrl}?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
-export function searchHosts(currentPage, pageSize, conditions) {
-  return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+export function searchHosts(currentPage, pageSize) {
+  return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
-// export function isLogin() {
-//   return get(`${authUrl}/status`)
-// }
-//
-//
-// export function getSession() {
-//   return get(authUrl)
-// }
+export function syncHosts(hosts) {
+  const itemUrl = `${hostUrl}/sync/`
+  return post(itemUrl, hosts)
+}
+
+export function importHosts(file) {
+  const itemUrl = `${hostUrl}/upload`
+  return post(itemUrl, file)
+}

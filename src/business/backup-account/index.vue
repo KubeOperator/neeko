@@ -1,12 +1,12 @@
 <template>
   <layout-content :header="$t('backup_account.name')">
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
 <!--          <el-button size="small" @click="edit()">{{$t('commons.button.edit')}}</el-button>-->
-          <el-button size="small" @click="delete('123')">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="del()" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
 <!--          <el-button size="small" style="left: 20px" @click="create()">{{$t('commons.button.authorize')}}</el-button>-->
         </el-button-group>
       </template>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import {deleteRegistry} from "@/api/system-setting";
 import ComplexTable from "@/components/complex-table";
 import LayoutContent from "@/components/layout/LayoutContent";
 import {deleteBackupAccounts, getBackupAccounts} from "@/api/backup-account";
@@ -53,16 +52,16 @@ export default {
   data() {
     return{
       columns: [],
+      selects: [],
       formLabelWidth: '120px',
       buttons: [
         {
           label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
-            console.log(123,row)
             this.$router.push({name: "BackupAccountEdit", params: {data: row}})
           }
         }, {
           label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
-            this.delete(row.name)
+            this.del(row.name)
           }
         },
       ],
@@ -90,7 +89,7 @@ export default {
     create() {
       this.$router.push({name: "BackupAccountCreate"})
     },
-    delete(name) {
+    del(name) {
       this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
         confirmButtonText: this.$t('commons.button.confirm'),
         cancelButtonText: this.$t('commons.button.cancel'),
@@ -107,7 +106,7 @@ export default {
         } else {
           const ps = []
           for (const item of this.selects) {
-            ps.push(deleteRegistry(item.name))
+            ps.push(deleteBackupAccounts(item.name))
           }
           Promise.all(ps).then(() => {
             this.search()

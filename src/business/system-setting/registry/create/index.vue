@@ -16,7 +16,7 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" required>
-              <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
+              <el-select style="width: 100%" v-model="form.protocol"  placeholder="请选择">
                 <el-option
                   v-for="item in protocolOptions"
                   :key="item.value"

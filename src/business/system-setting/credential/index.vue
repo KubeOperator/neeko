@@ -1,9 +1,10 @@
 <template>
-  <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+  <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
                  :pagination-config="paginationConfig" @search="search">
     <template #toolbar>
       <el-button-group>
         <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+        <el-button size="small" @click="del()" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
       </el-button-group>
     </template>
 
@@ -32,6 +33,7 @@ export default {
   data() {
     return{
       columns: [],
+      selects: [],
       formLabelWidth: '120px',
       buttons: [
         {
@@ -68,14 +70,14 @@ export default {
     create() {
       this.$router.push({name: "CredentialCreate"})
     },
-    del(arch) {
+    del(name) {
       this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
         confirmButtonText: this.$t('commons.button.confirm'),
         cancelButtonText: this.$t('commons.button.cancel'),
         type: 'warning'
       }).then(() => {
-        if (arch) {
-          deleteCredentials(arch).then(() => {
+        if (name) {
+          deleteCredentials(name).then(() => {
             this.search()
             this.$message({
               type: 'success',

@@ -5,7 +5,7 @@ const limit = 10
 
 const nodesUrl = "api/v1/nodes"
 const nodeStatsSummaryUrl = "apis/metrics.k8s.io/v1beta1/nodes"
-const batchUrl = "/clusters/node/batch/{clusterName}"
+const baseUrl = "/clusters/node/{clusterName}"
 
 export function listNodesUsage(clusterName, continueToken) {
   let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl)
@@ -34,6 +34,9 @@ export function listNodesByPage(clusterName, pageNum, pageSize) {
 }
 
 export function nodeCreate(clusterName, data) {
-  return post(batchUrl.replace("{clusterName}", clusterName), data)
+  return post(baseUrl.replace("{clusterName}", clusterName), data)
 }
-  
+
+export function nodeDelete(clusterName, nodeName) {
+  return post(this.baseUrl.replace('{clusterName}', clusterName) + nodeName)
+}
