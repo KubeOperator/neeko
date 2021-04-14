@@ -489,7 +489,12 @@ const message = {
       default:"默认",
       customize: "自定义",
       network: "网络",
-      network_adapter: "网络适配器"
+      network_adapter: "网络适配器",
+      security_group: "安全组",
+      ip_type: "IP类型",
+      floating_ip: "浮动IP",
+      subnet: "子网",
+      storageType: "存储类型"
     },
     plan: {
       name: "部署计划",
