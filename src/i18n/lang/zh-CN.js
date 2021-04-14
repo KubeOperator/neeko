@@ -36,8 +36,10 @@ const message = {
       verify: "校验",
       management: "管理",
       submit: "提交",
-      update: "更新",
-      refresh: "刷新"
+      refresh: "刷新",
+      authorize: "授权",
+      getBucket: "获取桶",
+      update: "更新"
     },
     msg: {
       success: "{0}成功",
@@ -105,6 +107,8 @@ const message = {
       Upgrading: "升级中",
       Terminating: "销毁中",
       synchronizing: "同步中",
+      normal: "正常",
+      failure: "异常"
     },
     role: {
       admin: "管理员",
@@ -132,6 +136,7 @@ const message = {
     system_setting: "系统设置",
     manifest: "版本管理",
     message_center: "消息中心",
+    backup_account: "备份账号",
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户",
@@ -529,7 +534,26 @@ const message = {
     name: "备份账号",
     bucket: "桶",
     type: "类型",
-    status: "状态"
+    status: "状态",
+    add_backup_account: "添加备份账号",
+    edit_backup_account: "编辑备份账号",
+    select_placeholder: "请选择",
+    table: {
+      name: "名称",
+      bucket: "桶",
+      type: "类型",
+      status: "状态",
+      create_time: "创建时间",
+      endpoint: "Endpoint",
+      region: "区域",
+      accountName: "账户名称",
+      accountKey: "账户密钥",
+      address: "地址",
+      port: "端口",
+      username: "用户名",
+      password: "密码",
+      path: "路径"
+    }
   },
   setting: {
     registry: "仓库",

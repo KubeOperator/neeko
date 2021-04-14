@@ -36,7 +36,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 // import ComplexTable from "@/components/complex-table"
-import { getMessagesByUser } from "@/api/message"
+import { getMessagesByUser } from "@/api/xpack/message"
 
 export default {
   name: "Message",

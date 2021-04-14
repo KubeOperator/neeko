@@ -46,6 +46,15 @@ a:hover {
   background-color: #4A4B4D;
 }
 
+// icon图标属性
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
 // 轨道
 ::-webkit-scrollbar-track {
   border-radius: 5px;

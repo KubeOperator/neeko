@@ -3,23 +3,23 @@
     <complex-table :header="$t('route.message_subscribe')" :data="data">
       <el-table-column :label="$t('message.message_type')" min-width="100" prop="type" fix />
       <el-table-column :label="$t('message.message_in_station')">
-        <template v-slot:default="{row}">
-          <el-switch v-model="row.vars['LOCAL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row, 'LOCAL')"></el-switch>
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.vars['LOCAL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row, 'LOCAL')"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.mail')">
-        <template v-slot:default="{row}">
-          <el-switch v-model="row.vars['EMAIL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row,'EMAIL')"></el-switch>
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.vars['EMAIL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row,'EMAIL')"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.work_wechat')">
-        <template v-slot:default="{row}">
-          <el-switch v-model="row.vars['WORK_WEIXIN']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row,'WORK_WEIXIN')"></el-switch>
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.vars['WORK_WEIXIN']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row,'WORK_WEIXIN')"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.dingding')">
-        <template v-slot:default="{row}">
-          <el-switch v-model="row.vars['DING_TALK']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row,'DING_TALK')"></el-switch>
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.vars['DING_TALK']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row,'DING_TALK')"></el-switch>
         </template>
       </el-table-column>
     </complex-table>
@@ -29,7 +29,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import { getMessageOfSubscribe, updateMessageOfSubscribe } from "@/api/message"
+import { getMessageOfSubscribe, updateMessageOfSubscribe } from "@/api/xpack/message"
 
 export default {
   name: "Message",

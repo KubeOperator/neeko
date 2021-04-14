@@ -15,6 +15,9 @@
           <el-row>
             <el-col :span="6">
               <font-awesome-icon icon="server" size="3x" />
+              <svg class="icon" aria-hidden="true" style="font-size: 24px"  >
+                <use  xlink:href="#iconzhuji1"></use>
+              </svg>
             </el-col>
             <el-col :span="18">
               {{row.name}}<br />

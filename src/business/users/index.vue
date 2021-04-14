@@ -15,7 +15,9 @@
         <template v-slot:default="{row}">
           <el-row>
             <el-col :span="3">
-              <font-awesome-icon icon="user" size="3x"/>
+              <svg class="icon" aria-hidden="true"  style="font-size: 24px">
+                <use xlink:href="#iconyonghu-fuben"></use>
+              </svg>
             </el-col>
             <el-col :span="18">
               {{ row.name }}<br/>
