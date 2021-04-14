@@ -494,7 +494,13 @@ const message = {
       ip_type: "IP类型",
       floating_ip: "浮动IP",
       subnet: "子网",
-      storageType: "存储类型"
+      storageType: "存储类型",
+      switch: "交换机",
+      nfs_address: "NFS服务器地址",
+      nfs_port: "NFS服务端口",
+      nfs_folder: "NFS服务器文件夹",
+      nfs_username: "NFS服务器用户名",
+      nfs_password: "NFS服务器密码"
     },
     plan: {
       name: "部署计划",
