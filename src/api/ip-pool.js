@@ -3,7 +3,11 @@ import {get, del, post, patch} from "@/plugins/request"
 const ipPoolUrl = "/ippools"
 
 export function listIpPools (page, size) {
-  return get(`ippools?pageNum=${page}&pageSize=${size}`)
+  return get(`${ipPoolUrl}?pageNum=${page}&pageSize=${size}`)
+}
+
+export function listAllIpPools () {
+  return get(`${ipPoolUrl}`)
 }
 
 export function deleteIpPoolBy (name) {
@@ -14,7 +18,7 @@ export function createIpPool (data) {
   return post(ipPoolUrl, data)
 }
 
-export function searchIpPool(currentPage, pageSize, conditions) {
+export function searchIpPool (currentPage, pageSize, conditions) {
   return post(`${ipPoolUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 
 }

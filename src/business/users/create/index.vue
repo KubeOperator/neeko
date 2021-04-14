@@ -14,10 +14,10 @@
             <el-form-item :label="$t('user.password')" prop="password" required>
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('user.confirm_password')" prop="password" required>
+            <el-form-item :label="$t('user.confirm_password')" prop="confirmPassword" required>
               <el-input type="password" v-model="form.confirmPassword"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('user.role')" required>
+            <el-form-item :label="$t('user.role')" required prop="role">
               <el-radio-group v-model="form.role">
                 <el-radio label="admin">{{ $t("commons.role.admin") }}</el-radio>
                 <el-radio label="user">{{ $t("commons.role.user") }}</el-radio>
@@ -54,6 +54,9 @@ export default {
       rules: {
         name: [Rule.NameRule],
         email: [Rule.EmailRule, Rule.RequiredRule],
+        password: [Rule.RequiredRule],
+        confirmPassword: [Rule.RequiredRule],
+        role: [Rule.RequiredRule],
       }
     }
   },
