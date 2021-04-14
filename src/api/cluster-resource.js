@@ -8,10 +8,6 @@ export function listClusterResources (projectName,clusterName, resourceType, cur
   return get(`${clusterResourceUrl(projectName,clusterName)}?pageNum=${currentPage}&pageSize=${pageSize}&resourceType=${resourceType}`)
 }
 
-export function listClusterResourcesOfAll (projectName, clusterName, resourceType) {
-  return get(`${clusterResourceUrl(projectName,clusterName)}?resourceType=${resourceType}`)
-}
-
 export function createClusterResource (projectName,clusterName, data) {
   return post(`${clusterResourceUrl(projectName,clusterName)}`, data)
 }

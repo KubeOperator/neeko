@@ -8,7 +8,7 @@
               <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :data="pvDatas">
+          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="pvDatas">
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity['storage']" fix />
             <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
@@ -25,8 +25,6 @@
               </template>
             </el-table-column>
           </complex-table>
-
-          <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
@@ -36,7 +34,7 @@
               <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :data="storageClassDatas">
+          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="storageClassDatas">
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
             <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
@@ -52,8 +50,6 @@
               </template>
             </el-table-column>
           </complex-table>
-
-          <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
@@ -64,27 +60,15 @@
               <el-button size="small" :disabled="provisionerSelection.length < 1" @click="goSync()">{{$t('commons.button.sync')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :selects.sync="provisionerSelection" :data="provisionerDatas">
+          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="provisionerDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template v-slot:default="{row}">
-                <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
-                <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
-                <el-tag v-if="row.status === 'Initializing'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.initializing')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-                <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">{{$t('commons.status.synchronizing')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-                <el-tag v-if="row.status === 'Waiting'" type="info" size="small">{{$t('commons.status.waiting')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-
-                <!-- <span style="margin: 12px">{{scope.row.status}}
-                  <i v-if="row.status === 'Initializing' || row.status === 'Terminating' || row.status === 'Synchronizing' || row.status === 'Waiting'" class="el-icon-loading" />
-                </span> -->
+              <template slot-scope="scope">
+                <span style="margin: 12px">{{scope.row.status}}
+                  <i v-if="scope.row.status === 'Initializing' || scope.row.status === 'Terminating' || scope.row.status === 'Synchronizing' || scope.row.status === 'Waiting'" class="el-icon-loading" />
+                </span>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
@@ -117,23 +101,13 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import K8sPage from "@/components/k8s-page"
-import { openProvisionerLogger } from "@/api/cluster"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable, K8sPage },
+  components: { ComplexTable },
   data() {
     return {
-      pvPage: {
-        continueToken: "",
-        nextToken: "",
-      },
-      classPage: {
-        continueToken: "",
-        nextToken: "",
-      },
       provisionerDatas: [],
       pvDatas: [],
       storageClassDatas: [],
@@ -147,14 +121,12 @@ export default {
   methods: {
     search() {
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
-        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false).then((data) => {
+        listPersistentVolumes(this.clusterName).then((data) => {
           this.pvDatas = data.items
-          this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
-        listStorageClass(this.clusterName, this.classPage.continueToken, false).then((data) => {
+        listStorageClass(this.clusterName).then((data) => {
           this.storageClassDatas = data.items
-          this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
         listProvisioner(this.clusterName).then((data) => {
@@ -162,13 +134,8 @@ export default {
         })
       }
     },
-    classPageChange(continueToken) {
-      this.classPage.continueToken = continueToken
-      this.search()
-    },
-    pvPageChange(continueToken) {
-      this.pvPage.continueToken = continueToken
-      this.search()
+    handleSelectionChange(val) {
+      this.provisionerSelection = val
     },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
@@ -235,9 +202,6 @@ export default {
         this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
         this.search()
       })
-    },
-    openXterm(row) {
-      openProvisionerLogger(this.clusterName, row.id);
     },
     goSync() {
       this.dialogSyncVisible = true
