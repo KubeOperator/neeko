@@ -18,3 +18,7 @@ export function updateCredentials(name, data) {
 export function deleteCredentials(name) {
   return del(`${settingUrl}/${name}`)
 }
+
+export function listAllCredentials() {
+  return get(`${settingUrl}`)
+}

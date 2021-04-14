@@ -17,11 +17,6 @@ export default {
         vars: "",
         name: ""
       },
-      stepConfig: [
-        { title: "步骤1", description: "描述文字1.." },
-        { title: "步骤2", description: "描述文字2.." },
-        { title: "步骤3", description: "描述文字3.." }
-      ]
     }
   },
   methods: {
