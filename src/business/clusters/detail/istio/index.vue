@@ -142,6 +142,7 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       listIstio(this.clusterName).then((data) => {
         for (const item of data) {
           switch (item.cluster_istio.name) {
@@ -182,6 +183,7 @@ export default {
               this.egressCfg.cluster_istio = item.cluster_istio
               break
           }
+          this.loading = false
         }
       })
     },

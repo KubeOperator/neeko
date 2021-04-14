@@ -46,7 +46,7 @@
                   <el-row type="flex" justify="center">
                     <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
                       <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__text">{{$t('commons.form.file_upload_helper')}}</div>
                       <div class="el-upload__tip" slot="tip">{{$t('cluster.detail.backup.local_recover_tips')}}</div>
                     </el-upload>
                   </el-row>
@@ -212,7 +212,7 @@ export default {
     },
     onUploadFile() {
       const formData = new FormData()
-      formData.append("file", this.file)
+      formData.append("file", this.file.raw)
       formData.append("clusterName", this.clusterName)
       localRestore(formData).then(
         () => {

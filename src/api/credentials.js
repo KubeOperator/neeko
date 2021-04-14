@@ -7,6 +7,10 @@ export function listCredentials(currentPage, pageSize) {
   return get(`${settingUrl}/?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
+export function listCredentialAll() {
+  return get(`${settingUrl}`)
+}
+
 export function createCredentials(data) {
   return post(settingUrl,data)
 }
