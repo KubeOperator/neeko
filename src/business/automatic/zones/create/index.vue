@@ -4,11 +4,11 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="80px" :model="form" :rules="rules" v-loading="loading">
-            <el-form-item :label="$t('commons.table.name')" label-width="100px" prop="name">
+          <el-form ref="form" label-width="100px" :model="form" :rules="rules" v-loading="loading">
+            <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.region.name')" label-width="100px" prop="regionName">
+            <el-form-item :label="$t('automatic.region.name')"  prop="regionName">
               <el-select v-model="form.regionName"
                          filterable
                          reserve-keyword
@@ -24,7 +24,7 @@
             <div v-if="region.regionVars['provider'] === 'vSphere'">
               <h3>{{ $t("automatic.zone.compute") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.cluster')" label-width="100px" prop="cloudVars.cluster">
+              <el-form-item :label="$t('automatic.zone.cluster')"  prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
                            reserve-keyword
@@ -37,7 +37,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.resource_pool')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.resource_pool')"
                             prop="cloudVars.resourcePool">
                 <el-select v-model="form.cloudVars.resourcePool"
                            filterable
@@ -52,14 +52,14 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.datastore") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.datastore_type')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.datastore_type')"
                             prop="cloudVars.datastoreType">
                 <el-radio-group v-model="form.cloudVars.datastoreType">
                   <el-radio label="value">{{ $t("automatic.zone.value") }}</el-radio>
                   <el-radio label="usage">{{ $t("automatic.zone.usage") }}</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.datastore')" label-width="100px" prop="cloudVars.datastore">
+              <el-form-item :label="$t('automatic.zone.datastore')"  prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
                            filterable
@@ -74,7 +74,7 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.template") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.template_type')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
                   <el-radio label="default">{{ $t("automatic.zone.default") }}</el-radio>
@@ -84,7 +84,7 @@
                 </el-radio-group>
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='customize'">
-                <el-form-item :label="$t('automatic.zone.template')" label-width="100px" prop="cloudVars.imageName">
+                <el-form-item :label="$t('automatic.zone.template')"  prop="cloudVars.imageName">
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
@@ -97,7 +97,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('credential.credential')" label-width="100px" prop="credentialName">
+                <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
                              reserve-keyword>
@@ -112,7 +112,7 @@
               </div>
               <h3>{{ $t("automatic.zone.network") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.network_adapter')" label-width="100px" prop="cloudVars.network">
+              <el-form-item :label="$t('automatic.zone.network_adapter')"  prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
                            filterable
                            reserve-keyword>
@@ -124,7 +124,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.ip_pool.name')" label-width="100px" prop="ipPoolName">
+              <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
                            reserve-keyword>
@@ -140,7 +140,7 @@
             <div v-if="region.regionVars['provider'] === 'OpenStack'">
               <h3>{{ $t("automatic.zone.compute") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.cluster')" label-width="100px" prop="cloudVars.cluster">
+              <el-form-item :label="$t('automatic.zone.cluster')"  prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
                            reserve-keyword
@@ -155,7 +155,7 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.datastore") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.storageType')" label-width="100px" prop="cloudVars.storageType">
+              <el-form-item :label="$t('automatic.zone.storageType')"  prop="cloudVars.storageType">
                 <el-select v-model="form.cloudVars.storageType"
                            filterable
                            reserve-keyword>
@@ -169,7 +169,7 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.template") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.template_type')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
                   <el-radio label="default">{{ $t("automatic.zone.default") }}</el-radio>
@@ -179,7 +179,7 @@
                 </el-radio-group>
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='customize'">
-                <el-form-item :label="$t('automatic.zone.template')" label-width="100px" prop="cloudVars.imageName">
+                <el-form-item :label="$t('automatic.zone.template')"  prop="cloudVars.imageName">
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
@@ -192,7 +192,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('credential.credential')" label-width="100px" prop="credentialName">
+                <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
                              reserve-keyword>
@@ -207,7 +207,7 @@
               </div>
               <h3>{{ $t("automatic.zone.network") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.security_group')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.security_group')"
                             prop="cloudVars.securityGroup">
                 <el-select v-model="form.cloudVars.securityGroup"
                            filterable
@@ -220,7 +220,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.network')" label-width="100px" prop="cloudVars.network">
+              <el-form-item :label="$t('automatic.zone.network')"  prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
                            filterable
                            reserve-keyword
@@ -233,7 +233,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.ip_type')" label-width="100px" prop="cloudVars.ipType">
+              <el-form-item :label="$t('automatic.zone.ip_type')" prop="cloudVars.ipType">
                 <el-select v-model="form.cloudVars.ipType"
                            filterable
                            reserve-keyword>
@@ -245,7 +245,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.subnet')" label-width="100px" prop="cloudVars.subnet"
+              <el-form-item :label="$t('automatic.zone.subnet')"  prop="cloudVars.subnet"
                             v-if="form.cloudVars.ipType==='private'">
                 <el-select v-model="form.cloudVars.subnet"
                            filterable
@@ -258,7 +258,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.floating_ip')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.floating_ip')"
                             prop="cloudVars.floatingNetwork"
                             v-if="form.cloudVars.ipType==='floating'">
                 <el-select v-model="form.cloudVars.floatingNetwork"
@@ -272,7 +272,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.ip_pool.name')" label-width="100px" prop="ipPoolName">
+              <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
                            reserve-keyword>
@@ -288,7 +288,7 @@
             <div v-if="region.regionVars['provider'] === 'FusionCompute'">
               <h3>{{ $t("automatic.zone.compute") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.cluster')" label-width="100px" prop="cloudVars.cluster">
+              <el-form-item :label="$t('automatic.zone.cluster')"  prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
                            reserve-keyword
@@ -303,7 +303,7 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.datastore") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.datastore')" label-width="100px" prop="cloudVars.datastore">
+              <el-form-item :label="$t('automatic.zone.datastore')"  prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
                            filterable
@@ -318,7 +318,7 @@
               </el-form-item>
               <h3>{{ $t("automatic.zone.template") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.template_type')" label-width="100px"
+              <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
                   <el-radio label="default">{{ $t("automatic.zone.default") }}</el-radio>
@@ -328,26 +328,26 @@
                 </el-radio-group>
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='default'">
-                <el-form-item :label="$t('automatic.zone.nfs_address')" label-width="100px" prop="cloudVars.nfsAddress">
+                <el-form-item :label="$t('automatic.zone.nfs_address')"  prop="cloudVars.nfsAddress">
                   <el-input v-model="form.cloudVars.nfsAddress"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.nfs_port')" label-width="100px" prop="cloudVars.nfsPort">
+                <el-form-item :label="$t('automatic.zone.nfs_port')"  prop="cloudVars.nfsPort">
                   <el-input-number v-model="form.cloudVars.nfsPort"></el-input-number>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.nfs_folder')" label-width="100px" prop="cloudVars.nfsFolder">
+                <el-form-item :label="$t('automatic.zone.nfs_folder')"  prop="cloudVars.nfsFolder">
                   <el-input v-model="form.cloudVars.nfsFolder"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.nfs_username')" label-width="100px"
+                <el-form-item :label="$t('automatic.zone.nfs_username')"
                               prop="cloudVars.nfsUsername">
                   <el-input v-model="form.cloudVars.nfsUsername"></el-input>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.nfs_password')" label-width="100px"
+                <el-form-item :label="$t('automatic.zone.nfs_password')"
                               prop="cloudVars.nfsPassword">
                   <el-input type="password" v-model="form.cloudVars.nfsPassword"></el-input>
                 </el-form-item>
               </div>
               <div v-if="form.cloudVars['templateType']==='customize'">
-                <el-form-item :label="$t('automatic.zone.template')" label-width="100px" prop="cloudVars.imageName">
+                <el-form-item :label="$t('automatic.zone.template')"  prop="cloudVars.imageName">
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
@@ -360,7 +360,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('credential.credential')" label-width="100px" prop="credentialName">
+                <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
                              reserve-keyword>
@@ -375,7 +375,7 @@
               </div>
               <h3>{{ $t("automatic.zone.network") }}</h3>
               <hr/>
-              <el-form-item :label="$t('automatic.zone.switch')" label-width="100px" prop="cloudVars.switch">
+              <el-form-item :label="$t('automatic.zone.switch')"  prop="cloudVars.switch">
                 <el-select v-model="form.cloudVars.switch"
                            filterable
                            reserve-keyword
@@ -388,7 +388,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.portgroup')" label-width="100px" prop="cloudVars.portgroup">
+              <el-form-item :label="$t('automatic.zone.portgroup')"  prop="cloudVars.portgroup">
                 <el-select v-model="form.cloudVars.portgroup"
                            filterable
                            reserve-keyword>
@@ -400,7 +400,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.ip_pool.name')" label-width="100px" prop="ipPoolName">
+              <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
                            reserve-keyword>
@@ -414,8 +414,10 @@
               </el-form-item>
             </div>
             <el-form-item>
-              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
