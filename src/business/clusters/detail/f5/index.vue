@@ -47,14 +47,14 @@ export default {
         status: "",
       },
       rules: {
-        url: [{ required: true, message: this.$t("commons.form.required_msg"), trigger: "blur" }],
-        user: [{ required: true, message: this.$t("commons.form.required_msg"), trigger: "blur" }],
+        url: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+        user: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
         password: [
-          { required: true, message: this.$t("commons.form.required_msg"), trigger: "blur" },
-          { type: "string", min: 6, message: this.$t("commons.form.password_min_length"), trigger: "blur" },
+          { required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" },
+          { type: "string", min: 6, message: this.$t("commons.validate.password_min_length"), trigger: "blur" },
         ],
-        partition: [{ required: true, message: this.$t("commons.form.required_msg"), trigger: "blur" }],
-        publicIP: [{ required: true, message: this.$t("commons.form.required_msg"), trigger: "blur" }],
+        partition: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+        publicIP: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
       },
     }
   },

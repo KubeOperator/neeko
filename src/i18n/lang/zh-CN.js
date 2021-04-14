@@ -20,6 +20,7 @@ const message = {
       save: "保存",
       delete: "删除",
       import: "导入",
+      batch_import: "批量导入",
       upgrade: "升级",
       check: "诊断",
       cancel: "取消",
@@ -65,6 +66,7 @@ const message = {
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
+      password_min_length: "密码不允许小于6位",
     },
     search: {
       name: "",
@@ -104,6 +106,7 @@ const message = {
       Initializing: "初始化中",
       Upgrading: "升级中",
       Terminating: "销毁中",
+      synchronizing: "同步中",
       normal: "正常",
       failure: "异常"
     },
@@ -112,12 +115,11 @@ const message = {
       user: "用户"
     },
     form: {
-      password_min_length: "密码不允许小于6位",
-      number_validate: "请输入正确的数字",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
+      file_upload_helper: "将文件拖到此处，或点击上传",
     }
   },
   login: {
@@ -222,6 +224,10 @@ const message = {
       },
       node: {
         increment: "增量",
+        node_detail: "节点详情",
+        base_infomation: "基础信息",
+        label: "标签",
+        status: "状态"
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
@@ -380,7 +386,12 @@ const message = {
     os: "操作系统",
     architecture: "架构",
     port: "端口",
+    ensure_host_sync: "是否确认同步下列主机？",
+    start_host_sync: "主机同步已开始，请稍候...",
+    template_download: "模版下载",
+    not_support_format: "不支持的文件格式",
     new_credential: "新建凭据",
+    credential_name: "凭据",
     exists_credential: "已存在凭据",
     ip: "IP",
     gpu: "GPU(个)"
@@ -452,6 +463,7 @@ const message = {
     name: "自动模式",
     cloud_provider: "云提供商",
     datacenter: "数据中心",
+    basic: "基本信息",
     region: {
       name: "区域",
       basic: "基本信息",
@@ -463,7 +475,32 @@ const message = {
       description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
       ready: "就绪",
       uploadImageError: "上传镜像失败",
-      initializing: "初始化中"
+      initializing: "初始化中",
+      config: "配置参数",
+      compute: "计算",
+      cluster: "集群",
+      resource_pool: "资源池",
+      datastore: "存储",
+      value:"按剩余量",
+      usage:"按使用率",
+      datastore_type: "放置方式",
+      template: "模版",
+      template_type: "模版类型",
+      default:"默认",
+      customize: "自定义",
+      network: "网络",
+      network_adapter: "网络适配器",
+      security_group: "安全组",
+      ip_type: "IP类型",
+      floating_ip: "浮动IP",
+      subnet: "子网",
+      storageType: "存储类型",
+      switch: "交换机",
+      nfs_address: "NFS服务器地址",
+      nfs_port: "NFS服务端口",
+      nfs_folder: "NFS服务器文件夹",
+      nfs_username: "NFS服务器用户名",
+      nfs_password: "NFS服务器密码"
     },
     plan: {
       name: "部署计划",

@@ -13,3 +13,7 @@ export function deleteRegionBy (name) {
 export function searchRegion (page, size, condition) {
   return post(`${regionUrl}/search?pageNum=${page}&pageSize=${size}`, condition)
 }
+
+export function listAllRegions () {
+  return get(`${regionUrl}`)
+}

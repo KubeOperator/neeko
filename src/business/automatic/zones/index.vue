@@ -151,6 +151,9 @@ export default {
           })
         })
 
+    },
+    create () {
+      this.$router.push({ name: "ZoneCreate" })
     }
   },
   created () {
