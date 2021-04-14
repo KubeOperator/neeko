@@ -69,10 +69,22 @@
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template slot-scope="scope">
-                <span style="margin: 12px">{{scope.row.status}}
-                  <i v-if="scope.row.status === 'Initializing' || scope.row.status === 'Terminating' || scope.row.status === 'Synchronizing' || scope.row.status === 'Waiting'" class="el-icon-loading" />
-                </span>
+              <template v-slot:default="{row}">
+                <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+                <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+                <el-tag v-if="row.status === 'Initializing'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.initializing')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">{{$t('commons.status.synchronizing')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Waiting'" type="info" size="small">{{$t('commons.status.waiting')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+
+                <!-- <span style="margin: 12px">{{scope.row.status}}
+                  <i v-if="row.status === 'Initializing' || row.status === 'Terminating' || row.status === 'Synchronizing' || row.status === 'Waiting'" class="el-icon-loading" />
+                </span> -->
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
@@ -106,6 +118,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
+import { openProvisionerLogger } from "@/api/cluster"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
@@ -222,6 +235,9 @@ export default {
         this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
         this.search()
       })
+    },
+    openXterm(row) {
+      openProvisionerLogger(this.clusterName, row.id);
     },
     goSync() {
       this.dialogSyncVisible = true

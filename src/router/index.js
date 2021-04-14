@@ -32,6 +32,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: "/logger",
+    component: () => import("@/business/xterm"),
+    hidden: true
+  },
+  {
     path: "/",
     component: Layout,
     redirect: "/dashboard",

@@ -50,80 +50,84 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <span>{{$t('cluster.detail.node.base_infomation')}}</span>
-      <el-divider></el-divider>
-      <table style="width: 100%" class="myTable">
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <td>{{detaiInfo.metadata.name}}</td>
-          </tr>
-          <tr>
-            <th>Kernel Version</th>
-            <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
-          </tr>
-          <tr>
-            <th>OS Image</th>
-            <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
-          </tr>
-          <tr>
-            <th>Container Runtime Version</th>
-            <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
-          </tr>
-          <tr>
-            <th>Kubelet Version</th>
-            <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
-          </tr>
-          <tr>
-            <th>KubeProxy Version</th>
-            <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
-          </tr>
-          <tr>
-            <th>Operating System</th>
-            <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
-          </tr>
-          <tr>
-            <th>Architecture</th>
-            <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br />
-      <span>{{$t('cluster.detail.node.label')}}</span>
-      <el-divider></el-divider>
-      <table style="width: 100%" class="myTable">
-        <tbody>
-          <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
-            <th>{{name}}</th>
-            <td>{{value}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br />
-      <span>{{$t('cluster.detail.node.status')}}</span>
-      <el-divider></el-divider>
-      <table style="width: 100%" class="myTable">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Time</th>
-            <th>Reason</th>
-            <th>Message</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="condition in detaiInfo.status.conditions" :key="condition.key">
-            <td class="left">{{condition.type}}</td>
-            <td class="left">{{condition.status}}</td>
-            <td class="left">{{condition.lastTransitionTime | datetimeFormat}}</td>
-            <td class="left">{{condition.reason}}</td>
-            <td class="left">{{condition.message}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogDetailVisible = false">{{$t('commons.button.cancel')}}</el-button>
+      <div style="height: 600px">
+        <el-scrollbar style="height:100%">
+          <span>{{$t('cluster.detail.node.base_infomation')}}</span>
+          <el-divider></el-divider>
+          <table style="width: 90%" class="myTable">
+            <tbody>
+              <tr>
+                <th>Name</th>
+                <td>{{detaiInfo.metadata.name}}</td>
+              </tr>
+              <tr>
+                <th>Kernel Version</th>
+                <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
+              </tr>
+              <tr>
+                <th>OS Image</th>
+                <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
+              </tr>
+              <tr>
+                <th>Container Runtime Version</th>
+                <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
+              </tr>
+              <tr>
+                <th>Kubelet Version</th>
+                <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
+              </tr>
+              <tr>
+                <th>KubeProxy Version</th>
+                <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
+              </tr>
+              <tr>
+                <th>Operating System</th>
+                <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
+              </tr>
+              <tr>
+                <th>Architecture</th>
+                <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <span>{{$t('cluster.detail.node.label')}}</span>
+          <el-divider></el-divider>
+          <table style="width: 90%" class="myTable">
+            <tbody>
+              <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
+                <th>{{name}}</th>
+                <td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <span>{{$t('cluster.detail.node.status')}}</span>
+          <el-divider></el-divider>
+          <table style="width: 90%" class="myTable">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="condition in detaiInfo.status.conditions" :key="condition.key">
+                <td class="left">{{condition.type}}</td>
+                <td class="left">{{condition.status}}</td>
+                <td class="left">{{condition.lastTransitionTime | datetimeFormat}}</td>
+                <td class="left">{{condition.reason}}</td>
+                <td class="left">{{condition.message}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogDetailVisible = false">{{$t('commons.button.cancel')}}</el-button>
+          </div>
+        </el-scrollbar>
       </div>
     </el-dialog>
   </div>
@@ -135,7 +139,6 @@ import ComplexTable from "@/components/complex-table"
 import { listNodesByPage, nodeCreate } from "@/api/cluster/node"
 import { listClusterResourcesOfAll } from "@/api/cluster-resource"
 import { getClusterByName } from "@/api/cluster"
-
 
 export default {
   name: "ClusterNode",
@@ -254,7 +257,7 @@ export default {
         this.currentCluster = data
         this.provider = this.currentCluster.spec.provider
       })
-    }
+    },
   },
   created() {
     this.clusterName = this.$route.params.name
