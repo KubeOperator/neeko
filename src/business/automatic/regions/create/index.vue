@@ -153,7 +153,7 @@ export default {
       })
     },
     onCancel () {
-      this.$router.push("/automatic/regions")
+      this.$router.push({ name: "RegionList" })
     },
     onCheckParams () {
       this.loading = true

@@ -49,6 +49,16 @@ const Automatic = {
       }
     },
     {
+      path: "plans/create",
+      hidden: true,
+      component: () => import("@/business/automatic/plans/create"),
+      name: "PlanCreate",
+      meta: {
+        activeMenu: "/automatic/plans",
+        roles: ["ADMIN"]
+      }
+    },
+    {
       path: "vmconfigs",
       component: () => import("@/business/automatic/vm-configs"),
       name: "VmConfigList",

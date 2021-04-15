@@ -514,7 +514,11 @@ const message = {
       description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
       deploy_template: "部署模型",
       SINGLE: "一主多节点",
-      MULTIPLE: "多主多节点"
+      MULTIPLE: "多主多节点",
+      project_auth: "项目授权",
+      master_model: "Master 规格",
+      worker_model: "Worker 规格",
+      config: "规格参考"
     },
     vm_config: {
       name: "虚拟机配置",
@@ -523,6 +527,7 @@ const message = {
       name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
+      disk: "磁盘(GB)"
     },
     ip_pool: {
       name: "IP池",
