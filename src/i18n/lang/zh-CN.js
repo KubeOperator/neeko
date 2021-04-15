@@ -71,7 +71,8 @@ const message = {
       time_end: "结束时间",
       time_range: "至",
       date_start: "开始日期",
-      date_end: "结束日期"
+      date_end: "结束日期",
+      synchronizing: "同步中",
     },
     personal: {
       personal_information: "个人信息",
@@ -109,11 +110,14 @@ const message = {
       user: "用户"
     },
     form: {
+      password_min_length: "密码不允许小于6位",
+      number_validate: "请输入正确的数字",
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
+      file_upload_helper: "将文件拖到此处，或点击上传",
     }
   },
   login: {
@@ -218,6 +222,13 @@ const message = {
       },
       node: {
         increment: "增量",
+        node_detail: "节点详情",
+        base_infomation: "基础信息",
+        label: "标签",
+        status: "状态"
+      },
+      namespace: {
+        before_delete: "删除失败,该命名空间下已存在工具：",
       },
       storage: {
         type: "类型",
@@ -307,6 +318,7 @@ const message = {
         grafana_err_msg: "请先启用 promethues 作为默认数据源！",
       },
       istio: {
+        err_title: "错误信息",
         cpu_limit: "CPU 限制(m)",
         memory_limit: "Memory 限制(Mb)",
         cpu_request: "CPU 预留",
@@ -317,7 +329,53 @@ const message = {
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
         ensure_disable_istio: "是否确认禁用集群 istio？",
-    }
+    },
+      backup: {
+        backup_strategy: "备份策略",
+        backup_interval: "备份间隔(天)",
+        retained_number: "保留份数",
+        backup_account: "备份账号",
+        backup_account_helper: "备份账号需要先授权到项目",
+        status: "状态",
+        local_recover: "本地文件恢复",
+        backup_start: "已经开始备份！请稍后查看日志",
+        recover_start: "已经开始恢复！请稍后查看日志",
+        local_recover_tips: "请上传原始文件，不要上传压缩文件",
+        file: "文件",
+        mo_file_selected: "未选择文件",
+        file_select: "文件选择",
+        backup_now: "立即备份",
+        backup_list: "备份列表",
+        backup_location: "备份位置",
+        backup_recover: "备份/恢复",
+        backup_log: "日志",
+      },
+      security: {
+        start_time: "开始时间",
+        end_time: "结束时间",
+        cis_result: "Cis 扫描结果",
+        code: "编号",
+        description: "描述",
+        advise: "建议",
+      },
+      f5: {
+        big_ip_addr: "BIG-IP 地址",
+        big_ip_user_name: "BIG-IP 用户名",
+        big_ip_password: "BIG-IP 密码",
+        big_ip_public: "BIG-IP 外网IP",
+      },
+      grade: {
+        danger: "严重",
+        warning: "警告",
+        pass: "通过",
+        total: "总量",
+        health_checks: "健康检查",
+        images: "镜像",
+        networking: "网络",
+        reliability: "可靠性",
+        resources: "资源",
+        security: "安全",
+      },
   },
   },
   host: {
