@@ -39,7 +39,8 @@ const message = {
       refresh: "刷新",
       authorize: "授权",
       getBucket: "获取桶",
-      update: "更新"
+      update: "更新",
+      upload: "上传"
     },
     msg: {
       success: "{0}成功",
@@ -642,7 +643,8 @@ const message = {
       },
       theme: {
         systemName: "系统名称",
-        logo: "Logo"
+        logo: "Logo",
+        uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件"
       },
       message: {
         wechat: "企业微信",
