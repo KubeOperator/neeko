@@ -62,6 +62,8 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
+      required_msg: "输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
     },
     search: {
       name: "",
@@ -113,8 +115,6 @@ const message = {
     form: {
       password_min_length: "密码不允许小于6位",
       number_validate: "请输入正确的数字",
-      required_msg: "输入项不能为空",
-      ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
@@ -476,7 +476,18 @@ const message = {
       openstack_project: "项目ID",
       openstack_domain: "domainName",
       fusionCompute_server: "FusionCompute 服务地址",
-      get_datacenter: "获取数据中心"
+      get_datacenter: "获取数据中心",
+      vcenter_api_help:"vCenter API地址",
+      vcenter_user_help:"访问 vCenter 的用户名，例如 administrator@vsphere.local",
+      vcenter_password_help:"访问 vCenter 的密码",
+      openstack_keystone_help:"OpenStack keystone地址",
+      openstack_username_help:"访问 OpenStack 的用户名",
+      openstack_password_help:"访问 OpenStack 的密码",
+      openstack_project_help:"OpenStack 项目ID",
+      openstack_domain_help:"OpenStack Domain Name",
+      fusionCompute_server_help:"FusionCompute 的 API 服务地址，例如: https://10.1.240.11:7443",
+      fusionCompute_user_help:"访问 FusionCompute 的用户名，例如: admin",
+      fusionCompute_password_help:"访问 FusionCompute 的密码",
     },
     zone: {
       name: "可用区",

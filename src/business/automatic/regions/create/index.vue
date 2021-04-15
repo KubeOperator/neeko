@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="120px" :model="form" :rules="rules" v-loading="loading">
+          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -18,45 +18,45 @@
               </el-select>
             </el-form-item>
             <div v-if="form.provider === 'vSphere'">
-              <el-form-item :label="$t('automatic.region.vcenter_host')" prop="regionVars.host">
-                <el-input v-model="form.regionVars.host"></el-input>
+              <el-form-item :label="$t('automatic.region.vcenter_host')"  prop="regionVars.host">
+                <el-input v-model="form.regionVars.host" :placeholder="$t('automatic.region.vcenter_api_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_port')" prop="regionVars.port">
                 <el-input-number v-model="form.regionVars.port"></el-input-number>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_username')" prop="regionVars.username">
-                <el-input v-model="form.regionVars.username"></el-input>
+                <el-input v-model="form.regionVars.username"  :placeholder="$t('automatic.region.vcenter_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"></el-input>
+                <el-input type="password" v-model="form.regionVars.password"  :placeholder="$t('automatic.region.vcenter_password_help')"></el-input>
               </el-form-item>
             </div>
             <div v-if="form.provider === 'OpenStack'">
               <el-form-item :label="$t('automatic.region.openstack_identity')" prop="regionVars.identity">
-                <el-input v-model="form.regionVars.identity"></el-input>
+                <el-input v-model="form.regionVars.identity" :placeholder="$t('automatic.region.openstack_keystone_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_username')" prop="regionVars.username">
-                <el-input v-model="form.regionVars.username"></el-input>
+                <el-input v-model="form.regionVars.username" :placeholder="$t('automatic.region.openstack_username_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"></el-input>
+                <el-input type="password" v-model="form.regionVars.password" :placeholder="$t('automatic.region.openstack_password_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.openstack_project')" prop="regionVars.projectId">
-                <el-input v-model="form.regionVars.projectId"></el-input>
+                <el-input v-model="form.regionVars.projectId" :placeholder="$t('automatic.region.openstack_project_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.openstack_domain')" prop="regionVars.domainName">
-                <el-input v-model="form.regionVars.domainName"></el-input>
+                <el-input v-model="form.regionVars.domainName" :placeholder="$t('automatic.region.openstack_domain_help')"></el-input>
               </el-form-item>
             </div>
             <div v-if="form.provider === 'FusionCompute'">
               <el-form-item :label="$t('automatic.region.fusionCompute_server')" prop="regionVars.server">
-                <el-input v-model="form.regionVars.server"></el-input>
+                <el-input v-model="form.regionVars.server" :placeholder="$t('automatic.region.fusionCompute_server_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_username')" prop="regionVars.user">
-                <el-input v-model="form.regionVars.user"></el-input>
+                <el-input v-model="form.regionVars.user" :placeholder="$t('automatic.region.fusionCompute_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"></el-input>
+                <el-input type="password" v-model="form.regionVars.password" :placeholder="$t('automatic.region.fusionCompute_password_help')"></el-input>
               </el-form-item>
             </div>
             <el-form-item :label="$t('automatic.datacenter')" prop="datacenter">
