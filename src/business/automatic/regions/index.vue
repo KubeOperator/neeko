@@ -56,7 +56,10 @@ export default {
       buttons: [
         {
           label: this.$t("commons.button.edit"),
-          icon: "el-icon-edit"
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "RegionEdit", params: { name: row.name } })
+          }
         },
         {
           label: this.$t("commons.button.delete"),

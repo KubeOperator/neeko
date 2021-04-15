@@ -1,4 +1,4 @@
-import {get, del, post} from "@/plugins/request"
+import {get, del, post, patch} from "@/plugins/request"
 
 const regionUrl = "/regions"
 
@@ -22,6 +22,14 @@ export function listDatacenter (data) {
   return post(`${regionUrl}/datacenter`, data)
 }
 
-export function createRegion(data) {
+export function createRegion (data) {
   return post(`${regionUrl}`, data)
+}
+
+export function getRegionBy (name) {
+  return get(`${regionUrl}/${name}`)
+}
+
+export function updateRegion (name, data) {
+  return patch(`${regionUrl}/${name}`, data)
 }
