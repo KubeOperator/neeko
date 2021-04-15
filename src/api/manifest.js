@@ -13,3 +13,7 @@ export function changeStatus(versionName, version) {
 export function listActive() {
   return get(baseUrl + '/active');
 }
+
+export function changeStatus(versionName, manifest) {
+  return patch(`manifests/${versionName}`, manifest)
+}

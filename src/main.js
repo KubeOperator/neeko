@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import "@/styles/index.scss"
-import "@/assets/iconfont/iconfont"
+// import "@/assets/iconfont/iconfont"
 import Fit2CloudUI from 'fit2cloud-ui'
 // import Fit2CloudUI from './external/fit2cloud-ui.common';
 import {library} from '@fortawesome/fontawesome-svg-core'

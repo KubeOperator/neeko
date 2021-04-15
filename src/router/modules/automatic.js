@@ -31,6 +31,17 @@ const Automatic = {
       }
     },
     {
+      path: "regions/edit",
+      hidden: true,
+      name: "RegionEdit",
+      props: true,
+      component: () => import("@/business/automatic/regions/edit"),
+      meta: {
+        activeMenu: "/automatic/regions",
+        roles: ["ADMIN"]
+      }
+    },
+    {
       path: "zones",
       component: () => import("@/business/automatic/zones"),
       name: "ZoneList",
@@ -45,6 +56,7 @@ const Automatic = {
       component: () => import("@/business/automatic/zones/create"),
       name: "ZoneCreate",
       meta: {
+        activeMenu: "/automatic/zones",
         roles: ["ADMIN"]
       }
     },
@@ -55,6 +67,16 @@ const Automatic = {
       meta: {
         title: "automatic.plan.name",
         roles: ["ADMIN", "PROJECT_MANAGER"]
+      }
+    },
+    {
+      path: "plans/create",
+      hidden: true,
+      component: () => import("@/business/automatic/plans/create"),
+      name: "PlanCreate",
+      meta: {
+        activeMenu: "/automatic/plans",
+        roles: ["ADMIN"]
       }
     },
     {

@@ -12,7 +12,7 @@ const message = {
       delete: "删除"
     },
     confirm_message: {
-      delete: "此操作不可撤销, 是否继续?",
+      delete: "此操作不可撤销, 是否继续?"
     },
     button: {
       login: "登录",
@@ -39,7 +39,8 @@ const message = {
       refresh: "刷新",
       authorize: "授权",
       getBucket: "获取桶",
-      update: "更新"
+      update: "更新",
+      upload: "上传"
     },
     msg: {
       success: "{0}成功",
@@ -61,12 +62,8 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
-      email: "邮箱格式不正确",
-      name_validate_msg: "支持英文和数字",
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
-      ip_range_error: "Ip范围无效",
-      password_min_length: "密码不允许小于6位",
     },
     search: {
       name: "",
@@ -77,7 +74,8 @@ const message = {
       time_end: "结束时间",
       time_range: "至",
       date_start: "开始日期",
-      date_end: "结束日期"
+      date_end: "结束日期",
+      synchronizing: "同步中",
     },
     personal: {
       personal_information: "个人信息",
@@ -115,7 +113,8 @@ const message = {
       user: "用户"
     },
     form: {
-      ip_error: "请输入正确的Ip地址",
+      password_min_length: "密码不允许小于6位",
+      number_validate: "请输入正确的数字",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
@@ -238,7 +237,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        security: "cis 扫描",
+        csi: "csi扫描",
         grade: "集群评分",
       },
       overview: {
@@ -309,40 +308,6 @@ const message = {
         enable_npd_success: "NPD 启用成功",
         disable_npd_success: "NPD 禁用成功",
       },
-      backup: {
-        backup_strategy: "备份策略",
-        backup_interval: "备份间隔(天)",
-        retained_number: "保留份数",
-        backup_account: "备份账号",
-        backup_account_helper: "备份账号需要先授权到项目",
-        status: "状态",
-        local_recover: "本地文件恢复",
-        backup_start: "已经开始备份！请稍后查看日志",
-        recover_start: "已经开始恢复！请稍后查看日志",
-        local_recover_tips: "请上传原始文件，不要上传压缩文件",
-        file: "文件",
-        mo_file_selected: "未选择文件",
-        file_select: "文件选择",
-        backup_now: "立即备份",
-        backup_list: "备份列表",
-        backup_location: "备份位置",
-        backup_recover: "备份/恢复",
-        backup_log: "日志",
-      },
-      security: {
-        start_time: "开始时间",
-        end_time: "结束时间",
-        cis_result: "Cis 扫描结果",
-        code: "编号",
-        description: "描述",
-        advise: "建议",
-      },
-      f5: {
-        big_ip_addr: "BIG-IP 地址",
-        big_ip_user_name: "BIG-IP 用户名",
-        big_ip_password: "BIG-IP 密码",
-        big_ip_public: "BIG-IP 外网IP",
-      },
       log: {
         time: "时间",
         msg_info: "消息内容",
@@ -351,18 +316,6 @@ const message = {
         value: "标签值",
         match_info: "匹配内容",
         match_info_quick: "按 匹配内容 查询",
-      },
-      grade: {
-        danger: "严重",
-        warning: "警告",
-        pass: "通过",
-        total: "总量",
-        health_checks: "健康检查",
-        images: "镜像",
-        networking: "网络",
-        reliability: "可靠性",
-        resources: "资源",
-        security: "安全",
       },
       tool: {
         enable_title: "启用工具",
@@ -399,8 +352,54 @@ const message = {
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
         ensure_disable_istio: "是否确认禁用集群 istio？",
-      }
-    }
+    },
+      backup: {
+        backup_strategy: "备份策略",
+        backup_interval: "备份间隔(天)",
+        retained_number: "保留份数",
+        backup_account: "备份账号",
+        backup_account_helper: "备份账号需要先授权到项目",
+        status: "状态",
+        local_recover: "本地文件恢复",
+        backup_start: "已经开始备份！请稍后查看日志",
+        recover_start: "已经开始恢复！请稍后查看日志",
+        local_recover_tips: "请上传原始文件，不要上传压缩文件",
+        file: "文件",
+        mo_file_selected: "未选择文件",
+        file_select: "文件选择",
+        backup_now: "立即备份",
+        backup_list: "备份列表",
+        backup_location: "备份位置",
+        backup_recover: "备份/恢复",
+        backup_log: "日志",
+      },
+      security: {
+        start_time: "开始时间",
+        end_time: "结束时间",
+        cis_result: "Cis 扫描结果",
+        code: "编号",
+        description: "描述",
+        advise: "建议",
+      },
+      f5: {
+        big_ip_addr: "BIG-IP 地址",
+        big_ip_user_name: "BIG-IP 用户名",
+        big_ip_password: "BIG-IP 密码",
+        big_ip_public: "BIG-IP 外网IP",
+      },
+      grade: {
+        danger: "严重",
+        warning: "警告",
+        pass: "通过",
+        total: "总量",
+        health_checks: "健康检查",
+        images: "镜像",
+        networking: "网络",
+        reliability: "可靠性",
+        resources: "资源",
+        security: "安全",
+      },
+  },
   },
   host: {
     host: "主机",
@@ -490,7 +489,27 @@ const message = {
       name: "区域",
       basic: "基本信息",
       config: "配置参数",
-      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。"
+      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。",
+      vcenter_host: "Vcenter 主机",
+      vcenter_port: "Vcenter 端口",
+      vcenter_username: "用户名",
+      vcenter_password: "密码",
+      openstack_identity: "identity",
+      openstack_project: "项目ID",
+      openstack_domain: "domainName",
+      fusionCompute_server: "FusionCompute 服务地址",
+      get_datacenter: "获取数据中心",
+      vcenter_api_help:"vCenter API地址",
+      vcenter_user_help:"访问 vCenter 的用户名，例如 administrator@vsphere.local",
+      vcenter_password_help:"访问 vCenter 的密码",
+      openstack_keystone_help:"OpenStack keystone地址",
+      openstack_username_help:"访问 OpenStack 的用户名",
+      openstack_password_help:"访问 OpenStack 的密码",
+      openstack_project_help:"OpenStack 项目ID",
+      openstack_domain_help:"OpenStack Domain Name",
+      fusionCompute_server_help:"FusionCompute 的 API 服务地址，例如: https://10.1.240.11:7443",
+      fusionCompute_user_help:"访问 FusionCompute 的用户名，例如: admin",
+      fusionCompute_password_help:"访问 FusionCompute 的密码",
     },
     zone: {
       name: "可用区",
@@ -529,14 +548,20 @@ const message = {
       description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
       deploy_template: "部署模型",
       SINGLE: "一主多节点",
-      MULTIPLE: "多主多节点"
+      MULTIPLE: "多主多节点",
+      project_auth: "项目授权",
+      master_model: "Master 规格",
+      worker_model: "Worker 规格",
+      config: "规格参考"
     },
     vm_config: {
       name: "虚拟机配置",
       cpu: "CPU(核)",
       memory: "内存(GB)",
+      name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
+      disk: "磁盘(GB)"
     },
     ip_pool: {
       name: "IP池",
@@ -651,7 +676,8 @@ const message = {
       },
       theme: {
         systemName: "系统名称",
-        logo: "Logo"
+        logo: "Logo",
+        uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件"
       },
       message: {
         wechat: "企业微信",
@@ -691,6 +717,7 @@ const message = {
     sync_interval: "同步间隔",
     pull_timeout: "拉取超时时间",
   }
+
 }
 
 export default {

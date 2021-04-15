@@ -5,15 +5,16 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
-            :selects.sync="selects"
+            @selection-change="handleSelectionChange"
             @search="getMemberList">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="openCreate()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="openDelete" :disabled="selects.length===0">
-            {{ $t("commons.button.delete") }}
+          <el-button size="small" @click="openDelete" :disabled="selects.length===0">{{
+              $t("commons.button.delete")
+            }}
           </el-button>
         </el-button-group>
       </template>
@@ -112,7 +113,7 @@ export default {
         })
       }
       if (this.authObj.type === "CLUSTER") {
-        listClusterMembers(this.authObj.projectName, this.authObj.clusterName, currentPage, pageSize).then(data => {
+        listClusterMembers(this.authObj.projectName,this.authObj.clusterName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -138,7 +139,7 @@ export default {
     },
     submit () {
       if (this.authObj.type === "CLUSTER") {
-        createClusterMember(this.authObj.projectName, this.authObj.clusterName, {
+        createClusterMember(this.authObj.projectName,this.authObj.clusterName, {
           userNames: this.form.names
         }).then(() => {
           this.$message({
@@ -185,7 +186,7 @@ export default {
             ps.push(deleteProjectMember(this.authObj.projectName, item.username))
           }
           if (this.authObj.type === "CLUSTER") {
-            ps.push(deleteClusterMember(this.authObj.projectName, this.authObj.clusterName, item.username))
+            ps.push(deleteClusterMember(this.authObj.projectName,this.authObj.clusterName, item.username))
           }
         }
         Promise.all(ps).then(() => {
@@ -197,11 +198,15 @@ export default {
         })
       })
     },
+    handleSelectionChange (val) {
+      this.selects = val
+    }
   },
-  computed: {},
+  computed: {
+  },
   watch: {
-    authObj () {
-      this.getMemberList()
+    authObj() {
+        this.getMemberList()
     }
   }
 }

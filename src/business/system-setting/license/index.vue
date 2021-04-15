@@ -11,24 +11,36 @@
     <el-button type="primary" style="float: right;margin: 0 10px 8px " @click="dialogVisible = true">导入</el-button>
     <el-dialog
       :title="$t('setting.option.addLicense')"
-      top="30vh"
       :visible.sync="dialogVisible"
       @cancel="dialogLicenseImport = false"
+      width="30%"
       @confirm="importLicense">
-      {{ this.$t('setting.table.license.licenseFile') }}
-      <br>
-      <input type="file" @change="fileChange">
-      <span style="position: absolute;right: 20px">
+      <el-button type="text" @click="applyLicensee()">申请许可证</el-button>
+      <el-form>
+        <el-form-item>
+          <el-row type="flex" justify="center">
+            <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">{{$t('commons.form.file_upload_helper')}}</div>
+              <div class="el-upload__tip" slot="tip">
+                <svg class="icon" aria-hidden="true" style="font-size: 28px"  >
+                  <use  xlink:href="#icontishi11"></use>
+                </svg>
+                {{$t('cluster.detail.backup.local_recover_tips')}}</div>
+            </el-upload>
+          </el-row>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">{{ $t('commons.button.cancel') }}</el-button>
-        <el-button type="primary" @click="importLicense">{{ $t('commons.button.import') }}</el-button>
-      </span>
+        <el-button type="primary" @click="importLicense()">{{ $t('commons.button.import') }}</el-button>
+      </div>
     </el-dialog>
-
   </el-card>
 </template>
 
 <script>
-import {getLicense,importLicense} from "@/api/license"
+import {getLicense, importLicense} from "@/api/license"
 import DetailCard from "@/components/detailCard/index";
 export default {
   name: "License",
@@ -49,6 +61,7 @@ export default {
         dialogVisible: false,
         licenseData: {},
         licenseFile: {},
+        file: {}
       }
   },
   created() {
@@ -59,11 +72,8 @@ export default {
   },
   methods: {
     importLicense() {
-      if (this.licenseFile['file'] === undefined) {
-        return
-      }
       const formData = new FormData()
-      formData.append('file', this.licenseFile['file'])
+      formData.append('file', this.file.raw)
       importLicense(formData).then(res => {
         if (res.status) {
           this.$message({
@@ -76,8 +86,11 @@ export default {
         }
       })
     },
-    fileChange(e) {
-      this.licenseFile['file'] = e.target.files[0]
+    onUploadChange(file) {
+      this.file = file
+    },
+    applyLicensee() {
+      window.open("https://jinshuju.net/f/qc6g44")
     }
   },
   computed: {
