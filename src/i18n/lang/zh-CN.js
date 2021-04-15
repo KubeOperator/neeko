@@ -468,7 +468,16 @@ const message = {
       name: "区域",
       basic: "基本信息",
       config: "配置参数",
-      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。"
+      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。",
+      vcenter_host: "Vcenter 主机",
+      vcenter_port: "Vcenter 端口",
+      vcenter_username: "用户名",
+      vcenter_password: "密码",
+      openstack_identity: "identity",
+      openstack_project: "项目ID",
+      openstack_domain: "domainName",
+      fusionCompute_server: "FusionCompute 服务地址",
+      get_datacenter: "获取数据中心"
     },
     zone: {
       name: "可用区",

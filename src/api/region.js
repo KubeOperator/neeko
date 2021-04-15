@@ -17,3 +17,11 @@ export function searchRegion (page, size, condition) {
 export function listAllRegions () {
   return get(`${regionUrl}`)
 }
+
+export function listDatacenter (data) {
+  return post(`${regionUrl}/datacenter`, data)
+}
+
+export function createRegion(data) {
+  return post(`${regionUrl}`, data)
+}
