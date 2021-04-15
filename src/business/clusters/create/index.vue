@@ -1,429 +1,571 @@
 <template>
   <layout-content>
-    <el-form :model="form" ref="form" :rules="rules" label-width="160px" style="" size="small">
-      <el-steps :active="activeStep" finish-status="success" simple style="margin-top: 16px">
-        <el-step style="font-size: 10px!" :title="$t ('cluster.creation.step1')"></el-step>
-        <el-step :title="$t ('cluster.creation.step2')"></el-step>
-        <el-step :title="$t ('cluster.creation.step3')"></el-step>
-        <el-step :title="$t ('cluster.creation.step4')"></el-step>
-        <el-step :title="$t ('cluster.creation.step5')"></el-step>
-        <el-step :title="$t ('cluster.creation.step6_of_bare_metal')"></el-step>
-        <el-step :title="$t ('cluster.creation.step7')"></el-step>
-      </el-steps>
-
-      <div style="margin-top:40px; margin-right:140px;">
-        <div v-if="activeStep === 0">
-          <el-form-item :label="$t('cluster.creation.name')" prop="name">
-            <el-input v-model="form.name" @blur="onNameCheck()" clearable></el-input>
-            <div v-if="isNameChecking"><span class="input-help">{{$t('cluster.creation.name_check')}}</span></div>
-            <div v-if="!nameValid"><span class="input-error">{{$t('cluster.creation.name_invalid_err')}}</span></div>
-            <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.provider')" prop="provider">
-            <el-select style="width: 100%" v-model="form.provider" clearable>
-              <el-option value="bareMetal" :label="$t('cluster.creation.provide_bare_metal')">{{$t('cluster.creation.provide_bare_metal')}}</el-option>
-              <el-option value="plan" :label="$t('cluster.creation.provide_plan')">{{$t('cluster.creation.provide_plan')}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.version')" prop="version">
-            <el-select style="width: 100%" v-model="form.version" clearable>
-              <el-option v-for="item of versions" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.arch')" prop="architectures">
-            <el-select style="width: 100%" v-model="form.architectures" clearable>
-              <el-option value="amd64" label="AMD64">AMD64</el-option>
-              <el-option v-if="form.provider === 'bareMetal'" value="arm64" label="ARM64">ARM64</el-option>
-              <el-option v-if="form.provider === 'bareMetal'" value="all" label="MIXED">MIXED</el-option>
-            </el-select>
-            <div v-if="!archValid"><span class="input-error">{{$t('cluster.creation.repo_err')}}</span></div>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.yum_repo')" prop="yumOperate">
-            <el-select style="width: 100%" v-model="form.yumOperate" clearable>
-              <el-option value="replace">replace</el-option>
-              <el-option value="coexist">coexist</el-option>
-              <el-option value="no">no</el-option>
-            </el-select>
-            <div v-if="form.yumOperate === 'replace'"><span class="input-help">{{$t('cluster.creation.yum_repo_replace_help')}}</span></div>
-            <div v-if="form.yumOperate === 'coexist'"><span class="input-help">{{$t('cluster.creation.yum_repo_coexist_help')}}</span></div>
-            <div v-if="form.yumOperate === 'no'"><span class="input-help">{{$t('cluster.creation.yum_repo_no_help')}}</span></div>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 1">
-          <el-form-item :label="$t ('cluster.creation.container_network')" prop="networkType">
-            <el-select filterable @change="onPart1Change()" style="width: 10%" v-model="parts[0]" clearable>
-              <el-option v-for="item of part1Options" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-            <span> . </span>
-            <el-select filterable :disabled="part2Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[1]" clearable>
-              <el-option v-for="item of part2Options" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-            <span> . </span>
-            <el-select filterable :disabled="part3Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[2]" clearable>
-              <el-option v-for="item of part3Options" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-            <span> . </span>
-            <el-select filterable style="width: 10%" disabled v-model="parts[3]" clearable>
-              <el-option value="0">0</el-option>
-            </el-select>
-            <span> / </span>
-            <el-select filterable @change="onMaskChange()" style="width: 10%" v-model="parts[4]" clearable>
-              <el-option v-for="item of maskOptions" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-            <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.max_node_pod_num')" prop="maxNodePodNum">
-            <el-select filterable style="width: 100%" v-model="form.maxNodePodNum" clearable>
-              <el-option v-for="item of podMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.max_cluster_service_num')" prop="maxClusterServiceNum">
-            <el-select filterable style="width: 100%" v-model="form.maxClusterServiceNum" clearable>
-              <el-option v-for="item of serviceMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
-            <el-select style="width: 100%" v-model="form.kubeProxyMode" clearable>
-              <el-option value="iptables" label="Iptables">Iptables</el-option>
-              <el-option value="ipvs">ipvs</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
-            <el-select style="width: 100%" v-model="form.kubernetesAudit" clearable>
-              <el-option value="yes" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
-              <el-option value="no" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <span style="color: green">{{$t ('cluster.creation.max_node_num_show', [maxNodesNum])}}</span>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 2">
-          <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="runtimeType">
-            <el-select style="width: 100%" v-model="form.runtimeType" clearable>
-              <el-option value="docker">docker</el-option>
-              <el-option value="containerd">containerd</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
-            <el-input v-model="form.dockerStorageDir" clearable></el-input>
-          </el-form-item>
-          <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="containerdStorageDir">
-            <el-input v-model="form.containerdStorageDir" clearable></el-input>
-          </el-form-item>
-          <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="dockerSubnet">
-            <el-input v-model="form.dockerSubnet" clearable></el-input>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 3">
-          <el-form-item :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
-            <el-input v-model="form.networkInterface" clearable></el-input>
-            <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
-          </el-form-item>
-          <el-form-item :label="$t ('cluster.creation.network_type')" prop="networkType">
-            <el-select style="width: 100%" v-model="form.networkType" clearable>
-              <el-option value="flannel">flannel</el-option>
-              <el-option value="calico">calico</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t ('cluster.creation.flannel_backend')" prop="flannelBackend">
-            <el-select v-if="form.networkType === 'flannel'" style="width: 100%" v-model="form.flannelBackend" clearable>
-              <el-option value="host-gw">host-gw</el-option>
-              <el-option value="vxlan">vxlan</el-option>
-            </el-select>
-            <el-select v-if="form.networkType === 'calico'" style="width: 100%" v-model="form.calicoIpv4poolIpip" clearable>
-              <el-option value="off" label="bgp">bgp</el-option>
-              <el-option value="Always" label="ipip">ipip</el-option>
-            </el-select>
-            <div v-if="form.flannelBackend === 'host-gw' || form.flannelBackend === 'bgp'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route')}}</span></div>
-            <div v-if="form.flannelBackend === 'calico' || form.flannelBackend === 'ipip'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel')}}</span></div>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 4">
-          <el-form-item label="helm:" prop="helmVersion">
-            <el-select style="width: 100%" v-model="form.helmVersion" clearable>
-              <el-option value="v3">v3</el-option>
-              <el-option value="v2">v2</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
-            <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
-              <el-option value="nginx">nginx</el-option>
-              <el-option value="traefik">traefik</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
-            <el-select style="width: 100%" v-model="form.supportGpu" clearable>
-              <el-option value="enable" :label="$t ('cluster.creation.enable')">{{$t ('cluster.creation.enable')}}</el-option>
-              <el-option value="disable" :label="$t ('cluster.creation.disable')">{{$t ('cluster.creation.disable')}}</el-option>
-            </el-select>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 5 && form.provider === 'bareMetal'">
-          <el-form-item>
-            <span>{{$t ('cluster.creation.node_help')}}</span>
-          </el-form-item>
-          <el-form-item label="Masters" prop="name">
-            <el-select multiple filterable style="width: 100%" v-model="masters" clearable>
-              <el-option value="enable">{{$t ('cluster.creation.enable')}}</el-option>
-              <el-option value="disable">{{$t ('cluster.creation.disable')}}</el-option>
-            </el-select>
-            <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
-          </el-form-item>
-          <el-form-item label="Workers" prop="name">
-            <el-select multiple filterable style="width: 100%" v-model="workers" clearable>
-              <el-option value="enable">{{$t ('cluster.creation.enable')}}</el-option>
-              <el-option value="disable">{{$t ('cluster.creation.disable')}}</el-option>
-            </el-select>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 5 && form.provider === 'plan'">
-          <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="name">
-            <el-select multiple filterable style="width: 100%" v-model="masters" clearable>
-              <el-option value="enable">{{$t ('cluster.creation.support_gpu_enable')}}</el-option>
-              <el-option value="disable">{{$t ('cluster.creation.support_gpu_disable')}}</el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-            <el-input v-model="from.workerAmount" clearable></el-input>
-          </el-form-item>
-        </div>
-
-        <div v-if="activeStep === 6">
-            <el-divider content-position="left">{{$t ('cluster.creation.base_setting')}}</el-divider>
-            <el-row type="flex" justify="center">
-              <el-col :span="6">
-                <ul>{{$t ('cluster.creation.name')}}</ul>
-                <ul>{{$t ('cluster.creation.provider')}}</ul>
-                <ul>{{$t ('cluster.creation.version')}}</ul>
-                <ul>{{$t ('cluster.creation.arch')}}</ul>
-                <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
-              </el-col>
-              <el-col :span="6">
-                <ul>{{form.name}}</ul>
-                <ul>{{form.provider}}</ul>
-                <ul>{{form.version}}</ul>
-                <ul>{{form.architectures}}</ul>
-                <ul>{{form.yumOperate}}</ul>
-              </el-col>
-            </el-row>
-
-          <el-divider content-position="left">{{$t ('cluster.creation.step2')}}</el-divider>
-          <el-row type="flex" justify="center">
-            <el-col :span="6">
-              <ul>{{$t ('cluster.creation.cluster_cidr')}}</ul>
-              <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
-              <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
-              <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
-              <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
-            </el-col>
-            <el-col :span="6">
-              <ul>{{form.clusterCidr}}</ul>
-              <ul>{{form.maxNodePodNum}}</ul>
-              <ul>{{form.maxClusterServiceNum}}</ul>
-              <ul>{{form.kubeProxyMode}}</ul>
-              <ul>{{form.yumOperate}}</ul>
-            </el-col>
-          </el-row>
-
-          <el-divider content-position="left">{{$t ('cluster.creation.step3')}}</el-divider>
-          <el-row type="flex" justify="center">
-            <el-col :span="6">
-              <ul>{{$t ('cluster.creation.runtime_type')}}</ul>
-              <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
-              <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.subnet')}}</ul>
-              <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.containe_storage_dir')}}</ul>
-            </el-col>
-            <el-col :span="6">
-              <ul>{{form.runtimeType}}</ul>
-              <ul v-if="form.runtimeType === 'docker'">{{form.dockerStorageDir}}</ul>
-              <ul v-if="form.runtimeType === 'docker'">{{form.dockerSubnet}}</ul>
-              <ul v-if="form.runtimeType === 'containerd'">{{form.containerdStorageDir}}</ul>
-            </el-col>
-          </el-row>
-          
-          <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>
-          <el-row type="flex" justify="center">
-            <el-col :span="6">
-              <ul>{{$t ('cluster.creation.network_interface')}}</ul>
-              <ul>{{$t ('cluster.creation.network_type')}}</ul>
-              <ul>{{$t ('cluster.creation.flannel_backend')}}</ul>
-            </el-col>
-            <el-col :span="6">
-              <ul>{{form.networkInterface}}</ul>
-              <ul>{{form.networkType}}</ul>
-              <ul>{{form.flannelBackend}}</ul>
-            </el-col>
-          </el-row>
-
-          <el-divider content-position="left">{{$t ('cluster.creation.step5')}}</el-divider>
-          <el-row type="flex" justify="center">
-            <el-col :span="6">
-              <ul>helm</ul>
-              <ul>{{$t ('cluster.creation.ingress_type')}}</ul>
-              <ul>{{$t ('cluster.creation.support_gpu')}}</ul>
-            </el-col>
-            <el-col :span="6">
-              <ul>{{form.helmVersion}}</ul>
-              <ul>{{form.ingressControllerType}}</ul>
-              <ul>{{form.supportGpu}}</ul>
-            </el-col>
-          </el-row>
-          
-          <el-divider content-position="left">{{$t ('cluster.creation.step6_of_bare_metal')}}</el-divider>
-          <el-row type="flex" justify="center">
-            <div v-if="form.provider === 'plan'">
-              <el-col :span="6">
-                <ul>{{$t ('cluster.creation.step6_of_plan')}}</ul>
-                <ul>{{$t ('cluster.creation.worker_num')}}</ul>
-              </el-col>
-              <el-col :span="6">
-                <ul>{{form.plan}}</ul>
-                <ul>{{form.workerNum}}</ul>
-              </el-col>
+    <div>
+      <el-form ref="form" label-width="180px" :model="form" :rules="rules">
+        <fu-steps ref="steps" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading">
+          <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
+            <div class="example">
+              <el-row>
+                <el-col :span="20">
+                  <el-form-item :label="$t('cluster.creation.name')" prop="name">
+                    <el-input v-model="form.name" clearable></el-input>
+                    <div v-if="isNameChecking"><span class="input-help">{{$t('cluster.creation.name_check')}}</span></div>
+                    <div v-if="!nameValid"><span class="input-error">{{$t('cluster.creation.name_invalid_err')}}</span></div>
+                    <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.creation.provider')" prop="provider">
+                    <el-select style="width: 100%" v-model="form.provider" clearable>
+                      <el-option value="bareMetal" :label="$t('cluster.creation.provide_bare_metal')">{{$t('cluster.creation.provide_bare_metal')}}</el-option>
+                      <el-option value="plan" :label="$t('cluster.creation.provide_plan')">{{$t('cluster.creation.provide_plan')}}</el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.creation.version')" prop="version">
+                    <el-select style="width: 100%" v-model="form.version" clearable>
+                      <el-option v-for="item of versions" :key="item" :value="item">{{item}}</el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.creation.arch')" prop="architectures">
+                    <el-select style="width: 100%" v-model="form.architectures" clearable>
+                      <el-option value="amd64" label="AMD64">AMD64</el-option>
+                      <el-option v-if="form.provider === 'bareMetal'" value="arm64" label="ARM64">ARM64</el-option>
+                      <el-option v-if="form.provider === 'bareMetal'" value="all" label="MIXED">MIXED</el-option>
+                    </el-select>
+                    <div v-if="!archValid"><span class="input-error">{{$t('cluster.creation.repo_err')}}</span></div>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.creation.yum_repo')" prop="yumOperate">
+                    <el-select style="width: 100%" v-model="form.yumOperate" clearable>
+                      <el-option value="replace">replace</el-option>
+                      <el-option value="coexist">coexist</el-option>
+                      <el-option value="no">no</el-option>
+                    </el-select>
+                    <div v-if="form.yumOperate === 'replace'"><span class="input-help">{{$t('cluster.creation.yum_repo_replace_help')}}</span></div>
+                    <div v-if="form.yumOperate === 'coexist'"><span class="input-help">{{$t('cluster.creation.yum_repo_coexist_help')}}</span></div>
+                    <div v-if="form.yumOperate === 'no'"><span class="input-help">{{$t('cluster.creation.yum_repo_no_help')}}</span></div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="4"><br /></el-col>
+              </el-row>
             </div>
-            <div v-if="form.provider === 'bareMetal'">
-              <el-col :span="6">
-                <ul>Masters</ul>
-                <ul>Workers</ul>
-              </el-col>
-              <el-col :span="6">
-                <ul>{{getHostName(masters)}}</ul>
-                <ul>{{getHostName(workers)}}</ul>
-              </el-col>
+          </fu-step>
+          <fu-step id="cluster-setting" :title="$t('cluster.creation.step2')">
+            <div class="example">
+              <el-form-item :label="$t ('cluster.creation.container_network')" prop="networkType">
+                <el-select filterable @change="onPart1Change()" style="width: 10%" v-model="parts[0]" clearable>
+                  <el-option v-for="item of part1Options" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+                <span> . </span>
+                <el-select filterable :disabled="part2Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[1]" clearable>
+                  <el-option v-for="item of part2Options" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+                <span> . </span>
+                <el-select filterable :disabled="part3Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[2]" clearable>
+                  <el-option v-for="item of part3Options" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+                <span> . </span>
+                <el-select filterable style="width: 10%" disabled v-model="parts[3]" clearable>
+                  <el-option value="0">0</el-option>
+                </el-select>
+                <span> / </span>
+                <el-select filterable @change="onMaskChange()" style="width: 10%" v-model="parts[4]" clearable>
+                  <el-option v-for="item of maskOptions" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+                <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.creation.max_node_pod_num')" prop="maxNodePodNum">
+                <el-select filterable style="width: 100%" v-model.number="form.maxNodePodNum" clearable>
+                  <el-option v-for="item of podMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.creation.max_cluster_service_num')" prop="maxClusterServiceNum">
+                <el-select filterable style="width: 100%" v-model.number="form.maxClusterServiceNum" clearable>
+                  <el-option v-for="item of serviceMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
+                <el-select style="width: 100%" v-model="form.kubeProxyMode" clearable>
+                  <el-option value="iptables" label="Iptables">Iptables</el-option>
+                  <el-option value="ipvs">ipvs</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
+                <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+              </el-form-item>
+              <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
+                <el-switch v-model="form.kubernetesAudit" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+              </el-form-item>
+              <el-form-item>
+                <span style="color: green">{{$t ('cluster.creation.max_node_num_show', [maxNodesNum])}}</span>
+              </el-form-item>
             </div>
-          </el-row>
-        </div>
-      </div>
-      <el-button type="primary" style="float: right" @click="nextStep">下一步</el-button>
-      <el-button type="primary" style="float: right" @click="aheadStep">上一步</el-button>
-    </el-form>
+          </fu-step>
+          <fu-step id="runtime-setting" :title="$t('cluster.creation.step3')">
+            <div class="example">
+              <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="runtimeType">
+                <el-select style="width: 100%" v-model="form.runtimeType" clearable>
+                  <el-option value="docker">docker</el-option>
+                  <el-option value="containerd">containerd</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
+                <el-input v-model="form.dockerStorageDir" clearable></el-input>
+              </el-form-item>
+              <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="containerdStorageDir">
+                <el-input v-model="form.containerdStorageDir" clearable></el-input>
+              </el-form-item>
+              <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="dockerSubnet">
+                <el-input v-model="form.dockerSubnet" clearable></el-input>
+              </el-form-item>
+            </div>
+          </fu-step>
+          <fu-step id="container-net-setting" :title="$t('cluster.creation.step4')">
+            <div class="example">
+              <el-form-item :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
+                <el-input v-model="form.networkInterface" clearable></el-input>
+                <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
+              </el-form-item>
+              <el-form-item :label="$t ('cluster.creation.network_type')" prop="networkType">
+                <el-select @change="getDefaultFlannelBackend" style="width: 100%" v-model="form.networkType" clearable>
+                  <el-option value="flannel">flannel</el-option>
+                  <el-option value="calico">calico</el-option>
+                  <el-option v-if="form.architectures === 'amd64'" value="cilium">cilium</el-option>
+                </el-select>
+                <div v-if="form.networkType==='cilium'"><span class="input-help-blod">{{$t('cluster.creation.network_interface_help')}}</span></div>
+              </el-form-item>
+
+              <el-form-item v-if="form.networkType === 'flannel'" :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
+                <el-select style="width: 100%" v-model="form.flannelBackend" clearable>
+                  <el-option value="host-gw">host-gw</el-option>
+                  <el-option value="vxlan">vxlan</el-option>
+                </el-select>
+                <div v-if="form.flannelBackend === 'host-gw'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route')}}</span></div>
+                <div v-if="form.flannelBackend === 'vxlan'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel')}}</span></div>
+              </el-form-item>
+
+              <el-form-item v-if="form.networkType === 'calico'" :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
+                <el-select style="width: 100%" v-model="form.calicoIpv4PoolIpip" clearable>
+                  <el-option value="off" label="bgp">bgp</el-option>
+                  <el-option value="Always" label="ipip">ipip</el-option>
+                </el-select>
+               <div v-if="form.calicoIpv4PoolIpip === 'off'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route')}}</span></div>
+                <div v-if="form.calicoIpv4PoolIpip === 'Always'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel')}}</span></div>
+              </el-form-item>
+
+              <div v-if="form.networkType === 'cilium'">
+                <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
+                  <el-select @change="getDefaultTunnelMode()" style="width: 100%" v-model="form.flannelBackend" clearable>
+                    <el-option value="Overlay">Overlay</el-option>
+                    <el-option value="Native Routing">Native Routing</el-option>
+                  </el-select>
+                  <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help')}}</span></div>
+                  <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help_more')}}</span></div>
+                  <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help')}}</span></div>
+                  <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help_more')}}</span></div>
+                </el-form-item>
+                <el-form-item v-if="form.flannelBackend === 'Overlay'" label="Tunnel Name" prop="ciliumTunnelMode">
+                  <el-select style="width: 100%" v-model="form.ciliumTunnelMode" clearable>
+                    <el-option value="vxlan" label="vxlan">vxlan</el-option>
+                    <el-option value="geneve" label="geneve">geneve</el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-if="form.flannelBackend === 'Native Routing'" label="Native Routing" prop="ciliumNativeRoutingCidr">
+                  <el-input v-model="form.ciliumNativeRoutingCidr" clearable></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </fu-step>
+          <fu-step id="component-setting" :title="$t('cluster.creation.step5')">
+            <div class="example">
+              <el-form-item label="helm:" prop="helmVersion">
+                <el-select style="width: 100%" v-model="form.helmVersion" clearable>
+                  <el-option value="v3">v3</el-option>
+                  <el-option value="v2">v2</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
+                <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
+                  <el-option value="nginx">nginx</el-option>
+                  <el-option value="traefik">traefik</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
+                <el-switch v-model="form.supportGpu" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+              </el-form-item>
+            </div>
+          </fu-step>
+          <fu-step id="node-setting-bare" :title="$t('cluster.creation.step6_of_bare_metal')">
+            <div class="example" v-if="form.provider === 'bareMetal'">
+              <el-form-item>
+                <span>{{$t ('cluster.creation.node_help')}}</span>
+              </el-form-item>
+              <el-form-item label="Masters" prop="masters">
+                <el-select multiple filterable style="width: 100%" v-model="form.masters" clearable>
+                  <el-option value="enable">{{$t ('cluster.creation.enable')}}</el-option>
+                  <el-option value="disable">{{$t ('cluster.creation.disable')}}</el-option>
+                </el-select>
+                <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
+              </el-form-item>
+              <el-form-item label="Workers" prop="workers">
+                <el-select multiple filterable style="width: 100%" v-model="form.workers" clearable>
+                  <el-option value="enable">{{$t ('cluster.creation.enable')}}</el-option>
+                  <el-option value="disable">{{$t ('cluster.creation.disable')}}</el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+            <div class="example" v-if="form.provider === 'plan'">
+              <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="plan">
+                <el-select filterable style="width: 100%" v-model="form.plan" clearable>
+                  <el-option v-for="item of plans" :key="item.name" :value="item.name">{{item.name}}</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
+                <el-input v-model="form.workerAmount" clearable></el-input>
+              </el-form-item>
+            </div>
+          </fu-step>
+          <fu-step :title="$t('cluster.creation.step7')" id="overview">
+            <div class="example">
+              <el-divider content-position="left">{{$t ('cluster.creation.base_setting')}}</el-divider>
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <ul>{{$t ('cluster.creation.name')}}</ul>
+                  <ul>{{$t ('cluster.creation.provider')}}</ul>
+                  <ul>{{$t ('cluster.creation.version')}}</ul>
+                  <ul>{{$t ('cluster.creation.arch')}}</ul>
+                  <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.name}}</ul>
+                  <ul>{{form.provider}}</ul>
+                  <ul>{{form.version}}</ul>
+                  <ul>{{form.architectures}}</ul>
+                  <ul>{{form.yumOperate}}</ul>
+                </el-col>
+              </el-row>
+
+              <el-divider content-position="left">{{$t ('cluster.creation.step2')}}</el-divider>
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <ul>{{$t ('cluster.creation.cluster_cidr')}}</ul>
+                  <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
+                  <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
+                  <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
+                  <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.clusterCidr}}</ul>
+                  <ul>{{form.maxNodePodNum}}</ul>
+                  <ul>{{form.maxClusterServiceNum}}</ul>
+                  <ul>{{form.kubeProxyMode}}</ul>
+                  <ul>{{form.yumOperate}}</ul>
+                </el-col>
+              </el-row>
+
+              <el-divider content-position="left">{{$t ('cluster.creation.step3')}}</el-divider>
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <ul>{{$t ('cluster.creation.runtime_type')}}</ul>
+                  <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
+                  <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.subnet')}}</ul>
+                  <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.containe_storage_dir')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.runtimeType}}</ul>
+                  <ul v-if="form.runtimeType === 'docker'">{{form.dockerStorageDir}}</ul>
+                  <ul v-if="form.runtimeType === 'docker'">{{form.dockerSubnet}}</ul>
+                  <ul v-if="form.runtimeType === 'containerd'">{{form.containerdStorageDir}}</ul>
+                </el-col>
+              </el-row>
+
+              <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <ul>{{$t ('cluster.creation.network_interface')}}</ul>
+                  <ul>{{$t ('cluster.creation.network_type')}}</ul>
+                  <ul>{{$t ('cluster.creation.flannel_backend')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.networkInterface}}</ul>
+                  <ul>{{form.networkType}}</ul>
+                  <ul>{{form.flannelBackend}}</ul>
+                </el-col>
+              </el-row>
+
+              <el-divider content-position="left">{{$t ('cluster.creation.step5')}}</el-divider>
+              <el-row type="flex" justify="center">
+                <el-col :span="6">
+                  <ul>helm</ul>
+                  <ul>{{$t ('cluster.creation.ingress_type')}}</ul>
+                  <ul>{{$t ('cluster.creation.support_gpu')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.helmVersion}}</ul>
+                  <ul>{{form.ingressControllerType}}</ul>
+                  <ul>{{form.supportGpu}}</ul>
+                </el-col>
+              </el-row>
+
+              <el-divider content-position="left">{{$t ('cluster.creation.step6_of_bare_metal')}}</el-divider>
+              <el-row type="flex" justify="center" v-if="form.provider === 'plan'">
+                <el-col :span="6">
+                  <ul>{{$t ('cluster.creation.step6_of_plan')}}</ul>
+                  <ul>{{$t ('cluster.creation.worker_num')}}</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{form.plan}}</ul>
+                  <ul>{{form.workerAmount}}</ul>
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="center" v-if="form.provider === 'bareMetal'">
+                <el-col :span="6">
+                  <ul>Masters</ul>
+                  <ul>Workers</ul>
+                </el-col>
+                <el-col :span="6">
+                  <ul>{{getHostName(masters)}}</ul>
+                  <ul>{{getHostName(workers)}}</ul>
+                </el-col>
+              </el-row>
+            </div>
+          </fu-step>
+        </fu-steps>
+      </el-form>
+    </div>
   </layout-content>
 </template>
 
 <script>
-  import LayoutContent from "@/components/layout/LayoutContent";
+import LayoutContent from "@/components/layout/LayoutContent"
+import { listActive } from "@/api/manifest"
+import { listProjectResources } from "@/api/project-resource"
+import { listRegistryAll } from "@/api/system-setting"
+import { getClusterByName, createCluster } from "@/api/cluster"
 
-  export default {
-    name: "HostCreate",
-    components: {LayoutContent},
-    data() {
-      return {
-        form: {
-          name: "",
-          provider: "bareMetal",
-          version: "",
-          architectures: "amd64",
-          yumOperate: "replace",
-          plan: "",
-          workerAmount: "1",
-          networkType: "flannel",
-          runtimeType: "docker",
-          dockerStorageDir: "/var/lib/docker",
-          containerdStorageDir: "/var/lib/containerd",
-          flannelBackend: "vxlan",
-          calicoIpv4PoolIpip: "Always",
-          kubeProxyMode: "iptables",
-          ingressControllerType: "nginx",
-          kubernetesAudit: "no",
-          dockerSubnet: "172.17.0.1/16",
-          nodes: "",
-          projectName: "kubeoperator",
-          helmVersion: "v3",
-          networkInterface: "",
-          supportGpu: "disable",
-          clusterCidr: "192.168.0.0/16",
-          maxClusterServiceNum: "256",
-          maxNodePodNum: "256"
-        },
-        rules: {
-          name: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "blur" }],
-          version: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          provider: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          architectures: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          yumOperate: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          runtimeType: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          maxNodePodNum: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          maxClusterServiceNum: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          kubeProxyMode: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          kubernetesAudit: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          networkType: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          networkInterface: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          flannelBackend: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          calicoIpv4PoolIpip: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          helmVersion: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          ingressControllerType: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          supportGpu: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          plan: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "change" }],
-          workerAmount: [{ required: true, message: this.$t('commons.validate.cannot_be_empty'), trigger: "blur" }],
-        },
-        activeStep: 6,
-        versions: ["1.18.16", "1.20.10"],
-        isNameChecking: false,
-        nameValid: true,
-        archValid: true,
-        helmVersions: ["v3", "v2"],
-        part1Options: ["192", "172", "10"],
-        part2Options: [],
-        part3Options: [],
-        parts: ["192", "168", "0", "0", "16"],
-        podMaxNumOptions: [32, 64, 128, 256],
-        serviceMaxNumOptions: [32, 64, 128, 256, 512, 1024, 2048, 4096],
-        maskOptions: [],
-        maxNodesNum: 255,
+export default {
+  name: "ClusterCreate",
+  components: { LayoutContent },
+  data() {
+    return {
+      form: {
+        projectName: "kubeoperator",
+        name: "",
+        provider: "bareMetal",
+        version: "",
+        architectures: "amd64",
+        yumOperate: "replace",
+
+        maxClusterServiceNum: 256,
+        maxNodePodNum: 256,
+        kubeProxyMode: "iptables",
+        enableDnsCache: "enable",
+        dnsCacheVersion: "1.17.0",
+        kubernetesAudit: "no",
+        clusterCidr: "192.168.0.0/16",
+
+        runtimeType: "docker",
+        dockerStorageDir: "/var/lib/docker",
+        containerdStorageDir: "/var/lib/containerd",
+        dockerSubnet: "172.17.0.1/16",
+
+        networkInterface: "",
+        networkType: "flannel",
+        flannelBackend: "vxlan",
+        calicoIpv4PoolIpip: "Always",
+        ciliumVersion: "v1.9.5",
+        ciliumNativeRoutingCidr: "10.244.0.0/18",
+        ciliumTunnelMode: "",
+
+        helmVersion: "v3",
+        supportGpu: "disable",
+        ingressControllerType: "nginx",
+
         masters: [],
         workers: [],
+
+        plan: "",
+        workerAmount: 1,
+      },
+      rules: {
+        name: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
+        version: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        provider: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        architectures: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        yumOperate: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        runtimeType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        maxNodePodNum: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        maxClusterServiceNum: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        kubeProxyMode: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        kubernetesAudit: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        networkType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        flannelBackend: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        calicoIpv4PoolIpip: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        ciliumTunnelMode: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        helmVersion: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        ingressControllerType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        supportGpu: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        plan: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        workerAmount: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
+      },
+      versions: ["1.18.16", "1.20.10"],
+      isNameChecking: false,
+      nameValid: true,
+      archValid: true,
+      nodes: "",
+      plans: [],
+      projectName: "kubeoperator",
+      validateCluster: false,
+      loading: false,
+      helmVersions: ["v3", "v2"],
+      part1Options: ["192", "172", "10"],
+      part2Options: [],
+      part3Options: [],
+      parts: ["192", "168", "0", "0", "16"],
+      podMaxNumOptions: [32, 64, 128, 256],
+      serviceMaxNumOptions: [32, 64, 128, 256, 512, 1024, 2048, 4096],
+      maskOptions: [],
+      maxNodesNum: 255,
+      masters: [],
+      workers: [],
+    }
+  },
+  methods: {
+    submitForm() {
+      let bool
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          bool = true
+        } else {
+          bool = false
+        }
+      })
+      return bool
+    },
+    loadRegistry() {
+      listRegistryAll().then((data) => {
+        this.repoList = data.items === null ? [] : data.items
+        this.changeArch("amd64")
+      })
+    },
+    loadHosts() {
+      listProjectResources("kubeoperator", "HOST", 1, 10).then((data) => {
+        const list = []
+        if (data.items.length !== 0) {
+          data.items
+            .filter((host) => {
+              return host.status === "Running"
+            })
+            .forEach((h) => {
+              if (!h.clusterId) {
+                list.push({ id: h.name, text: h.name, disabled: false })
+              }
+            })
+        }
+        this.hosts = list
+      })
+    },
+    loadPlan() {
+      listProjectResources("kubeoperator", "PLAN", 1, 10).then((data) => {
+        this.plans = data.items
+      })
+    },
+    loadVersion() {
+      listActive().then((data) => {
+        for (const m of data) {
+          this.versions.push(m.name)
+        }
+        this.form.version = data[0].name
+      })
+    },
+    beforeLeave(step) {
+      if (this.submitForm()) {
+        if (this.validateCluster !== true) {
+          if (step.index === 0) {
+            this.nameChecking = true
+            setTimeout(() => {
+              getClusterByName(this.form.name).then(
+                () => {
+                  this.nameValid = false
+                  this.loading = false
+                  this.nameChecking = false
+                  return false
+                },
+                () => {
+                  this.nameChecking = false
+                  this.nameValid = true
+                  this.loading = false
+                  this.validateCluster = true
+                  this.$refs.steps.next()
+                  return true
+                }
+              )
+            }, 1000)
+            this.loading = true
+            return false
+          } else {
+            this.validateCluster = true
+            this.$refs.steps.next()
+            return false
+          }
+        } else {
+          return true
+        }
+      } else {
+        return false
       }
     },
-    methods: {
-      onSubmit() {
-        console.log("submit!")
-      },
-      onNameCheck() {
-
-      },
-      nextStep() {
-        this.activeStep++
-      },
-      aheadStep() {
-        this.activeStep--
-      },
-      onPart1Change() {
-        this.part2Options = []
-        switch (this.parts[0]) {
-          case "192":
-            this.part2Options = ["168"]
-            this.maskOptions = [].concat(["16", "17", "18", "19"])
-            this.parts[4] = this.maskOptions[0]
-            break
-          case "172":
-            for (let i = 16; i < 32; i++) {
-              if (i !== 17) {
-                this.part2Options.push(i + "")
-              }
+    onPart1Change() {
+      this.part2Options = []
+      switch (this.parts[0]) {
+        case "192":
+          this.part2Options = ["168"]
+          this.maskOptions = [].concat(["16", "17", "18", "19"])
+          this.parts[4] = this.maskOptions[0]
+          break
+        case "172":
+          for (let i = 16; i < 32; i++) {
+            if (i !== 17) {
+              this.part2Options.push(i + "")
             }
-            this.parts[1] = this.part2Options[0]
-            this.maskOptions = [].concat(["16", "17", "18", "19"])
-            this.parts[4] = this.maskOptions[0]
-            break
-          case "10":
-            this.parts[1] = this.part2Options[0]
-            this.maskOptions = [].concat(["14", "15", "16", "17", "18", "19"])
-            this.parts[4] = this.maskOptions[0]
-            break
+          }
+          this.parts[1] = this.part2Options[0]
+          this.maskOptions = [].concat(["16", "17", "18", "19"])
+          this.parts[4] = this.maskOptions[0]
+          break
+        case "10":
+          this.parts[1] = this.part2Options[0]
+          this.maskOptions = [].concat(["14", "15", "16", "17", "18", "19"])
+          this.parts[4] = this.maskOptions[0]
+          break
+      }
+      this.onMaskChange()
+    },
+    onMaskChange() {
+      const mask = Number(this.parts[4])
+      if (this.parts[0] === "192" || this.parts[0] === "172") {
+        const a = Math.pow(2, 32 - mask - 8)
+        const selects = []
+        for (let i = 0; i < 256; i += a) {
+          selects.push(i)
         }
-        this.onMaskChange()
-      },
-      onMaskChange() {
-        const mask = Number(this.parts[4])
-        if (this.parts[0] === "192" || this.parts[0] === "172") {
-          const a = Math.pow(2, (32 - mask - 8))
+        this.part3Options = selects
+        this.parts[2] = this.part3Options[0]
+      }
+      if (this.parts[0] === "10") {
+        if (mask < 16) {
+          const a = Math.pow(2, 32 - mask - 16)
+          const selects = []
+          for (let i = 0; i < 256; i += a) {
+            selects.push(i)
+          }
+          this.part2Options = selects
+          this.parts[1] = this.part2Options[0]
+        } else {
+          const select1 = []
+          for (let i = 0; i < 256; i++) {
+            select1.push(i)
+          }
+          this.part2Options = select1
+          this.parts[1] = this.part2Options[0]
+          const a = Math.pow(2, 32 - mask - 8)
           const selects = []
           for (let i = 0; i < 256; i += a) {
             selects.push(i)
@@ -431,60 +573,60 @@
           this.part3Options = selects
           this.parts[2] = this.part3Options[0]
         }
-        if (this.parts[0] === "10") {
-          if (mask < 16) {
-            const a = Math.pow(2, (32 - mask - 16))
-            const selects = []
-            for (let i = 0; i < 256; i += a) {
-                selects.push(i)
-            }
-            this.part2Options = selects
-            this.parts[1] = this.part2Options[0]
-          } else {
-            const select1 = []
-            for (let i = 0; i < 256; i++) {
-              select1.push(i)
-            }
-            this.part2Options = select1
-            this.parts[1] = this.part2Options[0]
-            const a = Math.pow(2, (32 - mask - 8))
-            const selects = []
-            for (let i = 0; i < 256; i += a) {
-              selects.push(i)
-            }
-            this.part3Options = selects
-            this.parts[2] = this.part3Options[0]
-          }
-        }
-        this.getNodeNum()
-      },
-      getNodeNum() {
-        this.form.clusterCidr = this.releaseCidr()
-        // tslint:disable-next-line:max-line-length
-        this.maxNodesNum = Math.pow(2, 32 - Number(this.parts[4])) / this.form.maxNodePodNum - Math.ceil(this.form.maxClusterServiceNum / this.form.maxNodePodNum)
-      },
-      releaseCidr() {
-        return this.parts[0] + "." + this.parts[1] + "." + this.parts[2] + "." + this.parts[3] + "/" + this.parts[4]
-      },
-      getHostName(hosts) {
-        let hostName = ""
-        for (const h of hosts) {
-          hostName = h["text"] + "," + hostName
-        }
-        return hostName
-      },
-      onCancel() {
-        this.$router.push({name: "HostList"})
       }
-    }
-  }
-</script>
-
-<style scoped>
-
-.preview {
-  font-size: 14px;
-  margin-top: 1000px;
+      this.getNodeNum()
+    },
+    getDefaultTunnelMode() {
+      if (this.form.flannelBackend === "Overlay") {
+        this.form.ciliumTunnelMode = "vxlan"
+      } else {
+        this.form.ciliumTunnelMode = "disabled"
+      }
+    },
+    getDefaultFlannelBackend() {
+      if (this.form.networkType === "cilium") {
+        this.form.flannelBackend = "Overlay"
+        this.form.ciliumTunnelMode = "vxlan"
+      } else {
+        this.form.flannelBackend = "vxlan"
+      }
+    },
+    onSubmit() {
+      if (this.form.ciliumTunnelMode === "flannelBackend") {
+        this.form.ciliumTunnelMode = "disable"
+      }
+      createCluster(this.form).then(() => {
+        this.$router.push({ name: "ClusterList" })
+      })
+    },
+    getNodeNum() {
+      this.form.clusterCidr = this.releaseCidr()
+      // tslint:disable-next-line:max-line-length
+      this.maxNodesNum = Math.pow(2, 32 - Number(this.parts[4])) / this.form.maxNodePodNum - Math.ceil(this.form.maxClusterServiceNum / this.form.maxNodePodNum)
+    },
+    releaseCidr() {
+      return this.parts[0] + "." + this.parts[1] + "." + this.parts[2] + "." + this.parts[3] + "/" + this.parts[4]
+    },
+    getHostName(hosts) {
+      let hostName = ""
+      for (const h of hosts) {
+        hostName = h["text"] + "," + hostName
+      }
+      return hostName
+    },
+    onCancel() {
+      this.$router.push({ name: "ClusterList" })
+    },
+  },
+  created() {
+    this.loadHosts()
+    this.loadPlan()
+    this.loadVersion()
+  },
 }
-
+</script>
+<style lang="scss" scoped>
+.example {
+  margin: 3% 20%;
+}
 </style>

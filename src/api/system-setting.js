@@ -20,6 +20,10 @@ export function listRegistry(currentPage, pageSize) {
   return get(`${settingUrl}/registry?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
+export function listRegistryAll() {
+  return get(`${settingUrl}/registry`)
+}
+
 export function createRegistry(data) {
   return post(`${settingUrl}/registry`,data)
 }

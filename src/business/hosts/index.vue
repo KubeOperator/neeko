@@ -233,6 +233,7 @@ export default {
   },
   created() {
     this.search()
+    this.polling()
   },
 }
 </script>
