@@ -1,6 +1,6 @@
 <template>
     <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
-                   :pagination-config="paginationConfig" @search="search">
+                   v-loading="loading" :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -22,13 +22,11 @@
 </template>
 
 <script>
-// import LayoutContent from "@/components/layout/LayoutContent";
 import ComplexTable from "@/components/complex-table";
-import {listRegistry, deleteRegistry} from "@/api/system-setting";
+import {deleteRegistry, searchRegistry} from "@/api/system-setting";
 export default {
   components: {
     ComplexTable,
-    // LayoutContent
   },
   name: "Registry",
   data() {
@@ -50,6 +48,28 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
+          { field: "architecture", label: this.$t('setting.table.registry.arch'), component: "FuComplexInput", defaultOperator: "eq" },
+          {
+            field: "protocol",
+            label: this.$t('setting.table.registry.protocol'),
+            component: "FuComplexSelect",
+            options: [
+              { label: "http", value: 'http' },
+              { label: "https", value: 'https' },
+            ],
+            multiple: true
+          },
+          {
+            field: "hostname",
+            label: this.$t('setting.table.registry.hostname'),
+            component: "FuComplexSelect",
+            options: [
+              { label: this.$t("commons.role.admin"), value: 1 },
+              { label: this.$t("commons.role.user"), value: 0 },
+            ],
+            multiple: true
+          },
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -58,12 +78,15 @@ export default {
         total: 0,
       },
       data: [],
+      loading: false,
     }
   },
   methods: {
     search(conditions) {
+      this.loading = true
       const {currentPage, pageSize} = this.paginationConfig
-      listRegistry(currentPage, pageSize, conditions).then(data => {
+      searchRegistry(currentPage, pageSize, conditions).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })
@@ -99,7 +122,7 @@ export default {
           })
         }
       })
-    }
+    },
   },
   created() {
     this.search()
