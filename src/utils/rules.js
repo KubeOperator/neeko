@@ -8,7 +8,7 @@ var checkName = (rule, value, callback) => {
     return callback(new Error(i18n.t("commons.validate.required_msg")))
   }
   if (!Global.NamePattern.test(value)) {
-    return callback(new Error(i18n.t("automatic.validate.name_validate_msg")))
+    return callback(new Error(i18n.t("commons.validate.name_validate_msg")))
   }
   callback()
 }
