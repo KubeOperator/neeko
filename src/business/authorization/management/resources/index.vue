@@ -7,7 +7,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                :selects.sync="selects"
+                @selection-change="handleSelectionChange"
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
@@ -49,7 +49,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                :selects.sync="selects"
+                @selection-change="handleSelectionChange"
                 @search="getProjectResourceList">
           <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
@@ -83,7 +83,7 @@
                 :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
-                :selects.sync="selects"
+                @selection-change="handleSelectionChange"
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
@@ -192,8 +192,7 @@ export default {
       resources: [],
       form: {
         names: []
-      },
-      key: 0,
+      }
     }
   },
   created () {
@@ -219,6 +218,9 @@ export default {
           this.loading = false
         })
       }
+    },
+    handleSelectionChange (val) {
+      this.selects = val
     },
     create () {
       if (this.authObj.type === "PROJECT") {

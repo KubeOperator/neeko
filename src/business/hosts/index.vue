@@ -14,8 +14,8 @@
         <template v-slot:default="{row}">
           <el-row>
             <el-col :span="6">
-              <font-awesome-icon icon="server" size="3x" />
-              <svg class="icon" aria-hidden="true" style="font-size: 24px"  >
+<!--              <font-awesome-icon icon="server" size="3x" />-->
+              <svg class="icon" aria-hidden="true" style="font-size: 28px"  >
                 <use  xlink:href="#iconzhuji1"></use>
               </svg>
             </el-col>
@@ -76,7 +76,11 @@
             <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">{{$t('commons.form.file_upload_helper')}}</div>
-              <div class="el-upload__tip" slot="tip">{{$t('cluster.detail.backup.local_recover_tips')}}</div>
+              <div class="el-upload__tip" slot="tip">
+                <svg class="icon" aria-hidden="true" style="font-size: 28px"  >
+                  <use  xlink:href="#icontishi11"></use>
+                </svg>
+                {{$t('cluster.detail.backup.local_recover_tips')}}</div>
             </el-upload>
           </el-row>
         </el-form-item>

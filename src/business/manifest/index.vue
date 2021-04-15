@@ -69,8 +69,8 @@
             label="版本">
           </el-table-column>
         </el-table>
-        <p>Network</p>
-        <el-divider/>
+<!--          <el-divider/>-->
+          <p>Network</p>
         <el-table
           :data="manifestDetail.networkVars"
           border
@@ -85,7 +85,7 @@
           </el-table-column>
         </el-table>
         <p>Tool</p>
-        <el-divider/>
+<!--        <el-divider/>-->
         <el-table
           :data="manifestDetail.toolVars"
           border
@@ -100,7 +100,7 @@
           </el-table-column>
         </el-table>
         <p>Storage</p>
-        <el-divider/>
+<!--        <el-divider/>-->
         <el-table
         :data="manifestDetail.storageVars"
         border
@@ -115,11 +115,11 @@
         </el-table-column>
       </el-table>
       <p>Other</p>
-      <el-divider/>
+<!--      <el-divider/>-->
       <el-table
         :data="manifestDetail.otherVars"
         border
-        style="width: 100%">
+        style="width: 90%">
         <el-table-column
           prop="name"
           label="组件">

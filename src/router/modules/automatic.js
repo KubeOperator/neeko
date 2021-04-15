@@ -40,15 +40,6 @@ const Automatic = {
       }
     },
     {
-      path: "zones/create",
-      hidden: true,
-      component: () => import("@/business/automatic/zones/create"),
-      name: "ZoneCreate",
-      meta: {
-        roles: ["ADMIN"]
-      }
-    },
-    {
       path: "plans",
       component: () => import("@/business/automatic/plans"),
       name: "PlanList",
