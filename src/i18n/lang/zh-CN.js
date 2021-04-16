@@ -62,6 +62,8 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
+      required_msg: "输入项不能为空",
+      ip_error: "请输入正确的Ip地址",
     },
     search: {
       name: "",
@@ -113,8 +115,6 @@ const message = {
     form: {
       password_min_length: "密码不允许小于6位",
       number_validate: "请输入正确的数字",
-      required_msg: "输入项不能为空",
-      ip_error: "请输入正确的Ip地址",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
@@ -169,6 +169,7 @@ const message = {
       max_node_pod_num: "POD 数量上限/节点",
       max_cluster_service_num: "Service 数量上限/集群",
       proxy_mode: "proxy 模式",
+      dns_cache: "dns 缓存",
       kubernetes_audit: "Kubernetes 审计",
       enable: "启用",
       disable: "禁用",
@@ -186,6 +187,11 @@ const message = {
       network_interface_help: "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
       network_type: "容器网络",
       flannel_backend: "网络模式",
+      cilium_help: "Cilium 官方建议 kernel(内核) 版本至少在 4.9.17 以上",
+      cilium_overlay_help: "基于封装的虚拟网络，产生所有主机。目前 VXLAN 和 Geneve 已经完成，但可以启用 Linux 支持的所有封装格式。",
+      cilium_overlay_help_more: "此模式具有最小的基础设施和集成要求。它几乎适用于任何网络基础设施，因为唯一的要求是主机之间的IP连接，这通常已经给出。",
+      cilium_native_help: "使用 Linux 主机的常规路由表。网络必须能够路由应用程序容器的IP地址。",
+      cilium_native_help_more: "此模式适用于高级用户，需要了解底层网络基础结构。适用于（1. 原生 IPv6 网络、2. 与云网络路由器配合使用、3. 如果您已经在运行路由守护进程）",
       flannel_backend_help_route:
         "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
       flannel_backend_help_channel:
@@ -203,6 +209,22 @@ const message = {
 
       step7: "配置预览",
       base_setting: "基本配置"
+    },
+    condition: {
+      EnsureInitTaskStart: "调度任务",
+      EnsurePrepareBaseSystemConfig: "准备系统环境",
+      EnsurePrepareContainerRuntime: "初始化容器引擎",
+      EnsurePrepareKubernetesComponent: "准备 Kubernetes 组件",
+      EnsurePrepareLoadBalancer: "准备负载均衡器",
+      EnsurePrepareCertificates: "准备 CA 证书",
+      EnsureInitEtcd: "初始化 ETCD",
+      EnsureInitMaster: "初始化控制平面",
+      EnsureInitWorker: "初始化工作负载",
+      EnsureInitNetwork: "初始化网络",
+      EnsureInitHelm: "初始化Helm",
+      EnsureInitMetricsServer: "初始化监控组件",
+      EnsureInitIngressController: "初始化服务暴露组件",
+      EnsurePostInit: "配置集群",
     },
     detail: {
       tag: {
@@ -476,7 +498,18 @@ const message = {
       openstack_project: "项目ID",
       openstack_domain: "domainName",
       fusionCompute_server: "FusionCompute 服务地址",
-      get_datacenter: "获取数据中心"
+      get_datacenter: "获取数据中心",
+      vcenter_api_help:"vCenter API地址",
+      vcenter_user_help:"访问 vCenter 的用户名，例如 administrator@vsphere.local",
+      vcenter_password_help:"访问 vCenter 的密码",
+      openstack_keystone_help:"OpenStack keystone地址",
+      openstack_username_help:"访问 OpenStack 的用户名",
+      openstack_password_help:"访问 OpenStack 的密码",
+      openstack_project_help:"OpenStack 项目ID",
+      openstack_domain_help:"OpenStack Domain Name",
+      fusionCompute_server_help:"FusionCompute 的 API 服务地址，例如: https://10.1.240.11:7443",
+      fusionCompute_user_help:"访问 FusionCompute 的用户名，例如: admin",
+      fusionCompute_password_help:"访问 FusionCompute 的密码",
     },
     zone: {
       name: "可用区",
@@ -515,7 +548,11 @@ const message = {
       description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
       deploy_template: "部署模型",
       SINGLE: "一主多节点",
-      MULTIPLE: "多主多节点"
+      MULTIPLE: "多主多节点",
+      project_auth: "项目授权",
+      master_model: "Master 规格",
+      worker_model: "Worker 规格",
+      config: "规格参考"
     },
     vm_config: {
       name: "虚拟机配置",
@@ -524,6 +561,7 @@ const message = {
       name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
+      disk: "磁盘(GB)"
     },
     ip_pool: {
       name: "IP池",

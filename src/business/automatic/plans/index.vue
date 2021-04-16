@@ -13,7 +13,7 @@
           <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()"  v-permission="['ADMIN']" :disabled="selects.length===0">{{
+          <el-button size="small" @click="del()" v-permission="['ADMIN']" :disabled="selects.length===0">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -59,7 +59,7 @@ export default {
         {
           label: this.$t("commons.button.edit"),
           icon: "el-icon-edit",
-          disabled: !checkPermission('ADMIN')
+          disabled: !checkPermission("ADMIN")
         },
         {
           label: this.$t("commons.button.delete"),
@@ -68,7 +68,7 @@ export default {
           click: (row) => {
             this.del(row.name)
           },
-          disabled: !checkPermission('ADMIN')
+          disabled: !checkPermission("ADMIN")
         }
       ],
       searchConfig: {
@@ -101,6 +101,9 @@ export default {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
+    },
+    create () {
+      this.$router.push({ name: "PlanCreate" })
     },
     del (name) {
       this.$confirm(

@@ -13,3 +13,11 @@ export function deletePlanBy (name) {
 export function searchPlans (page, size, condition) {
   return post(`${planUrl}/search?pageNum=${page}&pageSize=${size}`, condition)
 }
+
+export function listVmConfigs (regionName) {
+  return get(`${planUrl}/configs/${regionName}`)
+}
+
+export function createPlan (data) {
+  return post(`${planUrl}`, data)
+}

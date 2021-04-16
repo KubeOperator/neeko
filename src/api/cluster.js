@@ -1,4 +1,4 @@
-import {get} from "@/plugins/request"
+import {get, post} from "@/plugins/request"
 
 const clusterLoggerUrl = "/clusters/logger/{cluster_name}"
 const clusterNodeLoggerUrl = "/clusters/node/logger/{cluster_name}/{node_name}"
@@ -12,8 +12,16 @@ export function listClusters(page, size, projectName) {
   return get(`/clusters/?pageNum=${page}&pageSize=${size}&projectName=${projectName}`)
 }
 
+export function createCluster(data) {
+  return post("/clusters", data)
+}
+
 export function allClusters() {
   return get(`/clusters`)
+}
+
+export function getClusterStatus(clusterName) {
+  return get(`/clusters/status/${clusterName}`)
 }
 
 export function getToken(clusterName) {

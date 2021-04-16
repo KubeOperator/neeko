@@ -29,3 +29,11 @@ export function listTemplates (data) {
 export function createZone (data) {
   return post(`${zoneUrl}`, data)
 }
+
+export function listAllZones () {
+  return get(`${zoneUrl}`)
+}
+
+export function listByRegion(regionName) {
+  return get(`${zoneUrl}/list/${regionName}`)
+}
