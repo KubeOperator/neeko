@@ -1,10 +1,10 @@
 <template>
   <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
-                 :pagination-config="paginationConfig" @search="search">
+                 v-loading="loading" :pagination-config="paginationConfig" @search="search">
     <template #toolbar>
       <el-button-group>
         <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-        <el-button size="small" @click="del()" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
+        <el-button size="small" @click="del()" type="danger"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
       </el-button-group>
     </template>
 
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {listCredentials,deleteCredentials} from "@/api/credentials";
+import {deleteCredentials, searchCredential} from "@/api/credentials";
 import ComplexTable from "@/components/complex-table";
 export default {
   name: "Credential",
@@ -49,6 +49,23 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
+          { field: "name", label: this.$t('commons.table.name'), component: "FuComplexInput", defaultOperator: "eq" },
+          {
+            field: "username",
+            label: this.$t('commons.table.username'),
+            component: "FuComplexInput",
+          },
+          {
+            field: "type",
+            label: this.$t('commons.table.type'),
+            component: "FuComplexSelect",
+            options: [
+              { label: 'password', value: 'password' },
+              { label: 'privateKey', value: 'privateKey' },
+            ],
+            multiple: true
+          },
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -57,12 +74,15 @@ export default {
         total: 0,
       },
       data: [],
+      loading: false,
     }
   },
   methods: {
     search(conditions) {
+      this.loading = true
       const {currentPage, pageSize} = this.paginationConfig
-      listCredentials(currentPage, pageSize, conditions).then(data => {
+      searchCredential(currentPage, pageSize, conditions).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })
