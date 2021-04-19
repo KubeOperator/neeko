@@ -11,6 +11,10 @@ export function listCredentialAll() {
   return get(`${settingUrl}`)
 }
 
+export function searchCredential(currentPage, pageSize, conditions) {
+  return post(`${settingUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}
+
 export function createCredentials(data) {
   return post(settingUrl,data)
 }

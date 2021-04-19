@@ -1,5 +1,5 @@
-import el from "element-ui/lib/locale/lang/zh-CN" // 加载element的内容
-import fu from "fit2cloud-ui/src/locale/lang/zh-CN" // 加载fit2cloud的内容
+import el from "element-ui/lib/locale/lang/zh-CN"; // 加载element的内容
+import fu from "fit2cloud-ui/src/locale/lang/zh-CN"; // 加载fit2cloud的内容
 
 const message = {
   commons: {
@@ -40,7 +40,9 @@ const message = {
       authorize: "授权",
       getBucket: "获取桶",
       update: "更新",
-      upload: "上传"
+      upload: "上传",
+      retry: "重试",
+      history: "日志"
     },
     msg: {
       success: "{0}成功",
@@ -55,7 +57,8 @@ const message = {
       enable_success: "启用成功",
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
-      update_success: "更新成功"
+      update_success: "更新成功",
+      upgrade_start_success: "集群升级开始，请稍候...",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -64,6 +67,7 @@ const message = {
       select: "请选择{0}",
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
+      password_min_length: "密码不允许小于6位",
     },
     search: {
       name: "",
@@ -75,7 +79,7 @@ const message = {
       time_range: "至",
       date_start: "开始日期",
       date_end: "结束日期",
-      synchronizing: "同步中",
+      synchronizing: "同步中"
     },
     personal: {
       personal_information: "个人信息",
@@ -94,7 +98,9 @@ const message = {
     status: {
       running: "运行中",
       initializing: "初始化中",
+      creating: "创建中",
       failed: "失败",
+      not_ready: "未就绪",
       error: "错误",
       active: "活跃",
       passive: "禁用",
@@ -113,12 +119,10 @@ const message = {
       user: "用户"
     },
     form: {
-      password_min_length: "密码不允许小于6位",
-      number_validate: "请输入正确的数字",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
-      file_upload_helper: "将文件拖到此处，或点击上传",
+      file_upload_helper: "将文件拖到此处，或点击上传"
     }
   },
   login: {
@@ -160,8 +164,10 @@ const message = {
       yum_repo: "Yum 仓库",
       yum_repo_replace_help:
         "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
-      yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
-      yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
+      yum_repo_coexist_help:
+        "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
+      yum_repo_no_help:
+        "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
       step2: "集群设置",
       container_network: "容器网络",
@@ -169,6 +175,7 @@ const message = {
       max_node_pod_num: "POD 数量上限/节点",
       max_cluster_service_num: "Service 数量上限/集群",
       proxy_mode: "proxy 模式",
+      dns_cache: "dns 缓存",
       kubernetes_audit: "Kubernetes 审计",
       enable: "启用",
       disable: "禁用",
@@ -183,9 +190,19 @@ const message = {
 
       step4: "容器网络设置",
       network_interface: "网卡名称",
-      network_interface_help: "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
+      network_interface_help:
+        "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
       network_type: "容器网络",
       flannel_backend: "网络模式",
+      cilium_help: "Cilium 官方建议 kernel(内核) 版本至少在 4.9.17 以上",
+      cilium_overlay_help:
+        "基于封装的虚拟网络，产生所有主机。目前 VXLAN 和 Geneve 已经完成，但可以启用 Linux 支持的所有封装格式。",
+      cilium_overlay_help_more:
+        "此模式具有最小的基础设施和集成要求。它几乎适用于任何网络基础设施，因为唯一的要求是主机之间的IP连接，这通常已经给出。",
+      cilium_native_help:
+        "使用 Linux 主机的常规路由表。网络必须能够路由应用程序容器的IP地址。",
+      cilium_native_help_more:
+        "此模式适用于高级用户，需要了解底层网络基础结构。适用于（1. 原生 IPv6 网络、2. 与云网络路由器配合使用、3. 如果您已经在运行路由守护进程）",
       flannel_backend_help_route:
         "基于路由，不适用于公有云环境，优势是没有封包和解包过程，完全基于两端宿主机的路由表进行转发劣势是要求宿主机在2层网络是互通，且路由表膨胀会导致性能降低。",
       flannel_backend_help_channel:
@@ -204,6 +221,47 @@ const message = {
       step7: "配置预览",
       base_setting: "基本配置"
     },
+    upgrade: {
+      current_version: "当前版本",
+      upgrade_version: "升级版本",
+    },
+    import: {
+      import_cluster: "集群导入",
+      api_server_help: "例如: https://172.16.10.100:8443",
+      router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
+    },
+    health_check: {
+      level: "等级",
+      message: "消息",
+      method: "方法",
+      result: "结果",
+      recover: "恢复",
+    },
+    condition: {
+      condition_detail: "状态详情",
+
+      EnsureInitTaskStart: "调度任务",
+      EnsurePrepareBaseSystemConfig: "准备系统环境",
+      EnsurePrepareContainerRuntime: "初始化容器引擎",
+      EnsurePrepareKubernetesComponent: "准备 Kubernetes 组件",
+      EnsurePrepareLoadBalancer: "准备负载均衡器",
+      EnsurePrepareCertificates: "准备 CA 证书",
+      EnsureInitEtcd: "初始化 ETCD",
+      EnsureInitMaster: "初始化控制平面",
+      EnsureInitWorker: "初始化工作负载",
+      EnsureInitNetwork: "初始化网络",
+      EnsureInitHelm: "初始化Helm",
+      EnsureInitMetricsServer: "初始化监控组件",
+      EnsureInitIngressController: "初始化服务暴露组件",
+      EnsurePostInit: "配置集群",
+
+      EnsureBackupETCD: "备份集群",
+      EnsureUpgradeRuntime: "升级容器引擎",
+      EnsureUpgradeETCD: "升级 ETCD",
+      EnsureUpgradeKubernetes: "升级 Kubernetes",
+      EnsureUpdateCertificates: "更新证书",
+      EnsureUpgradeTaskStart: "调度任务",
+    },
     detail: {
       tag: {
         overview: "概览",
@@ -215,11 +273,11 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        csi: "csi扫描",
-        grade: "集群评分",
+        security: "csi扫描",
+        grade: "集群评分"
       },
       overview: {
-        source: "来源",
+        source: "来源"
       },
       node: {
         increment: "增量",
@@ -229,7 +287,7 @@ const message = {
         status: "状态"
       },
       namespace: {
-        before_delete: "删除失败,该命名空间下已存在工具：",
+        before_delete: "删除失败,该命名空间下已存在工具："
       },
       storage: {
         type: "类型",
@@ -247,7 +305,8 @@ const message = {
         disk_name_helper: "填写磁盘名称，多块磁盘使用逗号分隔，例如：'sdb,sdc'",
         is_block_enable: "是否启用块存储",
         cinder_version_helper: "当前仅支持v3版本",
-        vsphere_select_helper: "VMware 环境最低要求：1. vCenter 6.7 Update 3， 2. ESXi v6.7.0",
+        vsphere_select_helper:
+          "VMware 环境最低要求：1. vCenter 6.7 Update 3， 2. ESXi v6.7.0",
         deploy_mode: "部署类型",
         multi_path_networking: "多路径组网",
         product: "产品",
@@ -275,8 +334,8 @@ const message = {
           storage_policy_type: "存储策略类型",
           storage_policy: "存储策略",
           build_in: "内置",
-          custom: "自定义",
-        },
+          custom: "自定义"
+        }
       },
       event: {
         msg_info: "信息",
@@ -284,7 +343,7 @@ const message = {
         component: "组件",
         enable_npd: "启用 NPD",
         enable_npd_success: "NPD 启用成功",
-        disable_npd_success: "NPD 禁用成功",
+        disable_npd_success: "NPD 禁用成功"
       },
       log: {
         time: "时间",
@@ -293,7 +352,7 @@ const message = {
         label: "标签",
         value: "标签值",
         match_info: "匹配内容",
-        match_info_quick: "按 匹配内容 查询",
+        match_info_quick: "按 匹配内容 查询"
       },
       tool: {
         enable_title: "启用工具",
@@ -316,7 +375,7 @@ const message = {
         password_re: "确认密码",
         node_select_help: "（非必填项）",
         log_err_msg: "logging 和 loki 不支持同时启用！",
-        grafana_err_msg: "请先启用 promethues 作为默认数据源！",
+        grafana_err_msg: "请先启用 promethues 作为默认数据源！"
       },
       istio: {
         err_title: "错误信息",
@@ -329,8 +388,8 @@ const message = {
         enable_istio: "启用 ISTIO",
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
-        ensure_disable_istio: "是否确认禁用集群 istio？",
-    },
+        ensure_disable_istio: "是否确认禁用集群 istio？"
+      },
       backup: {
         backup_strategy: "备份策略",
         backup_interval: "备份间隔(天)",
@@ -349,7 +408,7 @@ const message = {
         backup_list: "备份列表",
         backup_location: "备份位置",
         backup_recover: "备份/恢复",
-        backup_log: "日志",
+        backup_log: "日志"
       },
       security: {
         start_time: "开始时间",
@@ -357,13 +416,13 @@ const message = {
         cis_result: "Cis 扫描结果",
         code: "编号",
         description: "描述",
-        advise: "建议",
+        advise: "建议"
       },
       f5: {
         big_ip_addr: "BIG-IP 地址",
         big_ip_user_name: "BIG-IP 用户名",
         big_ip_password: "BIG-IP 密码",
-        big_ip_public: "BIG-IP 外网IP",
+        big_ip_public: "BIG-IP 外网IP"
       },
       grade: {
         danger: "严重",
@@ -375,9 +434,9 @@ const message = {
         networking: "网络",
         reliability: "可靠性",
         resources: "资源",
-        security: "安全",
-      },
-  },
+        security: "安全"
+      }
+    }
   },
   host: {
     host: "主机",
@@ -407,7 +466,8 @@ const message = {
     dingTalk_phone: "钉钉手机号",
     dingTalk_phone_help: "用于钉钉接收告警消息",
     work_wechat_id: "企业微信用户ID",
-    work_wechat_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    work_wechat_id_help:
+      "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
     email: "邮箱",
     message_type: "消息类型",
     message_in_station: "站内信",
@@ -467,7 +527,8 @@ const message = {
       name: "区域",
       basic: "基本信息",
       config: "配置参数",
-      description: "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。",
+      description:
+        "区域(Region)：与公有云中的区域（Region）概念相似，比如阿里云华北 1。对于 vSphere，区域对应于 Datacenter。",
       vcenter_host: "Vcenter 主机",
       vcenter_port: "Vcenter 端口",
       vcenter_username: "用户名",
@@ -477,21 +538,24 @@ const message = {
       openstack_domain: "domainName",
       fusionCompute_server: "FusionCompute 服务地址",
       get_datacenter: "获取数据中心",
-      vcenter_api_help:"vCenter API地址",
-      vcenter_user_help:"访问 vCenter 的用户名，例如 administrator@vsphere.local",
-      vcenter_password_help:"访问 vCenter 的密码",
-      openstack_keystone_help:"OpenStack keystone地址",
-      openstack_username_help:"访问 OpenStack 的用户名",
-      openstack_password_help:"访问 OpenStack 的密码",
-      openstack_project_help:"OpenStack 项目ID",
-      openstack_domain_help:"OpenStack Domain Name",
-      fusionCompute_server_help:"FusionCompute 的 API 服务地址，例如: https://10.1.240.11:7443",
-      fusionCompute_user_help:"访问 FusionCompute 的用户名，例如: admin",
-      fusionCompute_password_help:"访问 FusionCompute 的密码",
+      vcenter_api_help: "vCenter API地址",
+      vcenter_user_help:
+        "访问 vCenter 的用户名，例如 administrator@vsphere.local",
+      vcenter_password_help: "访问 vCenter 的密码",
+      openstack_keystone_help: "OpenStack keystone地址",
+      openstack_username_help: "访问 OpenStack 的用户名",
+      openstack_password_help: "访问 OpenStack 的密码",
+      openstack_project_help: "OpenStack 项目ID",
+      openstack_domain_help: "OpenStack Domain Name",
+      fusionCompute_server_help:
+        "FusionCompute 的 API 服务地址，例如: https://10.1.240.11:7443",
+      fusionCompute_user_help: "访问 FusionCompute 的用户名，例如: admin",
+      fusionCompute_password_help: "访问 FusionCompute 的密码"
     },
     zone: {
       name: "可用区",
-      description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
+      description:
+        "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
       ready: "就绪",
       uploadImageError: "上传镜像失败",
       initializing: "初始化中",
@@ -500,12 +564,12 @@ const message = {
       cluster: "集群",
       resource_pool: "资源池",
       datastore: "存储",
-      value:"按剩余量",
-      usage:"按使用率",
+      value: "按剩余量",
+      usage: "按使用率",
       datastore_type: "放置方式",
       template: "模版",
       template_type: "模版类型",
-      default:"默认",
+      default: "默认",
       customize: "自定义",
       network: "网络",
       network_adapter: "网络适配器",
@@ -525,7 +589,8 @@ const message = {
     },
     plan: {
       name: "部署计划",
-      description: "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
+      description:
+        "部署计划 (Plan): 在 KubeOperator 中用来描述在哪个区域下，哪些可用区中，使用什么样的机器规格，部署什么类型的集群的一个抽象概念",
       deploy_template: "部署模型",
       SINGLE: "一主多节点",
       MULTIPLE: "多主多节点",
@@ -573,7 +638,7 @@ const message = {
     add_project_resource: "添加资源",
     key_words: "请输入姓名",
     list: "项目列表",
-    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
+    header_description: "左侧是项目-集群树，右侧是人员和资源管理"
   },
   credential: {
     name: "凭据名称",
@@ -622,7 +687,7 @@ const message = {
       registry: {
         protocol: "协议",
         hostname: "地址",
-        arch: "CPU架构",
+        arch: "CPU架构"
       },
       mail: {
         smtp: "SMTP 地址",
@@ -670,7 +735,7 @@ const message = {
         wechatConcept: "企业微信基本概念",
         wechatLimit: "企业微信消息频率限制",
         wechatSetting: "企业微信设置",
-        dingTalkSetting: "钉钉设置",
+        dingTalkSetting: "钉钉设置"
       }
     },
     option: {
@@ -682,7 +747,8 @@ const message = {
     },
     helpInfo: {
       inputPassword: "请输入密码",
-      messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
+      messageInfo:
+        "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
     }
   },
   multi_cluster: {
@@ -695,13 +761,12 @@ const message = {
     username: "用户名",
     password: "密码",
     sync_interval: "同步间隔",
-    pull_timeout: "拉取超时时间",
+    pull_timeout: "拉取超时时间"
   }
-
-}
+};
 
 export default {
   ...el,
   ...fu,
   ...message
-}
+};

@@ -6,9 +6,11 @@
           <template>
             <el-button-group>
               <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
+              <el-button size="small" :disabled="pvSelection.length < 1" type="danger" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="pvDatas">
+          <complex-table style="margin-top: 20px" :selects.sync="pvSelection" :data="pvDatas">
+            <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity['storage']" fix />
             <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
@@ -21,10 +23,12 @@
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
               <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'pv')" type="danger" circle icon="el-icon-delete" size="small" />
+                <el-button @click="onDelete(scope.row, 'pv', false)" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
+
+          <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
@@ -32,9 +36,11 @@
           <template>
             <el-button-group>
               <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
+              <el-button size="small" :disabled="classSelection.length < 1" type="danger" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="storageClassDatas">
+          <complex-table style="margin-top: 20px" :selects.sync="classSelection" :data="storageClassDatas">
+            <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
             <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
@@ -46,10 +52,12 @@
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
               <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'class')" type="danger" circle icon="el-icon-delete" size="small" />
+                <el-button @click="onDelete(scope.row, 'class', false)" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
+
+          <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
         </el-card>
       </el-tab-pane>
       <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
@@ -57,18 +65,31 @@
           <template>
             <el-button-group>
               <el-button size="small" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="provisionerSelection.length < 1" @click="goSync()">{{$t('commons.button.sync')}}</el-button>
+              <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
+              <el-button size="small" :disabled="provisionerSelection.length < 1" type="danger" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" @selection-change="handleSelectionChange" :data="provisionerDatas">
+          <complex-table style="margin-top: 20px" :selects.sync="provisionerSelection" :data="provisionerDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template slot-scope="scope">
-                <span style="margin: 12px">{{scope.row.status}}
-                  <i v-if="scope.row.status === 'Initializing' || scope.row.status === 'Terminating' || scope.row.status === 'Synchronizing' || scope.row.status === 'Waiting'" class="el-icon-loading" />
-                </span>
+              <template v-slot:default="{row}">
+                <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+                <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+                <el-tag v-if="row.status === 'NotReady'" type="danger" size="small">{{$t('commons.status.not_ready')}}</el-tag>
+                <el-tag v-if="row.status === 'Initializing'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.initializing')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Terminating'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.Terminating')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">{{$t('commons.status.synchronizing')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Waiting'" type="info" size="small">{{$t('commons.status.Waiting')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
@@ -78,7 +99,7 @@
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
               <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'provisioner')" type="danger" circle icon="el-icon-delete" size="small" />
+                <el-button @click="onDelete(scope.row, 'provisioner', false)" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -101,17 +122,29 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
+import K8sPage from "@/components/k8s-page"
+import { openProvisionerLogger } from "@/api/cluster"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable },
+  components: { ComplexTable, K8sPage },
   data() {
     return {
+      pvPage: {
+        continueToken: "",
+        nextToken: "",
+      },
+      classPage: {
+        continueToken: "",
+        nextToken: "",
+      },
       provisionerDatas: [],
       pvDatas: [],
       storageClassDatas: [],
       clusterName: "",
+      pvSelection: [],
+      classSelection: [],
       provisionerSelection: [],
       dialogDeleteVisible: false,
       dialogSyncVisible: false,
@@ -121,12 +154,14 @@ export default {
   methods: {
     search() {
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
-        listPersistentVolumes(this.clusterName).then((data) => {
+        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false).then((data) => {
           this.pvDatas = data.items
+          this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
-        listStorageClass(this.clusterName).then((data) => {
+        listStorageClass(this.clusterName, this.classPage.continueToken, false).then((data) => {
           this.storageClassDatas = data.items
+          this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
         listProvisioner(this.clusterName).then((data) => {
@@ -134,8 +169,13 @@ export default {
         })
       }
     },
-    handleSelectionChange(val) {
-      this.provisionerSelection = val
+    classPageChange(continueToken) {
+      this.classPage.continueToken = continueToken
+      this.search()
+    },
+    pvPageChange(continueToken) {
+      this.pvPage.continueToken = continueToken
+      this.search()
     },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
@@ -150,51 +190,83 @@ export default {
     provisionerCreate() {
       this.$router.push({ name: "ClusterStorageProvionerCreate" })
     },
-    goDelete(row, type) {
+    onDelete(row, type, isBatchDelete) {
+      if (isBatchDelete) {
+        this.submitDelete(row, type)
+      } else {
+        this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.button.delete"), {
+          confirmButtonText: this.$t("commons.button.ok"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning",
+        }).then(() => {
+          this.dialogDeleteVisible = false
+          this.submitDelete(row, type)
+        })
+      }
+    },
+    submitDelete(row, type) {
+      switch (type) {
+        case "provisioner":
+          listStorageClass(this.clusterName).then((data) => {
+            let isClassExist = false
+            for (let item of data.items) {
+              if (item.provisioner === row.name) {
+                isClassExist = true
+                break
+              }
+            }
+            if (isClassExist) {
+              this.$message({ type: "error", message: this.$t("cluster.detail.storage.storage_class_exist") })
+            } else {
+              deleteProvisioner(this.clusterName, row).then(() => {
+                this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+                this.search()
+              })
+            }
+          })
+          break
+        case "class":
+          if (row.provisioner === "kubernetes.io/glusterfs") {
+            const namespace = row.parameters.secretNamespace
+            const secretName = row.parameters.secretName
+            deleteSecret(this.clusterName, namespace, secretName).then(() => {
+              this.deleteClass(row.metadata.name)
+            })
+          } else {
+            this.deleteClass(row.metadata.name)
+          }
+          break
+        case "pv":
+          deletePersistentVolume(this.clusterName, row.metadata.name).then(() => {
+            this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+            this.search()
+          })
+          break
+      }
+    },
+    onBatchDelete(type) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.button.delete"), {
         confirmButtonText: this.$t("commons.button.ok"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
         switch (type) {
-          case "provisioner":
-            listStorageClass(this.clusterName).then((data) => {
-              let isClassExist = false
-              for (let item of data.items) {
-                if (item.provisioner === row.name) {
-                  isClassExist = true
-                  break
-                }
-              }
-              if (isClassExist) {
-                this.$message({ type: "error", message: this.$t("cluster.detail.storage.storage_class_exist") })
-              } else {
-                deleteProvisioner(this.clusterName, row).then(() => {
-                  this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
-                  this.search()
-                })
-              }
+          case "pv":
+            this.pvSelection.forEach((item) => {
+              this.onDelete(item, "provisioner", true)
             })
             break
           case "class":
-            if (row.provisioner === "kubernetes.io/glusterfs") {
-              const namespace = row.parameters.secretNamespace
-              const secretName = row.parameters.secretName
-              deleteSecret(this.clusterName, namespace, secretName).then(() => {
-                this.deleteClass(row.metadata.name)
-              })
-            } else {
-              this.deleteClass(row.metadata.name)
-            }
+            this.classSelection.forEach((item) => {
+              this.onDelete(item, "class", true)
+            })
             break
-          case "pv":
-            deletePersistentVolume(this.clusterName, row.metadata.name).then(() => {
-              this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
-              this.search()
+          case "provisioner":
+            this.provisionerSelection.forEach((item) => {
+              this.onDelete(item, "provisioner", true)
             })
             break
         }
-        this.dialogDeleteVisible = false
       })
     },
     deleteClass(deleteName) {
@@ -203,7 +275,10 @@ export default {
         this.search()
       })
     },
-    goSync() {
+    openXterm(row) {
+      openProvisionerLogger(this.clusterName, row.id)
+    },
+    onSync() {
       this.dialogSyncVisible = true
     },
     submitSync() {
@@ -236,6 +311,9 @@ export default {
     }
     this.search()
     this.polling()
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
 }
 </script>
