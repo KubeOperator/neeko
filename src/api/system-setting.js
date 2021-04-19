@@ -32,6 +32,10 @@ export function updateRegistry(arch, data) {
   return patch(`${settingUrl}/registry/${arch}`,data)
 }
 
+export function searchRegistry(currentPage, pageSize, conditions) {
+  return post(`${settingUrl}/registry/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}
+
 export function getRegistry(arch) {
   return get(`${settingUrl}/registry/${arch}`)
 }
