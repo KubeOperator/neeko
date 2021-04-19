@@ -61,6 +61,17 @@ const Automatic = {
       }
     },
     {
+      path: "zones/edit/:/name",
+      props: true,
+      hidden: true,
+      component: () => import("@/business/automatic/zones/edit"),
+      name: "ZoneEdit",
+      meta: {
+        activeMenu: "/automatic/zones",
+        roles: ["ADMIN"]
+      }
+    },
+    {
       path: "plans",
       component: () => import("@/business/automatic/plans"),
       name: "PlanList",

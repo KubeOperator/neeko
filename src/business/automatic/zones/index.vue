@@ -1,5 +1,6 @@
 <template>
-  <layout-content :description="$t('automatic.zone.description')" v-loading="loading">
+  <layout-content :header="$t('automatic.zone.name')" :description="$t('automatic.zone.description')"
+                  v-loading="loading">
     <complex-table
             :data="data"
             :colums="columns"
@@ -64,7 +65,10 @@ export default {
       buttons: [
         {
           label: this.$t("commons.button.edit"),
-          icon: "el-icon-edit"
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "ZoneEdit", params: { name: row.name } })
+          }
         },
         {
           label: this.$t("commons.button.delete"),
