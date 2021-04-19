@@ -90,7 +90,7 @@ export default {
       )
     },
     isInSystemSpace(row) {
-      const systemSpaces = ["default", "kube-public", 'kube-operator', "kube-system", "istio-system", "kube-node-lease"]
+      const systemSpaces = ["default", "kube-public", "kube-operator", "kube-system", "istio-system", "kube-node-lease"]
       return systemSpaces.indexOf(row.metadata.name) !== -1
     },
     goDelete(row) {
@@ -109,9 +109,11 @@ export default {
               }
             }
             if (exitStr === "") {
-              deleteNamespace(this.clusterName, namespaceItem).then(() => {
+              deleteNamespace(this.clusterName, namespaceItem).then(
+                () => {
                   this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
-                },(error) => {
+                },
+                (error) => {
                   this.$message({ type: "error", message: error })
                 }
               )
@@ -142,6 +144,9 @@ export default {
   created() {
     this.search()
     this.polling()
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
 }
 </script>

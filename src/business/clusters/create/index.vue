@@ -469,6 +469,7 @@ export default {
     },
     loadVersion() {
       listActive().then((data) => {
+        this.versions = []
         for (const m of data) {
           this.versions.push(m.name)
         }
