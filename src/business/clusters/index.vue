@@ -434,8 +434,6 @@ export default {
       })
     },
 
-    // cluster import
-
     // cluster logs
     getStatus(row) {
       this.currentCluster = row

@@ -66,7 +66,8 @@ const message = {
       cannot_be_empty: "该内容不能为空!",
       select: "请选择{0}",
       required_msg: "输入项不能为空",
-      ip_error: "请输入正确的Ip地址"
+      ip_error: "请输入正确的Ip地址",
+      password_min_length: "密码不允许小于6位",
     },
     search: {
       name: "",
@@ -99,6 +100,7 @@ const message = {
       initializing: "初始化中",
       creating: "创建中",
       failed: "失败",
+      not_ready: "未就绪",
       error: "错误",
       active: "活跃",
       passive: "禁用",
@@ -117,8 +119,6 @@ const message = {
       user: "用户"
     },
     form: {
-      password_min_length: "密码不允许小于6位",
-      number_validate: "请输入正确的数字",
       ip_range_error: "Ip范围无效",
       yes: "是",
       no: "否",
