@@ -519,7 +519,9 @@ const message = {
       nfs_port: "NFS服务端口",
       nfs_folder: "NFS服务器文件夹",
       nfs_username: "NFS服务器用户名",
-      nfs_password: "NFS服务器密码"
+      nfs_password: "NFS服务器密码",
+      old_datastores: "已选存储",
+      new_datastores: "新增存储"
     },
     plan: {
       name: "部署计划",
@@ -552,7 +554,7 @@ const message = {
       dns2: "DNS2",
       description: "描述",
       address: "IP",
-      status: "状态",
+      status: "状态(已用/总共)",
       ip_list: "IP列表",
       ip_available: "可用",
       ip_lock: "占用",

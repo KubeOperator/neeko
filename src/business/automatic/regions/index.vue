@@ -1,5 +1,6 @@
 <template>
-  <layout-content :description="$t('automatic.region.description')" v-loading="loading">
+  <layout-content :header="$t('automatic.region.name')" :description="$t('automatic.region.description')"
+                  v-loading="loading">
     <complex-table
             :data="data"
             :colums="columns"
@@ -12,9 +13,8 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()" :disabled="selects.length===0">{{
-              $t("commons.button.delete")
-            }}
+          <el-button size="small" @click="del()" :disabled="selects.length===0">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -88,7 +88,7 @@ export default {
       },
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0
       },
       data: [],
