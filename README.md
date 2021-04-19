@@ -2,7 +2,20 @@
 
 KOUI 是 KubeOperator 的新版前端 UI 项目, 主要使用 [Vue](https://cn.vuejs.org/), [Element UI](https://github.com/fit2cloud-ui/fit2cloud-ui/) 完成。
 
+## 开发运行
 
+```
+0. 前置条件: 部署运行好 KubeOperator API 服务器
+
+1. 安装依赖
+$ npm install
+
+2. 运行
+$ npm run serve
+
+3. 构建
+$ npm run build
+```
 
 ## 致谢
 - [Vue](https://cn.vuejs.org) 前端框架
