@@ -20,8 +20,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'pv')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template v-slot:default="{row}">
+                <el-button @click="goDelete(row, 'pv')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -45,8 +45,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'class')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template v-slot:default="{row}">
+                <el-button @click="goDelete(row, 'class')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -65,10 +65,21 @@
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template slot-scope="scope">
-                <span style="margin: 12px">{{scope.row.status}}
-                  <i v-if="scope.row.status === 'Initializing' || scope.row.status === 'Terminating' || scope.row.status === 'Synchronizing' || scope.row.status === 'Waiting'" class="el-icon-loading" />
-                </span>
+              <template v-slot:default="{row}">
+                <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+                <el-tag @click.native="getStatus(row)" v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+                <el-tag @click.native="getStatus(row)" v-if="row.status === 'Initializing'" type="success" size="small">{{$t('commons.status.initializing')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Creating'" type="info" size="small">{{$t('commons.status.creating')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Terminating'" type="info" size="small">{{$t('commons.status.Terminating')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
+                <el-tag v-if="row.status === 'Waiting'" type="info" size="small">{{$t('commons.status.Waiting')}}
+                  <font-awesome-icon icon="spinner" pulse />
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
@@ -77,8 +88,8 @@
               </template>
             </el-table-column>
             <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="goDelete(scope.row, 'provisioner')" type="danger" circle icon="el-icon-delete" size="small" />
+              <template v-slot:default="{row}">
+                <el-button @click="goDelete(row, 'provisioner')" type="danger" circle icon="el-icon-delete" size="small" />
               </template>
             </el-table-column>
           </complex-table>
@@ -228,6 +239,9 @@ export default {
         }
       }, 10000)
     },
+    destroyed() {
+      clearInterval(this.timer)
+    },
   },
   created() {
     this.clusterName = this.$route.params.name
@@ -236,6 +250,9 @@ export default {
     }
     this.search()
     this.polling()
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
 }
 </script>

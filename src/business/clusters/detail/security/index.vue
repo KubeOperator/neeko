@@ -148,6 +148,9 @@ export default {
     this.search()
     this.polling()
   },
+  destroyed() {
+    clearInterval(this.timer)
+  },
 }
 </script>
 

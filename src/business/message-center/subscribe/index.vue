@@ -2,23 +2,23 @@
     <complex-table :header="$t('message.message_subscribe')" :data="data">
       <el-table-column :label="$t('message.message_type')" min-width="100" prop="type" fix/>
       <el-table-column :label="$t('message.message_in_station')">
-        <template slot-scope="scope">
-          <el-switch  v-model="scope.row.vars['LOCAL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row)"></el-switch>
+        <template  v-slot:default="{row}">
+          <el-switch  v-model="row.vars['LOCAL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.mail')">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.vars['EMAIL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row,)"></el-switch>
+        <template  v-slot:default="{row}">
+          <el-switch v-model="row.vars['EMAIL']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row,)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.work_wechat')">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.vars['WORK_Wechat']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row)"></el-switch>
+        <template  v-slot:default="{row}">
+          <el-switch v-model="row.vars['WORK_Wechat']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.dingTalk')">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.vars['DING_TALK']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(scope.row)"></el-switch>
+        <template  v-slot:default="{row}">
+          <el-switch v-model="row.vars['DING_TALK']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row)"></el-switch>
         </template>
       </el-table-column>
     </complex-table>
