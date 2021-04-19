@@ -6,6 +6,125 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "2541355",
+      "name": "warring",
+      "font_class": "warring",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "3248130",
+      "name": "running",
+      "font_class": "yunhangzhong",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "3520759",
+      "name": "Error",
+      "font_class": "ziyuan1",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "4455125",
+      "name": "running",
+      "font_class": "yunhangzhongx",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "9281574",
+      "name": "stop 16px",
+      "font_class": "stoppx",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "11902808",
+      "name": "warring",
+      "font_class": "warring1",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "13614451",
+      "name": "running",
+      "font_class": "running",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
+      "icon_id": "14230512",
+      "name": "Error",
+      "font_class": "Errorcorrection",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "18027775",
+      "name": "error",
+      "font_class": "runerror",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "4070417",
+      "name": "NVIDIA-Logo",
+      "font_class": "NVIDIA-Logo",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "5439363",
+      "name": "ubuntu",
+      "font_class": "ubuntu",
+      "unicode": "e6d3",
+      "unicode_decimal": 59091
+    },
+    {
+      "icon_id": "5439375",
+      "name": "red-hat",
+      "font_class": "red-hat",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
+      "icon_id": "7470539",
+      "name": "Centos",
+      "font_class": "ziyuan",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "9941062",
+      "name": "nvidia",
+      "font_class": "nvidia",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "13470077",
+      "name": "nvidia",
+      "font_class": "nvidia1",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "13479219",
+      "name": "状态",
+      "font_class": "B",
+      "unicode": "e70a",
+      "unicode_decimal": 59146
+    },
+    {
+      "icon_id": "17681551",
+      "name": "状态信息",
+      "font_class": "zhuangtaixinxi",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
       "icon_id": "1346664",
       "name": "上传 (1)",
       "font_class": "shangchuan1",
@@ -27,25 +146,11 @@
       "unicode_decimal": 59162
     },
     {
-      "icon_id": "7587950",
-      "name": "上传",
-      "font_class": "shangchuan2",
-      "unicode": "e614",
-      "unicode_decimal": 58900
-    },
-    {
       "icon_id": "17606345",
       "name": "上传",
       "font_class": "shangchuan3",
       "unicode": "e6ac",
       "unicode_decimal": 59052
-    },
-    {
-      "icon_id": "20918112",
-      "name": "导航定位",
-      "font_class": "daohangdingwei2_1",
-      "unicode": "e61f",
-      "unicode_decimal": 58911
     },
     {
       "icon_id": "721774",
@@ -118,13 +223,6 @@
       "unicode_decimal": 58906
     },
     {
-      "icon_id": "20222620",
-      "name": "错误",
-      "font_class": "cuowu2",
-      "unicode": "e61b",
-      "unicode_decimal": 58907
-    },
-    {
       "icon_id": "584836",
       "name": "导入",
       "font_class": "daoru",
@@ -193,20 +291,6 @@
       "font_class": "zhuti",
       "unicode": "e65e",
       "unicode_decimal": 58974
-    },
-    {
-      "icon_id": "2471410",
-      "name": "主题",
-      "font_class": "zhuti1",
-      "unicode": "e682",
-      "unicode_decimal": 59010
-    },
-    {
-      "icon_id": "4427403",
-      "name": "窗口",
-      "font_class": "tubiaozhizuomobanyihuifu-",
-      "unicode": "e69c",
-      "unicode_decimal": 59036
     },
     {
       "icon_id": "7539812",
@@ -396,13 +480,6 @@
       "font_class": "zhuji1",
       "unicode": "e6df",
       "unicode_decimal": 59103
-    },
-    {
-      "icon_id": "18367976",
-      "name": "删 除 (1)",
-      "font_class": "shanchu11",
-      "unicode": "e67d",
-      "unicode_decimal": 59005
     },
     {
       "icon_id": "19680936",
