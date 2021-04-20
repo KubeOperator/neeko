@@ -53,9 +53,6 @@
             </svg>
             {{ $t("commons.status.passive") }}
           </span>
-
-<!--          <el-tag v-if="row.status === 'active'" type="success" size="small">{{ $t("commons.status.active") }}</el-tag>-->
-<!--          <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{ $t("commons.status.passive") }}</el-tag>-->
         </template>
       </el-table-column>
       <el-table-column :label="$t('user.type')">
@@ -81,7 +78,7 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {searchUsers, deleteUser} from "@/api/user"
+import {searchUsers, deleteUser, updateUser} from "@/api/user"
 import ComplexTable from "@/components/complex-table"
 
 
@@ -95,6 +92,11 @@ export default {
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
+          }
+        },
+        {
+          label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
+            this.update(row)
           }
         },
         {
@@ -182,6 +184,20 @@ export default {
         }
       })
     },
+    update(row) {
+      if (row.status === 'active') {
+        row.status = 'passive'
+      }else {
+        row.status = 'active'
+      }
+      updateUser(row.name,row).then(() => {
+        this.$message({
+          type: "success",
+          message: `${this.$t("commons.msg.save_success")}!`
+        })
+        this.search()
+      })
+    }
   },
   created () {
     this.search()
