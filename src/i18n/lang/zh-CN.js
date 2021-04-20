@@ -40,7 +40,11 @@ const message = {
       authorize: "授权",
       getBucket: "获取桶",
       update: "更新",
-      upload: "上传"
+      upload: "上传",
+      retry: "重试",
+      history: "日志",
+      error_msg: "错误",
+      lock:"启用/禁用",
     },
     msg: {
       success: "{0}成功",
@@ -65,6 +69,8 @@ const message = {
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       password_min_length: "密码不允许小于6位",
+      number_limit: "请输入正确的数字",
+      email: "邮箱格式不正确",
     },
     search: {
       name: "",
@@ -213,7 +219,25 @@ const message = {
       step7: "配置预览",
       base_setting: "基本配置"
     },
+    upgrade: {
+      current_version: "当前版本",
+      upgrade_version: "升级版本",
+      upgrade_help: "不支持K8s跨大版本升级或升级到未启用的K8s版本，请在版本管理中确认。",
+    },
+    import: {
+      import_cluster: "集群导入",
+      api_server_help: "例如: https://172.16.10.100:8443",
+      router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
+    },
+    health_check: {
+      level: "等级",
+      message: "消息",
+      method: "方法",
+      result: "结果",
+      recover: "恢复",
+    },
     condition: {
+      condition_detail: "状态详情",
       EnsureInitTaskStart: "调度任务",
       EnsurePrepareBaseSystemConfig: "准备系统环境",
       EnsurePrepareContainerRuntime: "初始化容器引擎",
@@ -240,7 +264,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        csi: "csi扫描",
+        security: "csi扫描",
         grade: "集群评分",
       },
       overview: {
@@ -488,6 +512,7 @@ const message = {
     cloud_provider: "云提供商",
     datacenter: "数据中心",
     basic: "基本信息",
+    detail: "详情",
     region: {
       name: "区域",
       basic: "基本信息",
