@@ -12,7 +12,7 @@
           <complex-table style="margin-top: 20px" :selects.sync="pvSelection" :data="pvDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-            <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity['storage']" fix />
+            <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity.storage" fix />
             <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
             <el-table-column :label="$t('cluster.detail.storage.source')" min-width="100" prop="spec.storageClassName" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix />
