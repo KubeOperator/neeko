@@ -73,7 +73,7 @@ const SystemSetting = {
         },
         {
           path: "ldap",
-          name: "Ldap",
+          name: "LDAP",
           hidden: true,
           props: true,
           component: () => import('@/business/system-setting/ldap'),

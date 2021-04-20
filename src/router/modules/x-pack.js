@@ -67,7 +67,7 @@ const XPack = {
     },
     {
       path: "message-center",
-      component: () => import("@/business/message-center/index"),
+      component: () => import("@/business/xpack/message-center/index"),
       name: "message-center",
       meta: {
         title: "route.message_center",
@@ -82,7 +82,7 @@ const XPack = {
       children: [
         {
           path: "message",
-          component: () => import("@/business/message-center/message"),
+          component: () => import("@/business/xpack/message-center/message"),
           name: "Messages",
           hidden: true,
           meta: {
@@ -92,7 +92,7 @@ const XPack = {
         },
         {
           path: "receiver",
-          component: () => import("@/business/message-center/receiver/index"),
+          component: () => import("@/business/xpack/message-center/receiver/index"),
           name: "MessageReceiver",
           hidden: true,
           meta: {
@@ -103,7 +103,7 @@ const XPack = {
         {
           path: "subscribe",
           hidden: true,
-          component: () => import("@/business/message-center/subscribe/index"),
+          component: () => import("@/business/xpack/message-center/subscribe/index"),
           name: "MessageSubscribes",
           meta: {
             title: "message.message_subscribe",

@@ -1,4 +1,4 @@
-import {get, del, post} from "@/plugins/request"
+import {get, del, post, patch} from "@/plugins/request"
 
 const zoneUrl = "/zones"
 
@@ -36,4 +36,12 @@ export function listAllZones () {
 
 export function listByRegion(regionName) {
   return get(`${zoneUrl}/list/${regionName}`)
+}
+
+export function getZone(name) {
+  return get(`${zoneUrl}/${name}`)
+}
+
+export function updateZone(name,data) {
+  return patch(`${zoneUrl}/${name}`, data)
 }

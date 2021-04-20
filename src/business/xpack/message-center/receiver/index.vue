@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getMessageReceicver, updateMessageReceicver } from "@/api/xpack/message"
+import { getMessageReceiver, updateMessageReceicver } from "@/api/xpack/message"
 
 export default {
   name: "MessageReceiver",
@@ -55,7 +55,7 @@ export default {
       })
     },
     search() {
-      getMessageReceicver().then((data) => {
+      getMessageReceiver().then((data) => {
         this.form = data
       })
     },

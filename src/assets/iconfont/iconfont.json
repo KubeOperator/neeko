@@ -6,6 +6,272 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "1070871",
+      "name": "设备停止运行",
+      "font_class": "shebeitingzhiyunxing",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "3765482",
+      "name": "未读",
+      "font_class": "inform-weidu",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "3877920",
+      "name": "导入",
+      "font_class": "daoru8",
+      "unicode": "e70e",
+      "unicode_decimal": 59150
+    },
+    {
+      "icon_id": "4909095",
+      "name": "导入",
+      "font_class": "daoru9",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "4956490",
+      "name": "已读",
+      "font_class": "yidu",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "5433596",
+      "name": "运行中",
+      "font_class": "yunhangzhong1",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "5830661",
+      "name": "停止运行",
+      "font_class": "jinyong",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "6805298",
+      "name": "未读",
+      "font_class": "weidu",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "8177020",
+      "name": "未读",
+      "font_class": "weidu1",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "8925575",
+      "name": "已读",
+      "font_class": "yidu1",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "9512359",
+      "name": "已读",
+      "font_class": "yidu2",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "9964617",
+      "name": "已读",
+      "font_class": "yidu3",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "10165045",
+      "name": "运行中",
+      "font_class": "yunhangzhong2",
+      "unicode": "e6d1",
+      "unicode_decimal": 59089
+    },
+    {
+      "icon_id": "10458598",
+      "name": "升级",
+      "font_class": "shengji",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "10486419",
+      "name": "停止运行",
+      "font_class": "tingzhiyunhang",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
+      "icon_id": "13996316",
+      "name": "未读",
+      "font_class": "weidu2",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "14940396",
+      "name": "升级",
+      "font_class": "shengji1",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "16123700",
+      "name": "停止运行",
+      "font_class": "tingzhiyunhang1",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "16262459",
+      "name": "运行中",
+      "font_class": "yunhangzhong3",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "17430558",
+      "name": "卸载",
+      "font_class": "xiezai",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "17499370",
+      "name": "运行中",
+      "font_class": "yunhangzhong4",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "18472767",
+      "name": "卸载",
+      "font_class": "xiezai1",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "19504824",
+      "name": "未读",
+      "font_class": "weidu3",
+      "unicode": "e864",
+      "unicode_decimal": 59492
+    },
+    {
+      "icon_id": "19878631",
+      "name": "运行中",
+      "font_class": "yunhangzhong5",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "20307611",
+      "name": "导入",
+      "font_class": "daoru10",
+      "unicode": "e786",
+      "unicode_decimal": 59270
+    },
+    {
+      "icon_id": "3509731",
+      "name": "邮箱",
+      "font_class": "youxiang1",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "4242680",
+      "name": "企业微信",
+      "font_class": "qiyeweixin",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "9634744",
+      "name": "钉钉",
+      "font_class": "dingding",
+      "unicode": "e662",
+      "unicode_decimal": 58978
+    },
+    {
+      "icon_id": "10960181",
+      "name": "普通用户",
+      "font_class": "putongyonghu",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "11444117",
+      "name": "邮箱",
+      "font_class": "youxiang2",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "11532553",
+      "name": "系统管理员",
+      "font_class": "xitongguanliyuan",
+      "unicode": "ebe8",
+      "unicode_decimal": 60392
+    },
+    {
+      "icon_id": "13353984",
+      "name": "系统管理员",
+      "font_class": "xitongguanliyuan1",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
+      "icon_id": "14152715",
+      "name": "钉钉",
+      "font_class": "dingding1",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    },
+    {
+      "icon_id": "15641956",
+      "name": "普通用户",
+      "font_class": "xingzhuang",
+      "unicode": "e7e4",
+      "unicode_decimal": 59364
+    },
+    {
+      "icon_id": "15789508",
+      "name": "系统管理员",
+      "font_class": "xitongguanliyuan2",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "18936776",
+      "name": "邮 箱",
+      "font_class": "youxiang3",
+      "unicode": "e840",
+      "unicode_decimal": 59456
+    },
+    {
+      "icon_id": "19238587",
+      "name": "企业微信",
+      "font_class": "icon-wechat-qy",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "20374556",
+      "name": "系统管理员",
+      "font_class": "xitongguanliyuan3",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
       "icon_id": "2541355",
       "name": "warring",
       "font_class": "warring",

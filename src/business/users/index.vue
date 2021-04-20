@@ -2,11 +2,11 @@
   <layout-content :header="$t('user.user')">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search" v-loading="loading"
-                   :selects.sync="selects">
+                   :selects.sync="selects" fit="true">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
-          <el-button size="small" :disabled="selects.length===0" @click="del()">{{ $t("commons.button.delete") }}
+          <el-button size="small" type="danger" :disabled="selects.length===0" @click="del()">{{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -14,27 +14,56 @@
       <el-table-column :label="$t('commons.table.name')" mix-width="100" fix>
         <template v-slot:default="{row}">
           <el-row>
-            <el-col :span="3">
+<!--            <svg class="icon" aria-hidden="true"  style="font-size: 24px">-->
+<!--              <use xlink:href="#iconyonghu-fuben"></use>-->
+<!--            </svg>-->
+<!--            {{ row.name }}-->
+
+            <el-col :span="6">
               <svg class="icon" aria-hidden="true"  style="font-size: 24px">
                 <use xlink:href="#iconyonghu-fuben"></use>
               </svg>
             </el-col>
             <el-col :span="18">
               {{ row.name }}<br/>
+            </el-col>
+          </el-row>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('user.email')"  min-width="120">
+        <template v-slot:default="{row}">
+          <el-row>
+            <el-col>
               {{ row.email }}
             </el-col>
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="100">
+      <el-table-column :label="$t('commons.table.status')" >
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'active'" type="success" size="small">{{ $t("commons.status.active") }}</el-tag>
-          <el-tag v-if="row.status === 'passive'" type="danger" size="small">{{ $t("commons.status.passive") }}</el-tag>
+            <span v-if="row.status === 'active'" style="color: #32B350">
+              <svg class="icon"  aria-hidden="true">
+                <use xlink:href="#iconform_icon_normal"></use>
+              </svg>
+            {{ $t("commons.status.active") }}
+            </span>
+          <span v-else style="color: #FA4147">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconcuowu1"></use>
+            </svg>
+            {{ $t("commons.status.passive") }}
+          </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('user.role')" min-width="100">
+      <el-table-column :label="$t('user.type')">
         <template v-slot:default="{row}">
-          <el-tag type="info" size="small">{{ $t(`commons.role.${row.role}`) }}</el-tag>
+          <span v-if="row.type === 'LDAP'" >{{ $t("user.ldap") }}</span>
+          <span v-if="row.type === 'LOCAL'" >{{ $t("user.local") }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('user.role')" min-width="80">
+        <template v-slot:default="{row}">
+          <span size="small">{{ $t(`commons.role.${row.role}`) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -49,7 +78,7 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {searchUsers, deleteUser} from "@/api/user"
+import {searchUsers, deleteUser, updateUser} from "@/api/user"
 import ComplexTable from "@/components/complex-table"
 
 
@@ -63,6 +92,11 @@ export default {
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
+          }
+        },
+        {
+          label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
+            this.update(row)
           }
         },
         {
@@ -150,6 +184,20 @@ export default {
         }
       })
     },
+    update(row) {
+      if (row.status === 'active') {
+        row.status = 'passive'
+      }else {
+        row.status = 'active'
+      }
+      updateUser(row.name,row).then(() => {
+        this.$message({
+          type: "success",
+          message: `${this.$t("commons.msg.save_success")}!`
+        })
+        this.search()
+      })
+    }
   },
   created () {
     this.search()

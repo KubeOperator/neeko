@@ -66,7 +66,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table";
-import {getMessagesByUser, updateMessageStatus} from "@/api/xpack/message";
+import {getMessages, updateMessageStatus} from "@/api/xpack/message";
 
 export default {
   name: "MessageCenter",
@@ -114,7 +114,7 @@ export default {
     del() {},
     search() {
       const { currentPage, pageSize } = this.paginationConfig
-      getMessagesByUser(currentPage, pageSize).then((data) => {
+      getMessages(currentPage, pageSize).then((data) => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
