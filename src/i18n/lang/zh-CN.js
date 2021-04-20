@@ -41,6 +41,9 @@ const message = {
       getBucket: "获取桶",
       update: "更新",
       upload: "上传",
+      retry: "重试",
+      history: "日志",
+      error_msg: "错误",
       lock:"启用/禁用",
     },
     msg: {
@@ -66,6 +69,8 @@ const message = {
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       password_min_length: "密码不允许小于6位",
+      number_limit: "请输入正确的数字",
+      email: "邮箱格式不正确",
     },
     search: {
       name: "",

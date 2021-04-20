@@ -4,7 +4,7 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" label-width="120px">
+          <el-form :model="form" ref="form" label-width="120px">
             <el-form-item :label="$t('commons.table.type')" required>
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
@@ -18,25 +18,25 @@
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name" required></el-input>
+              <el-form-item :label="$t('commons.table.name')" prop="name" :rules="emptyRulesInput">
+                <el-input v-model="form.name"></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
-              <el-form-item label="Version">
+              <el-form-item label="Version" prop="vars.storage_nfs_server_version" :rules="emptyRulesChange">
                 <el-select style="width: 100%" v-model="form.vars['storage_nfs_server_version']" clearable>
                   <el-option value='3' label='3'>3</el-option>
                   <el-option value='4' label='4'>4</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Server">
+              <el-form-item label="Server" prop="vars.storage_nfs_server" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['storage_nfs_server']" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Path">
+              <el-form-item label="Path" prop="vars.storage_nfs_server_path" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['storage_nfs_server_path']" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
@@ -46,7 +46,7 @@
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.disk_name')">
+              <el-form-item :label="$t('cluster.detail.storage.disk_name')" prop="vars.storage_rook_path" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['storage_rook_path']" clearable></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.disk_name_helper')}}</span></div>
               </el-form-item>
@@ -56,35 +56,35 @@
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
-              <el-form-item label="Identity">
+              <el-form-item label="Identity" prop="vars.cinder_auth_url" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['cinder_auth_url']" placeholder="eg: http://128.110.154.166/identity" clearable></el-input>
               </el-form-item>
-              <el-form-item label="UserName">
+              <el-form-item label="UserName" prop="vars.cinder_username" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['cinder_username']" placeholder="eg: admin" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Password">
+              <el-form-item label="Password" prop="vars.cinder_password" :rules="emptyRulesInput">
                 <el-input type="password" v-model="form.vars['cinder_password']" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Region">
+              <el-form-item label="Region" prop="vars.cinder_region" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['cinder_region']" placeholder="eg: RegionOne" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Tenant Name">
+              <el-form-item label="Tenant Name" prop="vars.cinder_tenant_name" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['cinder_tenant_name']" placeholder="eg: admin" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Domain Name">
+              <el-form-item label="Domain Name" prop="vars.cinder_domain_name" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['cinder_domain_name']" placeholder="eg: Default" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-                <el-switch style="width: 80%" @change="changeBlockEnable()" active-value="enable" inactive-value="disable" v-model="enableBlockStorage" />
+                <el-switch style="width: 80%" active-value="enable" inactive-value="disable" v-model="enableBlockStorage" />
               </el-form-item>
               <div v-if="enableBlockStorage === 'enable'">
-                <el-form-item label="Version">
+                <el-form-item label="Version" prop="vars.cinder_blockstorage_version" :rules="emptyRulesChange">
                   <el-select style="width: 100%" v-model="form.vars['cinder_blockstorage_version']">
                     <el-option value='V3' label='V3'>V3</el-option>
                   </el-select>
                   <div><span class="input-help">{{$t('cluster.detail.storage.cinder_version_helper')}}</span></div>
                 </el-form-item>
-                <el-form-item label="Attach Limit">
+                <el-form-item label="Attach Limit" prop="vars.node_volume_attach_limit" :rules="emptyRulesInput">
                   <el-input v-model="form.vars['node_volume_attach_limit']" placeholder="eg: 256" clearable></el-input>
                 </el-form-item>
               </div>
@@ -93,26 +93,26 @@
               <el-form-item>
                 <div><span class="input-help">{{$t('cluster.detail.storage.vsphere_select_helper')}}</span></div>
               </el-form-item>
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.vcenter_host')">
+              <el-form-item :label="$t('cluster.detail.storage.vcenter_host')" prop="vars.vc_host" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['vc_host']" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.vcenter_port')">
+              <el-form-item :label="$t('cluster.detail.storage.vcenter_port')" prop="vars.vc_port" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['vc_port']" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.vcenter_username')">
+              <el-form-item :label="$t('cluster.detail.storage.vcenter_username')" prop="vars.vc_username" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['vc_username']" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.vcenter_password')">
+              <el-form-item :label="$t('cluster.detail.storage.vcenter_password')" prop="vars.vc_password" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['vc_password']" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Datacenter">
+              <el-form-item label="Datacenter" prop="vars.datacenter" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['datacenter']" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Folder">
+              <el-form-item label="Folder" prop="vars.folder" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['folder']" clearable></el-input>
               </el-form-item>
             </div>
@@ -123,53 +123,53 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.deploy_mode')">
+              <el-form-item :label="$t('cluster.detail.storage.deploy_mode')" prop="vars.oceanstor_controller_type" :rules="emptyRulesInput">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_controller_type']">
                   <el-option value='single' label='single'>single</el-option>
                   <el-option value='multi' label='single'>multi</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.multi_path_networking')">
+              <el-form-item :label="$t('cluster.detail.storage.multi_path_networking')" prop="vars.oceanstor_is_multipath" :rules="emptyRulesChange">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_is_multipath']">
                   <el-option value="yes" :label="$t('commons.form.yes')">{{$t('commons.form.yes')}}</el-option>
                   <el-option value="no" :label="$t('commons.form.no')">{{$t('commons.form.no')}}</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('commons.table.type')">
+              <el-form-item :label="$t('commons.table.type')" prop="vars.oceanstor_type" :rules="emptyRulesChange">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_type']">
                   <el-option value='nfs' label='nfs'>nfs</el-option>
                   <el-option value='iscsi' label='iscsi'>iscsi</el-option>
                   <el-option value='fc' label='fc'>fc</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.product')">
+              <el-form-item :label="$t('cluster.detail.storage.product')" prop="vars.oceanstor_product" :rules="emptyRulesChange">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_product']">
                   <el-option value='V3' label='V3'>V3</el-option>
                   <el-option value='V5' label='V5'>V5</el-option>
                   <el-option value='Dorado' label='Dorado'>Dorado</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.manage_url')">
+              <el-form-item :label="$t('cluster.detail.storage.manage_url')" prop="vars.oceanstor_urls" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['oceanstor_urls']" placeholder="10.1.1.1,10.1.1.2" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.user_name')">
+              <el-form-item :label="$t('cluster.detail.storage.user_name')" prop="vars.oceanstor_user" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['oceanstor_user']" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.password')">
+              <el-form-item :label="$t('cluster.detail.storage.password')" prop="vars.oceanstor_password" :rules="emptyRulesInput">
                 <el-input type="password" v-model="form.vars['oceanstor_password']" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.storage.storage_pool')">
+              <el-form-item :label="$t('cluster.detail.storage.storage_pool')" prop="vars.oceanstor_pools" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['oceanstor_pools']" placeholder="pool1,pool2" clearable></el-input>
               </el-form-item>
-              <el-form-item v-if="form.vars['oceanstor_type'] === 'nfs'" :label="$t('cluster.detail.storage.logic_port')">
+              <el-form-item v-if="form.vars['oceanstor_type'] === 'nfs'" :label="$t('cluster.detail.storage.logic_port')" prop="vars.oceanstor_portal" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['oceanstor_portal']" placeholder="test1,test2" clearable></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.logic_port_helper')}}</span></div>
               </el-form-item>
-              <el-form-item v-if="form.vars['oceanstor_type'] === 'iscsi'" :label="$t('cluster.detail.storage.business_ip')">
+              <el-form-item v-if="form.vars['oceanstor_type'] === 'iscsi'" :label="$t('cluster.detail.storage.business_ip')" prop="vars.oceanstor_portal" :rules="emptyRulesInput">
                 <el-input v-model="form.vars['oceanstor_portal']" placeholder="10.1.1.1,10.1.1.2" clearable></el-input>
                 <div><span class="input-help">{{$t('cluster.detail.storage.business_ip_helper')}}</span></div>
               </el-form-item>
@@ -201,18 +201,26 @@ export default {
         type: "",
         vars: {},
       },
+      emptyRulesInput: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
+      emptyRulesChange: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
       enableBlockStorage: "disable",
     }
   },
   methods: {
     onSubmit() {
-      this.form.type = this.createType
-      if(this.form.type === "conder") {
-        this.form.vars["enable_blockstorage"] = this.enableBlockStorage
-      }
-      createProvisioner(this.clusterName, this.form).then(() => {
-        this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
-        this.$router.push({ name: "ClusterStorage" })
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          this.form.type = this.createType
+          if (this.form.type === "conder") {
+            this.form.vars["enable_blockstorage"] = this.enableBlockStorage
+          }
+          createProvisioner(this.clusterName, this.form).then(() => {
+            this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
+            this.$router.push({ name: "ClusterStorage" })
+          })
+        } else {
+          return false
+        }
       })
     },
     onCancel() {
@@ -220,6 +228,7 @@ export default {
     },
     changeSelection() {
       this.form.vars = {}
+      this.form.name = ""
       switch (this.createType) {
         case "external-ceph":
           this.form.name = "external-ceph"
@@ -236,21 +245,14 @@ export default {
           break
         case "oceanstor":
           this.form.name = "csi.huawei.com"
-          this.form.vars["oceanstor_controller_type"] = "single"
-          this.form.vars["oceanstor_is_multipath"] = "no"
+          this.form.vars = {
+            oceanstor_controller_type: "single",
+            oceanstor_is_multipath: "no",
+          }
           break
         case "vsphere":
           this.form.name = "csi.vsphere.vmware.com"
           break
-      }
-    },
-    changeBlockEnable() {
-      if (this.enableBlockStorage === "disable") {
-        this.form.vars["cinder_blockstorage_version"] = ""
-        this.form.vars["node_volume_attach_limit"] = ""
-      } else {
-        this.form.vars["cinder_blockstorage_version"] = "V3"
-        this.form.vars["node_volume_attach_limit"] = "256"
       }
     },
   },

@@ -17,7 +17,7 @@
               <el-button type="primary" size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Failed'">
-              <el-button type="danger" size="small" @click="onDisable(tool)" style="float:right; margin: 5px">{{$t('commons.button.disable')}}</el-button>
+              <el-button type="danger" size="small" @click="onErrorShow(tool)" style="float:right; margin: 5px">{{$t('commons.button.error_msg')}}</el-button>
               <el-button type="primary" size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Running'">
@@ -47,8 +47,9 @@
     </el-row>
 
     <el-dialog :title="$t('cluster.detail.tool.enable_title')" width="30%" :visible.sync="dialogEnableVisible">
-      <el-form :model="toolForm" label-width="120px">
-        <el-form-item :label="$t('cluster.detail.tag.namespace')">
+      <el-form :model="toolForm" ref="toolForm" label-width="140px">
+
+        <el-form-item :label="$t('cluster.detail.tag.namespace')" prop="vars.namespace" :rules="emptyRulesChange">
           <el-select style="width: 80%" filterable v-model="toolForm.vars['namespace']" clearable>
             <el-option v-for="item of namespaces" :key="item" :value="item">{{item}}</el-option>
           </el-select>
@@ -56,19 +57,19 @@
 
         <div v-if="toolForm.name === 'chartmuseum'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence.storageClass']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClass']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['persistence.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector.kubernetes\\.io/hostname']" clearable>
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
               <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
@@ -77,23 +78,23 @@
         </div>
 
         <div v-if="toolForm.name === 'prometheus'">
-          <el-form-item :label="$t('cluster.detail.tool.data_retention')">
-            <el-input style="width: 80%" v-model="toolForm.vars['server.retention']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.data_retention')" prop="vars.server_retention" :rules="numberRules">
+            <el-input style="width: 80%" v-model="toolForm.vars['server_retention']" clearable></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['server.persistentVolume.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['server_persistentVolume_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['server.persistentVolume.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['server.persistentVolume.storageClass']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['server_persistentVolume_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistentVolume_storageClass" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['server.persistentVolume_storageClass']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['server.persistentVolume.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistentVolume_storageClass" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['server_persistentVolume_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['server.nodeSelector.kubernetes\\.io/hostname']" clearable>
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['server_nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
               <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
@@ -102,48 +103,48 @@
         </div>
 
         <div v-if="toolForm.name === 'logging'">
-          <el-form-item :label="$t('cluster.detail.tool.search_index')">
-            <el-input style="width: 80%" v-model="toolForm.vars['fluentd-elasticsearch.elasticsearch.logstashPrefix']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.search_index')" prop="vars.fluentd__elasticsearch_elasticsearch_logstashPrefix" :rules="emptyRulesInput">
+            <el-input style="width: 80%" v-model="toolForm.vars['fluentd___elasticsearch_elasticsearch_logstashPrefix']" clearable></el-input>
             <div><span class="input-help">{{$t('cluster.detail.tool.search_index_help')}}</span></div>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.tool.replicas')">
-            <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['elasticsearch.replicas']" :min="1" :max="nodeNum"></el-input-number>
+          <el-form-item :label="$t('cluster.detail.tool.replicas')" prop="vars.elasticsearch_replicas" :rules="numberRules">
+            <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_replicas']" clearable></el-input>
             <div><span class="input-help">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span></div>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.tool.hip_memery')">
-            <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch.esJavaOpts.item']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.hip_memery')" prop="vars.elasticsearch_esJavaOpts_item" :rules="numberRules">
+            <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_esJavaOpts_item']" clearable></el-input>
             <div><span class="input-help">{{$t('cluster.detail.tool.default_hip_memery')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch.persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch_persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['elasticsearch.persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['elasticsearch.volumeClaimTemplate.storageClassName']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['elasticsearch_persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.elasticsearch_volumeClaimTemplate_storageClassName" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['elasticsearch_volumeClaimTemplate_storageClassName']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['elasticsearch.volumeClaimTemplate.resources.requests.storage']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.elasticsearch_volumeClaimTemplate_resources_requests_storage" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_volumeClaimTemplate_resources_requests_storage']" clearable></el-input>
             </el-form-item>
           </div>
         </div>
 
         <div v-if="toolForm.name === 'loki'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['loki.persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['loki_persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['loki.persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['loki.persistence.storageClassName']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['loki_persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.loki_persistence_storageClassName" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_persistence_storageClassName']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['loki.persistence.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.loki_persistence_size" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['loki_persistence_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['loki.nodeSelector.kubernetes\\.io/hostname']" clearable>
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
               <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
@@ -152,26 +153,26 @@
         </div>
 
         <div v-if="toolForm.name === 'grafana'">
-          <el-form-item :label="$t('cluster.detail.tool.password')">
+          <el-form-item :label="$t('cluster.detail.tool.password')" prop="vars.adminPassword" :rules="emptyRulesInput">
             <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.tool.password_re')">
+          <el-form-item :label="$t('cluster.detail.tool.password_re')" prop="vars.adminPasswordRe" :rules="emptyRulesInput">
             <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence.storageClassName']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClassName']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['persistence.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector.kubernetes\\.io/hostname']" clearable>
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
               <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
@@ -181,19 +182,19 @@
 
         <div v-if="toolForm.name === 'registry'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence.storageClass']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClass']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['persistence.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector.kubernetes\\.io/hostname']" clearable>
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
               <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
@@ -203,16 +204,16 @@
 
         <div v-if="toolForm.name === 'kubeapps'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['postgresql.persistence.enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['postgresql_persistence_enabled']"></el-switch>
           </el-form-item>
-          <div v-if="toolForm.vars['postgresql.persistence.enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['global.storageClass']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item.metadata.name}}</el-option>
+          <div v-if="toolForm.vars['postgresql_persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.global_storageClass" :rules="emptyRulesChange">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['global_storageClass']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')">
-              <el-input-number style="width: 80%" :step="1" step-strictly v-model="toolForm.vars['postgresql.persistence.size']" :min="1" :max="500"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.postgresql_persistence_size" :rules="numberRules">
+              <el-input style="width: 80%" v-model="toolForm.vars['postgresql_persistence_size']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector']" clearable>
@@ -225,7 +226,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="enable(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="enable()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -260,6 +261,7 @@ import { listNodeInCluster } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { listStorageClass } from "@/api/cluster/storage"
 import { getClusterByName } from "@/api/cluster"
+import { changeUnderLineToPoint } from "@/utils/format_conversion"
 
 export default {
   name: "ClusterTool",
@@ -290,6 +292,9 @@ export default {
         vars: {},
         higher_version: "",
       },
+      numberRules: [{ required: true, pattern: /^[1-9][0-9]*$/, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
+      emptyRulesInput: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
+      emptyRulesChange: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
       namespaces: [],
       nodes: [],
       nodeNum: 0,
@@ -315,7 +320,7 @@ export default {
         case "logging":
           for (const tool of this.tools) {
             if (tool.name === "loki") {
-              this.conditions = tool.status === "Waiting" ? "" : this.$t("cluster.detailtool.log_err_msg")
+              this.conditions = tool.status === "Waiting" ? "" : this.$t("cluster.detail.tool.log_err_msg")
               break
             }
           }
@@ -343,29 +348,38 @@ export default {
         this.listNamespaces()
         this.listNodes()
         this.listStorages()
-        this.toolForm = item
         this.setDefaultVars(item)
+        this.toolForm = item
         this.dialogEnableVisible = true
       } else {
         this.dialogFaildVisible = true
       }
     },
-    enable(item) {
-      enableTool(this.clusterName, item).then((data) => {
-        this.dialogEnableVisible = false
-        this.search()
-        console.log(data)
+    enable() {
+      this.$refs["toolForm"].validate((valid) => {
+        if (valid) {
+          changeUnderLineToPoint(this.toolForm.vars)
+          enableTool(this.clusterName, this.toolForm).then(() => {
+            this.dialogEnableVisible = false
+            this.search()
+          })
+        } else {
+          return false
+        }
       })
+    },
+    onErrorShow(item) {
+      this.conditions = item.message
+      this.dialogFailedVisible = true
     },
     onDisable(item) {
       this.toolForm = item
       this.dialogDisableVisible = true
     },
     disable(item) {
-      disableTool(this.clusterName, item).then((data) => {
+      disableTool(this.clusterName, item).then(() => {
         this.dialogDisableVisible = false
         this.search()
-        console.log(data)
       })
     },
     onUpgrade(item) {
@@ -373,10 +387,9 @@ export default {
       this.dialogUpgradeVisible = true
     },
     upgrade(item) {
-      upgradeTool(this.clusterName, item).then((data) => {
+      upgradeTool(this.clusterName, item).then(() => {
         this.dialogUpgradeVisible = false
         this.search()
-        console.log(data)
       })
     },
     listNamespaces() {
@@ -398,7 +411,10 @@ export default {
     },
     listStorages() {
       listStorageClass(this.clusterName).then((data) => {
-        this.storages = data.items
+        this.storages = []
+        data.items.forEach((item) => {
+          this.storages.push(item.metadata.name)
+        })
       })
     },
     polling() {
@@ -422,64 +438,73 @@ export default {
       switch (item.name) {
         case "prometheus":
           item.vars = {
-            "server.retention": 10,
-            "server.persistentVolume.enabled": false,
-            "server.persistentVolume.size": 10,
-            "server.persistentVolume.storageClass": "",
+            namespace: "kube-operator",
+            server_retention: 10,
+            server_persistentVolume_enabled: false,
+            server_persistentVolume_size: 10,
+            server_persistentVolume_storageClass: "",
           }
           break
         case "chartmuseum":
           item.vars = {
-            "persistence.enabled": false,
-            "env.open.DISABLE_API": false,
-            "persistence.storageClass": "",
-            "service.type": "NodePort",
-            "persistence.size": 10,
+            namespace: "kube-operator",
+            persistence_enabled: false,
+            env_open_DISABLE_API: false,
+            persistence_storageClass: "",
+            service_type: "NodePort",
+            persistence_size: 10,
           }
           break
         case "registry":
           item.vars = {
-            "persistence.enabled": false,
-            "persistence.storageClass": "",
-            "service.type": "NodePort",
-            "persistence.size": 10,
+            namespace: "kube-operator",
+            persistence_enabled: false,
+            persistence_storageClass: "",
+            service_type: "NodePort",
+            persistence_size: 10,
           }
           break
         case "logging":
           item.vars = {
-            "elasticsearch.esJavaOpts.item": 1,
-            "elasticsearch.replicas": 1,
-            "elasticsearch.persistence.enabled": false,
-            "elasticsearch.volumeClaimTemplate.resources.requests.storage": 10,
-            "elasticsearch.volumeClaimTemplate.storageClassName": "",
+            namespace: "kube-operator",
+            elasticsearch_esJavaOpts_item: 1,
+            elasticsearch_replicas: 1,
+            elasticsearch_persistence_enabled: false,
+            elasticsearch_volumeClaimTemplate_resources_requests_storage: 10,
+            elasticsearch_volumeClaimTemplate_storageClassName: "",
           }
           break
         case "loki":
           item.vars = {
-            "loki.persistence.enabled": false,
-            "loki.persistence.size": 8,
-            "loki.persistence.storageClassName": "",
-            "promtail.dockerPath": this.currentCluster.spec.dockerStorageDir,
+            namespace: "kube-operator",
+            loki_persistence_enabled: false,
+            loki_persistence_size: 8,
+            loki_persistence_storageClassName: "",
+            promtail_dockerPath: this.currentCluster.spec.dockerStorageDir,
           }
           break
         case "grafana":
           item.vars = {
-            "persistence.enabled": false,
-            "persistence.size": 10,
-            "persistence.storageClassName": "",
+            namespace: "kube-operator",
+            persistence_enabled: false,
+            persistence_size: 10,
+            persistence_storageClassName: "",
             adminPassword: "",
             adminPasswordRe: "",
           }
           break
         case "kubeapps":
           item.vars = {
-            "postgresql.persistence.enabled": false,
-            "postgresql.persistence.size": 10,
-            "global.storageClass": "",
+            namespace: "kube-operator",
+            postgresql_persistence_enabled: false,
+            postgresql_persistence_size: 10,
+            global_storageClass: "",
           }
           break
         case "dashboard":
-          item.vars = {}
+          item.vars = {
+            namespace: "kube-operator",
+          }
           break
       }
     },
