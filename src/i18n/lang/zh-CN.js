@@ -40,8 +40,7 @@ const message = {
       authorize: "授权",
       getBucket: "获取桶",
       update: "更新",
-      upload: "上传",
-      lock:"启用/禁用",
+      upload: "上传"
     },
     msg: {
       success: "{0}成功",
@@ -56,7 +55,7 @@ const message = {
       enable_success: "启用成功",
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
-      update_success: "更新成功"
+      update_success: "更新成功",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -489,7 +488,6 @@ const message = {
     cloud_provider: "云提供商",
     datacenter: "数据中心",
     basic: "基本信息",
-    detail: "详情",
     region: {
       name: "区域",
       basic: "基本信息",

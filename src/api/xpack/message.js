@@ -1,7 +1,11 @@
-import {get, post} from "@/plugins/request"
+import {del, get, post} from "@/plugins/request"
 
 export function getMessages(page, size) {
   return get(`message/mail?pageNum=${page}&pageSize=${size}`)
+}
+
+export function deleteMessagesBy(messageID) {
+  return del(`message/${messageID}`)
 }
 
 export function getMessageReceiver() {
