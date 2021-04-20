@@ -1,7 +1,7 @@
 <template>
   <div>
       <el-col :span="1"><br/></el-col>
-      <el-col :span="8">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="100px">
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.smtp')" required>

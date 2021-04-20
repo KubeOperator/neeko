@@ -45,7 +45,6 @@ export function deleteRegistry(arch) {
 }
 
 // Message
-
 export function getMessageSetting(tabName) {
   return get(`${messageUrl}/${tabName}`)
 }
@@ -55,4 +54,13 @@ export function checkMessage(tabName,data){
 
 export function createMessageSetting(tabName,data) {
   return post(`${messageUrl}/${tabName}`,data)
+}
+
+// LDAP
+export function syncLDAP(data){
+  return post(`ldap/sync`,data)
+}
+
+export function createLDAP(data) {
+  return post(`ldap/`,data)
 }
