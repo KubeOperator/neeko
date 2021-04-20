@@ -418,7 +418,7 @@ const message = {
     credential_name: "凭据",
     exists_credential: "已存在凭据",
     ip: "IP",
-    gpu: "GPU(个)"
+    gpu: "GPU(个)",
   },
   message: {
     message: "消息",
@@ -468,8 +468,8 @@ const message = {
     email: "邮箱",
     user: "用户",
     type: "来源",
-    LDAP: "Ldap",
-    LOCAL: "本地"
+    ldap: "LDAP",
+    local: "本地"
   },
   manifest: {
     title: "版本管理",
