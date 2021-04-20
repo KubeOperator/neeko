@@ -2,6 +2,7 @@ import {get, post} from "@/plugins/request"
 
 const fileUrl = "/clusters/backup/files"
 const strategyUrl = "/clusters/backup/strategy"
+const clusterUrl = "/clusters/backupaccounts"
 
 export function listBackupByPage(clusterName, page, size) {
     const itemUrl = `${fileUrl}?pageNum=${page}&pageSize=${size}&clusterName=${clusterName}`
@@ -34,4 +35,8 @@ export function startRestore(data) {
 export function localRestore(data) {
     const itemUrl = `${fileUrl}/restore/local`
     return post(itemUrl, data)
+}
+
+export function listBackupAccounts(name) {
+  return get(`${clusterUrl}/${name}`)
 }
