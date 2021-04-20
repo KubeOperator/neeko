@@ -21,7 +21,9 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
-        <template v-slot:default="{ row }">{{ row.name }}</template>
+        <template v-slot:default="{ row }">
+          <el-button type="text" @click="openDetailPage(row)">{{ row.name }}</el-button>
+        </template>
       </el-table-column>
       <el-table-column
               :label="$t('automatic.region.name')"
@@ -40,6 +42,31 @@
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
+    <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
+      <el-card class="box-card">
+        <el-row type="flex">
+          <el-col :span="5">
+            <ul> {{ $t("commons.table.name") }}</ul>
+            <ul> {{ $t("automatic.region.name") }}</ul>
+            <ul> {{ $t("automatic.zone.name") }}</ul>
+            <ul> {{ $t("automatic.plan.deploy_template") }}</ul>
+            <ul> {{ $t("automatic.plan.master_model") }}</ul>
+            <ul> {{ $t("automatic.plan.worker_model") }}</ul>
+          </el-col>
+          <el-col>
+            <ul> {{ item.name }}</ul>
+            <ul> {{ item.regionName }}</ul>
+            <ul><span v-for="(zone,index) in item.zoneNames" :key="index">{{ zone }},</span></ul>
+            <ul> {{ $t("automatic.plan." + item.deployTemplate) }}</ul>
+            <ul> {{ item.planVars.masterModel }}</ul>
+            <ul> {{ item.planVars.workerModel }}</ul>
+          </el-col>
+        </el-row>
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="openDetail = false">{{ $t("commons.button.cancel") }}</el-button>
+      </span>
+    </el-dialog>
   </layout-content>
 </template>
 <script>
@@ -89,7 +116,12 @@ export default {
         total: 0
       },
       data: [],
-      selects: []
+      selects: [],
+      item: {
+        zoneNames: [],
+        planVars: {}
+      },
+      openDetail: false
     }
   },
   methods: {
@@ -135,6 +167,10 @@ export default {
           })
         })
     },
+    openDetailPage (row) {
+      this.openDetail = true
+      this.item = row
+    }
   },
   created () {
     this.search()

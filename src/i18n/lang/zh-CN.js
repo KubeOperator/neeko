@@ -488,6 +488,7 @@ const message = {
     cloud_provider: "云提供商",
     datacenter: "数据中心",
     basic: "基本信息",
+    detail: "详情",
     region: {
       name: "区域",
       basic: "基本信息",

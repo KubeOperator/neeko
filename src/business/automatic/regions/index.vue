@@ -20,7 +20,9 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
-        <template v-slot:default="{ row }">{{ row.name }}</template>
+        <template v-slot:default="{ row }">
+          <el-button type="text" @click="openDetailPage(row)">{{ row.name }}</el-button>
+        </template>
       </el-table-column>
       <el-table-column
               :label="$t('automatic.cloud_provider')"
@@ -39,6 +41,65 @@
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
+    <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
+      <el-card class="box-card">
+        <el-row type="flex" v-if="item.provider==='vSphere'">
+          <el-col :span="5">
+            <ul> {{ $t("commons.table.name") }}</ul>
+            <ul> {{ $t("automatic.cloud_provider") }}</ul>
+            <ul> {{ $t("automatic.datacenter") }}</ul>
+            <ul> {{ $t("automatic.region.vcenter_host") }}</ul>
+            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
+          </el-col>
+          <el-col>
+            <ul> {{ item.name }}</ul>
+            <ul> {{ item.regionVars.provider}}</ul>
+            <ul> {{ item.datacenter }}</ul>
+            <ul> {{ item.regionVars.host }}</ul>
+            <ul> {{ item.regionVars.username }}</ul>
+          </el-col>
+        </el-row>
+        <el-row type="flex" v-if="item.provider==='FusionCompute'">
+          <el-col :span="6">
+            <ul> {{ $t("commons.table.name") }}</ul>
+            <ul> {{ $t("automatic.cloud_provider") }}</ul>
+            <ul> {{ $t("automatic.datacenter") }}</ul>
+            <ul> {{ $t("automatic.region.fusionCompute_server") }}</ul>
+            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
+          </el-col>
+          <el-col>
+            <ul> {{ item.name }}</ul>
+            <ul> {{ item.regionVars.provider}}</ul>
+            <ul> {{ item.datacenter }}</ul>
+            <ul> {{ item.regionVars.server }}</ul>
+            <ul> {{ item.regionVars.user }}</ul>
+          </el-col>
+        </el-row>
+        <el-row type="flex" v-if="item.provider==='OpenStack'">
+          <el-col :span="5">
+            <ul> {{ $t("commons.table.name") }}</ul>
+            <ul> {{ $t("automatic.cloud_provider") }}</ul>
+            <ul> {{ $t("automatic.datacenter") }}</ul>
+            <ul> {{ $t("automatic.region.openstack_identity") }}</ul>
+            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
+            <ul> {{ $t("automatic.region.openstack_project") }}</ul>
+            <ul> {{ $t("automatic.region.openstack_domain") }}</ul>
+          </el-col>
+          <el-col>
+            <ul> {{ item.name }}</ul>
+            <ul> {{ item.regionVars.provider}}</ul>
+            <ul> {{ item.datacenter }}</ul>
+            <ul> {{ item.regionVars.identity }}</ul>
+            <ul> {{ item.regionVars.username }}</ul>
+            <ul> {{ item.regionVars.projectId }}</ul>
+            <ul> {{ item.regionVars.domainName }}</ul>
+          </el-col>
+        </el-row>
+      </el-card>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="openDetail = false">{{ $t("commons.button.cancel") }}</el-button>
+      </span>
+    </el-dialog>
   </layout-content>
 </template>
 
@@ -93,7 +154,12 @@ export default {
       },
       data: [],
       loading: false,
-      selects: []
+      selects: [],
+      openDetail: false,
+      item: {
+        regionVars:{},
+        datacenter: ""
+      }
     }
   },
   methods: {
@@ -138,6 +204,10 @@ export default {
             this.search()
           })
         })
+    },
+    openDetailPage (row) {
+      this.openDetail = true
+      this.item = row
     }
   },
   created () {
