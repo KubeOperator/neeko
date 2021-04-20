@@ -40,7 +40,8 @@ const message = {
       authorize: "授权",
       getBucket: "获取桶",
       update: "更新",
-      upload: "上传"
+      upload: "上传",
+      lock:"启用/禁用",
     },
     msg: {
       success: "{0}成功",
