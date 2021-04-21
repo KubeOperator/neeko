@@ -12,8 +12,8 @@ export function checkClusterNameExistence(clusterName) {
   return get(`/clusters/existence/${clusterName}`)
 }
 
-export function listClusters(page, size, projectName) {
-  return get(`/clusters/?pageNum=${page}&pageSize=${size}&projectName=${projectName}`)
+export function listClusters(page, size) {
+  return get(`/clusters/?pageNum=${page}&pageSize=${size}`)
 }
 
 export function createCluster(data) {

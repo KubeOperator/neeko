@@ -228,7 +228,7 @@ export default {
     create() {
       this.dialogCreateVisible = true
       if (this.provider === "bareMetal") {
-        listClusterResources("kubeoperator", this.clusterName, "HOST", 1, 10).then((data) => {
+        listClusterResources(this.currentCluster.projectName, this.clusterName, "HOST", 1, 10).then((data) => {
           this.hosts = data.items
         })
       }
