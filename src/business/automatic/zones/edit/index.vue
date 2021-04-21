@@ -79,7 +79,7 @@
               <td v-if="currentPool.ips.length >0 ">{{ currentPool.ips[0].dns2 }}</td>
             </tr>
             <tr>
-              <th>{{ $t("automatic.ip_pool.status") }}</th>
+              <th>{{ $t("automatic.ip_pool.ip_usage") }}</th>
               <td>{{ currentPool.ipUsed }}/{{ currentPool.ips.length }}</td>
             </tr>
             </tbody>

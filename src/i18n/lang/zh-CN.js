@@ -586,7 +586,7 @@ const message = {
       dns2: "DNS2",
       description: "描述",
       address: "IP",
-      status: "状态(已用/总共)",
+      status: "状态",
       ip_list: "IP列表",
       ip_available: "可用",
       ip_lock: "占用",
