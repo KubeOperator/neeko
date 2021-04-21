@@ -28,8 +28,8 @@ export function clusterRecover(clusterName) {
   return post(`/clusters/recover/${clusterName}`, {})
 }
 
-export function deleteCluster(data) {
-  return del(`/clusters/`, data)
+export function deleteCluster(clusterName, force) {
+  return del(`/clusters/${clusterName}?force=${force}`)
 }
 
 export function importCluster(data) {

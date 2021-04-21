@@ -229,6 +229,10 @@ const message = {
       api_server_help: "例如: https://172.16.10.100:8443",
       router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
     },
+    delete: {
+      delete_cluster: "集群删除",
+      is_force: "是否强制",
+    },
     health_check: {
       level: "等级",
       message: "消息",
@@ -252,6 +256,7 @@ const message = {
       EnsureInitMetricsServer: "初始化监控组件",
       EnsureInitIngressController: "初始化服务暴露组件",
       EnsurePostInit: "配置集群",
+      DeleteCluster: "删除集群",
     },
     detail: {
       tag: {
