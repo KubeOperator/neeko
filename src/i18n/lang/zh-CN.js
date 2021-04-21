@@ -59,7 +59,7 @@ const message = {
       enable_success: "启用成功",
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
-      update_success: "更新成功"
+      update_success: "更新成功",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -219,7 +219,25 @@ const message = {
       step7: "配置预览",
       base_setting: "基本配置"
     },
+    upgrade: {
+      current_version: "当前版本",
+      upgrade_version: "升级版本",
+      upgrade_help: "不支持K8s跨大版本升级或升级到未启用的K8s版本，请在版本管理中确认。",
+    },
+    import: {
+      import_cluster: "集群导入",
+      api_server_help: "例如: https://172.16.10.100:8443",
+      router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
+    },
+    health_check: {
+      level: "等级",
+      message: "消息",
+      method: "方法",
+      result: "结果",
+      recover: "恢复",
+    },
     condition: {
+      condition_detail: "状态详情",
       EnsureInitTaskStart: "调度任务",
       EnsurePrepareBaseSystemConfig: "准备系统环境",
       EnsurePrepareContainerRuntime: "初始化容器引擎",
@@ -246,7 +264,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        csi: "csi扫描",
+        security: "csi扫描",
         grade: "集群评分",
       },
       overview: {

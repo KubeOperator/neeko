@@ -147,6 +147,7 @@
           <el-select style="width: 80%" @change="changeUpgradeVersions" v-model="upgradeForm.version" clearable>
             <el-option v-for="item of upgradeVersions" :key="item" :value="item">{{item}}</el-option>
           </el-select>
+          <div v-if="upgradeVersions.length === 0"><span class="input-help">{{$t('cluster.upgrade.upgrade_help')}}</span></div>
         </el-form-item>
       </el-form>
       <div v-if="newManifest.coreVars.length !== 0 && oldManifest.coreVars !== 0">
