@@ -8,6 +8,10 @@ export function getClusterByName(clusterName) {
   return get(`/clusters/${clusterName}`)
 }
 
+export function checkClusterNameExistence(clusterName) {
+  return get(`/clusters/existence/${clusterName}`)
+}
+
 export function listClusters(page, size, projectName) {
   return get(`/clusters/?pageNum=${page}&pageSize=${size}&projectName=${projectName}`)
 }
@@ -24,8 +28,8 @@ export function clusterRecover(clusterName) {
   return post(`/clusters/recover/${clusterName}`, {})
 }
 
-export function deleteCluster(data) {
-  return del(`/clusters/`, data)
+export function deleteCluster(clusterName, force) {
+  return del(`/clusters/${clusterName}?force=${force}`)
 }
 
 export function importCluster(data) {

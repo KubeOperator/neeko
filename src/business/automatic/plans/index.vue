@@ -13,9 +13,8 @@
           <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()" type="danger"  v-permission="['ADMIN']" :disabled="selects.length===0">{{
-              $t("commons.button.delete")
-            }}
+          <el-button size="small" @click="del()" type="danger" v-permission="['ADMIN']" :disabled="selects.length===0">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -57,7 +56,7 @@
             <ul> {{ item.name }}</ul>
             <ul> {{ item.regionName }}</ul>
             <ul><span v-for="(zone,index) in item.zoneNames" :key="index">{{ zone }},</span></ul>
-            <ul> {{ $t("automatic.plan." + item.deployTemplate) }}</ul>
+            <ul v-if="item.deployTemplate"> {{ $t("automatic.plan." + item.deployTemplate) }}</ul>
             <ul> {{ item.planVars.masterModel }}</ul>
             <ul> {{ item.planVars.workerModel }}</ul>
           </el-col>

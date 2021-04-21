@@ -1,10 +1,10 @@
 <template>
   <layout-content>
-    <complex-table :header="$t('cluster.cluster')" :selects.sync="clusterSelection" :data="data" :pagination-config="paginationConfig">
+    <complex-table :header="$t('cluster.cluster')" :selects.sync="clusterSelection" @selection-change="selectChange" :data="data" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="onCreate()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="clusterSelection.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" @click="onImport()">{{$t('commons.button.import')}}</el-button>
         </el-button-group>
       </template>
@@ -25,13 +25,13 @@
           <el-tag @click.native="getStatus(row)" v-if="row.status === 'Initializing'" type="success" size="small">{{$t('commons.status.initializing')}}
             <font-awesome-icon icon="spinner" pulse />
           </el-tag>
+          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Terminating'" type="info" size="small">{{$t('commons.status.Terminating')}}
+            <font-awesome-icon icon="spinner" pulse />
+          </el-tag>
           <el-tag @click.native="getStatus(row)" v-if="row.status === 'Upgrading'" type="success" size="small">{{$t('commons.status.Upgrading')}}
             <font-awesome-icon icon="spinner" pulse />
           </el-tag>
           <el-tag v-if="row.status === 'Creating'" type="info" size="small">{{$t('commons.status.creating')}}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag v-if="row.status === 'Terminating'" type="info" size="small">{{$t('commons.status.Terminating')}}
             <font-awesome-icon icon="spinner" pulse />
           </el-tag>
         </template>
@@ -95,8 +95,20 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogUpgradeCancel">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="dialogUpgradeCancel = false">{{$t('commons.button.cancel')}}</el-button>
         <el-button :v-loading="importLoadding" type="primary" @click="submitImport()">{{$t('commons.button.submit')}}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
+      <el-form label-width="120px">
+        <el-form-item :label="$t('cluster.delete.is_force')">
+          <el-switch v-model="isForce" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogDeleteVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button :v-loading="deleteLoadding" type="primary" @click="submitDelete()">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
 
@@ -249,6 +261,13 @@ export default {
         router: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
       },
 
+      // cluster delete
+      isForce: false,
+      deleteLoadding: false,
+      dialogDeleteVisible: false,
+      isDeleteButtonDisable: false,
+      deleteName: "",
+
       // cluster upgrade
       dialogUpgradeVisible: false,
       uploadLoadding: false,
@@ -283,18 +302,40 @@ export default {
     goForDetail(row) {
       this.$router.push({ name: "ClusterOverview", params: { name: row.name } })
     },
+    selectChange() {
+      let isOk = true
+      if (this.clusterSelection.length === 0) {
+        this.isDeleteButtonDisable = true
+        return
+      }
+      for (const item of this.clusterSelection) {
+        if (item.status !== "Running" && item.status !== "Failed") {
+          isOk = false
+          break
+        }
+      }
+      this.isDeleteButtonDisable = !isOk
+    },
     onDelete(name) {
+      this.isForce = false
+      this.dialogDeleteVisible = true
+      if (name) {
+        this.deleteName = name
+      }
+    },
+    submitDelete() {
+      this.deleteLoadding = true
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
         const ps = []
-        if (name) {
-          ps.push(deleteCluster(name))
+        if (this.deleteName) {
+          ps.push(deleteCluster(this.deleteName, this.isForce))
         } else {
           for (const item of this.clusterSelection) {
-            ps.push(deleteCluster(item.name))
+            ps.push(deleteCluster(item.name, this.isForce))
           }
         }
         Promise.all(ps)
@@ -304,9 +345,11 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.deleteLoadding = false
           })
           .catch(() => {
             this.search()
+            this.deleteLoadding = false
           })
       })
     },
@@ -464,21 +507,25 @@ export default {
       switch (this.log.prePhase) {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
+            this.search()
             this.retryLoadding = false
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
+            this.search()
             this.retryLoadding = false
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
+            this.search()
             this.retryLoadding = false
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
+            this.search()
             this.retryLoadding = false
           })
           break

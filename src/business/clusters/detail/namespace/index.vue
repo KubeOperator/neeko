@@ -1,12 +1,14 @@
 <template>
   <div>
-    <complex-table :selects.sync="selects" :data="data">
+    <complex-table :selects.sync="nsSelection" :data="data">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="nsSelection.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
+      <el-table-column type="selection" :selectable="isInSystemSpace" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
         <template v-slot:default="{row}">
@@ -22,7 +24,7 @@
       </el-table-column>
       <el-table-column fixed="right" :label="$t('commons.table.action')">
         <template v-slot:default="{row}">
-          <el-button :disabled="isInSystemSpace(row)" @click="goDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
+          <el-button :disabled="!isInSystemSpace(row)" @click="onDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
         </template>
       </el-table-column>
     </complex-table>
@@ -58,11 +60,13 @@ export default {
           name: "",
         },
       },
+      nsSelection: [],
       namespace: "",
       dialogCreateVisible: false,
       clusterName: "",
       selects: [],
       data: [],
+      ps: [],
     }
   },
   methods: {
@@ -91,39 +95,54 @@ export default {
     },
     isInSystemSpace(row) {
       const systemSpaces = ["default", "kube-public", "kube-operator", "kube-system", "istio-system", "kube-node-lease"]
-      return systemSpaces.indexOf(row.metadata.name) !== -1
+      return systemSpaces.indexOf(row.metadata.name) === -1
     },
-    goDelete(row) {
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.button.delete"), {
-        confirmButtonText: this.$t("commons.button.ok"),
+    onDelete(row) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        let exitStr = ""
-        const namespaceItem = row.metadata.name
-        listTool(this.clusterName).then((data) => {
-          if (data) {
-            for (const tool of data) {
-              if (tool.vars["namespace"] === namespaceItem && tool.status !== "Waiting") {
-                exitStr += tool.name + ","
-              }
+        this.ps = []
+        if (row) {
+          listTool(this.clusterName).then((tools) => {
+            this.checkNsToolExist(row.metadata.name, tools)
+          })
+        } else {
+          listTool(this.clusterName).then((tools) => {
+            for (const item of this.nsSelection) {
+              this.checkNsToolExist(item.metadata.name, tools)
             }
-            if (exitStr === "") {
-              deleteNamespace(this.clusterName, namespaceItem).then(
-                () => {
-                  this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
-                },
-                (error) => {
-                  this.$message({ type: "error", message: error })
-                }
-              )
-            } else {
-              exitStr = exitStr.substring(0, exitStr.length - 1)
-              this.$message({ type: "info", message: this.$t("cluster.detail.namespace.before_delete") + exitStr })
-            }
-          }
-        })
+          })
+        }
+        if (this.ps.length !== 0) {
+          Promise.all(this.ps)
+            .then(() => {
+              this.search()
+              this.$message({
+                type: "success",
+                message: this.$t("commons.msg.delete_success"),
+              })
+            })
+            .catch(() => {
+              this.search()
+            })
+        }
       })
+    },
+    checkNsToolExist(ns, tools) {
+      let exitStr = ""
+      for (const tool of tools) {
+        if (tool.vars["namespace"] === ns && tool.status !== "Waiting") {
+          exitStr += tool.name + ","
+        }
+      }
+      if (exitStr !== "") {
+        exitStr = exitStr.substring(0, exitStr.length - 1)
+        this.$message({ type: "info", message: ns + this.$t("cluster.detail.namespace.before_delete") + exitStr })
+      } else {
+        this.ps.push(deleteNamespace(this.clusterName, ns))
+      }
     },
     polling() {
       this.timer = setInterval(() => {

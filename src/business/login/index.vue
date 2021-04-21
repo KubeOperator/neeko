@@ -238,7 +238,7 @@
     }
 
     .login-image {
-      background: url(../../assets/login-desc.png) no-repeat;
+      background: url(../../assets/KobeOperator-login.jpg) no-repeat;
       background-size: cover;
       width: 100%;
       height: 520px;
