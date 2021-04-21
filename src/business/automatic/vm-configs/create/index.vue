@@ -15,8 +15,10 @@
               <el-input-number v-model="form.memory"></el-input-number>
             </el-form-item>
             <el-form-item>
-              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>

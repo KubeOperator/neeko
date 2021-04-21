@@ -59,7 +59,7 @@ const message = {
       enable_success: "启用成功",
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
-      update_success: "更新成功"
+      update_success: "更新成功",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -238,7 +238,6 @@ const message = {
     },
     condition: {
       condition_detail: "状态详情",
-
       EnsureInitTaskStart: "调度任务",
       EnsurePrepareBaseSystemConfig: "准备系统环境",
       EnsurePrepareContainerRuntime: "初始化容器引擎",
@@ -605,7 +604,7 @@ const message = {
       dns2: "DNS2",
       description: "描述",
       address: "IP",
-      status: "状态(已用/总共)",
+      status: "状态",
       ip_list: "IP列表",
       ip_available: "可用",
       ip_lock: "占用",
