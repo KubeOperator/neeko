@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'pPoolList' }">
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'IpPoolList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -30,8 +30,10 @@
               <el-input v-model="form.dns2"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.save") }}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+                <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.save") }}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
