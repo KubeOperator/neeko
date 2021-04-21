@@ -1,20 +1,20 @@
 <template>
   <div>
     <complex-table :header="$t('message.message')" :selects.sync="selects"
-                   :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search">
+                   v-loading="loading" :data="data" :columns="columns" :pagination-config="paginationConfig" >
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
-            {{ $t("message.mark_as_read") }}</el-button>
-          <el-button size="small" :disabled="selects.length < 1"  @click="del()">
-            {{ $t("commons.button.delete") }}</el-button>
+            {{ $t("message.mark_as_read") }}
+          </el-button>
+          <el-button size="small" :disabled="selects.length < 1"  @click="del()" type="danger">
+            {{ $t("commons.button.delete") }}
+          </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('message.content')" min-width="100"  fix>
         <template v-slot:default="{row}">
-<!--          <font-awesome-icon v-if="row.readStatus === 'UNREAD'" :icon="['far','folder']" :style="{ color: '#0079b8' }" size="1x"/>-->
-<!--          <font-awesome-icon v-if="row.readStatus === 'READ'" :icon="['far','folder-open']" :style="{ color: '#969696' }" size="1x"/>-->
           <svg v-if="row.readStatus === 'READ'" class="icon svg-icon" aria-hidden="true" :style="{ color: '#969696'}" size="5x">
             <use xlink:href="#iconyidu1"></use>
           </svg>
@@ -54,22 +54,22 @@
       <el-divider></el-divider>
       <div v-if="detail.message.title === 'CLUSTER_EVENT_WARNING'">
           <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
-          <p>{{ $t('message.detail.host') }}: {{detail.msgContent.host}}</p>
-          <p>{{ $t('message.detail.name') }}: {{detail.msgContent.name}}</p>
-          <p>{{ $t('message.detail.type') }}: {{detail.msgContent.type}}</p>
-          <p>{{ $t('message.detail.component') }}: {{detail.msgContent.component}}</p>
-          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent.message}}</p>
-          <p>{{ $t('message.detail.kind') }}: {{detail.msgContent.kind}}</p>
-          <p>{{ $t('message.detail.cause') }}: {{detail.msgContent.reason}}</p>
-          <p>{{ $t('message.detail.time') }}: {{detail.msgContent.createdAt | datetimeFormat }}</p>
+          <p>{{ $t('message.detail.host') }}: {{detail.msgContent['host']}}</p>
+          <p>{{ $t('message.detail.name') }}: {{detail.msgContent['name']}}</p>
+          <p>{{ $t('message.detail.type') }}: {{detail.msgContent['type']}}</p>
+          <p>{{ $t('message.detail.component') }}: {{detail.msgContent['component']}}</p>
+          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent['message']}}</p>
+          <p>{{ $t('message.detail.kind') }}: {{detail.msgContent['kind']}}</p>
+          <p>{{ $t('message.detail.cause') }}: {{detail.msgContent['reason']}}</p>
+          <p>{{ $t('message.detail.time') }}: {{detail.msgContent['createdAt'] | datetimeFormat }}</p>
       </div>
       <div v-if="detail.message.title !== 'CLUSTER_EVENT_WARNING'">
           <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
-          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent.message}}</p>
-          <p>{{ $t('message.detail.time') }}: {{detail.createdAt | datetimeFormat }}</p>
+          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent['message']}}</p>
+          <p>{{ $t('message.detail.time') }}: {{detail['createdAt'] | datetimeFormat }}</p>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisible = false">{{$t('commons.button.ok')}}</el-button>
       </span>
     </el-dialog>
 
@@ -78,7 +78,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table";
-import {deleteMessagesBy, getMessages, updateMessageStatus} from "@/api/xpack/message";
+import {deleteMessagesBy, searchMessages, updateMessageStatus} from "@/api/xpack/message";
 
 export default {
   name: "MessageCenter",
@@ -93,6 +93,7 @@ export default {
         total: 0,
       },
       selects: [],
+      loading: false,
       data: [],
       buttons: [
          {
@@ -103,17 +104,37 @@ export default {
       ],
       columns: [],
       dialogVisible: false,
+      searchConfig: {
+        quickPlaceholder: this.$t("commons.search.quickSearch"),
+        components: [
+          // { field: "type", label: this.$t('message.type'), component: "FuComplexInput", defaultOperator: "eq" },
+          // {
+          //   field: "level",
+          //   label: this.$t('message.level'),
+          //   component: "FuComplexSelect",
+          //   options: [
+          //     { label: "Warning", value: 'Warning' },
+          //     { label: "Info", value: 'Info' },
+          //   ],
+          //   multiple: true
+          // },
+          // {
+          //   field: "table.status",
+          //   label: this.$t('commons.table.status'),
+          //   component: "FuComplexSelect",
+          //   options: [
+          //     { label: this.$t("message.READ"), value: "READ" },
+          //     { label: this.$t("message.UNREAD"), value: "UNREAD" },
+          //   ],
+          //   multiple: true
+          // },
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+        ]
+      },
       detail: {
         message: {},
         readStatus: '',
-        msgContent: {
-          createdAt: '',
-          host: '',
-          kind: '',
-          component: '',
-          message: '',
-          reason: '',
-        },
+        msgContent: {},
         clusterName: '',
       }
     }
@@ -169,24 +190,29 @@ export default {
         }
       })
     },
-    search() {
+    search(conditions) {
       const { currentPage, pageSize } = this.paginationConfig
-      getMessages(currentPage, pageSize).then((data) => {
+      // getMessages(currentPage, pageSize).then((data) => {
+      //   this.data = data.items
+      //   this.paginationConfig.total = data.total
+      // })
+      searchMessages(currentPage, pageSize,conditions).then((data) => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })
     },
-    onDetail(data) {
-      if (data.readStatus === "UNREAD"){
-        data.readStatus = "READ"
+    onDetail(row) {
+      if (row.readStatus === "UNREAD"){
+        row.readStatus = "READ"
         const readItems = [];
-        readItems.push(data);
+        readItems.push(row);
         updateMessageStatus({
           items: readItems,
           operation: "update"
         })
       }
-      this.detail = data
+      this.detail = row
       this.dialogVisible = true
     },
     handleClose(done) {
