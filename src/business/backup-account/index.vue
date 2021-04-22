@@ -41,7 +41,7 @@
 <script>
 import ComplexTable from "@/components/complex-table";
 import LayoutContent from "@/components/layout/LayoutContent";
-import {deleteBackupAccounts, getBackupAccounts} from "@/api/backup-account";
+import {deleteBackupAccounts, searchBackupAccounts} from "@/api/backup-account";
 
 export default {
   name: "BackupAccount",
@@ -68,6 +68,26 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
+          { field: "name", label: this.$t('backup_account.table.name'), component: "FuComplexInput", defaultOperator: "eq" },
+          {
+            field: "bucket",
+            label: this.$t('backup_account.table.bucket'),
+            component: "FuComplexInput",
+            defaultOperator: "eq",
+          },
+          {
+            field: "type",
+            label: this.$t('backup_account.table.type'),
+            component: "FuComplexSelect",
+            options: [
+              { label: "OSS", value: "OSS" },
+              { label: "S3", value: "S3" },
+              { label: "SFTP", value: "SFTP" },
+              { label: "AZURE", value: "AZURE" },
+            ],
+            multiple: true
+          },
+          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -81,7 +101,7 @@ export default {
   methods: {
     search(conditions) {
       const {currentPage, pageSize} = this.paginationConfig
-      getBackupAccounts(currentPage, pageSize, conditions).then(data => {
+      searchBackupAccounts(currentPage, pageSize, conditions).then(data => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
