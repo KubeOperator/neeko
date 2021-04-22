@@ -5,7 +5,7 @@
         <el-col :span="6">
           <el-card style="height: 350px">
             <div slot="header" class="clearfix">
-              <span>基本信息</span>
+              <span>{{$t('cluster.detail.overview.base_info')}}</span>
             </div>
             <div align="center">
               <el-col :span="8">
@@ -40,7 +40,7 @@
         <el-col :span="12">
           <el-card style="height: 350px">
             <div slot="header" class="clearfix">
-              <span>容量信息</span>
+              <span>{{$t('cluster.detail.overview.capacity_info')}}</span>
             </div>
             <el-row type="flex" justify="center">
               <el-col :span="6">
@@ -58,7 +58,7 @@
         <el-col :span="6">
           <el-card style="height: 350px">
             <div slot="header" class="clearfix">
-              <span>统计信息</span>
+              <span>{{$t('cluster.detail.overview.statistical_info')}}</span>
             </div>
             <div align="center">
               <el-col :span="8">
@@ -81,23 +81,23 @@
       </el-row>
     </div>
     <el-divider></el-divider>
-    <el-button v-if="currentCluster.source==='local'" size="small" @click="downloadKubeConfig()">下载KubeConfig</el-button>
+    <el-button v-if="currentCluster.source==='local'" size="small" @click="downloadKubeConfig()">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
 
-    <el-card style="height: 150px;margin-top: 40px">
+    <el-card style="margin-top: 40px">
       <div slot="header" class="clearfix">
         <span>WebKubeCtl</span>
-        <el-button v-if="!opened" type="primary" @click="open()" style="float: right;">连 接</el-button>
+        <el-button v-if="!opened" type="primary" @click="onOpen()" style="float: right;">{{$t('cluster.detail.overview.connect')}}</el-button>
         <el-button v-if="opened" icon="el-icon-s-platform" type="primary" @click="newWindow()" style="float: right;"></el-button>
       </div>
-      <div>
-        <div id="xterm" class="xterm" />
+      <div v-if="opened">
+        <iframe style="width: 100%;height: 512px;" :src="url"></iframe>
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import { listPod, listDeployment } from "@/api/cluster/cluster"
+import { listPod, listDeployment, getClusterToken } from "@/api/cluster/cluster"
 import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { getClusterByName } from "@/api/cluster"
@@ -135,6 +135,7 @@ export default {
       podLimit: 0,
       podUsagePercent: 0.0,
       opened: false,
+      url: "",
     }
   },
   methods: {
@@ -152,8 +153,23 @@ export default {
       this.listNodes()
       this.listDeployments()
     },
-    open() {},
-    newWindow() {},
+    onOpen() {
+      this.loading = true
+      this.opened = true
+      getClusterToken(this.clusterName).then((data) => {
+        this.url = process.env.VUE_APP_BASE_API + "/webkubectl/terminal/?token=" + data.token
+        this.loading = false
+      })
+    },
+    newWindow() {
+      this.opened = true
+      this.loading = true
+      getClusterToken(this.clusterName).then((data) => {
+        this.url = process.env.VUE_APP_BASE_API + `/webkubectl/terminal/?token=${data.token}`
+        this.loading = false
+        window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
+      })
+    },
     listNameSpaces() {
       listNamespace(this.clusterName).then((data) => {
         this.namespaces = data.items
