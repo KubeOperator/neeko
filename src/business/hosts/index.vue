@@ -10,7 +10,7 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
+      <el-table-column :label="$t('commons.table.name')" min-width="200" fix>
         <template v-slot:default="{row}">
           <el-row>
             <el-col :span="6">
@@ -26,8 +26,8 @@
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column label="CPU" min-width="100" prop="cpuCore" />
-      <el-table-column label="GPU" min-width="100" prop="gpuNum" />
+      <el-table-column label="CPU" min-width="50" prop="cpuCore" />
+      <el-table-column label="GPU" min-width="50" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100" prop="memory" />
       <el-table-column :label="$t('host.os')" min-width="100">
         <template v-slot:default="{row}">
@@ -86,7 +86,6 @@
           </el-row>
         </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogImportVisible = false">{{$t('commons.button.cancel')}}</el-button>
         <el-button type="primary" @click="onUploadFile()">{{$t('commons.button.ok')}}</el-button>
@@ -101,7 +100,7 @@ import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 
 export default {
-  name: "Host",
+  name: "HostList",
   components: { ComplexTable, LayoutContent },
   data() {
     return {
@@ -130,7 +129,7 @@ export default {
   },
   methods: {
     create() {
-      this.$router.push({ path: "/hosts/create" })
+      this.$router.push({ name: "HostCreate" })
     },
     sync() {
       this.dialogSyncVisible = true

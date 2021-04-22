@@ -19,6 +19,7 @@ const Host = {
     {
       path: "create",
       hidden: true,
+      name: "HostCreate",
       component: () => import('@/business/hosts/create'),
       meta: {
         activeMenu: "/hosts/list",
