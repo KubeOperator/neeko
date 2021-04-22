@@ -27,3 +27,7 @@ export function updateMessageReceicver(data) {
 export function updateMessageStatus(data) {
   return post("message/mail/batch", data)
 }
+
+export function searchMessages(currentPage, pageSize, conditions) {
+  return post(`message/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}

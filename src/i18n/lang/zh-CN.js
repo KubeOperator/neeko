@@ -234,6 +234,7 @@ const message = {
       is_force: "是否强制",
     },
     health_check: {
+      health_check: "健康检查",
       level: "等级",
       message: "消息",
       method: "方法",
@@ -277,6 +278,7 @@ const message = {
       },
       node: {
         increment: "增量",
+        host: "主机",
         node_detail: "节点详情",
         base_infomation: "基础信息",
         label: "标签",

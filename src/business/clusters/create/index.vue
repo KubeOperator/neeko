@@ -14,6 +14,11 @@
                         <div v-if="!nameValid"><span class="input-error">{{$t('cluster.creation.name_invalid_err')}}</span></div>
                         <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
                       </el-form-item>
+                      <el-form-item :label="$t('project.project')" prop="projectName">
+                        <el-select filterable style="width: 80%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
+                          <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
+                        </el-select>
+                      </el-form-item>
                       <el-form-item :label="$t('cluster.creation.provider')" prop="provider">
                         <el-select style="width: 100%" v-model="form.provider" clearable>
                           <el-option value="bareMetal" :label="$t('cluster.creation.provide_bare_metal')">{{$t('cluster.creation.provide_bare_metal')}}</el-option>
@@ -26,7 +31,7 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item :label="$t('cluster.creation.arch')" prop="architectures">
-                        <el-select style="width: 100%" v-model="form.architectures" clearable>
+                        <el-select style="width: 100%" @change="changeArch" v-model="form.architectures" clearable>
                           <el-option value="amd64" label="AMD64">AMD64</el-option>
                           <el-option v-if="form.provider === 'bareMetal'" value="arm64" label="ARM64">ARM64</el-option>
                           <el-option v-if="form.provider === 'bareMetal'" value="all" label="MIXED">MIXED</el-option>
@@ -369,6 +374,7 @@ import { listActive } from "@/api/manifest"
 import { listProjectResources } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkClusterNameExistence, createCluster } from "@/api/cluster"
+import { allProjects } from "@/api/projects"
 
 export default {
   name: "ClusterCreate",
@@ -418,6 +424,7 @@ export default {
       rules: {
         name: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
         version: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        projectName: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
         provider: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
         architectures: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
         yumOperate: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
@@ -444,7 +451,8 @@ export default {
       nodes: "",
       plans: [],
       hosts: [],
-      projectName: "kubeoperator",
+      projects: [],
+      repoList: [],
       validateCluster: false,
       loading: false,
       helmVersions: ["v3", "v2"],
@@ -484,8 +492,17 @@ export default {
         this.changeArch("amd64")
       })
     },
+    loadProject() {
+      allProjects().then((data) => {
+        this.projects = data.items
+      })
+    },
+    loadProjectResource() {
+      this.loadHosts()
+      this.loadPlan()
+    },
     loadHosts() {
-      listProjectResources("kubeoperator", "HOST", 1, 10).then((data) => {
+      listProjectResources(this.form.projectName, "HOST", 1, 10).then((data) => {
         const list = []
         if (data.items.length !== 0) {
           data.items
@@ -502,7 +519,7 @@ export default {
       })
     },
     loadPlan() {
-      listProjectResources("kubeoperator", "PLAN", 1, 10).then((data) => {
+      listProjectResources(this.form.projectName, "PLAN", 1, 10).then((data) => {
         this.plans = data.items
       })
     },
@@ -522,16 +539,16 @@ export default {
             setTimeout(() => {
               checkClusterNameExistence(this.form.name).then(
                 (data) => {
-                  if (data.isExist) {
-                    this.nameValid = false
-                    this.loading = false
-                    return false
-                  } else {
+                  if (!data.isExist && this.archValid) {
                     this.nameValid = true
                     this.loading = false
                     this.validateCluster = true
                     this.$refs.steps.next()
                     return true
+                  } else {
+                    this.nameValid = !data.isExist
+                    this.loading = false
+                    return false
                   }
                 },
                 () => {
@@ -650,6 +667,50 @@ export default {
       this.form.clusterCidr = this.releaseCidr()
       this.maxNodesNum = Math.pow(2, 32 - Number(this.parts[4])) / this.form.maxNodePodNum - Math.ceil(this.form.maxClusterServiceNum / this.form.maxNodePodNum)
     },
+    changeArch(type) {
+      this.archValid = true
+      let isAmdExit = false
+      let isArmExit = false
+      switch (type) {
+        case "amd64":
+          for (const repo of this.repoList) {
+            if (repo.architecture === "x86_64") {
+              isAmdExit = true
+              break
+            }
+          }
+          this.archValid = isAmdExit
+          break
+        case "arm64":
+          for (const repo of this.repoList) {
+            if (repo.architecture === "aarch64") {
+              isArmExit = true
+              break
+            }
+          }
+          this.archValid = isArmExit
+          break
+        case "all":
+          for (const repo of this.repoList) {
+            if (repo.architecture === "x86_64") {
+              isAmdExit = true
+              continue
+            }
+            if (repo.architecture === "aarch64") {
+              isArmExit = true
+              continue
+            }
+          }
+          this.archValid = isAmdExit && isArmExit
+          break
+      }
+      if (type !== "amd64") {
+        this.form.helmVersion = "v3"
+        this.helmVersions = ["v3"]
+      } else {
+        this.helmVersions = ["v3", "v2"]
+      }
+    },
     toggle(role) {
       this.form.nodes = []
       switch (role) {
@@ -706,7 +767,9 @@ export default {
   },
   created() {
     this.loadHosts()
+    this.loadRegistry()
     this.loadPlan()
+    this.loadProject()
     this.loadVersion()
   },
 }

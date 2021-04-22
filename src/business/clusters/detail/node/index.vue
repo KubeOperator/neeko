@@ -4,41 +4,61 @@
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1" @click="remove()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" :selectable="selectable" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text">{{row.name}}</el-button>
+          <span v-if="row.status !== 'Running'">{{row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="IP" min-width="100" prop="ip" fix>
+      <el-table-column label="IP" min-width="100" fix>
         <template v-slot:default="{row}">{{getInternalIp(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.version')" min-width="100" prop="ip" fix>
+      <el-table-column :label="$t('cluster.version')" min-width="100" fix>
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
-      <el-table-column label="Roles" min-width="100" prop="ip" fix>
+      <el-table-column label="Roles" min-width="100" fix>
         <template v-slot:default="{row}">{{getNodeRoles(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix />
+      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+        <template v-slot:default="{row}">
+          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
+          <el-tag @click.native="onShowErrMsg(row)" v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Initializing'" type="success" size="small">{{$t('commons.status.initializing')}}
+            <font-awesome-icon icon="spinner" pulse />
+          </el-tag>
+          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Terminating'" type="info" size="small">{{$t('commons.status.Terminating')}}
+            <font-awesome-icon icon="spinner" pulse />
+          </el-tag>
+          <el-tag v-if="row.status === 'Creating'" type="info" size="small">{{$t('commons.status.creating')}}
+            <font-awesome-icon icon="spinner" pulse />
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
+      <el-table-column fixed="right" :label="$t('commons.table.action')">
+        <template v-slot:default="{row}">
+          <el-button @click="onDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
+        </template>
+      </el-table-column>
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
-      <el-form :model="form" ref="form" :rules="rules" label-width="80px">
+      <el-form :model="createForm" ref="createForm" :rules="rules" label-width="80px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
-          <el-input style="width: 80%" v-model="form.increase" type="number" min="1" />
+          <el-input style="width: 80%" v-model="createForm.increase" type="number" min="1" clearable />
         </el-form-item>
 
-        <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.increment')">
-          <el-select style="width: 80%" v-model="form.hosts" multiple clearable>
+        <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')">
+          <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
@@ -130,15 +150,22 @@
         </el-scrollbar>
       </div>
     </el-dialog>
+
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogFailedVisible">
+      <span>{{errmsg}}</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFailedVisible = false">{{$t('commons.button.cancel')}}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
 
-import { listNodesByPage, nodeCreate } from "@/api/cluster/node"
+import { listNodesByPage, nodeCreate, nodeDelete } from "@/api/cluster/node"
 import { listClusterResources } from "@/api/cluster-resource"
-import { getClusterByName } from "@/api/cluster"
+import { getClusterByName, openLogger } from "@/api/cluster"
 
 export default {
   name: "ClusterNode",
@@ -151,17 +178,21 @@ export default {
         total: 0,
       },
       dialogCreateVisible: false,
+      dialogFailedVisible: false,
+      errmsg: "",
       clusterName: "",
       selects: [],
       data: [],
-      form: {
+      createForm: {
         hosts: [],
         nodes: [],
         increase: 1,
-        operation: "",
+      },
+      deleteForm: {
+        nodes: "",
       },
       rules: {
-        increase: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+        increase: [{ required: true, pattern: /^[1-9][0-9]*$/, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
         hosts: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "change" }],
       },
       dialogDetailVisible: false,
@@ -191,33 +222,74 @@ export default {
         this.paginationConfig.total = data.total
       })
     },
+    selectable(row) {
+      return this.getNodeRoles(row).indexOf("master") === -1
+    },
     create() {
       this.dialogCreateVisible = true
       if (this.provider === "bareMetal") {
-        listClusterResources("kubeoperator", this.clusterName, "HOST").then((data) => {
-          console.log(data)
-          // this.hosts = data.items
+        listClusterResources(this.currentCluster.projectName, this.clusterName, "HOST", 1, 10).then((data) => {
+          this.hosts = data.items
         })
       }
+    },
+    getStatus(row) {
+      openLogger(this.clusterName, row.name)
+    },
+    onShowErrMsg(row) {
+      this.dialogFailedVisible = true
+      this.errmsg = row.message
     },
     goForDetail(row) {
       this.detaiInfo = row.info
       this.dialogDetailVisible = true
     },
     submitCreate() {
-      nodeCreate(this.clusterName, this.form).then(
-        () => {
-          this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-          this.dialogCreateVisible = false
-          this.search()
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
-          this.dialogCreateVisible = false
+      this.$refs["createForm"].validate((valid) => {
+        if (valid) {
+          nodeCreate(this.clusterName, this.createForm).then(
+            () => {
+              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.dialogCreateVisible = false
+              this.search()
+            },
+            (error) => {
+              this.$message({ type: "error", message: error })
+              this.dialogCreateVisible = false
+            }
+          )
+        } else {
+          return false
         }
-      )
+      })
     },
-    remove() {},
+    onDelete(row) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        const ps = []
+        if (row) {
+          ps.push(nodeDelete(this.clusterName, row.name))
+        } else {
+          for (const item of this.selects) {
+            ps.push(nodeDelete(this.clusterName, item.name))
+          }
+        }
+        Promise.all(ps)
+          .then(() => {
+            this.search()
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.delete_success"),
+            })
+          })
+          .catch(() => {
+            this.search()
+          })
+      })
+    },
     getInternalIp(item) {
       return item.ip ? item.ip : "N/a"
     },
@@ -258,11 +330,30 @@ export default {
         this.provider = this.currentCluster.spec.provider
       })
     },
+    polling() {
+      this.timer = setInterval(() => {
+        let flag = false
+        const needPolling = ["Initializing", "Terminating"]
+        for (const item of this.data) {
+          if (needPolling.indexOf(item.status) !== -1) {
+            flag = true
+            break
+          }
+        }
+        if (flag) {
+          this.search()
+        }
+      }, 10000)
+    },
   },
   created() {
     this.clusterName = this.$route.params.name
     this.getCluster()
     this.search()
+    this.polling()
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
 }
 </script>

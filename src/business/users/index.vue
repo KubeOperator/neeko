@@ -11,19 +11,14 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100" fix>
+      <el-table-column :label="$t('commons.table.name')" mix-width="120" fix>
         <template v-slot:default="{row}">
           <el-row>
-<!--            <svg class="icon" aria-hidden="true"  style="font-size: 24px">-->
-<!--              <use xlink:href="#iconyonghu-fuben"></use>-->
-<!--            </svg>-->
-<!--            {{ row.name }}-->
-
-            <el-col :span="6">
-              <svg class="icon" aria-hidden="true"  style="font-size: 24px">
-                <use xlink:href="#iconyonghu-fuben"></use>
-              </svg>
-            </el-col>
+<!--            <el-col :span="6">-->
+<!--              <svg class="icon" aria-hidden="true"  style="font-size: 24px">-->
+<!--                <use xlink:href="#iconyonghu-fuben"></use>-->
+<!--              </svg>-->
+<!--            </el-col>-->
             <el-col :span="18">
               {{ row.name }}<br/>
             </el-col>
@@ -49,7 +44,7 @@
             </span>
           <span v-else style="color: #FA4147">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#iconcuowu1"></use>
+              <use xlink:href="#iconstoppx"></use>
             </svg>
             {{ $t("commons.status.passive") }}
           </span>
@@ -66,7 +61,7 @@
           <span size="small">{{ $t(`commons.role.${row.role}`) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column :label="$t('commons.table.create_time')"  min-width="100">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

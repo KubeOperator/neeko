@@ -82,6 +82,11 @@
         <el-form-item :label="$t('commons.table.name')" prop="name">
           <el-input style="width: 80%" v-model="importForm.name" clearable></el-input>
         </el-form-item>
+        <el-form-item :label="$t('project.project')" prop="projectName">
+          <el-select filterable style="width: 80%" v-model.number="importForm.projectName" clearable>
+            <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="apiServer" prop="apiServer">
           <el-input style="width: 80%" v-model="importForm.apiServer" clearable></el-input>
           <div><span class="input-help">{{$t('cluster.import.api_server_help')}}</span></div>
@@ -95,7 +100,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogUpgradeCancel = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="dialogImportVisible = false">{{$t('commons.button.cancel')}}</el-button>
         <el-button :v-loading="importLoadding" type="primary" @click="submitImport()">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
@@ -112,8 +117,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.import.import_cluster')" width="30%" :visible.sync="dialogCheckVisible">
-
+    <el-dialog :title="$t('cluster.health_check.health_check')" width="30%" :visible.sync="dialogCheckVisible">
       <table v-loading="checkLoading" style="width: 90%" class="myTable" v-if="!isRecover">
         <thead>
           <tr>
@@ -196,7 +200,7 @@
         </table>
       </div>
       <div slot="footer" style="margin-top: 50px" class="dialog-footer">
-        <el-button @click="dialogUpgradeCancel">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="dialogUpgradeVisible = false">{{$t('commons.button.cancel')}}</el-button>
         <el-button :v-loading="uploadLoadding" type="primary" @click="submitUpgrade()">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
@@ -209,6 +213,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import { listClusters, getClusterStatus, initCluster, upgradeCluster, openLogger, importCluster, deleteCluster, healthCheck, clusterRecover } from "@/api/cluster"
 import { listActive } from "@/api/manifest"
+import { allProjects } from "@/api/projects"
 
 export default {
   name: "Cluster",
@@ -247,17 +252,19 @@ export default {
       // cluster import
       dialogImportVisible: false,
       importLoadding: false,
+      projects: [],
       importForm: {
         name: "",
         apiServer: "",
         token: "",
         router: "",
-        projectName: "",
+        projectName: "kubeoperator",
       },
       importFormRules: {
         name: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
         apiServer: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
         token: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
+        projectName: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
         router: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
       },
 
@@ -291,7 +298,7 @@ export default {
   methods: {
     search() {
       const { currentPage, pageSize } = this.paginationConfig
-      listClusters(currentPage, pageSize, "kubeoperator").then((data) => {
+      listClusters(currentPage, pageSize).then((data) => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
@@ -378,9 +385,15 @@ export default {
 
     // cluster import
     onImport() {
-      this.dialogImportVisible = true
-      this.importForm.projectName = "kubeoperator"
+      allProjects().then((data) => {
+        this.projects = data.items
+        this.dialogImportVisible = true
+      }),
+        (error) => {
+          this.$message({ type: "error", message: error })
+        }
     },
+
     submitImport() {
       this.importLoadding = true
       this.$refs["importFormRules"].validate((valid) => {

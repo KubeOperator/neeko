@@ -14,6 +14,10 @@ export function listHosts(currentPage, pageSize) {
   return get(`${hostUrl}?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
+export function listHostAll() {
+  return get(`${hostUrl}`)
+}
+
 export function searchHosts(currentPage, pageSize) {
   return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
