@@ -51,7 +51,7 @@
     </complex-table>
 
     <el-dialog :before-close="closeDialogLog" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div style="height: 600px">
+      <div class="xxx" style="height: 400px">
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{log.message}}</span>
           <div>

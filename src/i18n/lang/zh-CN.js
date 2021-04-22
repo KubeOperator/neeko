@@ -275,6 +275,11 @@ const message = {
       },
       overview: {
         source: "来源",
+        base_info: "基础信息",
+        capacity_info: "容量信息",
+        statistical_info: "统计信息",
+        connect: "连接",
+        download_kube_config: "下载KubeConfig",
       },
       node: {
         increment: "增量",

@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div style="position: absolute;right: 10px;z-index: 100">
-      <el-button v-if="isRun" icon="el-icon-video-play" @click="changeMode()" style="float: right;"></el-button>
-      <el-button v-if="!isRun" icon="el-icon-video-pause" @click="changeMode()" style="float: right;"></el-button>
+    <div style="position: absolute;right: 10px;z-index: 200">
+      <el-button size="large" v-if="isRun" icon="el-icon-video-pause" @click="changeMode()" style="float: right;"></el-button>
+      <el-button size="large" v-if="!isRun" icon="el-icon-video-play" @click="changeMode()" style="float: right;"></el-button>
     </div>
-    <div class="container">
+    <div>
       <div id="terminal-container"></div>
     </div>
   </div>
 </template>
 
 <script>
+import "xterm/css/xterm.css"
 import { Terminal } from "xterm"
 import { getProvisionerLog, getClusterLog } from "@/api/cluster"
 
@@ -43,7 +44,7 @@ export default {
       const logId = this.$route.query.logId
       this.timer = setInterval(() => {
         if (this.isRun) {
-          if (logId) {
+          if (logId !== undefined) {
             getProvisionerLog(clusterName, logId).then(
               (data) => {
                 this.term.clear()
@@ -78,17 +79,9 @@ export default {
     changeMode() {
       this.isRun = !this.isRun
     },
-    getQueryVariable(variable) {
-      const query = window.location.search.substring(1)
-      const vars = query.split("&")
-      for (const v of vars) {
-        const pair = v.split("=")
-        if (pair[0] === variable) {
-          return pair[1]
-        }
-      }
-      return null
-    },
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
   mounted() {
     this.init()

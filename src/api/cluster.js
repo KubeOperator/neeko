@@ -56,10 +56,6 @@ export function getClusterStatus(clusterName) {
   return get(`/clusters/status/${clusterName}`)
 }
 
-export function getToken(clusterName) {
-  return get(`clusters/webkubectl/${clusterName}?l=zh-CN`)
-}
-
 export function getClusterLog(clusterName) {
   return get(clusterLoggerUrl.replace("{cluster_name}", clusterName))
 }

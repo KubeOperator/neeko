@@ -12,7 +12,7 @@
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('host.port')" prop="port">
-              <el-input type="number" min="0" max="65535" placeholder="22" v-model="form.port" clearable></el-input>
+              <el-input-number style="width:100%" v-model="num" min="0" max="65535" :step="1" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
 
             <el-form-item :label="$t('credential.credential')">
@@ -29,10 +29,10 @@
 
             <span v-if="credentialType==='new'">
               <el-form-item :label="$t('credential.name')" prop="credential.name">
-                <el-input v-model="form.credential.name"></el-input>
+                <el-input v-model="form.credential.name" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('credential.username')" prop="credential.username">
-                <el-input v-model="form.credential.username"></el-input>
+                <el-input v-model="form.credential.username" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('credential.credential')" prop="credential.type">
                 <el-radio-group v-model="form.credential.type">
@@ -41,10 +41,10 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item v-if="form.credential.type==='password'" :label="$t('credential.password')" prop="credential.password">
-                <el-input type="password" v-model="form.credential.password"></el-input>
+                <el-input type="password" v-model="form.credential.password" clearable></el-input>
               </el-form-item>
               <el-form-item v-if="form.credential.type==='privateKey'" :label="$t('credential.privateKey')" prop="credential.privateKey">
-                <el-input type="textarea" v-model="form.credential.privateKey"></el-input>
+                <el-input type="textarea" v-model="form.credential.privateKey" clearable></el-input>
               </el-form-item>
             </span>
             <el-form-item>
@@ -86,7 +86,7 @@ export default {
       rules: {
         name: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
         ip: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        port: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+        port: [{ required: true, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
         credentialId: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "change" }],
         credential: {
           username: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],

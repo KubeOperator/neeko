@@ -312,7 +312,7 @@ export default {
       })
     },
     openFrame(item) {
-      window.open(item.url.replace("{cluster_name}", this.clusterName), "_blank")
+      window.open(process.env.VUE_APP_BASE_API + item.url.replace("{cluster_name}", this.clusterName), "_blank")
     },
     onEnable(item) {
       this.conditions = ""
