@@ -29,6 +29,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { getF5, createF5, updateF5 } from "@/api/cluster/f5"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterF5",
@@ -47,14 +48,11 @@ export default {
         status: "",
       },
       rules: {
-        url: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        user: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        password: [
-          { required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" },
-          { type: "string", min: 6, message: this.$t("commons.validate.password_min_length"), trigger: "blur" },
-        ],
-        partition: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        publicIP: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+        url: [Rule.RequiredRule],
+        user: [Rule.RequiredRule],
+        password: [Rule.PasswordRule],
+        partition: [Rule.RequiredRule],
+        publicIP: [Rule.RequiredRule],
       },
     }
   },

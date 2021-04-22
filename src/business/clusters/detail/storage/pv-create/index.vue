@@ -5,7 +5,7 @@
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form :model="form" ref="form" label-width="200px">
-            <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="nameRules">
               <el-select style="width: 100%" @change="changePvType()" size="small" v-model="form.pvType">
                 <el-option value="Host Path" label="Host Path">Host Path</el-option>
                 <el-option value="Local Volume" label="Local Volume">Local Volume</el-option>
@@ -13,23 +13,23 @@
             </el-form-item>
 
             <div v-if="form.pvType === 'Host Path'">
-              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="emptyRulesInput">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
-                <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
+                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="emptyRulesInput">
+              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
                 <el-input type="number" v-model="form.submitForm.spec.capacity.storage" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="emptyRulesChange">
+              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
                   <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
                   <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Host Path" prop="submitForm.spec.hostPath.path" :rules="emptyRulesInput">
+              <el-form-item label="Host Path" prop="submitForm.spec.hostPath.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.hostPath.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="emptyRulesInput">
+              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
@@ -42,37 +42,37 @@
                   </el-select>
                 </el-col>
               </el-form-item>
-              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue" :rules="emptyRulesInput">
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue" :rules="requiredRules">
                 <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="form.pvType === 'Local Volume'">
-              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="emptyRulesInput">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
-                <div><span class="input-help">{{$t('cluster.detail.storage.provisioner_name_helper')}}</span></div>
+                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="emptyRulesInput">
+              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.capacity.storage" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="emptyRulesChange">
+              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
                   <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
                   <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Path" prop="submitForm.spec.local.path" :rules="emptyRulesChange">
+              <el-form-item label="Path" prop="submitForm.spec.local.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.local.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="StorageClass" prop="storageClassName" :rules="emptyRulesInput">
+              <el-form-item label="StorageClass" prop="storageClassName" :rules="requiredRules">
                 <el-select style="width: 100%" size="small" v-model="form.storageClassName">
                   <option v-for="sc in storageClassList" :key="sc.metadata.name" [value]="sc.metadata.name">{{sc.metadata.name}}</option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="emptyRulesInput">
+              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
-                <el-col :span="12" prop="metadata.name" :rules="emptyRulesChange">
+                <el-col :span="12" prop="metadata.name" :rules="requiredRules">
                   <el-select style="width: 100%" size="small" v-model="form.selectorOperation">
                     <el-option value="In" label="In">In</el-option>
                     <el-option value="NotIn" label="NotIn">NotIn</el-option>
@@ -97,6 +97,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listStorageClass, createPersistentVolume } from "@/api/cluster/storage"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterStoragePvCreate",
@@ -145,8 +146,8 @@ export default {
           },
         },
       },
-      emptyRulesInput: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
-      emptyRulesChange: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+      nameRules: [Rule.CommonNameRule],
+      requiredRules: [ Rule.RequiredRule ],
     }
   },
   methods: {

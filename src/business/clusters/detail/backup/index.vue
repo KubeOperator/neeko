@@ -11,11 +11,11 @@
                   <span>{{ $t("cluster.detail.backup.backup_strategy") }}</span>
                 </div>
                 <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
-                  <el-input style="width:80%" type="number" v-model.number="strategyForm.cron" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.cron" clearable/>
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
-                  <el-input style="width:80%" type="number" v-model.number="strategyForm.saveNum" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.saveNum" clearable/>
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
@@ -25,7 +25,7 @@
                       {{ b.name }}({{ b.bucket }})
                     </el-option>
                   </el-select>
-                  <div><span class="input-help">{{ $t("cluster.detail.backup.backup_account_helper") }}</span></div>
+                  <div><span class="input-help">{{ $t("cluster.detail.backup.backup_account_help") }}</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.status')" prop="status">
                   <el-select style="width:80%" size="small" v-model="strategyForm.status">
@@ -56,7 +56,7 @@
                   <el-row type="flex" justify="center">
                     <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
                       <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">{{ $t("commons.form.file_upload_helper") }}</div>
+                      <div class="el-upload__text">{{ $t("commons.form.file_upload_help") }}</div>
                       <div class="el-upload__tip" slot="tip">{{ $t("cluster.detail.backup.local_recover_tips") }}</div>
                     </el-upload>
                   </el-row>
@@ -125,6 +125,7 @@ import {
   getBackupLog,
   listBackupAccounts
 } from "@/api/cluster/backup"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterBackup",
@@ -144,20 +145,10 @@ export default {
         clusterName: "",
       },
       rules: {
-        cron: [
-          { required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" },
-          { pattern: /^([1-9]|[1-9]\d|1\d\d|2\d\d|300)$/, message: "范围在0-300", trigger: "blur" },
-        ],
-        saveNum: [
-          { required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" },
-          { pattern: /^([1-9]|[1-9]\d|1\d\d|2\d\d|300)$/, message: "范围在0-300", trigger: "blur" },
-        ],
-        backupAccountName: [{
-          required: true,
-          message: this.$t("commons.validate.cannot_be_empty"),
-          trigger: "change"
-        }],
-        status: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        cron: [Rule.NumberRule],
+        saveNum: [Rule.NumberRule],
+        backupAccountName: [Rule.RequiredRule],
+        status: [Rule.RequiredRule],
       },
       file: {},
       paginationConfig: {
