@@ -1,4 +1,4 @@
-FROM node:10-alpine as stage-build
+FROM node:14-alpine as stage-build
 WORKDIR /data
 
 COPY ./package.json /data/package.json
