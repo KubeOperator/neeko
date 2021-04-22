@@ -162,7 +162,6 @@ export function listPod(clusterName, continueToken, namespace) {
   return get(url)
 }
 
-
 export function listEvents(clusterName, continueToken, namespace) {
   let url = proxyUrl.replace("{cluster_name}", clusterName)
   url += "?limit=" + limit
@@ -175,4 +174,8 @@ export function listEvents(clusterName, continueToken, namespace) {
     url = url.replace("{resource_url}", eventsUrl)
   }
   return get(url)
+}
+
+export function getClusterToken(clusterName) {
+  return get(`clusters/webkubectl/${clusterName}?l=zh-CN`)
 }
