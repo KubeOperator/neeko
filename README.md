@@ -1,6 +1,6 @@
-# KOUI
+# NEEKO
 
-KOUI 是 KubeOperator 的新版前端 UI 项目, 主要使用 [Vue](https://cn.vuejs.org/), [Element UI](https://github.com/fit2cloud-ui/fit2cloud-ui/) 完成。
+Neeko 是 KubeOperator 的新版前端 UI 项目, 主要使用 [Vue](https://cn.vuejs.org/), [Element UI](https://github.com/fit2cloud-ui/fit2cloud-ui/) 完成。
 
 ## 开发运行
 
