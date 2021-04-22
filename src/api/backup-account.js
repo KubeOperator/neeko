@@ -19,3 +19,7 @@ export function updateBackupAccounts(name, data) {
 export function deleteBackupAccounts(name) {
   return del(`/backupaccounts/${name}`)
 }
+
+export function searchBackupAccounts(currentPage, pageSize, conditions) {
+  return post(`/backupaccounts/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}

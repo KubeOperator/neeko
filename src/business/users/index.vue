@@ -2,7 +2,7 @@
   <layout-content :header="$t('user.user')">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search" v-loading="loading"
-                   :selects.sync="selects" fit="true">
+                   :selects.sync="selects" :fit="true">
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -11,7 +11,7 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="120" fix>
+      <el-table-column :label="$t('commons.table.name')" mix-width="120">
         <template v-slot:default="{row}">
           <el-row>
 <!--            <el-col :span="6">-->
