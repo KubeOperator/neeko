@@ -234,6 +234,7 @@ const message = {
       is_force: "是否强制",
     },
     health_check: {
+      health_check: "健康检查",
       level: "等级",
       message: "消息",
       method: "方法",
