@@ -18,8 +18,8 @@ export function listHostAll() {
   return get(`${hostUrl}`)
 }
 
-export function searchHosts(currentPage, pageSize) {
-  return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`)
+export function searchHosts(currentPage, pageSize,condition) {
+  return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`,condition)
 }
 
 export function syncHosts(hosts) {

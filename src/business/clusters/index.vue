@@ -4,15 +4,15 @@
                    :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="onCreate()">{{ $t("commons.button.create") }}</el-button>
-          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" type="danger" @click="onDelete()">
+          <el-button size="small" @click="onCreate()" v-permission="['ADMIN','PROJECT_MANAGER']">{{ $t("commons.button.create") }}</el-button>
+          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" type="danger" @click="onDelete()"  v-permission="['ADMIN','PROJECT_MANAGER']">
             {{ $t("commons.button.delete") }}
           </el-button>
-          <el-button size="small" @click="onImport()">{{ $t("commons.button.import") }}</el-button>
+          <el-button size="small" @click="onImport()"  v-permission="['ADMIN','PROJECT_MANAGER']">{{ $t("commons.button.import") }}</el-button>
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" fix ></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text">{{ row.name }}</el-button>
