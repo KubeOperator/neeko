@@ -49,7 +49,7 @@
     <el-dialog :title="$t('cluster.detail.tool.enable_title')" width="30%" :visible.sync="dialogEnableVisible">
       <el-form :model="toolForm" ref="toolForm" label-width="140px">
 
-        <el-form-item :label="$t('cluster.detail.tag.namespace')" prop="vars.namespace" :rules="emptyRulesChange">
+        <el-form-item :label="$t('cluster.detail.tag.namespace')" prop="vars.namespace" :rules="requiredRules">
           <el-select style="width: 80%" filterable v-model="toolForm.vars['namespace']" clearable>
             <el-option v-for="item of namespaces" :key="item" :value="item">{{item}}</el-option>
           </el-select>
@@ -60,13 +60,13 @@
             <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClass']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
@@ -79,19 +79,19 @@
 
         <div v-if="toolForm.name === 'prometheus'">
           <el-form-item :label="$t('cluster.detail.tool.data_retention')" prop="vars.server_retention" :rules="numberRules">
-            <el-input style="width: 80%" v-model="toolForm.vars['server_retention']" clearable></el-input>
+            <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['server_retention']" clearable></el-input-number>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
             <el-switch style="width: 80%" v-model="toolForm.vars['server_persistentVolume_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['server_persistentVolume_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistentVolume_storageClass" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistentVolume_storageClass" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['server.persistentVolume_storageClass']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistentVolume_storageClass" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['server_persistentVolume_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['server_persistentVolume_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['server_nodeSelector_kubernetes\\_io/hostname']" clearable>
@@ -103,29 +103,30 @@
         </div>
 
         <div v-if="toolForm.name === 'logging'">
-          <el-form-item :label="$t('cluster.detail.tool.search_index')" prop="vars.fluentd__elasticsearch_elasticsearch_logstashPrefix" :rules="emptyRulesInput">
-            <el-input style="width: 80%" v-model="toolForm.vars['fluentd___elasticsearch_elasticsearch_logstashPrefix']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.search_index')" prop="vars.fluentd__elasticsearch_elasticsearch_logstashPrefix" :rules="requiredRules">
+            <el-input style="width: 80%" v-model="toolForm.vars['fluentd__elasticsearch_elasticsearch_logstashPrefix']" clearable></el-input>
             <div><span class="input-help">{{$t('cluster.detail.tool.search_index_help')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.replicas')" prop="vars.elasticsearch_replicas" :rules="numberRules">
-            <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_replicas']" clearable></el-input>
-            <div><span class="input-help">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span></div>
+            <el-input-number :step="1" step-strictly style="width: 80%" @blur="checkReplicas" v-model="toolForm.vars['elasticsearch_replicas']" clearable></el-input-number>
+            <div v-if="isReplicasValid"><span class="input-help">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span></div>
+            <div v-if="!isReplicasValid"><span class="input-error">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.hip_memery')" prop="vars.elasticsearch_esJavaOpts_item" :rules="numberRules">
-            <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_esJavaOpts_item']" clearable></el-input>
+            <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['elasticsearch_esJavaOpts_item']" clearable></el-input-number>
             <div><span class="input-help">{{$t('cluster.detail.tool.default_hip_memery')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
             <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch_persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['elasticsearch_persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.elasticsearch_volumeClaimTemplate_storageClassName" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.elasticsearch_volumeClaimTemplate_storageClassName" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['elasticsearch_volumeClaimTemplate_storageClassName']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.elasticsearch_volumeClaimTemplate_resources_requests_storage" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['elasticsearch_volumeClaimTemplate_resources_requests_storage']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['elasticsearch_volumeClaimTemplate_resources_requests_storage']" clearable></el-input-number>
             </el-form-item>
           </div>
         </div>
@@ -135,13 +136,13 @@
             <el-switch style="width: 80%" v-model="toolForm.vars['loki_persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['loki_persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.loki_persistence_storageClassName" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.loki_persistence_storageClassName" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_persistence_storageClassName']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.loki_persistence_size" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['loki_persistence_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['loki_persistence_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_nodeSelector_kubernetes\\_io/hostname']" clearable>
@@ -153,23 +154,24 @@
         </div>
 
         <div v-if="toolForm.name === 'grafana'">
-          <el-form-item :label="$t('cluster.detail.tool.password')" prop="vars.adminPassword" :rules="emptyRulesInput">
-            <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.password')" prop="vars.adminPassword" :rules="passwordRules">
+            <el-input @blur="checkPassword" type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.tool.password_re')" prop="vars.adminPasswordRe" :rules="emptyRulesInput">
-            <el-input type="password" style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
+          <el-form-item :label="$t('cluster.detail.tool.password_re')" prop="vars.adminPasswordRe" :rules="passwordRules">
+            <el-input @blur="checkPassword" type="password" style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
+            <div v-if="!isPasswordValid"><span class="input-error">{{$t('cluster.detail.tool.grafana_password_help')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
             <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClassName']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
@@ -185,7 +187,7 @@
             <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClass']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
@@ -207,13 +209,13 @@
             <el-switch style="width: 80%" v-model="toolForm.vars['postgresql_persistence_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['postgresql_persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.global_storageClass" :rules="emptyRulesChange">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.global_storageClass" :rules="requiredRules">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['global_storageClass']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.postgresql_persistence_size" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['postgresql_persistence_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['postgresql_persistence_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector']" clearable>
@@ -226,7 +228,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="enable()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" v-loading="loading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -262,6 +264,7 @@ import { listNamespace } from "@/api/cluster/namespace"
 import { listStorageClass } from "@/api/cluster/storage"
 import { getClusterByName } from "@/api/cluster"
 import { changeUnderLineToPoint } from "@/utils/format_conversion"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterTool",
@@ -280,6 +283,9 @@ export default {
       dialogDisableVisible: false,
       dialogUpgradeVisible: false,
       conditions: "",
+      loading: false,
+      isPasswordValid: true,
+      isReplicasValid: true,
       toolForm: {
         name: "",
         version: "",
@@ -292,9 +298,9 @@ export default {
         vars: {},
         higher_version: "",
       },
-      numberRules: [{ required: true, pattern: /^[1-9][0-9]*$/, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
-      emptyRulesInput: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
-      emptyRulesChange: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+      numberRules: [Rule.NumberRule],
+      requiredRules: [Rule.RequiredRule],
+      passwordRules: [Rule.PasswordRule],
       namespaces: [],
       nodes: [],
       nodeNum: 0,
@@ -350,23 +356,36 @@ export default {
         this.listStorages()
         this.setDefaultVars(item)
         this.toolForm = item
+        this.isPasswordValid = true
+        this.isReplicasValid = true
         this.dialogEnableVisible = true
       } else {
         this.dialogFailedVisible = true
       }
     },
     enable() {
+      this.loading = true
       this.$refs["toolForm"].validate((valid) => {
-        if (valid) {
+        if (valid && this.isPasswordValid && this.isReplicasValid) {
           changeUnderLineToPoint(this.toolForm.vars)
           enableTool(this.clusterName, this.toolForm).then(() => {
             this.dialogEnableVisible = false
             this.search()
+            this.loading = false
           })
         } else {
+          this.loading = false
           return false
         }
       })
+    },
+    checkPassword() {
+      if (this.toolForm.vars["adminPassword"] && this.toolForm.vars["adminPasswordRe"]) {
+        this.isPasswordValid = (this.toolForm.vars["adminPassword"] == this.toolForm.vars["adminPasswordRe"])
+      }
+    },
+    checkReplicas() {
+      this.isReplicasValid = (this.toolForm.vars["elasticsearch_replicas"] <= this.nodeNum)
     },
     onErrorShow(item) {
       this.conditions = item.message

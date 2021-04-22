@@ -12,7 +12,7 @@
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('host.port')" prop="port">
-              <el-input-number style="width:100%" v-model="num" min="0" max="65535" :step="1" step-strictly v-model.number="form.port" clearable></el-input-number>
+              <el-input-number style="width:100%" :step="1" :min="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
 
             <el-form-item :label="$t('credential.credential')">
@@ -63,6 +63,7 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { createHost } from "@/api/hosts"
 import { listCredentialAll } from "@/api/credentials";
+import Rule from "@/utils/rules"
 
 export default {
   name: "HostCreate",
@@ -84,18 +85,15 @@ export default {
         },
       },
       rules: {
-        name: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        ip: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-        port: [{ required: true, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
-        credentialId: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "change" }],
+        name: [Rule.RequiredRule],
+        ip: [Rule.RequiredRule],
+        port: [Rule.RequiredRule],
+        credentialId: [Rule.RequiredRule],
         credential: {
-          username: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-          password: [
-            { required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" },
-            { type: "string", min: 6, message: this.$t("commons.validate.password_min_length"), trigger: "blur" },
-          ],
-          name: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
-          privateKey: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "blur" }],
+          username: [Rule.RequiredRule],
+          password: [Rule.PasswordRule],
+          name: [Rule.RequiredRule],
+          privateKey: [Rule.RequiredRule],
         }
       },
       credentialList: [],

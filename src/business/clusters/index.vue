@@ -352,10 +352,12 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.dialogDeleteVisible = false
             this.deleteLoadding = false
           })
           .catch(() => {
             this.search()
+            this.dialogDeleteVisible = false
             this.deleteLoadding = false
           })
       })
