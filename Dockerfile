@@ -9,5 +9,5 @@ RUN npm run-script build
 
 FROM nginx:alpine
 
-COPY --from=stage-build /data/dist /opt/kubeOperator-ui
+COPY --from=stage-build /data/dist /opt/neeko
 COPY nginx.conf /etc/nginx/conf.d/default.conf
