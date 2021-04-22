@@ -15,3 +15,7 @@ export function createClusterMember (projectName, clusterName, data) {
 export function deleteClusterMember (projectName, clusterName, name) {
   return del(`${clusterMemberUrl(projectName, clusterName)}/${name}`)
 }
+
+export function searchUsers (projectName, name) {
+  return get(`${clusterMemberUrl(projectName)}/users?name=${name}`)
+}
