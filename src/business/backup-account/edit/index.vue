@@ -86,6 +86,7 @@ export default {
   data() {
     return{
       form: {
+        id: '',
         name: '',
         type: '',
         bucket: '',
@@ -97,6 +98,7 @@ export default {
   methods: {
     update() {
       updateBackupAccounts( this.form.name,{
+        id: this.form.id,
         bucket: this.form.bucket,
         credentialVars: this.form.credentialVars,
         name: this.form.name,
@@ -104,7 +106,7 @@ export default {
       }).then(() => {
         this.$message({
           type: 'success',
-          message: `更新成功`
+          message: this.$t("commons.msg.save_success")
         });
         this.$router.push({name: "BackupAccount"})
       })
@@ -123,12 +125,7 @@ export default {
     }
   },
   created() {
-    console.log(222, this.data)
-    this.form.name = this.data.name
-    this.form.type = this.data.type
-    this.form.bucket = this.data.bucket
-    this.form.credentialVars = this.data.credentialVars
-    console.log('edit',this.form)
+    this.form = this.data
   }
 }
 </script>
