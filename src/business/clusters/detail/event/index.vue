@@ -7,7 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item style="float: right">
-        <el-switch v-model="isNPDon" @change="changeNpd()" active-text="启用NDP">
+        <el-switch v-model="isNPDon" @change="changeNpd()" active-text="$t('cluster.detail.event.enable_npd')">
         </el-switch>
       </el-form-item>
     </el-form>
@@ -23,9 +23,7 @@
         </template>
       </el-table-column>
     </complex-table>
-    <!-- <el-pagination style="float:right" @next-click="getPageNext()" layout="next"></el-pagination>
-    <span style="float:right; margin-top: 7px">{{currentPage}}</span>
-    <el-pagination style="float:right" @prev-click="getPageAhead()" layout="prev"></el-pagination> -->
+    <k8s-page @pageChange="pageChange" :nextToken="page.nextToken" />
   </div>
 </template>
 
@@ -33,14 +31,19 @@
 import ComplexTable from "@/components/complex-table"
 import { listNamespace } from "@/api/cluster/namespace"
 import { listPod } from "@/api/cluster/cluster"
+import K8sPage from "@/components/k8s-page"
 import { listEvents, changeNpd } from "@/api/cluster/event"
 
 export default {
   name: "ClusterEvent",
-  components: { ComplexTable },
+  components: { ComplexTable, K8sPage },
   data() {
     return {
       loading: false,
+      page: {
+        continueToken: "",
+        nextToken: "",
+      },
       clusterName: "",
       namespaces: [],
       currentNamespace: "",
@@ -60,9 +63,14 @@ export default {
       })
       this.getNpdExists()
     },
+    pageChange(continueToken) {
+      this.page.continueToken = continueToken
+      this.search()
+    },
     listEvents(namespace) {
       listEvents(this.clusterName, this.continueToken, namespace).then((data) => {
         this.data = data.items
+        this.page.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
       })
     },
     getNpdExists() {
@@ -91,7 +99,7 @@ export default {
         },
         (error) => {
           this.isNPDon = op === "delete"
-          this.$message({ type: "error", message: error.error.msg })
+          this.$message({ type: "error", message: error })
         }
       )
     },
