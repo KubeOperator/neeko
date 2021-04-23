@@ -23,7 +23,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { formatDate } from "@/utils/date_format"
+import { formatDate } from "@/utils/format_date"
 import { EfSearch } from "@/api/cluster/log"
 
 const CustomSearchComponent = {

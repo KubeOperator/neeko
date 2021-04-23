@@ -1,7 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading"
-                   :search-config="searchConfig">
+    <complex-table :data="data" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -15,44 +14,33 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="200" fix>
+      <el-table-column :label="$t('commons.table.name')" min-width="50" fix>
         <template v-slot:default="{row}">
-          <el-row>
-            <el-col :span="6">
-              <!--              <font-awesome-icon icon="server" size="3x" />-->
-              <svg class="icon" aria-hidden="true" style="font-size: 28px">
-                <use xlink:href="#iconzhuji1"></use>
-              </svg>
-            </el-col>
-            <el-col :span="18">
-              {{ row.name }}<br/>
-              {{ row.ip }}
-            </el-col>
-          </el-row>
+          <el-button v-if="row.status === 'Running'" type="text" @click="getDetailInfo(row)">{{ row.name }}</el-button>
+          <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="CPU" min-width="50" prop="cpuCore"/>
-      <el-table-column label="GPU" min-width="50" prop="gpuNum"/>
-      <el-table-column :label="$t('host.memory')" min-width="100" prop="memory"/>
+      <el-table-column label="IP" min-width="50" prop="ip" />
+      <el-table-column label="CPU" min-width="50" prop="cpuCore" />
+      <el-table-column label="GPU" min-width="50" prop="gpuNum" />
+      <el-table-column :label="$t('host.memory')" min-width="100" prop="memory" />
       <el-table-column :label="$t('host.os')" min-width="100">
         <template v-slot:default="{row}">
           {{ row.os }} {{ row.osVersion }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" min-width="100" prop="architecture"/>
+      <el-table-column :label="$t('host.architecture')" min-width="100" prop="architecture" />
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{ $t("commons.status.running") }}
-          </el-tag>
-          <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{ $t("commons.status.failed") }}</el-tag>
+          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{ $t("commons.status.running") }}</el-tag>
+          <el-tag @click.native="getErrorInfo(row)" v-if="row.status === 'Failed'" type="danger" size="small">{{ $t("commons.status.failed") }}</el-tag>
           <el-tag v-if="row.status === 'Initializing'" type="info" size="small">{{ $t("commons.status.initializing") }}
-            <font-awesome-icon icon="spinner" pulse/>
+            <font-awesome-icon icon="spinner" pulse />
           </el-tag>
           <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">
             {{ $t("commons.status.synchronizing") }}
-            <font-awesome-icon icon="spinner" pulse/>
+            <font-awesome-icon icon="spinner" pulse />
           </el-tag>
-          <el-tag v-if="row.status === 'Error'" type="danger" size="small">{{ $t("commons.status.error") }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -61,7 +49,7 @@
         </template>
       </el-table-column>
 
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
@@ -72,6 +60,62 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
         <el-button type="primary" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('host.err_title')" width="50%" :visible.sync="dialogDetailVisible">
+      <el-divider content-position="left">{{$t ('host.base_info')}}</el-divider>
+      <el-row type="flex" justify="center">
+        <el-col :span="6">
+          <ul>{{$t ('host.cpu')}}</ul>
+          <ul>{{$t ('host.memery_with_unit')}}</ul>
+          <ul>{{$t ('host.os')}}</ul>
+        </el-col>
+        <el-col :span="6">
+          <ul>{{currentHost.cpuCore}}</ul>
+          <ul>{{currentHost.memory}}</ul>
+          <ul>{{currentHost.osVersion}}</ul>
+        </el-col>
+      </el-row>
+      <el-divider content-position="left">{{$t ('host.disk_info')}}</el-divider>
+      <table style="width: 90%" class="myTable">
+        <thead>
+          <tr>
+            <th>{{$t('commons.table.name')}}</th>
+            <th>{{$t('host.size')}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(name, size) in currentHost.volumes" :key="name">
+            <th>{{name}}</th>
+            <td>{{size}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-if="currentHost.hasGpu">
+        <el-divider content-position="left">{{$t ('host.gpu_info')}}</el-divider>
+        <table style="width: 90%" class="myTable">
+          <thead>
+            <tr>
+              <th>{{$t('commons.table.name')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>{{host.gpuInfo}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogDetailVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('host.err_title')" width="30%" :visible.sync="dialogErrorVisible">
+      <span>{{ currentHost.message }}</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogErrorVisible = false">{{ $t("commons.button.cancel") }}</el-button>
       </div>
     </el-dialog>
 
@@ -103,13 +147,13 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {deleteHost, searchHosts, syncHosts, importHosts} from "@/api/hosts"
+import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 
 export default {
   name: "HostList",
   components: { ComplexTable, LayoutContent },
-  data () {
+  data() {
     return {
       buttons: [
         {
@@ -127,6 +171,9 @@ export default {
         total: 0,
       },
       data: [],
+      dialogErrorVisible: false,
+      dialogDetailVisible: false,
+      currentHost: {},
       hostSelections: [],
       syncHostList: [],
       dialogSyncVisible: false,
@@ -138,19 +185,19 @@ export default {
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
-        ]
+        ],
       },
-      loading: false
+      loading: false,
     }
   },
   methods: {
-    create () {
+    create() {
       this.$router.push({ name: "HostCreate" })
     },
-    sync () {
+    sync() {
       this.dialogSyncVisible = true
     },
-    submitSync () {
+    submitSync() {
       this.syncHostList = []
       this.hostSelections.forEach((item) => {
         this.syncHostList.push({
@@ -164,13 +211,21 @@ export default {
         this.dialogSyncVisible = false
       })
     },
-    onUploadChange (file) {
+    onUploadChange(file) {
       this.file = file
     },
-    download () {
+    download() {
       window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
     },
-    onUploadFile () {
+    getErrorInfo(row) {
+      this.dialogErrorVisible = true
+      this.currentHost = row
+    },
+    getDetailInfo(row) {
+      this.dialogDetailVisible = true
+      this.currentHost = row
+    },
+    onUploadFile() {
       const startIndex = this.file.name.lastIndexOf(".")
       if (startIndex !== -1) {
         const fileType = this.file.name.substring(startIndex + 1, this.file.name.length).toLowerCase()
@@ -197,7 +252,7 @@ export default {
         }
       )
     },
-    delete (name) {
+    delete(name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -214,7 +269,7 @@ export default {
         }
       })
     },
-    bactchDelete () {
+    bactchDelete() {
       const ps = []
       for (const item of this.hostSelections) {
         ps.push(deleteHost(item.name))
@@ -227,18 +282,20 @@ export default {
         })
       })
     },
-    search (condition) {
+    search(condition) {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      searchHosts(currentPage, pageSize, condition).then((data) => {
-        this.loading = false
-        this.data = data.items
-        this.paginationConfig.total = data.total
-      }).finally(() =>{
-        this.loading = false
-      })
+      searchHosts(currentPage, pageSize, condition)
+        .then((data) => {
+          this.loading = false
+          this.data = data.items
+          this.paginationConfig.total = data.total
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    polling () {
+    polling() {
       this.timer = setInterval(() => {
         let flag = false
         const needPolling = ["Initializing", "Terminating", "Synchronizing", "Waiting", "Creating"]
@@ -254,11 +311,11 @@ export default {
       }, 10000)
     },
   },
-  created () {
+  created() {
     this.search()
     this.polling()
   },
-  destroyed () {
+  destroyed() {
     clearInterval(this.timer)
   },
 }

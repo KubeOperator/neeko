@@ -359,16 +359,4 @@ export default {
 </script>
 
 <style scoped>
-.myTable {
-  border-collapse: collapse;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.myTable td,
-.myTable th {
-  border: 1px solid #cad9ea;
-  color: #666;
-  height: 30px;
-}
 </style>
