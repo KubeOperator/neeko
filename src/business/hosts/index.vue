@@ -33,15 +33,22 @@
       <el-table-column :label="$t('host.architecture')" min-width="100" prop="architecture" />
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{ $t("commons.status.running") }}</el-tag>
-          <el-tag @click.native="getErrorInfo(row)" v-if="row.status === 'Failed'" type="danger" size="small">{{ $t("commons.status.failed") }}</el-tag>
-          <el-tag v-if="row.status === 'Initializing'" type="info" size="small">{{ $t("commons.status.initializing") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">
-            {{ $t("commons.status.synchronizing") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
+          
+          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
+            {{ $t("commons.status.failed") }}
+          </el-button>
+          <el-button v-if="row.status === 'Terminating'" size="mini" round @click="openXterm(row)" type="primary" plain icon="el-icon-loading">
+            {{ $t("commons.status.terminating") }}
+          </el-button>
+
+          <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
+
+          <span v-if="row.status === 'Initializing'">
+            <i class="el-icon-loading" />{{ $t("commons.status.initializing") }}
+          </span>
+          <span v-if="row.status === 'Synchronizing'">
+            <i class="el-icon-loading" />{{ $t("commons.status.synchronizing") }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">

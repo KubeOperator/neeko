@@ -22,26 +22,24 @@
       <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{ $t("commons.status.running") }}
-          </el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Failed'" type="danger" size="small">
-            {{ $t("commons.status.failed") }}
-          </el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Initializing'" type="success" size="small">
+          <span v-if="row.status === 'Creating'">
+            <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
+          </span>
+          
+          <el-button v-if="row.status === 'Initializing'" size="mini" round @click="getStatus(row)" plain type="primary" icon="el-icon-loading">
             {{ $t("commons.status.initializing") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Terminating' && row.provider === 'bareMetal'" type="info" size="small">
-            {{ $t("commons.status.Terminating") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Upgrading'" type="success" size="small">
-            {{ $t("commons.status.Upgrading") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag v-if="row.status === 'Creating'" type="info" size="small">{{ $t("commons.status.creating") }}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
+          </el-button>
+          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getStatus(row)" plain type="danger">
+            {{ $t("commons.status.failed") }}
+          </el-button>
+          <el-button v-if="row.status === 'Terminating' && row.provider === 'bareMetal'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
+            {{ $t("commons.status.terminating") }}
+          </el-button>
+          <el-button v-if="row.status === 'Upgrading'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
+            {{ $t("commons.status.upgrading") }}
+          </el-button>
+
+          <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">

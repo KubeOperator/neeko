@@ -21,17 +21,17 @@
               <el-button type="primary" size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Running'">
-              <span v-if="!tool.frame" style="float:right; margin: 12px">{{$t('commons.status.Running')}}</span>
+              <span v-if="!tool.frame" style="float:right; margin: 12px">{{$t('commons.status.running')}}</span>
               <el-button v-if="tool.frame" size="small" @click="openFrame(tool)" style="float:right; margin: 5px">{{$t('commons.button.jump_to')}}</el-button>
               <el-button type="danger" size="small" @click="onDisable(tool)" style="float:right; margin: 5px">{{$t('commons.button.disable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Initializing'">
-              <span style="float:right; margin: 12px">{{$t('commons.status.Initializing')}}
+              <span style="float:right; margin: 12px">{{$t('commons.status.initializing')}}
                 <i class="el-icon-loading"></i>
               </span>
             </div>
             <div v-if="tool.status === 'Upgrading'">
-              <span style="float:right; margin: 12px">{{$t('commons.status.Upgrading')}}
+              <span style="float:right; margin: 12px">{{$t('commons.status.upgrading')}}
                 <i class="el-icon-loading"></i>
               </span>
             </div>

@@ -26,17 +26,23 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
-          <el-tag @click.native="onShowErrMsg(row)" v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Initializing'" type="success" size="small">{{$t('commons.status.initializing')}}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag @click.native="getStatus(row)" v-if="row.status === 'Terminating'" type="info" size="small">{{$t('commons.status.Terminating')}}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
-          <el-tag v-if="row.status === 'Creating'" type="info" size="small">{{$t('commons.status.creating')}}
-            <font-awesome-icon icon="spinner" pulse />
-          </el-tag>
+
+          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
+            {{ $t("commons.status.failed") }}
+          </el-button>
+          <el-button v-if="row.status === 'Terminating'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
+            {{ $t("commons.status.terminating") }}
+          </el-button>
+          <el-button v-if="row.status === 'Initializing'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
+            {{ $t("commons.status.terminating") }}
+          </el-button>
+
+          <span v-if="row.status === 'Creating'">
+            <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
+          </span>
+
+          <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
+          <el-tag v-if="row.status === 'NotReady'" type="info">{{ $t("commons.status.not_ready") }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -236,7 +242,7 @@ export default {
     getStatus(row) {
       openLogger(this.clusterName, row.name)
     },
-    onShowErrMsg(row) {
+    getErrorInfo(row) {
       this.dialogErrorVisible = true
       this.errMsg = row.message
     },

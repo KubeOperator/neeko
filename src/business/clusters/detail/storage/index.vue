@@ -75,21 +75,26 @@
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
               <template v-slot:default="{row}">
-                <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
-                <el-tag v-if="row.status === 'Failed'" @click.native="getErrorInfo(row)" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
-                <el-tag v-if="row.status === 'NotReady'" type="danger" size="small">{{$t('commons.status.not_ready')}}</el-tag>
-                <el-tag v-if="row.status === 'Initializing'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.initializing')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-                <el-tag v-if="row.status === 'Terminating'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.Terminating')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-                <el-tag v-if="row.status === 'Synchronizing'" type="info" size="small">{{$t('commons.status.synchronizing')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
-                <el-tag v-if="row.status === 'Waiting'" type="info" size="small">{{$t('commons.status.Waiting')}}
-                  <font-awesome-icon icon="spinner" pulse />
-                </el-tag>
+                
+                <el-button v-if="row.status === 'Initializing'" size="mini" round @click="openXterm(row)" plain type="primary" icon="el-icon-loading">
+                  {{ $t("commons.status.initializing") }}
+                </el-button>
+                <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
+                  {{ $t("commons.status.failed") }}
+                </el-button>
+                <el-button v-if="row.status === 'Terminating'" size="mini" round @click="openXterm(row)" type="primary" plain icon="el-icon-loading">
+                  {{ $t("commons.status.terminating") }}
+                </el-button>
+
+                <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
+                <el-tag v-if="row.status === 'NotReady'" type="info">{{ $t("commons.status.not_ready") }}</el-tag>
+
+                <span v-if="row.status === 'Synchronizing'">
+                  <i class="el-icon-loading" />{{ $t("commons.status.synchronizing") }}
+                </span>
+                <span v-if="row.status === 'Waiting'">
+                  <i class="el-icon-loading" />{{ $t("commons.status.waiting") }}
+                </span>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
