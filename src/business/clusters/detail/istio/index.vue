@@ -9,20 +9,20 @@
                 <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
               </el-tooltip>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.pilot_resources_limits_cpu" :rules="numberRules">
-              <el-input-number :step="1" step-strictly v-model.number="pilotCfg.vars.pilot_resources_limits_cpu"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="vars.pilot_resources_limits_cpu" :rules="numberRules">
+              <el-input-number  style="width: 80%" :step="1" step-strictly v-model.number="pilotCfg.vars.pilot_resources_limits_cpu"></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" prop="vars.pilot_resources_limits_memory" :rules="numberRules">
-              <el-input-number :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_limits_memory']"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.istio.memory_limit')" prop="vars.pilot_resources_limits_memory" :rules="numberRules">
+              <el-input-number  style="width: 80%" :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_limits_memory']"></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" prop="vars.pilot_resources_requests_cpu" :rules="numberRules">
-              <el-input-number :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_requests_cpu']"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="vars.pilot_resources_requests_cpu" :rules="numberRules">
+              <el-input-number  style="width: 80%" :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_requests_cpu']"></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.pilot_resources_requests_memory" :rules="numberRules">
-              <el-input-number :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_requests_memory']"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="vars.pilot_resources_requests_memory" :rules="numberRules">
+              <el-input-number  style="width: 80%" :step="1" step-strictly v-model="pilotCfg.vars['pilot_resources_requests_memory']"></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.istio.trace')" style="width: 80%" prop="vars.pilot_traceSampling" :rules="numberRules">
-              <el-input-number :step="1" step-strictly v-model="pilotCfg.vars['pilot_traceSampling']"></el-input-number>
+            <el-form-item :label="$t('cluster.detail.istio.trace')" prop="vars.pilot_traceSampling" :rules="numberRules">
+              <el-input-number  style="width: 80%" :step="1" step-strictly v-model="pilotCfg.vars['pilot_traceSampling']"></el-input-number>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -35,19 +35,19 @@
                   <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
                 </el-tooltip>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_limits_cpu" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_cpu']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="vars.gateways_istio__ingressgateway_resources_limits_cpu" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_cpu']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_limit')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_limits_memory" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_memory']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.memory_limit')" prop="vars.gateways_istio__ingressgateway_resources_limits_memory" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_limits_memory']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_request')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_requests_cpu" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_cpu']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="vars.gateways_istio__ingressgateway_resources_requests_cpu" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_cpu']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_resources_requests_memory" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_memory']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="vars.gateways_istio__ingressgateway_resources_requests_memory" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="ingressCfg.vars['gateways_istio__ingressgateway_resources_requests_memory']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.gateways_type')" style="width: 80%" prop="vars.gateways_istio__ingressgateway_type" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.istio.gateways_type')" prop="vars.gateways_istio__ingressgateway_type" :rules="requiredRules">
                 <el-select style="width: 100%" v-model="ingressCfg.vars['gateways_istio__ingressgateway_type']" clearable>
                   <el-option value="NodePort">NodePort</el-option>
                   <el-option value="LoadBalancer">LoadBalancer</el-option>
@@ -65,17 +65,17 @@
                   <el-button icon="el-icon-error" type="text" style="color:red">{{$t('cluster.detail.istio.err_title')}}</el-button>
                 </el-tooltip>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_limits_cpu" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_cpu']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="vars.gateways_istio__egressgateway_resources_limits_cpu" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_cpu']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_limits_memory" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_memory']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="vars.gateways_istio__egressgateway_resources_limits_memory" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_limits_memory']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_requests_cpu" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_cpu']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="vars.gateways_istio__egressgateway_resources_requests_cpu" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_cpu']"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('cluster.detail.istio.memory_request')" style="width: 80%" prop="vars.gateways_istio__egressgateway_resources_requests_memory" :rules="numberRules">
-                <el-input-number :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_memory']"></el-input-number>
+              <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="vars.gateways_istio__egressgateway_resources_requests_memory" :rules="numberRules">
+                <el-input-number  style="width: 80%" :step="1" step-strictly v-model="egressCfg.vars['gateways_istio__egressgateway_resources_requests_memory']"></el-input-number>
               </el-form-item>
             </el-form>
           </div>
