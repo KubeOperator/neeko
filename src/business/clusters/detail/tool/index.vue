@@ -232,10 +232,10 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogFailedVisible">
-      <span>{{conditions}}</span>
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
+      <span>{{conditions | errorFormat}}</span>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFailedVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
     </el-dialog>
 
@@ -279,7 +279,7 @@ export default {
       },
       tools: [],
       dialogEnableVisible: false,
-      dialogFailedVisible: false,
+      dialogErrorVisible: false,
       dialogDisableVisible: false,
       dialogUpgradeVisible: false,
       conditions: "",
@@ -360,7 +360,7 @@ export default {
         this.isReplicasValid = true
         this.dialogEnableVisible = true
       } else {
-        this.dialogFailedVisible = true
+        this.dialogErrorVisible = true
       }
     },
     enable() {
@@ -389,7 +389,7 @@ export default {
     },
     onErrorShow(item) {
       this.conditions = item.message
-      this.dialogFailedVisible = true
+      this.dialogErrorVisible = true
     },
     onDisable(item) {
       this.toolForm = item

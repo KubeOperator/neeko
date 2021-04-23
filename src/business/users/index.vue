@@ -29,7 +29,7 @@
         <template v-slot:default="{row}">
           <el-row>
             <el-col>
-              {{ row.email }}
+              {{ row.email | emailFormat}}
             </el-col>
           </el-row>
         </template>

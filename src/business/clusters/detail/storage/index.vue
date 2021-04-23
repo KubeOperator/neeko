@@ -76,7 +76,7 @@
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
               <template v-slot:default="{row}">
                 <el-tag v-if="row.status === 'Running'" type="success" size="small">{{$t('commons.status.running')}}</el-tag>
-                <el-tag v-if="row.status === 'Failed'" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
+                <el-tag v-if="row.status === 'Failed'" @click.native="getErrorInfo(row)" type="danger" size="small">{{$t('commons.status.failed')}}</el-tag>
                 <el-tag v-if="row.status === 'NotReady'" type="danger" size="small">{{$t('commons.status.not_ready')}}</el-tag>
                 <el-tag v-if="row.status === 'Initializing'" @click.native="openXterm(row)" type="info" size="small">{{$t('commons.status.initializing')}}
                   <font-awesome-icon icon="spinner" pulse />
@@ -117,6 +117,13 @@
         <el-button type="primary" @click="submitSync()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
+      <span>{{ errMsg | errorFormat }}</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -148,6 +155,8 @@ export default {
       provisionerSelection: [],
       dialogDeleteVisible: false,
       dialogSyncVisible: false,
+      dialogErrorVisible: false,
+      errMsg: "",
       activeName: this.$t("cluster.detail.storage.pv"),
     }
   },
@@ -168,6 +177,10 @@ export default {
           this.provisionerDatas = data
         })
       }
+    },
+    getErrorInfo(row) {
+      this.dialogErrorVisible = true
+      this.errMsg = row.message
     },
     classPageChange(continueToken) {
       this.classPage.continueToken = continueToken

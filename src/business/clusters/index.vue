@@ -61,7 +61,7 @@
     <el-dialog :before-close="closeDialogLog" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
       <div style="height: 400px">
         <el-scrollbar style="height:100%">
-          <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message }}</span>
+          <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
           <div>
             <el-steps direction="vertical" :active="activeName">
               <div v-for="condition in log.conditions" :key="condition.name">
@@ -69,7 +69,7 @@
                   <el-step icon="el-icon-success" :title="$t('cluster.condition.' +condition.name)"></el-step>
                 </div>
                 <div v-if="condition.status === 'False'">
-                  <el-step icon="el-icon-error" :title="$t('cluster.condition.' +condition.name)" :description="condition.message"></el-step>
+                  <el-step icon="el-icon-error" :title="$t('cluster.condition.' +condition.name)" :description="condition.message | errorFormat "></el-step>
                 </div>
                 <div v-if="condition.status === 'Unknown'">
                   <el-step icon="el-icon-loading" :title="$t('cluster.condition.' +condition.name)"></el-step>

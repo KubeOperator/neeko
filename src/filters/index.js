@@ -12,7 +12,7 @@ export function errorFormat(value) {
   return value
 }
 
-export function emailShowFormat(value) {
+export function emailFormat(value) {
   let result = '';
   if (value.indexOf('@') === -1 || value.indexOf('.') === -1) {
       return value
@@ -33,7 +33,7 @@ const filters = {
   "dateFormat": dateFormat,
   "datetimeFormat": datetimeFormat,
   "errorFormat": errorFormat,
-  "emailShowFormat": emailShowFormat,
+  "emailFormat": emailFormat,
 };
 
 export default {

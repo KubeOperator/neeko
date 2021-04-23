@@ -14,13 +14,14 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="50" fix>
+      <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status === 'Running'" type="text" @click="getDetailInfo(row)">{{ row.name }}</el-button>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="IP" min-width="50" prop="ip" />
+      <el-table-column :label="$t('route.cluster')" min-width="50" prop="clusterName" />
+      <el-table-column label="IP" min-width="60" prop="ip" />
       <el-table-column label="CPU" min-width="50" prop="cpuCore" />
       <el-table-column label="GPU" min-width="50" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100" prop="memory" />
@@ -86,9 +87,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(name, size) in currentHost.volumes" :key="name">
-            <th>{{name}}</th>
-            <td>{{size}}</td>
+          <tr v-for="vo in currentHost.volumes" :key="vo.name">
+            <td>{{vo.name}}</td>
+            <td>{{vo.size}}</td>
           </tr>
         </tbody>
       </table>
@@ -102,7 +103,7 @@
           </thead>
           <tbody>
             <tr>
-              <th>{{host.gpuInfo}}</th>
+              <td>{{host.gpuInfo}}</td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +114,7 @@
     </el-dialog>
 
     <el-dialog :title="$t('host.err_title')" width="30%" :visible.sync="dialogErrorVisible">
-      <span>{{ currentHost.message }}</span>
+      <span>{{ errMsg | errorFormat }}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogErrorVisible = false">{{ $t("commons.button.cancel") }}</el-button>
       </div>
@@ -173,6 +174,7 @@ export default {
       data: [],
       dialogErrorVisible: false,
       dialogDetailVisible: false,
+      errMsg: "",
       currentHost: {},
       hostSelections: [],
       syncHostList: [],
@@ -219,7 +221,7 @@ export default {
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true
-      this.currentHost = row
+      this.errMsg = row.message
     },
     getDetailInfo(row) {
       this.dialogDetailVisible = true

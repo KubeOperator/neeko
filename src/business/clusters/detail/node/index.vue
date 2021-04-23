@@ -151,10 +151,10 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogFailedVisible">
-      <span>{{errmsg}}</span>
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
+      <span>{{errmsg | errorFormat}}</span>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFailedVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -178,8 +178,8 @@ export default {
         total: 0,
       },
       dialogCreateVisible: false,
-      dialogFailedVisible: false,
-      errmsg: "",
+      dialogErrorVisible: false,
+      errMsg: "",
       clusterName: "",
       selects: [],
       data: [],
@@ -237,8 +237,8 @@ export default {
       openLogger(this.clusterName, row.name)
     },
     onShowErrMsg(row) {
-      this.dialogFailedVisible = true
-      this.errmsg = row.message
+      this.dialogErrorVisible = true
+      this.errMsg = row.message
     },
     goForDetail(row) {
       this.detaiInfo = row.info
