@@ -15,7 +15,7 @@
                         <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('project.project')" prop="projectName">
-                        <el-select filterable style="width: 80%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
+                        <el-select filterable style="width: 100%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
                           <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
                         </el-select>
                       </el-form-item>

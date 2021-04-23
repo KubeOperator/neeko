@@ -203,8 +203,8 @@ export default {
         vars: {},
       },
       nameRules: [Rule.CommonNameRule],
-      requiredRules: [ Rule.RequiredRule ],
-      passwordRules: [ Rule.PasswordRules ],
+      requiredRules: [Rule.RequiredRule],
+      passwordRules: [Rule.PasswordRules],
       enableBlockStorage: "disable",
     }
   },
