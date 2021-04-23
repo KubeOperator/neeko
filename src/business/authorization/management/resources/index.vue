@@ -20,7 +20,7 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" mix-width="100">
+          <el-table-column :label="$t('commons.table.name')" mix-width="200">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
           <el-table-column :label="$t('cluster.cluster')" mix-width="100">
@@ -29,13 +29,13 @@
           <el-table-column :label="$t('host.ip')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.ip }}</template>
           </el-table-column>
-          <el-table-column :label="$t('automatic.vm_config.cpu')" mix-width="100">
+          <el-table-column :label="$t('automatic.vm_config.cpu')" mix-width="50">
             <template v-slot:default="{ row }">{{ row.cpuCore }}</template>
           </el-table-column>
-          <el-table-column :label="$t('automatic.vm_config.memory')" mix-width="100">
+          <el-table-column :label="$t('automatic.vm_config.memory')" mix-width="50">
             <template v-slot:default="{ row }">{{ row.memory }}</template>
           </el-table-column>
-          <el-table-column :label="$t('host.gpu')" mix-width="100">
+          <el-table-column :label="$t('host.gpu')" mix-width="50">
             <template v-slot:default="{ row }">{{ row.gpuNum }}</template>
           </el-table-column>
           <el-table-column :label="$t('host.os')" mix-width="100">
