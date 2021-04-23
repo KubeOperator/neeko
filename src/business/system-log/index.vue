@@ -32,6 +32,7 @@ export default {
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput" },
           { field: "operation", label: this.$t("system_log.operation"), component: "FuComplexInput" },
           { field: "operation_info", label: this.$t("system_log.operation_info"), component: "FuComplexInput" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ],
       },
       paginationConfig: {
@@ -46,7 +47,7 @@ export default {
     search(condition) {
       const { currentPage, pageSize } = this.paginationConfig
       systemQuery(currentPage, pageSize, condition).then((response) => {
-        const currentLanguage = localStorage.getItem("currentLanguage") || this.translate.getBrowserCultureLang()
+        const currentLanguage = localStorage.getItem("language") || this.translate.getBrowserCultureLang()
         if (response.items != null) {
           for (const item of response.items) {
             if (currentLanguage == "en-US") {

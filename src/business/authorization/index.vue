@@ -1,6 +1,5 @@
 <template>
-
-  <layout-content :header="$t('project.project')" :description="$t('')" v-loading="loading">
+  <layout-content :header="$t('project.project')" :description="$t('project.header_description')" v-loading="loading">
     <el-row>
       <el-col :span="6">
         <el-tree
@@ -13,9 +12,10 @@
                 ref="tree"
                 :highlight-current="true"
                 @node-click="toPage">
-          <span class="custom-tree-node"  slot-scope="{ node,data }">
+          <span class="custom-tree-node" slot-scope="{ node,data }">
               <i v-if="data.type ==='CLUSTER'" class="el-icon-c-scale-to-original"></i>
-              <i v-if="data.type !=='CLUSTER'" class="el-icon-s-data"></i>
+              <i v-if="data.type ==='PROJECT'" class="el-icon-s-data"></i>
+              <i v-if="data.type ==='PROJECT_LIST'" class="el-icon-tickets"></i>
             &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ node.label }}</span>
           </span>
         </el-tree>
@@ -34,7 +34,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import {getResourceTree} from "@/api/authorization"
 import Management from "@/business/authorization/management"
 import ProjectList from "@/business/authorization/projects"
-
+import store from "@/store"
 
 export default {
   name: "ProjectAuthorizationList",
@@ -44,7 +44,7 @@ export default {
     return {
       resources: [{
         id: 0,
-        label: this.$t("route.project"),
+        label: this.$t("project.list"),
         type: "PROJECT_LIST",
         children: []
       }],
@@ -59,7 +59,8 @@ export default {
         type: "PROJECT_LIST",
         projectName: "",
         clusterName: "",
-      }
+      },
+      permission:""
     }
   },
   methods: {
@@ -68,11 +69,19 @@ export default {
       this.type = data.type
       this.name = data.label
     },
+    async getRole () {
+      const { roles } = await store.dispatch("user/getCurrentUser")
+      this.permission = roles[0]
+    },
     getTree () {
       this.loading = true
       getResourceTree().then(data => {
         this.loading = false
-        this.resources[0].children = data
+        if (this.permission === "ADMIN") {
+          this.resources[0].children = data
+        } else {
+          this.resources = data
+        }
         if (this.expendName !== undefined && this.expendType !== undefined) {
           this.setParam(this.expendType, this.expendName)
           this.getExpendItem(data)
@@ -101,7 +110,11 @@ export default {
           projectName: name
         }
       } else {
-        for (const resource of this.resources[0].children) {
+        let data = this.resources
+        if (this.permission === "ADMIN") {
+          data = this.resources[0].children
+        }
+        for (const resource of data) {
           const projectName = resource.label
           if (resource.children !== null) {
             for (const cluster of resource.children) {
@@ -120,6 +133,7 @@ export default {
   },
   watch: {},
   created () {
+    this.getRole()
     this.getTree()
   },
 }

@@ -28,5 +28,6 @@ module.exports = {
         '@': resolve('src')
       }
     }
-  }
+  },
+  publicPath: '/ui/',
 };

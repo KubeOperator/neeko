@@ -21,7 +21,7 @@
           <el-row type="flex" justify="center">
             <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
               <i class="el-icon-upload"></i>
-              <div class="el-upload__text">{{$t('commons.form.file_upload_helper')}}</div>
+              <div class="el-upload__text">{{$t('commons.form.file_upload_help')}}</div>
               <div class="el-upload__tip" slot="tip">
                 <svg class="icon" aria-hidden="true"  >
                   <use  xlink:href="#icontishi11"></use>

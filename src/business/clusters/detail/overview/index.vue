@@ -7,8 +7,8 @@
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.base_info')}}</span>
             </div>
-            <div align="center">
-              <el-col :span="8">
+            <div>
+              <el-col :span="12">
                 <ul>{{$t('cluster.creation.name')}}</ul>
                 <ul>{{$t('cluster.version')}}</ul>
                 <ul>{{$t('cluster.creation.arch')}}</ul>
@@ -43,14 +43,26 @@
               <span>{{$t('cluster.detail.overview.capacity_info')}}</span>
             </div>
             <el-row type="flex" justify="center">
-              <el-col :span="6">
-                <el-progress :stroke-width="12" type="circle" :percentage="cpuUsagePercent"></el-progress>
+              <el-col :span="8">
+                <div align="center">
+                  <el-progress :stroke-width="20" type="circle" :width="140" :percentage="cpuUsagePercent"></el-progress>
+                  <br>
+                  <span style="font-size: 24px">{{$t('cluster.detail.overview.cpu')}}</span>
+                </div>
               </el-col>
-              <el-col :span="6">
-                <el-progress :stroke-width="12" type="circle" :percentage="memUsagePercent"></el-progress>
+              <el-col :span="8">
+                <div align="center">
+                  <el-progress :stroke-width="20" type="circle" :width="140" :percentage="memUsagePercent"></el-progress>
+                  <br>
+                  <span style="font-size: 24px">{{$t('cluster.detail.overview.memery')}}</span>
+                </div>  
               </el-col>
-              <el-col :span="6">
-                <el-progress :stroke-width="12" type="circle" :percentage="podUsagePercent"></el-progress>
+              <el-col :span="8">
+                <div align="center">
+                  <el-progress :stroke-width="20" type="circle" :width="140" :percentage="podUsagePercent"></el-progress>
+                  <br>
+                  <span style="font-size: 24px">{{$t('cluster.detail.overview.docker')}}</span>
+                </div>
               </el-col>
             </el-row>
           </el-card>
@@ -60,8 +72,8 @@
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.statistical_info')}}</span>
             </div>
-            <div align="center">
-              <el-col :span="8">
+            <div>
+              <el-col :span="12">
                 <ul>Nodes</ul>
                 <ul>Namespaces</ul>
                 <ul>Deployments</ul>

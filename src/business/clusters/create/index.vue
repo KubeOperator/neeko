@@ -15,7 +15,7 @@
                         <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('project.project')" prop="projectName">
-                        <el-select filterable style="width: 80%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
+                        <el-select filterable style="width: 100%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
                           <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
                         </el-select>
                       </el-form-item>
@@ -375,6 +375,7 @@ import { listProjectResources } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkClusterNameExistence, createCluster } from "@/api/cluster"
 import { allProjects } from "@/api/projects"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterCreate",
@@ -422,28 +423,28 @@ export default {
         workerAmount: 1,
       },
       rules: {
-        name: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
-        version: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        projectName: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        provider: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        architectures: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        yumOperate: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        runtimeType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        maxNodePodNum: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        maxClusterServiceNum: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        kubeProxyMode: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        kubernetesAudit: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        networkType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        flannelBackend: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        calicoIpv4PoolIpip: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        ciliumTunnelMode: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        helmVersion: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        ingressControllerType: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        supportGpu: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        plan: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        workerAmount: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "blur" }],
-        masters: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
-        workers: [{ required: true, message: this.$t("commons.validate.cannot_be_empty"), trigger: "change" }],
+        name: [Rule.ClusterNameRule],
+        version: [Rule.RequiredRule],
+        projectName: [Rule.RequiredRule],
+        provider: [Rule.RequiredRule],
+        architectures: [Rule.RequiredRule],
+        yumOperate: [Rule.RequiredRule],
+        runtimeType: [Rule.RequiredRule],
+        maxNodePodNum: [Rule.RequiredRule],
+        maxClusterServiceNum: [Rule.RequiredRule],
+        kubeProxyMode: [Rule.RequiredRule],
+        kubernetesAudit: [Rule.RequiredRule],
+        networkType: [Rule.RequiredRule],
+        flannelBackend: [Rule.RequiredRule],
+        calicoIpv4PoolIpip: [Rule.RequiredRule],
+        ciliumTunnelMode: [Rule.RequiredRule],
+        helmVersion: [Rule.RequiredRule],
+        ingressControllerType: [Rule.RequiredRule],
+        supportGpu: [Rule.RequiredRule],
+        plan: [Rule.RequiredRule],
+        workerAmount: [Rule.RequiredRule],
+        masters: [Rule.RequiredRule],
+        workers: [Rule.RequiredRule],
       },
       versions: ["1.18.16", "1.20.10"],
       nameValid: true,
