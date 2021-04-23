@@ -5,14 +5,14 @@
             :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
-            @selection-change="handleSelectionChange"
+            :selects.sync="selects"
             @search="getMemberList">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="openCreate()">
+          <el-button size="small" @click="openCreate()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="openDelete" type="danger" :disabled="selects.length===0">{{
+          <el-button size="small" @click="openDelete" type="danger" :disabled="selects.length===0" v-permission="['ADMIN']">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -206,9 +206,6 @@ export default {
         })
       })
     },
-    handleSelectionChange (val) {
-      this.selects = val
-    }
   },
   computed: {},
   watch: {
