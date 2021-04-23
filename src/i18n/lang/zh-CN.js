@@ -92,7 +92,7 @@ const message = {
       exit_system: "退出系统"
     },
     table: {
-      action: "动作",
+      action: "操作",
       name: "名称",
       status: "状态",
       description: "描述",
@@ -459,13 +459,6 @@ const message = {
     exists_credential: "已存在凭据",
     ip: "IP",
     gpu: "GPU(个)",
-    err_title: "错误信息",
-    base_info: "基础信息",
-    disk_info: "磁盘信息",
-    cpu: "CPU(核)",
-    memery_with_unit: "内存(MB)",
-    size: "大小",
-    gpu_info: "显卡信息",
   },
   message: {
     message: "消息",
