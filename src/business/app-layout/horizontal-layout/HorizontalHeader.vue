@@ -4,7 +4,7 @@
       <sidebar-toggle-button/>
     </div>
     <div class="header-right">
-      <div class="navbar-item">
+      <div class="navbar-item" v-permission="['PROJECT_MANAGER','CLUSTER_MANAGER']">
         <project-switch/>
       </div>
       <div class="navbar-item">
