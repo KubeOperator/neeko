@@ -41,7 +41,7 @@
 
 <script>
 import {getLicense, importLicense} from "@/api/license"
-import DetailCard from "@/components/detailCard/index";
+import DetailCard from "@/components/detail-card/index";
 export default {
   name: "License",
   components: {DetailCard},
