@@ -443,10 +443,6 @@ const message = {
   },
   host: {
     detail: "详情",
-    base_info: "基础信息",
-    disk_info: "磁盘信息",
-    disk_size: "磁盘容量",
-    cpu: "CPU(核)",
     host: "主机",
     memory: "内存(MB)",
     os: "操作系统",
@@ -465,7 +461,6 @@ const message = {
     base_info: "基础信息",
     disk_info: "磁盘信息",
     cpu: "CPU(核)",
-    memery_with_unit: "内存(MB)",
     size: "大小",
     gpu_info: "显卡信息",
   },
