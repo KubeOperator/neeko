@@ -148,9 +148,9 @@
   }
 
   .login-container {
-    min-width: 900px;
-    width: 1280px;
-    height: 520px;
+    min-width: 640px;
+    width: 960px;
+    height: 480px;
     background-color: #FFFFFF;
     @media only screen and (max-width: 1280px) {
       width: 900px;
@@ -241,7 +241,7 @@
       background: url(../../assets/KobeOperator-login.jpg) no-repeat;
       background-size: cover;
       width: 100%;
-      height: 520px;
+      height: 480px;
       @media only screen and (max-width: 1280px) {
         height: 380px;
       }
