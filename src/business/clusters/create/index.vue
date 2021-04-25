@@ -60,23 +60,23 @@
               <el-scrollbar style="height:100%">
                 <el-card>
                   <el-form-item :label="$t ('cluster.creation.container_network')" prop="networkType">
-                    <el-select filterable @change="onPart1Change()" style="width: 10%" v-model="parts[0]" clearable>
+                    <el-select filterable @change="onPart1Change()" style="width: 15%" v-model="parts[0]" clearable>
                       <el-option v-for="item of part1Options" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                     <span> . </span>
-                    <el-select filterable :disabled="part2Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[1]" clearable>
+                    <el-select filterable :disabled="part2Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="parts[1]" clearable>
                       <el-option v-for="item of part2Options" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                     <span> . </span>
-                    <el-select filterable :disabled="part3Options.length < 2" @change="getNodeNum()" style="width: 10%" v-model="parts[2]" clearable>
+                    <el-select filterable :disabled="part3Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="parts[2]" clearable>
                       <el-option v-for="item of part3Options" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                     <span> . </span>
-                    <el-select filterable style="width: 10%" disabled v-model="parts[3]" clearable>
+                    <el-select filterable style="width: 15%" disabled v-model="parts[3]" clearable>
                       <el-option value="0">0</el-option>
                     </el-select>
                     <span> / </span>
-                    <el-select filterable @change="onMaskChange()" style="width: 10%" v-model="parts[4]" clearable>
+                    <el-select filterable @change="onMaskChange()" style="width: 15%" v-model="parts[4]" clearable>
                       <el-option v-for="item of maskOptions" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                     <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
@@ -777,7 +777,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .example {
-  height: 600px;
+  height: 500px;
   margin: 1% 10%;
 }
 </style>

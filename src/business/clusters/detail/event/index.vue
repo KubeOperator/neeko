@@ -7,7 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item style="float: right">
-        <el-switch v-model="isNPDon" @change="changeNpd()" active-text="$t('cluster.detail.event.enable_npd')">
+        <el-switch v-model="isNPDon" @change="changeNpd()" :active-text="$t('cluster.detail.event.enable_npd')">
         </el-switch>
       </el-form-item>
     </el-form>

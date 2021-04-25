@@ -20,20 +20,19 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('route.cluster')" min-width="50" prop="clusterName" />
-      <el-table-column label="IP" min-width="60" prop="ip" />
-      <el-table-column label="CPU" min-width="50" prop="cpuCore" />
-      <el-table-column label="GPU" min-width="50" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" min-width="100" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="100">
+      <el-table-column :label="$t('route.cluster')" min-width="80" prop="clusterName" />
+      <el-table-column label="IP" min-width="90" prop="ip" />
+      <el-table-column label="CPU" min-width="40" prop="cpuCore" />
+      <el-table-column label="GPU" min-width="40" prop="gpuNum" />
+      <el-table-column :label="$t('host.memory')" min-width="50" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="70">
         <template v-slot:default="{row}">
           {{ row.os }} {{ row.osVersion }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" min-width="100" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="100">
+      <el-table-column :label="$t('host.architecture')" min-width="50" prop="architecture" />
+      <el-table-column :label="$t('commons.table.status')" min-width="60">
         <template v-slot:default="{row}">
-          
           <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
             {{ $t("commons.status.failed") }}
           </el-button>
@@ -51,7 +50,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column :label="$t('commons.table.create_time')" min-width="100">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

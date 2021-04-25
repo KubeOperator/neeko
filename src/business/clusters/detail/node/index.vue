@@ -158,7 +158,7 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
-      <span>{{errmsg | errorFormat}}</span>
+      <span>{{errMsg | errorFormat}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>

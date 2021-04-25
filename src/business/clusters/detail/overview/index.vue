@@ -169,7 +169,7 @@ export default {
       this.loading = true
       this.opened = true
       getClusterToken(this.clusterName).then((data) => {
-        this.url = process.env.VUE_APP_BASE_API + "/webkubectl/terminal/?token=" + data.token
+        this.url = "/webkubectl/terminal/?token=" + data.token
         this.loading = false
       })
     },
@@ -177,7 +177,7 @@ export default {
       this.opened = true
       this.loading = true
       getClusterToken(this.clusterName).then((data) => {
-        this.url = process.env.VUE_APP_BASE_API + `/webkubectl/terminal/?token=${data.token}`
+        this.url = `/webkubectl/terminal/?token=${data.token}`
         this.loading = false
         window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
       })
