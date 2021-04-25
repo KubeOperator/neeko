@@ -459,7 +459,7 @@ const message = {
     gpu: "GPU(个)",
     err_title: "错误信息",
     base_info: "基础信息",
-    disk_info: "磁盘信息",
+    disk_size: "磁盘容量",
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",

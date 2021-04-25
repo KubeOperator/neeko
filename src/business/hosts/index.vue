@@ -21,10 +21,10 @@
       <el-table-column :label="$t('route.project')" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="120" prop="clusterName" />
       <el-table-column label="IP" width="120px" prop="ip" />
-      <el-table-column label="CPU" width="50px" prop="cpuCore" />
-      <el-table-column label="GPU" :show="false" width="50px" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" width="60px" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="100">
+      <el-table-column :label="$t('host.cpu')" width="70px" prop="cpuCore" />
+      <el-table-column :label="$t('host.gpu')" :show="false" width="70px" prop="gpuNum" />
+      <el-table-column :label="$t('host.memory')" width="80px" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="120">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true" >
             <use xlink:href="#iconziyuan"></use>
@@ -58,7 +58,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" width="150px">
+      <el-table-column :label="$t('commons.table.create_time')" :show="false" width="150px">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
@@ -87,7 +87,7 @@
           <ul>{{$t ('host.memory')}}</ul>
           <ul>{{$t ('host.os')}}</ul>
         </el-col>
-        <el-colv  :span="8">
+        <el-col :span="8">
           <ul>{{currentHost['cpuCore']}}</ul>
           <ul>{{currentHost['memory']}}</ul>
           <ul>
@@ -95,9 +95,9 @@
               <use xlink:href="#iconziyuan"></use>
             </svg>
             {{currentHost['os']}} {{currentHost['osVersion']}} </ul>
-        </el-colv>
+        </el-col>
       </el-row>
-      <div style="margin: 10px 0">{{$t ('host.disk_info')}}</div>
+      <div style="margin: 10px 0">{{$t ('host.disk_size')}}</div>
       <el-divider content-position="left" class="hDivider"/>
       <table style="width: 90%" class="myTable">
         <thead>
