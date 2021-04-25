@@ -4,34 +4,33 @@
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}
-          </el-button>
-          <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}
-          </el-button>
+          <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
+          <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="bactchDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
+      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status === 'Running'" type="text" @click="getDetailInfo(row)">{{ row.name }}</el-button>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('route.cluster')" min-width="80" prop="clusterName" />
-      <el-table-column label="IP" min-width="90" prop="ip" />
-      <el-table-column label="CPU" min-width="40" prop="cpuCore" />
-      <el-table-column label="GPU" min-width="40" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" min-width="50" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="70">
+      <el-table-column :label="$t('route.project')" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="120" prop="clusterName" />
+      <el-table-column label="IP" width="120px" prop="ip" />
+      <el-table-column label="CPU" width="50px" prop="cpuCore" />
+      <el-table-column label="GPU" :show="false" width="50px" prop="gpuNum" />
+      <el-table-column :label="$t('host.memory')" width="60px" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="100">
         <template v-slot:default="{row}">
           {{ row.os }} {{ row.osVersion }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" min-width="50" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="60">
+      <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
+      <el-table-column :label="$t('commons.table.status')" min-width="80">
         <template v-slot:default="{row}">
           <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
             {{ $t("commons.status.failed") }}
@@ -50,13 +49,13 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" min-width="100">
+      <el-table-column :label="$t('commons.table.create_time')" width="150px">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
 
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
+      <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">

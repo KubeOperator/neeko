@@ -456,7 +456,7 @@ export default {
       this.importLoadding = true
       this.$refs["importFormRules"].validate((valid) => {
         if (valid) {
-          importCluster(this.item).then(() => {
+          importCluster(this.importForm).then(() => {
             this.importLoadding = false
             this.dialogImportVisible = false
           }),
