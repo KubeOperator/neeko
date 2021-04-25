@@ -70,6 +70,7 @@ const XPack = {
       component: () => import("@/business/xpack/message-center/index"),
       name: "message-center",
       meta: {
+        activeMenu: "/xpack/message-center",
         title: "route.message_center",
         roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
       },
@@ -86,6 +87,7 @@ const XPack = {
           name: "Messages",
           hidden: true,
           meta: {
+            activeMenu: "/xpack/message-center",
             title: "message.message",
             roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }
@@ -96,6 +98,7 @@ const XPack = {
           name: "MessageReceiver",
           hidden: true,
           meta: {
+            activeMenu: "/xpack/message-center",
             title: "message.message_receiver",
             roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }
@@ -106,6 +109,7 @@ const XPack = {
           component: () => import("@/business/xpack/message-center/subscribe/index"),
           name: "MessageSubscribes",
           meta: {
+            activeMenu: "/xpack/message-center",
             title: "message.message_subscribe",
             roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
           }

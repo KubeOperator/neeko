@@ -35,6 +35,7 @@ const SystemSetting = {
           props: true,
           component: () => import('@/business/system-setting/registry'),
           meta: {
+            activeMenu: "/setting",
             roles: ['ADMIN'],
           },
         },
@@ -123,7 +124,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/registry/create'),
       meta: {
-        // activeMenu: "/setting",
+        activeMenu: "/setting",
         roles: ['ADMIN']
       },
     },{
@@ -133,7 +134,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/registry/edit'),
       meta: {
-        // activeMenu: "/setting",
+        activeMenu: "/setting",
         roles: ['ADMIN']
       }
     },{
@@ -142,6 +143,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/credential/create'),
       meta: {
+        activeMenu: "/setting",
         roles: ['ADMIN']
       },
     },{
@@ -151,6 +153,7 @@ const SystemSetting = {
       hidden: true,
       component: () => import('@/business/system-setting/credential/edit'),
       meta: {
+        activeMenu: "/setting",
         roles: ['ADMIN']
       }
     },

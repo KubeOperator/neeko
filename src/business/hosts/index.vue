@@ -26,7 +26,16 @@
       <el-table-column :label="$t('host.memory')" width="60px" prop="memory" />
       <el-table-column :label="$t('host.os')" min-width="100">
         <template v-slot:default="{row}">
-          {{ row.os }} {{ row.osVersion }}
+          <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true" >
+            <use xlink:href="#iconziyuan"></use>
+          </svg>
+          <svg v-if="row.os === 'RedHat'" class="icon" aria-hidden="true" >
+            <use xlink:href="#iconred-hat"></use>
+          </svg>
+          <svg v-if="row.os === 'Ubuntu'" class="icon" aria-hidden="true" >
+            <use xlink:href="#iconubuntu"></use>
+          </svg>
+          {{ row.os }} {{ row['osVersion'] }}
         </template>
       </el-table-column>
       <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
@@ -69,26 +78,32 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('host.err_title')" width="50%" :visible.sync="dialogDetailVisible">
-      <el-divider content-position="left">{{$t ('host.base_info')}}</el-divider>
-      <el-row type="flex" justify="center">
-        <el-col :span="6">
+    <el-dialog :title="$t('host.detail')" width="50%" :visible.sync="dialogDetailVisible">
+      <div style="margin: 10px 0">{{$t ('host.base_info')}}</div>
+      <el-divider content-position="left" class="hDivider"/>
+      <el-row type="flex" justify="left">
+        <el-col  :span="8">
           <ul>{{$t ('host.cpu')}}</ul>
-          <ul>{{$t ('host.memery_with_unit')}}</ul>
+          <ul>{{$t ('host.memory')}}</ul>
           <ul>{{$t ('host.os')}}</ul>
         </el-col>
-        <el-col :span="6">
-          <ul>{{currentHost.cpuCore}}</ul>
-          <ul>{{currentHost.memory}}</ul>
-          <ul>{{currentHost.osVersion}}</ul>
-        </el-col>
+        <el-colv  :span="8">
+          <ul>{{currentHost['cpuCore']}}</ul>
+          <ul>{{currentHost['memory']}}</ul>
+          <ul>
+            <svg class="icon" aria-hidden="true" >
+              <use xlink:href="#iconziyuan"></use>
+            </svg>
+            {{currentHost['os']}} {{currentHost['osVersion']}} </ul>
+        </el-colv>
       </el-row>
-      <el-divider content-position="left">{{$t ('host.disk_info')}}</el-divider>
+      <div style="margin: 10px 0">{{$t ('host.disk_info')}}</div>
+      <el-divider content-position="left" class="hDivider"/>
       <table style="width: 90%" class="myTable">
         <thead>
           <tr>
             <th>{{$t('commons.table.name')}}</th>
-            <th>{{$t('host.size')}}</th>
+            <th>{{$t('host.disk_size')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -332,4 +347,7 @@ export default {
 </script>
 
 <style scoped>
+.hDivider {
+  margin: 8px 0;
+}
 </style>

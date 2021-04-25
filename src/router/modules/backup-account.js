@@ -25,6 +25,7 @@ const BackupAccount = {
       props: true,
       hidden: true,
       meta: {
+        activeMenu: "/backup_account",
         title: "route.backup_account",
         roles: ["ADMIN","PROJECT_MANAGER"]
       }
@@ -36,6 +37,7 @@ const BackupAccount = {
       hidden: true,
       props: true,
       meta: {
+        activeMenu: "/backup_account",
         title: "route.backup_account",
         roles: ["ADMIN","PROJECT_MANAGER"]
       }
@@ -47,6 +49,7 @@ const BackupAccount = {
       props: true,
       hidden: true,
       meta: {
+        activeMenu: "/backup_account",
         title: "route.backup_account",
         roles: ["ADMIN","PROJECT_MANAGER"]
       }
