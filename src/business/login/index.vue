@@ -4,9 +4,9 @@
       <el-row type="flex" v-loading="loading">
         <el-col :span="12">
           <el-form :model="form" :rules="rules" ref="form" size="default">
-            <div class="login-logo">
-              <img src="../../assets/KubeOperator-black.png" alt="">
-            </div>
+<!--            <div class="login-logo">-->
+<!--              <img src="../../assets/KubeOperator-black.png" alt="">-->
+<!--            </div>-->
             <div class="login-title">
               {{ systemName }}
             </div>
@@ -194,7 +194,7 @@
     }
 
     .login-welcome {
-      margin-top: 50px;
+      margin-top: 10px;
       font-size: 14px;
       color: #999999;
       letter-spacing: 0;
