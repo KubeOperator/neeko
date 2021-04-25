@@ -519,7 +519,9 @@ const message = {
     title: "版本管理",
     detail: "详情",
     enable: "启用",
-    message: "版本 {0} 启用/停用成功！"
+    message: "版本 {0} 启用/停用成功！",
+    component: "组件",
+    version: "版本"
   },
   system_log: {
     title: "系统日志",

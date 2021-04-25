@@ -34,11 +34,16 @@
                   </ul>
                 </div>
               </el-col>
-              <el-button style="float:left;margin-bottom: 10px;position: relative" @click="onDetail(versionMini)"  type="text">{{$t('manifest.detail')}}</el-button>
-              <el-switch style="margin-bottom: 10px; float: right;position: relative" :active-text="$t('manifest.enable')"
-                         @change="changeEnable(versionMini)"
-                         v-model="versionMini.isActive"
-                         v-permission="['ADMIN']"></el-switch>
+              <div style="float:left;margin-bottom: 15px;position: relative">
+                <el-button  @click="onDetail(versionMini)"  type="text">{{$t('manifest.detail')}}</el-button>
+                <el-switch  :active-text="$t('manifest.enable')"
+                            style="margin-left: 100px "
+                           @change="changeEnable(versionMini)"
+                           v-model="versionMini.isActive"
+                           v-permission="['ADMIN']">
+                </el-switch>
+<!--                style="margin-bottom: 10px; float: right;position: relative"-->
+              </div>
             </el-card>
           </el-col>
         </div>
@@ -48,7 +53,7 @@
 
     <el-scrollbar style="height:100%;">
     <el-dialog
-      title="版本管理详情"
+      :title="$t('manifest.detail')"
       :visible.sync="dialogVisible"
       class="abow_dialog"
       width="50%">
@@ -62,14 +67,13 @@
           style="width: 90%;">
           <el-table-column
             prop="name"
-            label="组件">
+            :label="$t('manifest.component')">
           </el-table-column>
           <el-table-column
             prop="version"
-            label="版本">
+            :label="$t('manifest.version')">
           </el-table-column>
         </el-table>
-<!--          <el-divider/>-->
           <p>Network</p>
         <el-table
           :data="manifestDetail.networkVars"
@@ -77,11 +81,11 @@
           style="width: 90%">
           <el-table-column
             prop="name"
-            label="组件">
+            :label="$t('manifest.component')">
           </el-table-column>
           <el-table-column
             prop="version"
-            label="版本">
+            :label="$t('manifest.version')">
           </el-table-column>
         </el-table>
         <p>Tool</p>
@@ -92,11 +96,11 @@
           style="width: 90%">
           <el-table-column
             prop="name"
-            label="组件">
+            :label="$t('manifest.component')">
           </el-table-column>
           <el-table-column
             prop="version"
-            label="版本">
+            :label="$t('manifest.version')">
           </el-table-column>
         </el-table>
         <p>Storage</p>
@@ -107,11 +111,11 @@
         style="width: 90%;">
         <el-table-column
           prop="name"
-          label="组件">
+          :label="$t('manifest.component')">
         </el-table-column>
         <el-table-column
           prop="version"
-          label="版本">
+          :label="$t('manifest.version')">
         </el-table-column>
       </el-table>
       <p>Other</p>
@@ -122,16 +126,16 @@
         style="width: 90%">
         <el-table-column
           prop="name"
-          label="组件">
+          :label="$t('manifest.component')">
         </el-table-column>
         <el-table-column
           prop="version"
-          label="版本">
+          :label="$t('manifest.version')">
         </el-table-column>
       </el-table>
 
       <span slot="footer" class="dialog-footer">
-、    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+、    <el-button type="primary" @click="dialogVisible = false">{{$t('commons.button.ok')}}</el-button>
       </span>
         </el-scrollbar>
       </div>
