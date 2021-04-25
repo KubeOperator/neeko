@@ -22,11 +22,8 @@
           {{ row.metadata.creationTimestamp | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" :label="$t('commons.table.action')">
-        <template v-slot:default="{row}">
-          <el-button :disabled="!isInSystemSpace(row)" @click="onDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
-        </template>
-      </el-table-column>
+
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :close-on-click-modal="false" :visible.sync="dialogCreateVisible">
@@ -53,6 +50,19 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      buttons: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row.name)
+          },
+          disabled: (row) => {
+            return !this.isInSystemSpace(row)
+          },
+        },
+      ],
       form: {
         apiVersion: "v1",
         kind: "Namespace",

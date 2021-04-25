@@ -36,12 +36,12 @@
           <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
             {{ $t("commons.status.failed") }}
           </el-button>
-          <el-button v-if="row.status === 'Terminating'" size="mini" round @click="openXterm(row)" type="primary" plain icon="el-icon-loading">
-            {{ $t("commons.status.terminating") }}
-          </el-button>
 
           <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
 
+          <span v-if="row.status === 'Terminating'">
+            <i class="el-icon-loading" />{{ $t("commons.status.terminating") }}
+          </span>
           <span v-if="row.status === 'Initializing'">
             <i class="el-icon-loading" />{{ $t("commons.status.initializing") }}
           </span>
@@ -168,7 +168,10 @@ export default {
           icon: "el-icon-delete",
           type: "danger",
           click: (row) => {
-            this.delete(row.name)
+            this.onDelete(row.name)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status.status !== "Failed"
           },
         },
       ],
@@ -260,7 +263,7 @@ export default {
         }
       )
     },
-    delete(name) {
+    onDelete(name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),

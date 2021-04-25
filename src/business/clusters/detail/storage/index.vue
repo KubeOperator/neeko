@@ -21,11 +21,7 @@
                 {{ row.metadata.creationTimestamp | datetimeFormat }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="onDelete(scope.row, 'pv', false)" type="danger" circle icon="el-icon-delete" size="small" />
-              </template>
-            </el-table-column>
+            <fu-table-operations :buttons="buttons_pv" :label="$t('commons.table.action')" fix />
           </complex-table>
 
           <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
@@ -50,11 +46,7 @@
                 {{ row.metadata.creationTimestamp | datetimeFormat }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="onDelete(scope.row, 'class', false)" type="danger" circle icon="el-icon-delete" size="small" />
-              </template>
-            </el-table-column>
+            <fu-table-operations :buttons="buttons_class" :label="$t('commons.table.action')" fix />
           </complex-table>
 
           <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
@@ -75,7 +67,7 @@
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
               <template v-slot:default="{row}">
-                
+
                 <el-button v-if="row.status === 'Initializing'" size="mini" round @click="openXterm(row)" plain type="primary" icon="el-icon-loading">
                   {{ $t("commons.status.initializing") }}
                 </el-button>
@@ -102,11 +94,7 @@
                 {{ row.createdAt | datetimeFormat }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" :label="$t('commons.table.action')">
-              <template slot-scope="scope">
-                <el-button @click="onDelete(scope.row, 'provisioner', false)" type="danger" circle icon="el-icon-delete" size="small" />
-              </template>
-            </el-table-column>
+            <fu-table-operations :buttons="buttons_provisioner" :label="$t('commons.table.action')" fix />
           </complex-table>
         </el-card>
       </el-tab-pane>
@@ -143,6 +131,45 @@ export default {
   components: { ComplexTable, K8sPage },
   data() {
     return {
+      buttons_pv: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row, "pv", false)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+          },
+        },
+      ],
+      buttons_class: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row, "class", false)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+          },
+        },
+      ],
+      buttons_provisioner: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row, "provisioner", false)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+          },
+        },
+      ],
       pvPage: {
         continueToken: "",
         nextToken: "",

@@ -35,11 +35,8 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" :label="$t('commons.table.action')">
-        <template v-slot:default="{row}">
-          <el-button @click="cisDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
-        </template>
-      </el-table-column>
+
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('cluster.detail.security.cis_result')" width="70%" :visible.sync="dialogDetailVisible">
@@ -70,6 +67,16 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      buttons: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row)
+          },
+        },
+      ],
       paginationConfig: {
         currentPage: 1,
         pageSize: 5,
@@ -101,7 +108,7 @@ export default {
         }
       )
     },
-    cisDelete(row) {
+    onDelete(row) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.button.delete"), {
         confirmButtonText: this.$t("commons.button.ok"),
         cancelButtonText: this.$t("commons.button.cancel"),

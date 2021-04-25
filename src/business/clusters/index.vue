@@ -47,13 +47,8 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" :label="$t('commons.table.action')">
-        <template v-slot:default="{row}">
-          <el-button :disabled="row.status !== 'Running'" @click="upgradeVersion(row)" type="primary" circle icon="el-icon-upload2" size="small" />
-          <el-button :disabled="!(row.status === 'Running' || row.status === 'Failed')" @click="onDelete(row)" type="danger" circle icon="el-icon-delete" size="small" />
-          <el-button :disabled="!(row.status === 'Running' || row.status === 'Failed')" @click="onHealthCheck(row)" circle icon="el-icon-camera-solid" size="small" />
-        </template>
-      </el-table-column>
+
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :before-close="closeDialogLog" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
@@ -236,6 +231,41 @@ export default {
   components: { ComplexTable, LayoutContent },
   data() {
     return {
+      buttons: [
+        {
+          label: this.$t("commons.button.upgrade"),
+          icon: "el-icon-upload2",
+          type: "primary",
+          click: (row) => {
+            this.upgradeVersion(row)
+          },
+          disabled: (row) => {
+            return row.status !== 'Running'
+          },
+        },
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          type: "danger",
+          click: (row) => {
+            this.onDelete(row)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status.status !== "Failed"
+          },
+        },
+        {
+          label: this.$t("commons.button.check"),
+          icon: "el-icon-data-line",
+          type: "success",
+          click: (row) => {
+            this.onHealthCheck(row)
+          },
+          disabled: (row) => {
+            return row.status !== "Running" && row.status.status !== "Failed"
+          },
+        },
+      ],
       paginationConfig: {
         currentPage: 1,
         pageSize: 5,
