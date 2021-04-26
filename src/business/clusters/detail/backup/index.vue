@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;" v-loading="loading">
+    <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;"
+             v-loading="loading">
       <el-tab-pane :label="$t('cluster.detail.backup.backup_recover')"
                    :name="$t('cluster.detail.backup.backup_recover')">
         <el-row type="flex">
@@ -11,11 +12,13 @@
                   <span>{{ $t("cluster.detail.backup.backup_strategy") }}</span>
                 </div>
                 <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.cron" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300"
+                                   v-model.number="strategyForm.cron" clearable/>
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.saveNum" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300"
+                                   v-model.number="strategyForm.saveNum" clearable/>
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
@@ -70,22 +73,37 @@
             </el-card>
           </el-col>
         </el-row>
-
+        <br>
         <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data" @search="search"
-                       :pagination-config="paginationConfig">
+                       :pagination-config="paginationConfig" :selects.sync="selects">
+          <template #header>
+            <el-button-group>
+              <el-button size="small" :disabled="selects.length!==1" @click="restoreByFiles(selects[0])">
+                {{ $t("cluster.detail.backup.recover") }}
+              </el-button>
+              <el-button size="small" type="danger" @click="deleteBackupFile()" :disabled="selects.length===0">
+                {{ $t("commons.button.delete") }}
+              </el-button>
+            </el-button-group>
+          </template>
+          <el-table-column type="selection" fix></el-table-column>
           <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix/>
           <el-table-column :label="$t('cluster.detail.backup.backup_location')" min-width="100" prop="folder" fix/>
           <el-table-column :label="$t('cluster.detail.log.time')">
             <template v-slot:default="{row}">
-              {{ row.firstTimestamp | datetimeFormat }}
+              {{ row.createdAt | datetimeFormat }}
             </template>
           </el-table-column>
         </complex-table>
       </el-tab-pane>
 
       <el-tab-pane :label="$t('cluster.detail.backup.backup_log')" :name="$t('cluster.detail.backup.backup_log')">
-        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data">
-          <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix/>
+        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="logs">
+          <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix>
+            <template v-slot:default="{row}">
+              {{ $t("cluster.detail.backup." + row.type) }}
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
             <template v-slot:default="{row}">
               {{ row.startTime | datetimeFormat }}
@@ -99,8 +117,25 @@
           </el-table-column>
           <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
             <template v-slot:default="{row}">
-              <el-button v-if="row.status==='FAILED'" type="text" @click="getLogDetail()">{{ row.status }}</el-button>
-              <span v-if="row.status !== 'FAILED'">{{ row.status }}</span>
+              <el-button v-if="row.status==='FAILED'" type="text">
+                <el-popover
+                        placement="top"
+                        :title="$t('cluster.detail.backup.detail')"
+                        width="200"
+                        trigger="click"
+                        :content="row.message">
+                  <el-button slot="reference" size="mini" round plain type="danger">
+                    {{ $t("cluster.detail.backup." + row.status) }}
+                  </el-button>
+                </el-popover>
+              </el-button>
+              <el-button v-if="row.status === 'Running'" size="mini" round type="primary"
+                         plain icon="el-icon-loading">
+                {{ $t("cluster.detail.backup." + row.status) }}
+              </el-button>
+              <el-button v-if="row.status === 'SUCCESS'" size="mini" round type="success">
+                {{ $t("cluster.detail.backup." + row.status) }}
+              </el-button>
             </template>
           </el-table-column>
           <el-table-column :label="$t('cluster.detail.log.time')">
@@ -123,7 +158,9 @@ import {
   getStrategy,
   localRestore,
   getBackupLog,
-  listBackupAccounts
+  listBackupAccounts,
+  startRestore,
+  deleteBackupFile
 } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 
@@ -153,11 +190,12 @@ export default {
       file: {},
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0,
       },
       backupAccounts: [],
       logs: [],
+      selects: []
     }
   },
   methods: {
@@ -235,13 +273,64 @@ export default {
       formData.append("clusterName", this.clusterName)
       localRestore(formData).then(
         () => {
-          this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
+          this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
         },
         (error) => {
           this.$message({ type: "error", message: error })
         }
       )
     },
+    restoreByFiles (row) {
+      this.$confirm(
+        this.$t("cluster.detail.backup.restore_message"),
+        this.$t("cluster.detail.backup.CLUSTER_RESTORE"),
+        {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "info"
+        }
+      ).then(() => {
+        startRestore({
+          name: row.name,
+          clusterName: this.clusterName,
+        }).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("cluster.detail.backup.recover_success")
+          })
+        })
+      })
+    },
+    deleteBackupFile (name) {
+      this.$confirm(
+        this.$t("commons.confirm_message.delete"),
+        this.$t("commons.message_box.prompt"),
+        {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning"
+        }
+      )
+        .then(() => {
+          const ps = []
+          if (name) {
+            ps.push(deleteBackupFile(name))
+          } else {
+            for (const item of this.selects) {
+              ps.push(deleteBackupFile(item.name))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.delete_success")
+            })
+          }).catch(() => {
+            this.search()
+          })
+        })
+    }
   },
   created () {
     this.clusterName = this.$route.params.name

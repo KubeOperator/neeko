@@ -143,7 +143,7 @@ const message = {
     welcome: "欢迎回来，请输入用户名和密码登录",
     expires: "认证信息已过期，请重新登录",
     captcha: "验证码",
-    forget_password:"忘记密码",
+    forget_password: "忘记密码",
     reset_password: "重制密码",
     email: "邮箱",
     reset_message: "重制密码成功！请查看邮件"
@@ -407,7 +407,7 @@ const message = {
         disable_istio: "禁用 ISTIO",
         resave: "重新保存",
         ensure_disable_istio: "是否确认禁用集群 istio？",
-    },
+      },
       backup: {
         backup_strategy: "备份策略",
         backup_interval: "备份间隔(天)",
@@ -427,6 +427,15 @@ const message = {
         backup_location: "备份位置",
         backup_recover: "备份/恢复",
         backup_log: "日志",
+        recover: "恢复",
+        recover_success: "开始恢复，稍后请查看日志",
+        CLUSTER_RESTORE: "集群恢复",
+        CLUSTER_BACKUP: "集群备份",
+        SUCCESS: "成功",
+        Running: "运行中",
+        restore_message: "确定用此备份文件恢复？",
+        FAILED: "失败",
+        detail:"详情"
       },
       security: {
         start_time: "开始时间",
@@ -454,7 +463,7 @@ const message = {
         resources: "资源",
         security: "安全",
       },
-  },
+    },
   },
   host: {
     detail: "详情",
