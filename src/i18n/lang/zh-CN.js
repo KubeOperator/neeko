@@ -46,8 +46,7 @@ const message = {
       history: "日志",
       error_msg: "错误",
       lock: "启用/禁用",
-      relation: "关联"
-      lock:"启用/禁用",
+      relation: "关联",
       cordon: "驱散",
       uncordon: "恢复驱散"
     },
@@ -71,7 +70,7 @@ const message = {
       input: "请输入{0}",
       cannot_be_empty: "该内容不能为空!",
       name_not_compliant: "该名称不符合命名规范!",
-      select: "请选择{0}",
+      select: "请选择",
       required_msg: "输入项不能为空",
       ip_error: "请输入正确的Ip地址",
       password_help: "有效密码:8-30位,英文字母+数字+特殊字符(可选)",
