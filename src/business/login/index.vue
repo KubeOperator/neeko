@@ -25,12 +25,12 @@
               </el-form-item>
               <el-form-item v-if="hasCode">
                 <el-col :span="18">
-                    <el-form-item  prop="code">
-                      <el-input v-model="form.code"></el-input>
-                    </el-form-item>
+                  <el-form-item prop="code">
+                    <el-input v-model="form.code"></el-input>
+                  </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item >
+                  <el-form-item>
                     <el-image style="float: right" :src="captcha.image" @click="createCaptcha"></el-image>
                   </el-form-item>
                 </el-col>
@@ -44,6 +44,9 @@
             <div class="login-msg">
               {{ msg }}
             </div>
+            <div class="forget-password">
+              <el-link type="primary" @click="forgetPassword">{{ $t("login.forget_password") }}</el-link>
+            </div>
           </el-form>
         </el-col>
         <el-col :span="12">
@@ -51,12 +54,25 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog :title="$t('login.reset_password')" :visible.sync="opened" width="30%" v-loading="loadingPage">
+      <el-form :model="forgetForm" :rules="forgetRules" ref="forgetForm" size="default">
+        <el-form-item prop="username">
+          <el-input v-model="forgetForm.username" :placeholder="$t('login.username')" autofocus/>
+        </el-form-item>
+        <el-form-item prop="email">
+          <el-input v-model="forgetForm.email" :placeholder="$t('login.email')" autofocus/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="opened = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button type="primary" @click="submitForget('forgetForm')">{{ $t("commons.button.save") }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
-
 <script>
 import {getTheme} from "@/api/theme"
-import {getCaptcha} from "@/api/auth"
+import {getCaptcha, resetPassword} from "@/api/auth"
 
 export default {
   name: "Login",
@@ -87,9 +103,23 @@ export default {
       otherQuery: {},
       systemName: this.$t("login.title"),
       captcha: {
-        image:""
+        image: ""
       },
-      hasCode: false
+      hasCode: false,
+      opened: false,
+      forgetForm: {
+        username: "",
+        email: ""
+      },
+      forgetRules: {
+        username: [
+          { required: true, message: this.$tm("commons.validate.input", "login.username"), trigger: "blur" },
+        ],
+        email: [
+          { required: true, message: this.$tm("commons.validate.input", "login.email"), trigger: "blur" },
+        ],
+      },
+      loadingPage:false
     }
   },
   watch: {
@@ -128,7 +158,7 @@ export default {
           this.$store.dispatch("user/login", this.form).then(() => {
             this.$router.push({ path: this.redirect || "/", query: this.otherQuery })
             this.loading = false
-            localStorage.removeItem('loginErrorNum');
+            localStorage.removeItem("loginErrorNum")
           }).catch(error => {
             this.handleError(error)
             this.loading = false
@@ -153,32 +183,53 @@ export default {
         }
       }).catch(() => this.systemName = this.$t("login.title"))
     },
-    checkErrorNum(){
-      if (localStorage.getItem('loginErrorNum') != null) {
-        const loginErrorNum = Number(localStorage.getItem('loginErrorNum'));
+    checkErrorNum () {
+      if (localStorage.getItem("loginErrorNum") != null) {
+        const loginErrorNum = Number(localStorage.getItem("loginErrorNum"))
         if (loginErrorNum >= 3) {
-          this.createCaptcha();
+          this.createCaptcha()
         }
       }
     },
-    createCaptcha() {
+    createCaptcha () {
       getCaptcha().then(res => {
         this.captcha = res
         this.hasCode = true
       })
     },
-    handleError(error) {
+    forgetPassword () {
+      this.opened = true
+    },
+    submitForget (form) {
+      this.$refs[form].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.loadingPage= true
+        resetPassword(this.forgetForm).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("login.reset_message")
+          })
+          this.opened = false
+          this.loadingPage= false
+        }).finally(()=>{
+          this.loadingPage= false
+        })
+      })
+    },
+    handleError (error) {
       this.msg = error
-      if (localStorage.getItem('loginErrorNum') != null) {
-        const loginErrorNum = Number(localStorage.getItem('loginErrorNum'));
+      if (localStorage.getItem("loginErrorNum") != null) {
+        const loginErrorNum = Number(localStorage.getItem("loginErrorNum"))
         if (loginErrorNum >= 3) {
-          this.createCaptcha();
+          this.createCaptcha()
         } else {
-          const newNum = loginErrorNum + 1;
-          localStorage.setItem('loginErrorNum', newNum.toString());
+          const newNum = loginErrorNum + 1
+          localStorage.setItem("loginErrorNum", newNum.toString())
         }
       } else {
-        localStorage.setItem('loginErrorNum', '1');
+        localStorage.setItem("loginErrorNum", "1")
       }
     }
   },
@@ -298,6 +349,20 @@ export default {
       height: 480px;
       @media only screen and (max-width: 1280px) {
         height: 380px;
+      }
+    }
+
+    .submit {
+      width: 100%;
+      border-radius: 0;
+    }
+
+    .forget-password {
+      margin-top: 40px;
+      padding: 0 40px;
+      float: right;
+      @media only screen and (max-width: 1280px) {
+        margin-top: 20px;
       }
     }
   }

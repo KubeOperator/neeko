@@ -134,7 +134,11 @@ const message = {
     title: "登录 KubeOperator",
     welcome: "欢迎回来，请输入用户名和密码登录",
     expires: "认证信息已过期，请重新登录",
-    captcha: "验证码"
+    captcha: "验证码",
+    forget_password:"忘记密码",
+    reset_password: "重制密码",
+    email: "邮箱",
+    reset_message: "重制密码成功！请查看邮件"
   },
   route: {
     project: "项目",
