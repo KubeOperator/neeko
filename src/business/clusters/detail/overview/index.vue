@@ -99,7 +99,11 @@
       <div slot="header" class="clearfix">
         <span>WebKubeCtl</span>
         <el-button v-if="!opened" type="primary" @click="onOpen()" style="float: right;">{{$t('cluster.detail.overview.connect')}}</el-button>
-        <el-button v-if="opened" icon="el-icon-s-platform" type="primary" @click="newWindow()" style="float: right;"></el-button>
+        <el-button v-if="opened" @click="newWindow()" style="float: right;" type="primary" plain>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#iconchuangkou"></use>
+          </svg>
+        </el-button>
       </div>
       <div v-if="opened">
         <iframe style="width: 100%;height: 512px;" :src="url"></iframe>

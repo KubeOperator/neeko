@@ -12,7 +12,8 @@ const message = {
       delete: "删除"
     },
     confirm_message: {
-      delete: "此操作不可撤销, 是否继续?"
+      delete: "此操作不可撤销, 是否继续?",
+      uncordon: "此操作将恢复节点驱散, 是否继续?",
     },
     button: {
       login: "登录",
@@ -45,6 +46,9 @@ const message = {
       history: "日志",
       error_msg: "错误",
       lock: "启用/禁用",
+      relation: "关联",
+      cordon: "驱散",
+      uncordon: "恢复驱散"
     },
     msg: {
       success: "{0}成功",
@@ -87,9 +91,13 @@ const message = {
       synchronizing: "同步中",
     },
     personal: {
-      personal_information: "个人信息",
+      change_password: "修改密码",
       help_documentation: "帮助文档",
-      exit_system: "退出系统"
+      exit_system: "退出系统",
+      new_password: "新密码",
+      original_password: "原密码",
+      confirm_password: "确认旧密码",
+      confirm_password1_info: "密码不一致"
     },
     table: {
       action: "操作",
@@ -293,7 +301,9 @@ const message = {
         node_detail: "节点详情",
         base_infomation: "基础信息",
         label: "标签",
-        status: "状态"
+        status: "状态",
+        is_force: "是否强制",
+        disable_scheduling: "禁用调度",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
@@ -503,14 +513,14 @@ const message = {
     },
     detail: {
       basicInformation: "基本信息",
-      messageDetail: "消息详情",
+      message_detail: "消息详情",
       clusterName: "集群",
       host: "主机",
       name: "名称",
       type: "类型",
       kind: "类别",
       component: "组件",
-      Detail: "详情",
+      detail: "详情",
       namespace: "命名空间",
       cause: "原因",
       time: "时间"
@@ -775,14 +785,18 @@ const message = {
   multi_cluster: {
     multi_cluster: "多集群",
     repository_setting: "仓库设置",
+    basic_setting: "基础设置",
     senior_setting: "高级设置",
     address: "地址",
     branch: "分支",
     auth: "认证",
     username: "用户名",
     password: "密码",
-    sync_interval: "同步间隔",
-    pull_timeout: "拉取超时时间",
+    sync_interval: "同步间隔(分钟)",
+    pull_timeout: "拉取超时时间(分钟)",
+    edit: "编辑",
+    "": "",
+    log: "日志"
   }
 }
 

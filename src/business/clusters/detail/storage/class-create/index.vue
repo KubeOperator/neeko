@@ -4,7 +4,7 @@
       <el-col :span="3"><br /></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" label-width="200px">
+          <el-form :model="form" ref="form" label-width="200px">
             <el-form-item :label="$t('commons.table.name')" prop="metadata.name" :rules="nameRules">
               <el-input size="small" @change="sss" v-model="form.metadata.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>

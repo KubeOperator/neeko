@@ -9,22 +9,22 @@
       </template>
 
       <el-table-column type="selection" :selectable="selectable" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
+      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text">{{row.name}}</el-button>
-          <span v-if="row.status !== 'Running'">{{row.name}}</span>
+          <el-button v-if="row.status.indexOf('Running') !== -1" @click="goForDetail(row)" type="text">{{row.name}}</el-button>
+          <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="IP" min-width="100" fix>
+      <el-table-column label="IP" width="120px" fix>
         <template v-slot:default="{row}">{{getInternalIp(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.version')" min-width="100" fix>
+      <el-table-column :label="$t('cluster.version')" width="100px" fix>
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
-      <el-table-column label="Roles" min-width="100" fix>
+      <el-table-column label="Roles" show-overflow-tooltip min-width="100" fix>
         <template v-slot:default="{row}">{{getNodeRoles(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+      <el-table-column :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
 
           <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
@@ -41,7 +41,8 @@
             <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
           </span>
 
-          <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
+          <el-tag v-if="row.status.indexOf('Running') !== -1" type="success">{{ $t("commons.status.running") }}</el-tag>
+          <el-tag v-if="row.status.indexOf('SchedulingDisabled') !== -1" type="primary">{{$t('cluster.detail.node.disable_scheduling')}}</el-tag>
           <el-tag v-if="row.status === 'NotReady'" type="info">{{ $t("commons.status.not_ready") }}</el-tag>
         </template>
       </el-table-column>
@@ -50,7 +51,7 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      
+
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
@@ -80,35 +81,35 @@
           <table style="width: 90%" class="myTable">
             <tbody>
               <tr>
-                <th>Name</th>
+                <th style="width: 50%">Name</th>
                 <td>{{detaiInfo.metadata.name}}</td>
               </tr>
               <tr>
-                <th>Kernel Version</th>
+                <th style="width: 50%">Kernel Version</th>
                 <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
               </tr>
               <tr>
-                <th>OS Image</th>
+                <th style="width: 50%">OS Image</th>
                 <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
               </tr>
               <tr>
-                <th>Container Runtime Version</th>
+                <th style="width: 50%">Container Runtime Version</th>
                 <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
               </tr>
               <tr>
-                <th>Kubelet Version</th>
+                <th style="width: 50%">Kubelet Version</th>
                 <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
               </tr>
               <tr>
-                <th>KubeProxy Version</th>
+                <th style="width: 50%">KubeProxy Version</th>
                 <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
               </tr>
               <tr>
-                <th>Operating System</th>
+                <th style="width: 50%">Operating System</th>
                 <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
               </tr>
               <tr>
-                <th>Architecture</th>
+                <th style="width: 50%">Architecture</th>
                 <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
               </tr>
             </tbody>
@@ -119,7 +120,7 @@
           <table style="width: 90%" class="myTable">
             <tbody>
               <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
-                <th>{{name}}</th>
+                <th style="width: 50%">{{name}}</th>
                 <td>{{value}}</td>
               </tr>
             </tbody>
@@ -160,13 +161,25 @@
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="$t('commons.button.cordon')" width="30%" :visible.sync="dialogCordonVisible">
+      <el-form label-width="120px">
+        <el-form-item :label="$t('cluster.detail.node.is_force')">
+          <el-switch v-model="isForce" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogCordonVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button @click="submitCordon(true)" type="primary">{{$t('commons.button.submit')}}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
 
-import { listNodesByPage, nodeCreate, nodeDelete } from "@/api/cluster/node"
+import { listNodesByPage, nodeCreate, nodeDelete, cordonNode } from "@/api/cluster/node"
 import { listClusterResources } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
 
@@ -185,6 +198,28 @@ export default {
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+          },
+        },
+        {
+          label: this.$t("commons.button.cordon"),
+          icon: "el-icon-s-unfold",
+          type: "primary",
+          click: (row) => {
+            this.onCordon(row, "cordon")
+          },
+          disabled: (row) => {
+            return row.status !== "Running"
+          },
+        },
+        {
+          label: this.$t("commons.button.uncordon"),
+          icon: "el-icon-s-fold",
+          type: "primary",
+          click: (row) => {
+            this.onCordon(row, "uncordon")
+          },
+          disabled: (row) => {
+            return row.status !== "Running, SchedulingDisabled"
           },
         },
       ],
@@ -227,6 +262,9 @@ export default {
       currentCluster: {},
       hosts: [],
       provider: "",
+      dialogCordonVisible: false,
+      isForce: false,
+      nodeName: "",
     }
   },
   methods: {
@@ -235,6 +273,11 @@ export default {
       const { currentPage, pageSize } = this.paginationConfig
       listNodesByPage(this.clusterName, currentPage, pageSize).then((data) => {
         this.data = data.items
+        this.data.forEach((item) => {
+          if (item.info.spec["unschedulable"]) {
+            item.status = "Running, SchedulingDisabled"
+          }
+        })
         this.paginationConfig.total = data.total
       })
     },
@@ -305,6 +348,32 @@ export default {
             this.search()
           })
       })
+    },
+    onCordon(row, operation) {
+      this.nodeName = row.name
+      if (operation === "cordon") {
+        this.dialogCordonVisible = true
+      } else {
+        this.$confirm(this.$t("commons.confirm_message.uncordon"), this.$t("commons.message_box.prompt"), {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning",
+        }).then(() => {
+          this.submitCordon(false)
+        })
+      }
+    },
+    submitCordon(isCordon) {
+      let data = {"spec":{"unschedulable":isCordon}}
+      cordonNode(this.clusterName, this.nodeName, data).then(() => {
+        this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+        this.dialogCordonVisible = false
+        this.search()
+      }),
+        (error) => {
+          this.$message({ type: "error", message: error })
+          this.dialogCordonVisible = false
+        }
     },
     getInternalIp(item) {
       return item.ip ? item.ip : "N/a"
