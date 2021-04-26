@@ -4,9 +4,9 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
-              <el-select style="width: 100%" v-model="form.architecture" placeholder="请选择">
+              <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option
                   v-for="item in architectureOptions"
                   :key="item.value"
@@ -16,7 +16,7 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" required>
-              <el-select style="width: 100%" v-model="form.protocol"  placeholder="请选择">
+              <el-select style="width: 100%" v-model="form.protocol"  :placeholder="$t('commons.validate.select')">
                 <el-option
                   v-for="item in protocolOptions"
                   :key="item.value"
@@ -25,12 +25,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.hostname')" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname" required>
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
               <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+              <el-button type="primary" :disabled="validateCommit" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -44,6 +44,8 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
 import {createRegistry} from "@/api/system-setting";
+import Rule from "@/utils/rules"
+
 export default {
   name: "RegistryCreate",
   components: {LayoutContent},
@@ -67,7 +69,10 @@ export default {
       }, {
         value: 'https',
       }],
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      rules: {
+        hostname: [Rule.IpRule],
+      }
     }
   },
   methods: {
@@ -79,7 +84,7 @@ export default {
       }).then(() => {
         this.$message({
           type: 'success',
-          message: `创建成功`
+          message: this.$t("commons.msg.create_success"),
         });
         this.$router.push({name: "Registry"})
       })
@@ -91,6 +96,15 @@ export default {
   created() {
       this.form.architecture = 'x86_64';
       this.form.protocol = 'http';
+  },
+  computed: {
+    validateCommit() {
+      if (this.form.architecture && this.form.hostname && this.form.protocol) {
+        return false
+      }else {
+        return true
+      }
+    }
   }
 }
 </script>
