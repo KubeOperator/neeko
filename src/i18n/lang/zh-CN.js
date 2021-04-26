@@ -12,7 +12,8 @@ const message = {
       delete: "删除"
     },
     confirm_message: {
-      delete: "此操作不可撤销, 是否继续?"
+      delete: "此操作不可撤销, 是否继续?",
+      uncordon: "此操作将恢复节点驱散, 是否继续?",
     },
     button: {
       login: "登录",
@@ -45,6 +46,8 @@ const message = {
       history: "日志",
       error_msg: "错误",
       lock:"启用/禁用",
+      cordon: "驱散",
+      uncordon: "恢复驱散"
     },
     msg: {
       success: "{0}成功",
@@ -288,7 +291,9 @@ const message = {
         node_detail: "节点详情",
         base_infomation: "基础信息",
         label: "标签",
-        status: "状态"
+        status: "状态",
+        is_force: "是否强制",
+        disable_scheduling: "禁用调度",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",

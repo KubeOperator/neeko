@@ -84,10 +84,12 @@ export const del = (url, loading) => {
   return promise(request({url: url, method: "delete"}), loading)
 };
 
-export const patch = (url, data, loading) => {
+export const patch = (url, headers, data,  loading) => {
+  if (headers) {
+    return promise(request({url: url, headers: headers, method: "patch", data}), loading)
+  }
   return promise(request({url: url, method: "patch", data}), loading)
 };
-
 
 export default {
   install(Vue) {

@@ -1,4 +1,4 @@
-import {get, post, del} from "@/plugins/request"
+import {get, post, del, patch} from "@/plugins/request"
 
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
 const limit = 10
@@ -14,6 +14,12 @@ export function listNodesUsage(clusterName, continueToken) {
     url += "&continue=" + continueToken
   }
   return get(url)
+}
+
+export function cordonNode(clusterName, nodeName, data) {
+  let headers = {"Content-Type": "application/strategic-merge-patch+json"}
+  let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodesUrl) + "/" + nodeName
+  return patch(url, headers, data)
 }
 
 export function listNodeInDB(clusterName) {
@@ -40,4 +46,3 @@ export function nodeCreate(clusterName, data) {
 export function nodeDelete(clusterName, nodeName) {
   return del(`/clusters/node/${clusterName}/${nodeName}`)
 }
-  
