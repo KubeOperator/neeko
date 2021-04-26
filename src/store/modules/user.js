@@ -1,8 +1,8 @@
 /* 前后端不分离的登录方式*/
-import {updateUser} from '@/api/user'
-import {login, logout, isLogin, getSession} from '@/api/auth'
-import {resetRouter} from '@/router'
-import {getLanguage, setLanguage} from "@/i18n";
+import {updateUser} from "@/api/user"
+import {login, logout, isLogin, getSession} from "@/api/auth"
+import {resetRouter} from "@/router"
+import {getLanguage, setLanguage} from "@/i18n"
 
 const state = {
   login: false,
@@ -35,11 +35,11 @@ const mutations = {
 }
 
 const actions = {
-  login({commit}, userInfo) {
-    const {username, password} = userInfo
+  login ({ commit }, userInfo) {
+    const { username, password, captchaId, code } = userInfo
     return new Promise((resolve, reject) => {
-      login({username: username.trim(), password: password}).then(response => {
-        commit('LOGIN')
+      login({ username: username.trim(), password: password, captchaId: captchaId, code: code }).then(response => {
+        commit("LOGIN")
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -47,15 +47,15 @@ const actions = {
     })
   },
 
-  isLogin({commit}) {
+  isLogin ({ commit }) {
     return new Promise((resolve) => {
       if (state.isLogin) {
         resolve(true)
-        return;
+        return
       }
       isLogin().then((data) => {
         if (data.isLogin) {
-          commit('LOGIN')
+          commit("LOGIN")
           resolve(true)
         } else {
           resolve(false)
@@ -63,39 +63,39 @@ const actions = {
       }).catch(() => {
         resolve(false)
       })
-    });
+    })
   },
 
-  getCurrentUser({commit}) {
+  getCurrentUser ({ commit }) {
     return new Promise((resolve, reject) => {
       getSession().then(data => {
-        const user = data.user;
-        const {name, roles, language, currentProject} = user;
-        commit('SET_NAME', name)
-        commit('SET_ROLES', roles)
-        commit('SET_LANGUAGE', language)
-        commit('SET_CURRENT_PROJECT', currentProject)
+        const user = data.user
+        const { name, roles, language, currentProject } = user
+        commit("SET_NAME", name)
+        commit("SET_ROLES", roles)
+        commit("SET_LANGUAGE", language)
+        commit("SET_CURRENT_PROJECT", currentProject)
         resolve(user)
       }).catch(error => {
         reject(error)
       })
-    });
+    })
   },
 
-  setLanguage({commit, state}, language) {
-    commit('SET_LANGUAGE', language)
+  setLanguage ({ commit, state }, language) {
+    commit("SET_LANGUAGE", language)
     return new Promise((resolve, reject) => {
-      updateUser(state.name, {language: language}).then(response => {
+      updateUser(state.name, { language: language }).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
       })
     })
   },
-  setCurrentProject({commit, state}, project) {
-    commit('SET_CURRENT_PROJECT', project)
+  setCurrentProject ({ commit, state }, project) {
+    commit("SET_CURRENT_PROJECT", project)
     return new Promise((resolve, reject) => {
-      updateUser(state.name, {currentProject: project}).then(response => {
+      updateUser(state.name, { currentProject: project }).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -103,10 +103,10 @@ const actions = {
     })
   },
 
-  logout({commit}) {
+  logout ({ commit }) {
     logout().then(() => {
-      commit('LOGOUT')
-      commit('SET_ROLES', [])
+      commit("LOGOUT")
+      commit("SET_ROLES", [])
       resetRouter()
     })
   },

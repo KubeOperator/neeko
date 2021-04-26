@@ -133,7 +133,8 @@ const message = {
     password: "密码",
     title: "登录 KubeOperator",
     welcome: "欢迎回来，请输入用户名和密码登录",
-    expires: "认证信息已过期，请重新登录"
+    expires: "认证信息已过期，请重新登录",
+    captcha: "验证码"
   },
   route: {
     project: "项目",
