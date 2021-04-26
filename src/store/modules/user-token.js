@@ -1,7 +1,7 @@
-import {login, getCurrentUser, updateInfo, logout} from '@/api/user-token'
-import {resetRouter} from '@/router'
-import {getToken, setToken, removeToken} from '@/utils/token'
-import {getLanguage, setLanguage} from "@/i18n";
+import {login, getCurrentUser, updateInfo, logout} from "@/api/user-token"
+import {resetRouter} from "@/router"
+import {getToken, setToken, removeToken} from "@/utils/token"
+import {getLanguage, setLanguage} from "@/i18n"
 
 /* 前后端不分离的登录办法*/
 const state = {
@@ -28,12 +28,12 @@ const mutations = {
 }
 
 const actions = {
-  login({commit}, userInfo) {
-    const {username, password} = userInfo
+  login ({ commit }, userInfo) {
+    const { username, password, captchaId, code } = userInfo
     return new Promise((resolve, reject) => {
-      login({username: username.trim(), password: password}).then(response => {
+      login({ username: username.trim(), password: password, captchaId: captchaId, code: code }).then(response => {
         let token = response.data
-        commit('SET_TOKEN', token)
+        commit("SET_TOKEN", token)
         setToken(token)
         resolve(response)
       }).catch(error => {
@@ -42,36 +42,36 @@ const actions = {
     })
   },
 
-  isLogin({commit}) {
+  isLogin ({ commit }) {
     return new Promise((resolve, reject) => {
       let token = getToken()
       if (token) {
-        commit('SET_TOKEN', token);
+        commit("SET_TOKEN", token)
         resolve(true)
       } else {
         reject(false)
       }
-    });
+    })
   },
 
-  getCurrentUser({commit}) {
+  getCurrentUser ({ commit }) {
     return new Promise((resolve, reject) => {
       getCurrentUser().then(response => {
-        const {name, roles, language} = response.data
-        commit('SET_NAME', name)
-        commit('SET_ROLES', roles)
-        commit('SET_LANGUAGE', language)
+        const { name, roles, language } = response.data
+        commit("SET_NAME", name)
+        commit("SET_ROLES", roles)
+        commit("SET_LANGUAGE", language)
         resolve(response.data)
       }).catch(error => {
         reject(error)
       })
-    });
+    })
   },
 
-  setLanguage({commit, state}, language) {
-    commit('SET_LANGUAGE', language)
+  setLanguage ({ commit, state }, language) {
+    commit("SET_LANGUAGE", language)
     return new Promise((resolve, reject) => {
-      updateInfo(state.id, {language: language}).then(response => {
+      updateInfo(state.id, { language: language }).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -79,10 +79,10 @@ const actions = {
     })
   },
 
-  logout({commit}) {
+  logout ({ commit }) {
     logout().then(() => {
-      commit('SET_TOKEN', "");
-      commit('SET_ROLES', [])
+      commit("SET_TOKEN", "")
+      commit("SET_ROLES", [])
       removeToken()
       resetRouter()
     })

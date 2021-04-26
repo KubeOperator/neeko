@@ -6,6 +6,20 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "18195532",
+      "name": "EulerOS",
+      "font_class": "EulerOS",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "8780649",
+      "name": "诊断",
+      "font_class": "zhenduan",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
       "icon_id": "1070871",
       "name": "设备停止运行",
       "font_class": "shebeitingzhiyunxing",
