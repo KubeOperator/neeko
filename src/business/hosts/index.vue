@@ -29,6 +29,9 @@
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true" >
             <use xlink:href="#iconziyuan"></use>
           </svg>
+          <svg v-if="row.os === 'EulerOS'" class="icon" aria-hidden="true" >
+            <use xlink:href="#iconEulerOS"></use>
+          </svg>
           <svg v-if="row.os === 'RedHat'" class="icon" aria-hidden="true" >
             <use xlink:href="#iconred-hat"></use>
           </svg>
