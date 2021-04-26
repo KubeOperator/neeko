@@ -94,9 +94,21 @@
           <ul>{{currentHost['cpuCore']}}</ul>
           <ul>{{currentHost['memory']}}</ul>
           <ul>
-            <svg class="icon" aria-hidden="true" >
+            <svg v-if="currentHost['os'] === 'CentOS'" class="icon" aria-hidden="true" >
               <use xlink:href="#iconziyuan"></use>
             </svg>
+            <svg v-if="currentHost['os'] === 'EulerOS'" class="icon" aria-hidden="true" >
+              <use xlink:href="#iconEulerOS"></use>
+            </svg>
+            <svg v-if="currentHost['os'] === 'RedHat'" class="icon" aria-hidden="true" >
+              <use xlink:href="#iconred-hat"></use>
+            </svg>
+            <svg v-if="currentHost['os'] === 'Ubuntu'" class="icon" aria-hidden="true" >
+              <use xlink:href="#iconubuntu"></use>
+            </svg>
+<!--            <svg class="icon" aria-hidden="true" >-->
+<!--              <use xlink:href="#iconziyuan"></use>-->
+<!--            </svg>-->
             {{currentHost['os']}} {{currentHost['osVersion']}} </ul>
         </el-col>
       </el-row>
