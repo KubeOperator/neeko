@@ -6,7 +6,7 @@
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="bactchDelete()">
+          <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -26,16 +26,16 @@
       <el-table-column :label="$t('host.memory')" width="80px" prop="memory" />
       <el-table-column :label="$t('host.os')" min-width="120">
         <template v-slot:default="{row}">
-          <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true" >
+          <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
           </svg>
-          <svg v-if="row.os === 'EulerOS'" class="icon" aria-hidden="true" >
+          <svg v-if="row.os === 'EulerOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconEulerOS"></use>
           </svg>
-          <svg v-if="row.os === 'RedHat'" class="icon" aria-hidden="true" >
+          <svg v-if="row.os === 'RedHat'" class="icon" aria-hidden="true">
             <use xlink:href="#iconred-hat"></use>
           </svg>
-          <svg v-if="row.os === 'Ubuntu'" class="icon" aria-hidden="true" >
+          <svg v-if="row.os === 'Ubuntu'" class="icon" aria-hidden="true">
             <use xlink:href="#iconubuntu"></use>
           </svg>
           {{ row.os }} {{ row['osVersion'] }}
@@ -83,9 +83,9 @@
 
     <el-dialog :title="$t('host.detail')" width="50%" :visible.sync="dialogDetailVisible">
       <div style="margin: 10px 0">{{$t ('host.base_info')}}</div>
-      <el-divider content-position="left" class="hDivider"/>
+      <el-divider content-position="left" class="hDivider" />
       <el-row type="flex" justify="left">
-        <el-col  :span="8">
+        <el-col :span="8">
           <ul>{{$t ('host.cpu')}}</ul>
           <ul>{{$t ('host.memory')}}</ul>
           <ul>{{$t ('host.os')}}</ul>
@@ -94,26 +94,27 @@
           <ul>{{currentHost['cpuCore']}}</ul>
           <ul>{{currentHost['memory']}}</ul>
           <ul>
-            <svg v-if="currentHost['os'] === 'CentOS'" class="icon" aria-hidden="true" >
+            <svg v-if="currentHost['os'] === 'CentOS'" class="icon" aria-hidden="true">
               <use xlink:href="#iconziyuan"></use>
             </svg>
-            <svg v-if="currentHost['os'] === 'EulerOS'" class="icon" aria-hidden="true" >
+            <svg v-if="currentHost['os'] === 'EulerOS'" class="icon" aria-hidden="true">
               <use xlink:href="#iconEulerOS"></use>
             </svg>
-            <svg v-if="currentHost['os'] === 'RedHat'" class="icon" aria-hidden="true" >
+            <svg v-if="currentHost['os'] === 'RedHat'" class="icon" aria-hidden="true">
               <use xlink:href="#iconred-hat"></use>
             </svg>
-            <svg v-if="currentHost['os'] === 'Ubuntu'" class="icon" aria-hidden="true" >
+            <svg v-if="currentHost['os'] === 'Ubuntu'" class="icon" aria-hidden="true">
               <use xlink:href="#iconubuntu"></use>
             </svg>
-<!--            <svg class="icon" aria-hidden="true" >-->
-<!--              <use xlink:href="#iconziyuan"></use>-->
-<!--            </svg>-->
-            {{currentHost['os']}} {{currentHost['osVersion']}} </ul>
+            <!--            <svg class="icon" aria-hidden="true" >-->
+            <!--              <use xlink:href="#iconziyuan"></use>-->
+            <!--            </svg>-->
+            {{currentHost['os']}} {{currentHost['osVersion']}}
+          </ul>
         </el-col>
       </el-row>
       <div style="margin: 10px 0">{{$t ('host.disk_size')}}</div>
-      <el-divider content-position="left" class="hDivider"/>
+      <el-divider content-position="left" class="hDivider" />
       <table style="width: 90%" class="myTable">
         <thead>
           <tr>
@@ -164,7 +165,7 @@
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">{{$t('commons.form.file_upload_help')}}</div>
               <div class="el-upload__tip" slot="tip">
-                <svg class="icon" aria-hidden="true" >
+                <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icontishi11"></use>
                 </svg>
                 {{ $t("cluster.detail.backup.local_recover_tips") }}
@@ -197,7 +198,7 @@ export default {
           icon: "el-icon-delete",
           type: "danger",
           click: (row) => {
-            this.onDelete(row.name)
+            this.onDelete(row)
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status.status !== "Failed"
@@ -298,28 +299,25 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
+        const ps = []
         if (name) {
-          deleteHost(name).then(() => {
+          ps.push(deleteHost(name))
+        } else {
+          for (const item of this.hostSelections) {
+            ps.push(deleteHost(item.name))
+          }
+        }
+        Promise.all(ps)
+          .then(() => {
             this.search()
             this.$message({
               type: "success",
-              message: `${name}${this.$t("commons.msg.delete_success")}!`,
+              message: this.$t("commons.msg.delete_success"),
             })
           })
-        }
-      })
-    },
-    bactchDelete() {
-      const ps = []
-      for (const item of this.hostSelections) {
-        ps.push(deleteHost(item.name))
-      }
-      Promise.all(ps).then(() => {
-        this.search()
-        this.$message({
-          type: "success",
-          message: this.$t("commons.msg.delete_success"),
-        })
+          .catch(() => {
+            this.search()
+          })
       })
     },
     search(condition) {

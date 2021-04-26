@@ -12,7 +12,8 @@ const message = {
       delete: "删除"
     },
     confirm_message: {
-      delete: "此操作不可撤销, 是否继续?"
+      delete: "此操作不可撤销, 是否继续?",
+      uncordon: "此操作将恢复节点驱散, 是否继续?",
     },
     button: {
       login: "登录",
@@ -45,6 +46,8 @@ const message = {
       history: "日志",
       error_msg: "错误",
       lock:"启用/禁用",
+      cordon: "驱散",
+      uncordon: "恢复驱散"
     },
     msg: {
       success: "{0}成功",
@@ -137,7 +140,12 @@ const message = {
     password: "密码",
     title: "登录 KubeOperator",
     welcome: "欢迎回来，请输入用户名和密码登录",
-    expires: "认证信息已过期，请重新登录"
+    expires: "认证信息已过期，请重新登录",
+    captcha: "验证码",
+    forget_password:"忘记密码",
+    reset_password: "重制密码",
+    email: "邮箱",
+    reset_message: "重制密码成功！请查看邮件"
   },
   route: {
     project: "项目",
@@ -292,7 +300,9 @@ const message = {
         node_detail: "节点详情",
         base_infomation: "基础信息",
         label: "标签",
-        status: "状态"
+        status: "状态",
+        is_force: "是否强制",
+        disable_scheduling: "禁用调度",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
