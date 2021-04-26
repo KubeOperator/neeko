@@ -16,7 +16,7 @@ const XPack = {
       name: "MultiCluster",
       meta: {
         title: "route.multi_cluster",
-        roles: ["admin"]
+        roles: ["ADMIN"]
       },
       redirect: () => {
         return {

@@ -39,16 +39,7 @@ export const constantRoutes = [
   {
     path: "/",
     component: Layout,
-    redirect: "/dashboard",
-    children: [
-      {
-        path: "dashboard",
-        component: () => import("@/business/dashboard"),
-        name: "Dashboard",
-        meta: {title: "Dashboard", icon: "el-icon-s-marketing", affix: true},
-        roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
-      }
-    ]
+    redirect: "/clusters",
   }
 ]
 
