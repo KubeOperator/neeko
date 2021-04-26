@@ -87,9 +87,13 @@ const message = {
       synchronizing: "同步中",
     },
     personal: {
-      personal_information: "个人信息",
+      change_password: "修改密码",
       help_documentation: "帮助文档",
-      exit_system: "退出系统"
+      exit_system: "退出系统",
+      new_password: "新密码",
+      original_password: "原密码",
+      confirm_password: "确认旧密码",
+      confirm_password1_info: "密码不一致"
     },
     table: {
       action: "操作",
@@ -489,14 +493,14 @@ const message = {
     },
     detail: {
       basicInformation: "基本信息",
-      messageDetail: "消息详情",
+      message_detail: "消息详情",
       clusterName: "集群",
       host: "主机",
       name: "名称",
       type: "类型",
       kind: "类别",
       component: "组件",
-      Detail: "详情",
+      detail: "详情",
       namespace: "命名空间",
       cause: "原因",
       time: "时间"

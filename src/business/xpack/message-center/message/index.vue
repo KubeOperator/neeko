@@ -46,26 +46,26 @@
     </complex-table>
 
     <el-dialog
-      :title="$t('message.detail.messageDetail')"
+      :title="$t('message.detail.message_detail')"
       :visible.sync="dialogVisible"
       width="40%"
       :before-close="handleClose">
       <span>{{ $t('message.detail.basicInformation') }}</span>
       <el-divider></el-divider>
-      <div v-if="detail.message.title === 'CLUSTER_EVENT_WARNING'">
+      <div v-if="detail.message.title === 'cluster_event_warning'">
           <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
           <p>{{ $t('message.detail.host') }}: {{detail.msgContent['host']}}</p>
           <p>{{ $t('message.detail.name') }}: {{detail.msgContent['name']}}</p>
           <p>{{ $t('message.detail.type') }}: {{detail.msgContent['type']}}</p>
           <p>{{ $t('message.detail.component') }}: {{detail.msgContent['component']}}</p>
-          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent['message']}}</p>
+          <p>{{ $t('message.detail.detail') }}: {{detail.msgContent['message']}}</p>
           <p>{{ $t('message.detail.kind') }}: {{detail.msgContent['kind']}}</p>
           <p>{{ $t('message.detail.cause') }}: {{detail.msgContent['reason']}}</p>
           <p>{{ $t('message.detail.time') }}: {{detail.msgContent['createdAt'] | datetimeFormat }}</p>
       </div>
-      <div v-if="detail.message.title !== 'CLUSTER_EVENT_WARNING'">
+      <div v-if="detail.message.title !== 'cluster_event_warning'">
           <p>{{ $t('message.detail.clusterName') }}: {{detail.clusterName}} </p>
-          <p>{{ $t('message.detail.Detail') }}: {{detail.msgContent['message']}}</p>
+          <p>{{ $t('message.detail.detail') }}: {{detail.msgContent['message']}}</p>
           <p>{{ $t('message.detail.time') }}: {{detail['createdAt'] | datetimeFormat }}</p>
       </div>
       <span slot="footer" class="dialog-footer">

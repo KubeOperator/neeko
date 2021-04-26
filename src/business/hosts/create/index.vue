@@ -48,8 +48,8 @@
               </el-form-item>
             </span>
             <el-form-item>
-              <el-button @click="onCancel()">取消</el-button>
-              <el-button type="primary" @click="onSubmit">创建</el-button>
+              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
