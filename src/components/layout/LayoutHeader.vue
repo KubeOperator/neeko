@@ -11,7 +11,4 @@ export default {
 </script>
 
 <style>
-  .header-container {
-      background-color: #E4E7ED;
-  }
 </style>
