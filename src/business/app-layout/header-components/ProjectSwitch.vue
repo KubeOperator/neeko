@@ -5,7 +5,7 @@
            mode="horizontal">
     <el-submenu index="1" popper-class="header-menu-popper">
       <template slot="title">
-        <icon  class="iconfont iconproject ko-color"/>&nbsp;&nbsp;
+        <i class="iconfont iconproject ko-color" />&nbsp;&nbsp;
         <span >{{currentProject}}</span>
       </template>
       <el-menu-item v-for="p in projects" :key="p.name" @click="setCurrentProject(p.name)">
