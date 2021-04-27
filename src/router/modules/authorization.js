@@ -15,7 +15,7 @@ const Authorization = {
       props: true,
       meta: {
         title: "route.project",
-        icon: "el-icon-s-data",
+        icon: "iconfont iconproject",
         roles: ["ADMIN", "PROJECT_MANAGER"]
       }
     },

@@ -160,7 +160,7 @@ const message = {
     backup_account: "备份账号",
     system_log: "系统日志",
     complex_table: "复合表格",
-    user: "用户",
+    user: "用户管理",
     multi_cluster: "多集群管理"
   },
   cluster: {

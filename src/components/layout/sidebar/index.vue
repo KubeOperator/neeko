@@ -7,7 +7,9 @@
         :collapse="isCollapse"
         :collapse-transition="false"
         :unique-opened="false"
-        mode="vertical">
+        mode="vertical"
+        active-text-color="#fa5d50"
+      >
         <sidebar-item v-for="route in permission_routes"
                       :key="route.path"
                       :item="route"

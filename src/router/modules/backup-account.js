@@ -8,7 +8,7 @@ const BackupAccount = {
   props: true,
   meta: {
     title: "route.backup_account",
-    icon: "el-icon-camera",
+    icon: "iconfont iconbackup",
     roles: ["ADMIN","PROJECT_MANAGER"]
   },
   redirect: to => {
