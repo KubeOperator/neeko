@@ -6,7 +6,7 @@
            mode="horizontal">
     <el-submenu index="1" popper-class="header-menu-popper">
       <template slot="title">
-        <font-awesome-icon class="language-icon" :icon="['fas', 'globe']"/>
+        <font-awesome-icon class="language-icon ko-color" :icon="['fas', 'globe']"/>
         <span>{{ languageMap[language] }}</span>
       </template>
       <el-menu-item v-for="(value, key) in languageMap" :key="key" :index="key" @click="setLanguage(key)">

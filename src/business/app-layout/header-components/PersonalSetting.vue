@@ -2,6 +2,7 @@
   <el-menu class="header-menu" text-color="inherit" mode="horizontal">
     <el-submenu index="none" popper-class="header-menu-popper">
       <template slot="title">
+        <i class="el-icon-user-solid" style="color: #FA5D50"></i>
         <span>{{ name }}</span>
       </template>
       <el-menu-item @click="toPersonal">
