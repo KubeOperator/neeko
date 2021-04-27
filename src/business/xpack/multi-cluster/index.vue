@@ -58,15 +58,9 @@
             }
           },
           {
-            label: this.$t('commons.button.edit'), icon: "el-icon-connection", click: (row) => {
+            label: this.$t('commons.button.relation'), icon: "el-icon-connection", click: (row) => {
               this.relationManagementOpened = true
               this.currentRepositoryName = row.name
-            }
-          },
-          {
-            label: this.$t('commons.button.edit'), icon: "el-icon-notebook-2", click: (row) => {
-              this.$router.push({name: "MultiClusterRepositoryLog", params: {name: row.name}})
-
             }
           },
           {

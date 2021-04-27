@@ -7,7 +7,7 @@ const Manifest = {
   name: "Manifest",
   meta: {
     title: "route.manifest",
-    icon: "el-icon-s-grid",
+    icon: "iconfont iconmanifest",
     roles: ["ADMIN","PROJECT_MANAGER"]
   },
   children: [

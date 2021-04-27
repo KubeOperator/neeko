@@ -7,7 +7,7 @@ const Automatic = {
   name: "Automatic",
   meta: {
     title: "automatic.name",
-    icon: "el-icon-date",
+    icon: "iconfont iconautomatic",
     roles: ["ADMIN", "PROJECT_MANAGER"]
   },
   children: [

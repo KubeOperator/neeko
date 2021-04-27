@@ -7,7 +7,7 @@ const XPack = {
   component: Layout,
   meta: {
     title: "X-Pack",
-    icon: "el-icon-message",
+    icon: "iconfont iconx",
   },
   children: [
     {
@@ -16,7 +16,7 @@ const XPack = {
       name: "MultiCluster",
       meta: {
         title: "route.multi_cluster",
-        roles: ["admin"]
+        roles: ["ADMIN"]
       },
       redirect: () => {
         return {

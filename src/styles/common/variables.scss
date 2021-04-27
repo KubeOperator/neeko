@@ -3,6 +3,7 @@ $--color-primary: #447DF7;
 $--color-success: #87CB16;
 $--color-warning: #FFA534;
 $--color-danger: #FB404B;
+$--color-ko: #FA5D50;
 
 $--box-shadow-light: 0 1px 4px 0 rgb(0 0 0 / 14%);
 
@@ -31,7 +32,7 @@ $submenu-bg-color-hover: mix($menu-open-bg-color, #000, 80%); // 子菜单项hov
 $submenu-active-color: $menu-active-color; // 子菜单项激活时颜色
 $submenu-active-bg-color: transparent; // 子菜单项激活时背景
 
-$menu-active-prefix-color: $--color-primary; // 菜单激活前缀颜色
+$menu-active-prefix-color: $--color-ko; // 菜单激活前缀颜色
 $menu-active-prefix-width: 4px; // 菜单激活前缀宽度
 
 /* logo */
@@ -50,5 +51,9 @@ $view-padding: 15px;
 
 :export {
   theme: $--color-primary;
+}
+
+#nprogress .bar {
+  background: $--color-ko !important; //自定义颜色
 }
 

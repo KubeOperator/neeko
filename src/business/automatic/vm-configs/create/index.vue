@@ -2,17 +2,17 @@
   <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'VmConfigList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="14">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.vm_config.cpu')" prop="cpu">
-              <el-input-number v-model="form.cpu"></el-input-number>
+            <el-form-item :label="$t('automatic.vm_config.cpu')" prop="cpu" >
+              <el-input-number v-model="form.cpu" :step="1" :min="0" :max="300"></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('automatic.vm_config.memory')" prop="memory">
-              <el-input-number v-model="form.memory"></el-input-number>
+              <el-input-number v-model="form.memory" :step="1" :min="0" :max="300"></el-input-number>
             </el-form-item>
             <el-form-item>
               <div style="float: right">

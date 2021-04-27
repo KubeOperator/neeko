@@ -11,10 +11,10 @@
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
-              <el-button size="small" @click="create()">
+              <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()">
+              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -53,10 +53,10 @@
                 @search="getProjectResourceList">
           <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
-              <el-button size="small" @click="create()">
+              <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()">
+              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -87,10 +87,10 @@
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
-              <el-button size="small" @click="create()">
+              <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()">
+              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>

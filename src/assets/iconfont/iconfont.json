@@ -6,6 +6,132 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "6692332",
+      "name": "fold",
+      "font_class": "fold",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "21282201",
+      "name": "fold",
+      "font_class": "unfold",
+      "unicode": "ed18",
+      "unicode_decimal": 60696
+    },
+    {
+      "icon_id": "17364729",
+      "name": "x",
+      "font_class": "x",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "20663890",
+      "name": "更多功能_画板 1",
+      "font_class": "gengduogongneng_huaban1",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "14763222",
+      "name": "自动",
+      "font_class": "automatic",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "8175883",
+      "name": "自动",
+      "font_class": "zidong",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "12381111",
+      "name": "自动",
+      "font_class": "zidong1",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "17124831",
+      "name": "自动",
+      "font_class": "automatic1",
+      "unicode": "e724",
+      "unicode_decimal": 59172
+    },
+    {
+      "icon_id": "15378963",
+      "name": "x-pack",
+      "font_class": "x-pack",
+      "unicode": "ed17",
+      "unicode_decimal": 60695
+    },
+    {
+      "icon_id": "20862269",
+      "name": "主机",
+      "font_class": "host",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "11464292",
+      "name": "主机",
+      "font_class": "host2",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "21279598",
+      "name": "集群",
+      "font_class": "cluster",
+      "unicode": "ebe9",
+      "unicode_decimal": 60393
+    },
+    {
+      "icon_id": "6526097",
+      "name": "自动",
+      "font_class": "automatic-old",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "6877612",
+      "name": "版本",
+      "font_class": "manifest",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "7159338",
+      "name": "集群",
+      "font_class": "jiqun",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "15478266",
+      "name": "备份_复制",
+      "font_class": "backup",
+      "unicode": "e674",
+      "unicode_decimal": 58996
+    },
+    {
+      "icon_id": "16800981",
+      "name": "主机",
+      "font_class": "zhuji2",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "7171160",
+      "name": "项目管理",
+      "font_class": "project",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
       "icon_id": "18195532",
       "name": "EulerOS",
       "font_class": "EulerOS",
