@@ -84,7 +84,7 @@ export const del = (url, loading) => {
   return promise(request({url: url, method: "delete"}), loading)
 };
 
-export const patch = (url, headers, data,  loading) => {
+export const patch = (url, data, headers, loading) => {
   if (headers) {
     return promise(request({url: url, headers: headers, method: "patch", data}), loading)
   }
