@@ -14,16 +14,16 @@
 <!--              <el-input v-model="form.type" readonly></el-input>-->
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey" required>
-              <el-input v-model="form.credentialVars['accessKey']"></el-input>
+              <el-input  v-model="form.credentialVars['accessKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="SecretKey" required>
-              <el-input v-model="form.credentialVars['secretKey']"></el-input>
+              <el-input type="password" v-model="form.credentialVars['secretKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')" required>
               <el-input v-model="form.credentialVars['accountName']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountKey')" required>
-              <el-input v-model="form.credentialVars['accountKey']"></el-input>
+              <el-input type="password" v-model="form.credentialVars['accountKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'S3'" :label="$t('backup_account.table.region')" required>
               <el-input v-model="form.credentialVars['region']"></el-input>
