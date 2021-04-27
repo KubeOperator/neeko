@@ -23,18 +23,40 @@ var checkIp = (rule, value, callback) => {
   callback()
 }
 
+
 const RequiredRule = { required: true, trigger: "blur", message: i18n.t("commons.validate.required_msg") }
 const NameRule = { validator: checkName, required: true, trigger: "blur" }
 const IpRule = { validator: checkIp, required: true, trigger: "blur" }
 const EmailRule = { type: "email", message: i18n.t("commons.validate.email") }
-const NumberRule = { required: true, trigger: "blur", min: 1, type: "number", message: i18n.t("commons.validate.number_limit") }
+const NumberRule = {
+  required: true,
+  trigger: "blur",
+  min: 1,
+  type: "number",
+  message: i18n.t("commons.validate.number_limit")
+}
 
 // 支持小写英文、数字和- 不能以数字开头
-const ClusterNameRule = { required: true, pattern: Global.ClusterNamePattern, message: i18n.t("commons.validate.name_not_compliant"), trigger: "blur" }
+const ClusterNameRule = {
+  required: true,
+  pattern: Global.ClusterNamePattern,
+  message: i18n.t("commons.validate.name_not_compliant"),
+  trigger: "blur"
+}
 // 支持小写英文、数字和-
-const CommonNameRule = { required: true, pattern: Global.StorageNamePattern, message: i18n.t("commons.validate.name_not_compliant"), trigger: "blur" }
+const CommonNameRule = {
+  required: true,
+  pattern: Global.StorageNamePattern,
+  message: i18n.t("commons.validate.name_not_compliant"),
+  trigger: "blur"
+}
 // 密码规范
-const PasswordRule = { required: true, pattern: Global.PasswordPattern, message: i18n.t("commons.validate.password_help"), trigger: "blur" }
+const PasswordRule = {
+  required: true,
+  pattern: Global.PasswordPattern,
+  message: i18n.t("commons.validate.password_help"),
+  trigger: "blur"
+}
 
 export default {
   NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule
