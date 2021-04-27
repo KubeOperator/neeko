@@ -32,7 +32,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-                <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.save") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -66,7 +66,7 @@ export default {
       },
       rules: {
         name: [Rule.NameRule],
-        subnet: [Rule.IpRule],
+        subnet: [Rule.RequiredRule],
         ipStart: [Rule.IpRule],
         ipEnd: [Rule.IpRule],
         gateway: [Rule.IpRule],
@@ -89,6 +89,13 @@ export default {
           })
           return false
         }
+        if (!this.checkSubnet()) {
+          this.$message({
+            type: "error",
+            message: this.$t("commons.validate.subnet_error")
+          })
+          return false
+        }
         createIpPool({
           name: this.form.name,
           description: this.form.description,
@@ -101,7 +108,7 @@ export default {
         }).then(() => {
           this.$message({
             type: "success",
-            message: "创建成功"
+            message: this.$t("commons.msg.create_success")
           })
           this.$router.push({ name: "IpPoolList" })
         })
@@ -123,6 +130,17 @@ export default {
         if (i === 3 && (end[i] - start[i]) < 1) {
           return false
         }
+      }
+      return true
+    },
+    checkSubnet(){
+      const ipEndAddr = ipaddr.IPv4.parse(this.form.ipEnd)
+      const subnet = this.form.subnet.split("/", 2)
+      if (subnet.length !== 2) {
+        return false
+      }
+      if (!ipEndAddr.match(ipaddr.IPv4.parseCIDR(this.form.subnet))) {
+        return false
       }
       return true
     }
