@@ -17,7 +17,7 @@ export default {
       'sidebar'
     ]),
     icon() {
-      return this.sidebar.opened ? "el-icon-s-fold" : "el-icon-s-unfold"
+      return this.sidebar.opened ? "iconfont iconfold" : "iconfont iconunfold"
     },
   }
 }
@@ -26,6 +26,8 @@ export default {
 <style lang="scss" scoped>
 .sidebar-toggle-button.el-button {
   font-size: 18px;
+  background-color: white;
+  color: #FA5D50;
 }
 
 </style>

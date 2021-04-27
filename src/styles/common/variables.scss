@@ -53,3 +53,7 @@ $view-padding: 15px;
   theme: $--color-primary;
 }
 
+#nprogress .bar {
+  background: $--color-ko !important; //自定义颜色
+}
+

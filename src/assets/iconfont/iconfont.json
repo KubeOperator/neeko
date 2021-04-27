@@ -6,6 +6,20 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "6692332",
+      "name": "fold",
+      "font_class": "fold",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "21282201",
+      "name": "fold",
+      "font_class": "unfold",
+      "unicode": "ed18",
+      "unicode_decimal": 60696
+    },
+    {
       "icon_id": "17364729",
       "name": "x",
       "font_class": "x",
