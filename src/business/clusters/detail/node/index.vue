@@ -34,7 +34,7 @@
             {{ $t("commons.status.terminating") }}
           </el-button>
           <el-button v-if="row.status === 'Initializing'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
-            {{ $t("commons.status.terminating") }}
+            {{ $t("commons.status.initializing") }}
           </el-button>
 
           <span v-if="row.status === 'Creating'">
