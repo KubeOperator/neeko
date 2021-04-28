@@ -15,11 +15,6 @@
       <el-table-column :label="$t('commons.table.name')" mix-width="120">
         <template v-slot:default="{row}">
           <el-row>
-            <!--            <el-col :span="6">-->
-            <!--              <svg class="icon" aria-hidden="true"  style="font-size: 24px">-->
-            <!--                <use xlink:href="#iconyonghu-fuben"></use>-->
-            <!--              </svg>-->
-            <!--            </el-col>-->
             <el-col :span="18">
               {{ row.name }}<br/>
             </el-col>
@@ -35,36 +30,9 @@
           </el-row>
         </template>
       </el-table-column>
-      <!--      <el-table-column :label="$t('commons.table.status')" >-->
-      <!--        <template v-slot:default="{row}">-->
-      <!--            <span v-if="row.status === 'active'" style="color: #32B350">-->
-      <!--              <svg class="icon"  aria-hidden="true">-->
-      <!--                <use xlink:href="#iconform_icon_normal"></use>-->
-      <!--              </svg>-->
-      <!--            {{ $t("commons.status.active") }}-->
-      <!--            </span>-->
-      <!--          <span v-else style="color: #FA4147">-->
-      <!--            <svg class="icon" aria-hidden="true">-->
-      <!--              <use xlink:href="#iconstoppx"></use>-->
-      <!--            </svg>-->
-      <!--            {{ $t("commons.status.passive") }}-->
-      <!--          </span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <el-table-column :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
-          <div v-if="row.status === 'active'">
-            <span class="iconfont iconduihao" style="color: #32B350"></span>
-            {{ $t("commons.status.active") }}
-
-          </div>
-          <div v-else>
-            <span style="color: #FA4147" class="iconfont iconjinyong">
-          </span>
-            {{ $t("commons.status.passive") }}
-          </div>
-
-
+            <ko-status :status="row.status"></ko-status>
         </template>
       </el-table-column>
       <el-table-column :label="$t('user.type')">
@@ -92,11 +60,12 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import {searchUsers, deleteUser, updateUser} from "@/api/user"
 import ComplexTable from "@/components/complex-table"
+import KoStatus from "@/components/ko-status"
 
 
 export default {
   name: "UserList",
-  components: { ComplexTable, LayoutContent },
+  components: { KoStatus, ComplexTable, LayoutContent },
   data () {
     return {
       columns: [],

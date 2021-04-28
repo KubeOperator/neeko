@@ -14,7 +14,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status === 'Running'" type="text" style="color: #0033FF" @click="getDetailInfo(row)">{{ row.name }}</el-button>
+          <el-link v-if="row.status === 'Running'" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
@@ -44,28 +44,7 @@
       <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
       <el-table-column :label="$t('commons.table.status')" min-width="80">
         <template v-slot:default="{row}">
-<!--          <el-button v-if="row.status === 'Failed'" size="mini" round plain>-->
-<!--            {{ $t("commons.status.failed") }}-->
-<!--          </el-button>-->
-
-          <div v-if="row.status === 'Failed'">
-            <span class="iconfont icongantanhao" style="color: #FA4147"></span>
-            <el-button type="text" style="color: #0033FF" @click="getErrorInfo(row)" >{{ $t("commons.status.failed") }}</el-button>
-          </div>
-          <div v-if="row.status === 'Running'">
-            <span class="iconfont iconduihao" style="color: #32B350"></span>
-            {{ $t("commons.status.running") }}
-          </div>
-
-          <span v-if="row.status === 'Terminating'">
-            <i class="el-icon-loading" />{{ $t("commons.status.terminating") }}
-          </span>
-          <span v-if="row.status === 'Initializing'">
-            <i class="el-icon-loading" />{{ $t("commons.status.initializing") }}
-          </span>
-          <span v-if="row.status === 'Synchronizing'">
-            <i class="el-icon-loading" />{{ $t("commons.status.synchronizing") }}
-          </span>
+          <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')" :show="false" width="150px">
@@ -193,10 +172,11 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
+import KoStatus from "@/components/ko-status"
 
 export default {
   name: "HostList",
-  components: { ComplexTable, LayoutContent },
+  components: { KoStatus, ComplexTable, LayoutContent },
   data() {
     return {
       buttons: [

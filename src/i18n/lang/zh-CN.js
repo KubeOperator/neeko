@@ -600,7 +600,7 @@ const message = {
       description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
       ready: "就绪",
       uploadImageError: "上传镜像失败",
-      initializing: "初始化中",
+      initinitializingializing: "初始化中",
       config: "配置参数",
       compute: "计算",
       cluster: "集群",
