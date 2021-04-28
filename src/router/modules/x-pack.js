@@ -7,7 +7,7 @@ const XPack = {
   component: Layout,
   meta: {
     title: "X-Pack",
-    icon: "iconfont iconx",
+    icon: "iconfont iconx-pack",
   },
   children: [
     {

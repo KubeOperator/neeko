@@ -1,5 +1,5 @@
 /* Element 变量 */
-$--color-primary: #447DF7;
+$--color-primary: #FA5D50;
 $--color-success: #87CB16;
 $--color-warning: #FFA534;
 $--color-danger: #FB404B;
@@ -55,5 +55,10 @@ $view-padding: 15px;
 
 #nprogress .bar {
   background: $--color-ko !important; //自定义颜色
+}
+
+.statusFailed {
+  color: #0033FF;
+  text-decoration:underline;
 }
 
