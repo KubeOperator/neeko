@@ -55,7 +55,7 @@ export default {
       columns: [],
       buttons: [
         {
-          label: this.$t("commons.button.delete"), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t("commons.button.delete"), icon: "el-icon-delete",  click: (row) => {
             this.del(row.name)
           }
         },
