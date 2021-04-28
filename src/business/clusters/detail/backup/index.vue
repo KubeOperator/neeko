@@ -119,12 +119,8 @@
           </el-table-column>
           <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
             <template v-slot:default="{row}">
-
-
-
-
               <div v-if="row.status==='FAILED'" type="text">
-                <span class="iconfont icongantanhao" style="color: #FA4147"></span>
+                <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
                 <el-popover
                         placement="top"
                         :title="$t('cluster.detail.backup.detail')"
@@ -132,9 +128,6 @@
                         trigger="click"
                         :content="row.message">
                     <el-button  slot="reference" type="text" style="color: #2D61A2" >{{ $t("commons.status.failed") }}</el-button>
-<!--                  <el-button slot="reference" size="mini" round plain>-->
-<!--                    {{ $t("cluster.detail.backup." + row.status) }}-->
-<!--                  </el-button>-->
                 </el-popover>
               </div>
               <el-button v-if="row.status === 'Running'" size="mini" round type="primary"
