@@ -74,12 +74,12 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <div style="height: 600px">
+      <div style="height: 450px">
         <el-scrollbar style="height:100%">
           <div style=" text-align: center;">
             <span>{{$t ('cluster.detail.node.base_infomation')}}</span>
             <div align="center" style="margin-top: 15px">
-              <table style="width: 80%" class="myTable">
+              <table style="width: 90%" class="myTable">
                 <tbody>
                   <tr>
                     <td>Name</td>
@@ -120,7 +120,7 @@
 
             <span style="margin-top: 30px">{{$t ('cluster.detail.node.label')}}</span>
             <div align="center" style="margin-top: 15px">
-              <table style="width: 80%" class="myTable">
+              <table style="width: 90%" class="myTable">
                 <tbody>
                   <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
                     <td>{{name}}</td>
@@ -133,7 +133,7 @@
 
             <span style="margin-top: 30px">{{$t('cluster.detail.node.status')}}</span>
             <div align="center" style="margin-top: 15px">
-              <el-table :data="detaiInfo.status.conditions" border style="width: 80%">
+              <el-table :data="detaiInfo.status.conditions" border style="width: 90%">
                 <el-table-column prop="type" label="Type" />
                 <el-table-column prop="status" label="Status" />
                 <el-table-column prop="lastTransitionTime" label="Time">

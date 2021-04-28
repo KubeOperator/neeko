@@ -6,7 +6,7 @@
       </el-button-group>
     </template>
     <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search" :pagination-config="paginationConfig">
-      <el-table-column label="ID" min-width="100" prop="id" fix>
+      <el-table-column label="ID" min-width="150" prop="id" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status ==='Success'" type="text" @click="cisDetail(row)">{{row.id}}</el-button>
           <span v-if="row.status !=='Success'" />
@@ -40,17 +40,21 @@
     </complex-table>
 
     <el-dialog :title="$t('cluster.detail.security.cis_result')" width="70%" :visible.sync="dialogDetailVisible">
-      <el-row type="flex" justify="center">
-        <el-col :span="6">
-          <el-progress :stroke-width="12" type="circle" :percentage="passPercent"></el-progress>
-        </el-col>
-      </el-row>
-      <complex-table style="margin-top: 20px" :data="results">
-        <el-table-column :label="$t('cluster.detail.security.code')" min-width="10%" prop="number" />
-        <el-table-column :label="$t('commons.table.status')" min-width="10%" prop="status" />
-        <el-table-column :label="$t('cluster.detail.security.description')" min-width="40%" prop="desc" />
-        <el-table-column :label="$t('cluster.detail.security.advise')" min-width="40%" prop="remediation" />
-      </complex-table>
+      <div style="height: 450px">
+        <el-scrollbar style="height:100%">
+          <div align="center">
+            <el-progress :stroke-width="20" type="circle" :width="140" :percentage="passPercent"></el-progress>
+            <br>
+            <span style="font-size: 24px">PASS RATE</span>
+            <complex-table style="margin-top: 20px; width: 90%" border :data="results">
+              <el-table-column :label="$t('cluster.detail.security.code')" min-width="10%" prop="number" />
+              <el-table-column :label="$t('commons.table.status')" min-width="10%" prop="status" />
+              <el-table-column :label="$t('cluster.detail.security.description')" min-width="40%" prop="desc" />
+              <el-table-column :label="$t('cluster.detail.security.advise')" min-width="40%" prop="remediation" />
+            </complex-table>
+          </div>
+        </el-scrollbar>
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDetailVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
@@ -101,15 +105,21 @@ export default {
       })
     },
     cisCreate() {
-      cisCreate(this.clusterName).then(
-        () => {
-          this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
-          this.search()
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
-        }
-      )
+      this.$confirm(this.$t("cluster.detail.security.start_cis"), this.$t("commons.button.confirm"), {
+        confirmButtonText: this.$t("commons.button.ok"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        cisCreate(this.clusterName).then(
+          () => {
+            this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
+            this.search()
+          },
+          (error) => {
+            this.$message({ type: "error", message: error })
+          }
+        )
+      })
     },
     onDelete(row) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.button.delete"), {

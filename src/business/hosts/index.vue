@@ -71,7 +71,7 @@
       <div style=" text-align: center;">
         <span>{{$t ('host.base_info')}}</span>
         <div align="center" style="margin-top: 15px">
-          <table style="width: 80%" class="myTable">
+          <table style="width: 90%" class="myTable">
             <tr>
               <td>IP</td>
               <td>{{currentHost.ip}}</td>
@@ -105,7 +105,7 @@
         <br>
         <span>{{$t ('host.disk_size')}}</span>
         <div align="center" style="margin-top: 15px">
-          <el-table :data="currentHost.volumes" border style="width: 80%">
+          <el-table :data="currentHost.volumes" border style="width: 90%">
             <el-table-column prop="name" :label="$t('commons.table.name')" />
             <el-table-column prop="size" :label="$t('host.disk_size')" />
           </el-table>
@@ -113,7 +113,7 @@
         <div v-if="currentHost.hasGpu">
           <span>{{$t ('host.disk_size')}}</span>
           <div align="center" style="margin-top: 15px">
-            <el-table :data="currentHost.hasGpu" border style="width: 80%">
+            <el-table :data="currentHost.hasGpu" border style="width: 90%">
               <el-table-column prop="gpuInfo" :label="$t('commons.table.name')" />
             </el-table>
           </div>

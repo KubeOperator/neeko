@@ -457,6 +457,7 @@ const message = {
         code: "编号",
         description: "描述",
         advise: "建议",
+        start_cis: "是否开始CIS扫描任务？",
       },
       f5: {
         big_ip_addr: "BIG-IP 地址",
