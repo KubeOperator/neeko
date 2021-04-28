@@ -1,23 +1,12 @@
 <template>
-  <layout-content :header="$t('multi_cluster.multi_cluster')">
+  <layout-content :header="$t('multi_cluster.multi_cluster')" :back-to="{ name: 'MultiClusterRepositoriesList'}">
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
-                   :pagination-config="paginationConfig" @search="search">
-      <template #toolbar>
-        <el-button-group>
-          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-        </el-button-group>
-      </template>
-      <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100" fix>
-        <template v-slot:default="{row}">
-          {{row.name}}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('multi_cluster.address')" min-width="100" prop="source" fix/>
+                   :pagination-config="paginationConfig">
+      <el-table-column :label="$t('multi_cluster.address')" min-width="100" prop="gitCommitId" fix/>
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status.toLowerCase() === 'running'" type="success" size="small">
-            {{$t('commons.status.running')}}
+          <el-tag v-if="row.status.toLowerCase() === 'success'" type="success" size="small">
+            {{$t('commons.status.success')}}
           </el-tag>
         </template>
       </el-table-column>
@@ -26,8 +15,6 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
   </layout-content>
 </template>
@@ -35,40 +22,17 @@
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
   import ComplexTable from "@/components/complex-table";
-  import {listMultiClusterRepositories, deleteMultiClusterRepository} from "@/api/xpack/multi-cluster"
+  import {getMultiClusterSyncLogs, deleteMultiClusterRepository} from "@/api/xpack/multi-cluster"
 
 
   export default {
-    name: "MultiClusterRepositoriesList",
+    name: "MultiClusterRepositoriesLogs",
+    props: ['name'],
     components: {ComplexTable, LayoutContent},
     data() {
       return {
         columns: [],
-        buttons: [
-          {
-            label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
-              this.$router.push({name: "MultiClusterRepositoryEdit", params: {name: row.name}})
-
-            }
-          },
-          {
-            label: this.$t('commons.button.edit'), icon: "el-icon-connection", click: (row) => {
-              this.$router.push({name: "MultiClusterRepositoryEdit", params: {name: row.name}})
-
-            }
-          },
-          {
-            label: this.$t('commons.button.edit'), icon: "el-icon-notebook-2", click: (row) => {
-              this.$router.push({name: "MultiClusterRepositoryEdit", params: {name: row.name}})
-
-            }
-          },
-          {
-            label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {
-              this.del(row.name)
-            }
-          },
-        ],
+        buttons: [],
         searchConfig: {
           quickPlaceholder: this.$t("commons.search.quickSearch"),
           components: [
@@ -113,7 +77,7 @@
       },
       search() {
         const {currentPage, pageSize} = this.paginationConfig
-        listMultiClusterRepositories(currentPage, pageSize).then(data => {
+        getMultiClusterSyncLogs(this.name, currentPage, pageSize).then(data => {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
