@@ -100,7 +100,20 @@ const message = {
       new_password: "新密码",
       original_password: "原密码",
       confirm_password: "确认旧密码",
-      confirm_password1_info: "密码不一致"
+      confirm_password1_info: "密码不一致",
+      about: "关于",
+      project_url: "项目地址",
+      issue: "问题反馈",
+      talk: "参与讨论",
+      star: "点亮 Star",
+      version: "版本",
+      ko_introduction: "KubeOperator 是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。"
+    },
+    help: {
+      help: "帮助",
+      api_docs: "API 文档",
+      business_support: "商业支持",
+      ko_docs: "官方文档",
     },
     table: {
       action: "操作",

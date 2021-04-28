@@ -8,11 +8,11 @@
       <el-menu-item @click="toPersonal">
         <span>{{ $t('commons.personal.change_password') }}</span>
       </el-menu-item>
-      <el-menu-item @click="toHelp">
-        <span>{{ $t('commons.personal.help_documentation') }}</span>
-      </el-menu-item>
       <el-menu-item @click="logout">
         <span>{{ $t('commons.personal.exit_system') }}</span>
+      </el-menu-item>
+      <el-menu-item @click="toBbout">
+        <span>{{ $t('commons.personal.about') }}</span>
       </el-menu-item>
     </el-submenu>
     <el-dialog
@@ -39,6 +39,27 @@
     <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword" @click="submit()">{{ $t("commons.button.save") }}</el-button>
   </span>
     </el-dialog>
+    <el-dialog
+        class="ko-dialog"
+        :show-close="true"
+        :visible.sync="aboutDialogVisible"
+        width="40%">
+      <div style="background-color: #f5f9ff;padding: 20px">
+        <img  style="margin-left: 0;" :src="require('@/assets/KubeOperator-red.png')"
+                class="sidebar-logo"
+                alt="Sidebar Logo">
+        <p style="color: #242e42;">{{ $t('commons.personal.ko_introduction') }}</p>
+        <strong>{{ $t('commons.personal.version') }}: v3.7.0</strong>
+      </div>
+      <div style="padding: 20px">
+        <el-row style="font-size: 6px;color: #242e42">
+          <el-col :span="6"><el-link @click="toGithub" class="iconfont iconhuaban88"><span>{{ $t('commons.personal.project_url') }}</span></el-link></el-col>
+          <el-col :span="6"><el-link @click="toIssue" class="iconfont iconbug">{{ $t('commons.personal.issue') }}</el-link></el-col>
+          <el-col :span="6"><el-link @click="toTalk" class="iconfont icontaolun">{{ $t('commons.personal.talk') }}</el-link></el-col>
+          <el-col :span="6"><el-link @click="toGithubStar" class="iconfont icondianliang">{{ $t('commons.personal.star') }}</el-link></el-col>
+        </el-row>
+      </div>
+    </el-dialog>
   </el-menu>
 </template>
 
@@ -58,6 +79,7 @@ export default {
   data () {
     return {
       dialogVisible: false,
+      aboutDialogVisible: false,
       form: {
         name: '',
         original: '',
@@ -70,12 +92,24 @@ export default {
     }
   },
   methods: {
+    toGithub() {
+      window.open("https://github.com/KubeOperator/KubeOperator", "_blank");
+    },
+    toIssue() {
+      window.open("https://github.com/KubeOperator/KubeOperator/issues", "_blank");
+    },
+    toTalk() {
+      window.open("https://kubeoperator.io/#contact", "_blank");
+    },
+    toGithubStar() {
+      window.open("https://github.com/KubeOperator/KubeOperator", "_blank");
+    },
     toPersonal() {
       this.getRole()
       this.dialogVisible = true
     },
-    toHelp() {
-      window.open("https://github.com/fit2cloud-ui/samples", "_blank");
+    toBbout() {
+      this.aboutDialogVisible = true
     },
     logout() {
       this.$store.dispatch("user/logout").then(() => {
@@ -111,4 +145,8 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/business/header-menu.scss";
+.sidebar-logo {
+  height: $logo-height;
+  vertical-align: middle;
+}
 </style>

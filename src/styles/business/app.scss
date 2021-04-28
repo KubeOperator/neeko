@@ -129,3 +129,21 @@ a:hover {
 .ko-color {
   color: #FA5D50;
 }
+
+.ko-dialog {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 25px;
+  .el-dialog__header {
+    padding: 0;
+  }
+  .el-dialog__body {
+    padding: 0;
+  }
+  .el-link.el-link--default {
+    color: unset;
+  }
+  .iconfont {
+    font-size: 14px;
+  }
+}
