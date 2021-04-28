@@ -7,7 +7,7 @@
           <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
             {{ $t("message.mark_as_read") }}
           </el-button>
-          <el-button size="small" :disabled="selects.length < 1"  @click="del()" type="danger">
+          <el-button size="small" :disabled="selects.length < 1"  @click="del()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>

@@ -13,7 +13,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()" type="danger"  :disabled="selects.length===0">{{
+          <el-button size="small" @click="del()"  :disabled="selects.length===0">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -40,7 +40,7 @@
         <el-tag v-if="row.status === 'INITIALIZING'" type="info" size="small">
           {{ $t("automatic.zone.initializing") }}
         </el-tag>
-        <el-tag v-if="row.status === 'UPLOADIMAGERROR'" type="danger" size="small">
+        <el-tag v-if="row.status === 'UPLOADIMAGERROR'" size="small">
           {{ $t("automatic.zone.uploadImageError") }}
         </el-tag>
       </el-table-column>

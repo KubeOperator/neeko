@@ -40,11 +40,13 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button :disabled="strategyForm.id == ''" @click="backupNow('strategyForm')">
-                    {{ $t("cluster.detail.backup.backup_now") }}
-                  </el-button>
-                  <el-button type="primary" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
-                  </el-button>
+                  <div style="float: right">
+                    <el-button :disabled="strategyForm.id == ''" @click="backupNow('strategyForm')">
+                      {{ $t("cluster.detail.backup.backup_now") }}
+                    </el-button>
+                    <el-button type="primary" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
+                    </el-button>
+                  </div>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -81,7 +83,7 @@
               <el-button size="small" :disabled="selects.length!==1" @click="restoreByFiles(selects[0])">
                 {{ $t("cluster.detail.backup.recover") }}
               </el-button>
-              <el-button size="small" type="danger" @click="deleteBackupFile()" :disabled="selects.length===0">
+              <el-button size="small" @click="deleteBackupFile()" :disabled="selects.length===0">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -117,18 +119,24 @@
           </el-table-column>
           <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
             <template v-slot:default="{row}">
-              <el-button v-if="row.status==='FAILED'" type="text">
+
+
+
+
+              <div v-if="row.status==='FAILED'" type="text">
+                <span class="iconfont icongantanhao" style="color: #FA4147"></span>
                 <el-popover
                         placement="top"
                         :title="$t('cluster.detail.backup.detail')"
                         width="200"
                         trigger="click"
                         :content="row.message">
-                  <el-button slot="reference" size="mini" round plain type="danger">
-                    {{ $t("cluster.detail.backup." + row.status) }}
-                  </el-button>
+                    <el-button  slot="reference" type="text" style="color: #2D61A2" >{{ $t("commons.status.failed") }}</el-button>
+<!--                  <el-button slot="reference" size="mini" round plain>-->
+<!--                    {{ $t("cluster.detail.backup." + row.status) }}-->
+<!--                  </el-button>-->
                 </el-popover>
-              </el-button>
+              </div>
               <el-button v-if="row.status === 'Running'" size="mini" round type="primary"
                          plain icon="el-icon-loading">
                 {{ $t("cluster.detail.backup." + row.status) }}

@@ -6,7 +6,7 @@
           <template>
             <el-button-group>
               <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="pvSelection.length < 1" type="danger" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
+              <el-button size="small" :disabled="pvSelection.length < 1" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
           <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="pvSelection" :data="pvDatas">
@@ -32,7 +32,7 @@
           <template>
             <el-button-group>
               <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="classSelection.length < 1" type="danger" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
+              <el-button size="small" :disabled="classSelection.length < 1" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
           <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="classSelection" :data="storageClassDatas">
@@ -58,7 +58,7 @@
             <el-button-group>
               <el-button size="small" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
               <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
-              <el-button size="small" :disabled="provisionerSelection.length < 1" type="danger" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
+              <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
           <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" :data="provisionerDatas">
@@ -71,7 +71,7 @@
                 <el-button v-if="row.status === 'Initializing'" size="mini" round @click="openXterm(row)" plain type="primary" icon="el-icon-loading">
                   {{ $t("commons.status.initializing") }}
                 </el-button>
-                <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
+                <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain>
                   {{ $t("commons.status.failed") }}
                 </el-button>
                 <el-button v-if="row.status === 'Terminating'" size="mini" round @click="openXterm(row)" type="primary" plain icon="el-icon-loading">

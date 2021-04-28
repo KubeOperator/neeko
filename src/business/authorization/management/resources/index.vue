@@ -14,7 +14,7 @@
               <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -56,7 +56,7 @@
               <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -90,7 +90,7 @@
               <el-button size="small" @click="create()" v-permission="['ADMIN']">
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  type="danger" @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>

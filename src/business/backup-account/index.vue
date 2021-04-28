@@ -6,7 +6,7 @@
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
 <!--          <el-button size="small" @click="edit()">{{$t('commons.button.edit')}}</el-button>-->
-          <el-button size="small" @click="del()" type="danger"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="del()"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
 <!--          <el-button size="small" style="left: 20px" @click="create()">{{$t('commons.button.authorize')}}</el-button>-->
         </el-button-group>
       </template>
