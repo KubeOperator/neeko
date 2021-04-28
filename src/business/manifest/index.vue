@@ -1,14 +1,5 @@
 <template>
   <layout-content :header="$t('route.manifest')">
-<!--    如果大版本数量很多，可以使用select选择过滤-->
-<!--    <el-select v-model="currentVersion" filterable placeholder="请选择">-->
-<!--      <el-option-->
-<!--        v-for="item in activeNames"-->
-<!--        :key="item"-->
-<!--        :label="item"-->
-<!--        :value="item">-->
-<!--      </el-option>-->
-<!--    </el-select>-->
     <el-tabs v-model="currentVersion"  @tab-click="handleClick">
         <el-tab-pane v-for="item in activeNames" :key="item" :label="item" :name="item"/>
     </el-tabs>
@@ -21,9 +12,10 @@
             <el-card id="card_header" style="margin-left:10px; margin-top:20px"  class="box-card">
               <div slot="header"   class="clearfix">
                 <b>{{versionMini.name}}</b>
-<!--                <el-button style="float:right; padding: 3px;color: #F2F2F2" type="text">{{$t('manifest.detail')}}</el-button>-->
+                <div style="float: right">
+                  <el-link  style="color: #F2F2F2" @click="onDetail(versionMini)" > {{$t('manifest.detail')}}</el-link>
+                </div>
               </div>
-
               <el-col :span="4">
                 <img style="width: 50px; height: 50px" src="@/assets/images/tools/kubernetes.png" alt="">
               </el-col>
@@ -34,15 +26,14 @@
                   </ul>
                 </div>
               </el-col>
-              <div style="float:left;margin-bottom: 15px;position: relative">
-                <el-button  @click="onDetail(versionMini)"  type="text">{{$t('manifest.detail')}}</el-button>
+
+              <div class="bottom">
                 <el-switch  :active-text="$t('manifest.enable')"
                             style="margin-left: 100px "
-                           @change="changeEnable(versionMini)"
-                           v-model="versionMini.isActive"
-                           v-permission="['ADMIN']">
+                            @change="changeEnable(versionMini)"
+                            v-model="versionMini.isActive"
+                            v-permission="['ADMIN']">
                 </el-switch>
-<!--                style="margin-bottom: 10px; float: right;position: relative"-->
               </div>
             </el-card>
           </el-col>
@@ -89,7 +80,6 @@
           </el-table-column>
         </el-table>
         <p>Tool</p>
-<!--        <el-divider/>-->
         <el-table
           :data="manifestDetail.toolVars"
           border
@@ -104,7 +94,6 @@
           </el-table-column>
         </el-table>
         <p>Storage</p>
-<!--        <el-divider/>-->
         <el-table
         :data="manifestDetail.storageVars"
         border
@@ -203,7 +192,9 @@ export default {
       color: #F2F2F2 !important;
   }
 
-  .el-divider--horizontal {
-    margin: 5px 0 20px 0;
+  .bottom {
+      float: right;
+      margin-bottom: 10px;
   }
+
 </style>

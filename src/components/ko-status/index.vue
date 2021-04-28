@@ -6,7 +6,7 @@
       {{ $t("commons.status.running") }}
     </div>
     <div v-if="status === 'Failed'">
-      <span class="iconfont icontanhao" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+      <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
       <el-link type="info" @click="getDetail()">{{ $t("commons.status.failed") }}</el-link>
     </div>
     <div v-if="status === 'Initializing'">
@@ -16,7 +16,7 @@
     </div>
     <div v-if="status === 'Upgrading' ">
       <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
-      <el-link @click="getDetail()"> {{ $t("commons.status.upgrading") }} </el-link>
+      <el-link @click="getDetail()" type="info"> {{ $t("commons.status.upgrading") }} </el-link>
     </div>
     <div v-if="status === 'Terminating' && other==='bareMetal' ">
       <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
@@ -38,7 +38,7 @@
       {{ $t("commons.status.active") }}
     </div>
     <div v-if="status ==='passive'">
-      <span class="iconfont iconjinyong1" style="color: #FA4147"></span>
+      <span class="iconfont icondiable" style="color: #FA4147"></span>
       {{ $t("commons.status.passive") }}
     </div>
   </div>
