@@ -12,7 +12,8 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small"  :disabled="selects.length===0" @click="del()">{{
+          <el-button size="small"  :disabled="selects.length===0" @click="del()">
+            {{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -32,7 +33,7 @@
               :label="$t('automatic.ip_pool.ip_usage')"
               mix-width="100"
               v-slot:default="{ row }">
-        <el-link type="primary" @click="openIpList(row)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
+        <el-link type="info" @click="openIpList(row)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>

@@ -21,7 +21,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">
-          <el-button type="text" @click="openDetailPage(row)">{{ row.name }}</el-button>
+          <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
       <el-table-column
