@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table :selects.sync="nsSelection" :data="data">
+    <complex-table :selects.sync="nsSelection" v-loading="loading" :data="data">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -50,6 +50,7 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      loading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -81,10 +82,16 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       this.clusterName = this.$route.params.name
-      listNamespace(this.clusterName).then((data) => {
-        this.data = data.items
-      })
+      listNamespace(this.clusterName)
+        .then((data) => {
+          this.loading = false
+          this.data = data.items
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     create() {
       this.dialogCreateVisible = true

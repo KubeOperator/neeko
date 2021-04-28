@@ -9,7 +9,7 @@
               <el-button size="small" :disabled="pvSelection.length < 1" type="danger" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :selects.sync="pvSelection" :data="pvDatas">
+          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="pvSelection" :data="pvDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity.storage" fix />
@@ -35,7 +35,7 @@
               <el-button size="small" :disabled="classSelection.length < 1" type="danger" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :selects.sync="classSelection" :data="storageClassDatas">
+          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="classSelection" :data="storageClassDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
             <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
@@ -61,7 +61,7 @@
               <el-button size="small" :disabled="provisionerSelection.length < 1" type="danger" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
             </el-button-group>
           </template>
-          <complex-table style="margin-top: 20px" :selects.sync="provisionerSelection" :data="provisionerDatas">
+          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" :data="provisionerDatas">
             <el-table-column type="selection" fix></el-table-column>
             <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
@@ -178,6 +178,7 @@ export default {
         continueToken: "",
         nextToken: "",
       },
+      loading: false,
       provisionerDatas: [],
       pvDatas: [],
       storageClassDatas: [],
@@ -194,19 +195,29 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
         listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false).then((data) => {
+          this.loading = false
           this.pvDatas = data.items
           this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
+        }).finally(() => {
+          this.loading = false
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
         listStorageClass(this.clusterName, this.classPage.continueToken, false).then((data) => {
+          this.loading = false
           this.storageClassDatas = data.items
           this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
+        }).finally(() => {
+          this.loading = false
         })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
         listProvisioner(this.clusterName).then((data) => {
+        this.loading = false
           this.provisionerDatas = data
+        }).finally(() => {
+          this.loading = false
         })
       }
     },

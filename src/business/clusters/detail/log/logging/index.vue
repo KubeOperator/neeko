@@ -2,8 +2,8 @@
   <div>
     <fu-search-bar :quick-placeholder="$t('cluster.detail.log.match_info_quick')" @exec="search">
       <template v-slot:complex>
-        <fu-complex-date field="timeRange" label="$t('cluster.detail.log.time')" />
-        <custom-search-component field="match_info" label="$t('cluster.detail.log.match_info')" />
+        <fu-complex-date field="timeRange" :label="$t('cluster.detail.log.time')" />
+        <custom-search-component field="match_info" :label="$t('cluster.detail.log.match_info')" />
         <custom-search-component field="namespace" label="namespace" />
         <custom-search-component field="container" label="container" />
         <custom-search-component field="pod" label="pod" />

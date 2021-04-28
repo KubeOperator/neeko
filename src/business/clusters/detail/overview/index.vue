@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-loading="loading">
+    <div>
       <el-row>
         <el-col :span="6">
           <el-card style="height: 350px">
@@ -38,7 +38,7 @@
           </el-card>
         </el-col>
         <el-col :span="12">
-          <el-card style="height: 350px">
+          <el-card v-loading="loading_chart" style="height: 350px">
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.capacity_info')}}</span>
             </div>
@@ -55,7 +55,7 @@
                   <el-progress :stroke-width="20" type="circle" :width="140" :percentage="memUsagePercent"></el-progress>
                   <br>
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.memery')}}</span>
-                </div>  
+                </div>
               </el-col>
               <el-col :span="8">
                 <div align="center">
@@ -95,7 +95,7 @@
     <el-divider></el-divider>
     <el-button v-if="currentCluster.source==='local'" size="small" @click="downloadKubeConfig()">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
 
-    <el-card style="margin-top: 40px">
+    <el-card style="margin-top: 40px" v-loading="loading_xterm">
       <div slot="header" class="clearfix">
         <span>WebKubeCtl</span>
         <el-button v-if="!opened" type="primary" @click="onOpen()" style="float: right;">{{$t('cluster.detail.overview.connect')}}</el-button>
@@ -122,7 +122,8 @@ export default {
   name: "ClusterOverview",
   data() {
     return {
-      loading: false,
+      loading_chart: false,
+      loading_xterm: false,
       clusterName: "",
       currentCluster: {
         name: "",
@@ -159,39 +160,36 @@ export default {
       window.open(`/api/v1/clusters/kubeconfig/${this.clusterName}`, "_blank")
     },
     search() {
-      this.loading = true
+      this.loading_chart = true
       this.clusterName = this.$route.params.name
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
-        this.loading = false
       })
-      this.listNameSpaces()
-      this.listNodes()
-      this.listDeployments()
+      this.loadNameSpaces()
+      this.loadNodes()
+      this.loadDeployments()
     },
     onOpen() {
-      this.loading = true
+      this.loading_xterm = true
       this.opened = true
       getClusterToken(this.clusterName).then((data) => {
         this.url = "/webkubectl/terminal/?token=" + data.token
-        this.loading = false
+        this.loading_xterm = false
       })
     },
     newWindow() {
       this.opened = true
-      this.loading = true
       getClusterToken(this.clusterName).then((data) => {
         this.url = `/webkubectl/terminal/?token=${data.token}`
-        this.loading = false
         window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
       })
     },
-    listNameSpaces() {
+    loadNameSpaces() {
       listNamespace(this.clusterName).then((data) => {
         this.namespaces = data.items
       })
     },
-    listPods() {
+    loadPods() {
       listPod(this.clusterName).then((data) => {
         this.pods = data.items
         this.pods.forEach((pod) => {
@@ -200,7 +198,7 @@ export default {
         this.podUsagePercent = Math.round((this.pods.length / this.podLimit) * 100)
       })
     },
-    listNodes() {
+    loadNodes() {
       listNodeInCluster(this.clusterName).then((data) => {
         this.nodes = data.items
         this.nodes.forEach((node) => {
@@ -209,16 +207,16 @@ export default {
           this.memTotal = this.memTotal + Number(mem)
           this.podLimit = this.podLimit + Number(node.status.capacity.pods)
         })
-        this.listNodesUsages()
-        this.listPods()
+        this.loadNodesUsages()
+        this.loadPods()
       })
     },
-    listDeployments() {
+    loadDeployments() {
       listDeployment(this.clusterName).then((data) => {
         this.deployments = data.items
       })
     },
-    listNodesUsages() {
+    loadNodesUsages() {
       listNodesUsage(this.clusterName).then((data) => {
         let metrics = data.items
         metrics.forEach((me) => {
@@ -230,6 +228,7 @@ export default {
         this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
         this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
         this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)
+        this.loading_chart = false
       })
     },
   },

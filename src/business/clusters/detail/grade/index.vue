@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-row>
       <el-col :span="12">
         <el-card>
@@ -61,6 +61,7 @@ export default {
   data() {
     return {
       gradeInfo: {
+        loading: false,
         grade: "",
         score: 0,
         totalSum: 0,
@@ -71,11 +72,13 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       getGrade(this.clusterName).then((data) => {
         this.gradeInfo = data
         this.initPieChart(this.gradeInfo)
         this.initBarChart(this.gradeInfo)
         this.gradeInfo.grade = this.getGrade(this.gradeInfo.score)
+        this.loading = false
       })
     },
     getGrade(score) {

@@ -13,7 +13,7 @@ const message = {
     },
     confirm_message: {
       delete: "此操作不可撤销, 是否继续?",
-      uncordon: "此操作将恢复节点驱散, 是否继续?",
+      uncordon: "此操作将恢复节点为可调度状态, 是否继续?",
     },
     button: {
       login: "登录",
@@ -304,8 +304,16 @@ const message = {
         base_infomation: "基础信息",
         label: "标签",
         status: "状态",
-        is_force: "是否强制",
+        cordon: "驱散",
+        uncordon: "恢复",
+        mode: "模式",
+        safe: "安全",
+        force: "强制",
         disable_scheduling: "禁用调度",
+        safe_cordon_help: "如果节点拥有独立的 Pod 或临时的数据，它将被隔离但不会被驱散。",
+        force_drain_help1: "永久删除：",
+        force_drain_help2: "1.  独立 Pods 和它们的数据",
+        force_drain_help3: "2.  配置了Empty Dir卷的Pods和它们的数据",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
