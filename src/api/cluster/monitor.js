@@ -20,19 +20,19 @@ export function QueryCPU(clusterName, node, mode , start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + cpuCommon.replace(/{instance}/g, node).replace(/{mode}/g, mode).replace('{start}', start).replace('{end}', end))
 }
 
-export function QueryMemeryTotal(clusterName, node, start, end) {
+export function QueryMemoryTotal(clusterName, node, start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + memeryTotal.replace(/{instance}/g, node).replace('{start}', start).replace('{end}', end))
 }
-export function QueryMemeryUsed(clusterName, node, start, end) {
+export function QueryMemoryUsed(clusterName, node, start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + memeryUsed.replace(/{instance}/g, node).replace('{start}', start).replace('{end}', end))
 }
-export function QueryMemeryCacheBuffer(clusterName, node, start, end) {
+export function QueryMemoryCacheBuffer(clusterName, node, start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + memeryCacheBuffer.replace(/{instance}/g, node).replace('{start}', start).replace('{end}', end))
 }
-export function QueryMemeryFree(clusterName, node, start, end) {
+export function QueryMemoryFree(clusterName, node, start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + memeryFree.replace(/{instance}/g, node).replace('{start}', start).replace('{end}', end))
 }
-export function QueryMemerySWAPUsed(clusterName, node, start, end) {
+export function QueryMemorySWAPUsed(clusterName, node, start, end) {
     return get(baseUrl.replace('{cluster_name}', clusterName) + memerySWAPUsed.replace(/{instance}/g, node).replace('{start}', start).replace('{end}', end))
 }
 

@@ -19,7 +19,7 @@
       </el-col>
       <el-col :span="12">
         <el-card>
-          <div v-loading="loading_memery" id="memeryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
+          <div v-loading="loading_memory" id="memoryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -42,7 +42,7 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listNodeInDB } from "@/api/cluster/node"
 let echarts = require("echarts/lib/echarts")
-import { QueryCPU, QueryMemeryTotal, QueryMemeryUsed, QueryMemeryCacheBuffer, QueryMemeryFree, QueryMemerySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
+import { QueryCPU, QueryMemoryTotal, QueryMemoryUsed, QueryMemoryCacheBuffer, QueryMemoryFree, QueryMemorySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
 
 export default {
   name: "ClusterMonitor",
@@ -63,8 +63,8 @@ export default {
       searchEndDate: Date,
       cpuDateList: [],
       cpuValueList: [],
-      memeryDateList: [],
-      memeryValueList: [],
+      memoryDateList: [],
+      memoryValueList: [],
       diskDateList: [],
       diskValueList: [],
       networkDateList: [],
@@ -93,7 +93,7 @@ export default {
         let end = this.searchruleForm.timeRange[1].getTime() / 1000
 
         this.getCPUDatas(start, end)
-        this.getMemeryDatas(start, end)
+        this.getMemoryDatas(start, end)
         this.getDiskDatas(start, end)
         this.getNetworkDatas(start, end)
       })
@@ -177,13 +177,13 @@ export default {
         })
     },
 
-    getMemeryDatas(start, end) {
-      this.loading_memery = false
-      this.memeryDateList = []
-      this.memeryValueList = []
+    getMemoryDatas(start, end) {
+      this.loading_memory = false
+      this.memoryDateList = []
+      this.memoryValueList = []
       let total = new Promise((resolve) => {
-        QueryMemeryTotal(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
-          this.memeryDateList = data.data.result[0].values.map(function (item) {
+        QueryMemoryTotal(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+          this.memoryDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
             return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
           })
@@ -191,57 +191,57 @@ export default {
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
           })
-          this.memeryValueList.push(this.addSeries(itemDatas, "RAM Total"))
+          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Total"))
           resolve()
         })
       })
       let used = new Promise((resolve) => {
-        QueryMemeryUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
           })
-          this.memeryValueList.push(this.addSeries(itemDatas, "RAM Used"))
+          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Used"))
           resolve()
         })
       })
       let cache = new Promise((resolve) => {
-        QueryMemeryCacheBuffer(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryCacheBuffer(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
           })
-          this.memeryValueList.push(this.addSeries(itemDatas, "RAM Cache + Buffer"))
+          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Cache + Buffer"))
           resolve()
         })
       })
       let free = new Promise((resolve) => {
-        QueryMemeryFree(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryFree(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
           })
-          this.memeryValueList.push(this.addSeries(itemDatas, "RAM Free"))
+          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Free"))
           resolve()
         })
       })
       let swap = new Promise((resolve) => {
-        QueryMemerySWAPUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemorySWAPUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
           })
-          this.memeryValueList.push(this.addSeries(itemDatas, "SWAP Used"))
+          this.memoryValueList.push(this.addSeries(itemDatas, "SWAP Used"))
           resolve()
         })
       })
       Promise.all([total, used, cache, free, swap])
         .then(() => {
-          this.loading_memery = false
-          this.initCharts("memeryChart", "Memery Basic", this.memeryDateList, this.memeryValueList, "GiB")
+          this.loading_memory = false
+          this.initCharts("memoryChart", "Memory Basic", this.memoryDateList, this.memoryValueList, "GiB")
         })
         .finally(() => {
-          this.loading_memery = false
+          this.loading_memory = false
         })
     },
 

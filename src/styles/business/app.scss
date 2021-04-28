@@ -102,15 +102,24 @@ a:hover {
 
 .myTable {
   border-collapse: collapse;
-  margin: 0 auto;
-  text-align: center;
+  font-size: 12px;
 }
 
-.myTable td,
+.myTable td {
+  width: 50%;
+  padding: 8px;
+  border: 1px solid #DFE6EC;
+  color: #606266;
+  height: 23px;
+}
 .myTable th {
-  border: 1px solid #cad9ea;
-  color: #666;
+  border: 1px solid #DFE6EC;
+  color: #909399;
   height: 30px;
+}
+
+.myTable tr:hover{
+  background-color: #f3f3f3;
 }
 
 .el-button--mini.is-round {
