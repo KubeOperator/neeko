@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <div v-for="tool in tools" :key="tool.name">
+      <div v-loading="loading" v-for="tool in tools" :key="tool.name">
         <el-col :span="6">
           <el-card style="margin-left:10px; margin-top:10px; height: 180px" class="box-card">
             <el-row>
@@ -228,7 +228,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" v-loading="loading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" v-loading="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -270,6 +270,7 @@ export default {
   name: "ClusterTool",
   data() {
     return {
+      loading: false,
       clusterName: "",
       currentCluster: {
         name: "",
@@ -283,7 +284,7 @@ export default {
       dialogDisableVisible: false,
       dialogUpgradeVisible: false,
       conditions: "",
-      loading: false,
+      submitLoading: false,
       isPasswordValid: true,
       isReplicasValid: true,
       toolForm: {
@@ -309,11 +310,13 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       this.clusterName = this.$route.params.name
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
       })
       listTool(this.clusterName).then((data) => {
+        this.loading = false
         this.tools = data
       })
     },
@@ -364,28 +367,28 @@ export default {
       }
     },
     enable() {
-      this.loading = true
+      this.submitLoading = true
       this.$refs["toolForm"].validate((valid) => {
         if (valid && this.isPasswordValid && this.isReplicasValid) {
           changeUnderLineToPoint(this.toolForm.vars)
           enableTool(this.clusterName, this.toolForm).then(() => {
             this.dialogEnableVisible = false
             this.search()
-            this.loading = false
+            this.submitLoading = false
           })
         } else {
-          this.loading = false
+          this.submitLoading = false
           return false
         }
       })
     },
     checkPassword() {
       if (this.toolForm.vars["adminPassword"] && this.toolForm.vars["adminPasswordRe"]) {
-        this.isPasswordValid = (this.toolForm.vars["adminPassword"] == this.toolForm.vars["adminPasswordRe"])
+        this.isPasswordValid = this.toolForm.vars["adminPassword"] == this.toolForm.vars["adminPasswordRe"]
       }
     },
     checkReplicas() {
-      this.isReplicasValid = (this.toolForm.vars["elasticsearch_replicas"] <= this.nodeNum)
+      this.isReplicasValid = this.toolForm.vars["elasticsearch_replicas"] <= this.nodeNum
     },
     onErrorShow(item) {
       this.conditions = item.message

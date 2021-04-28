@@ -5,7 +5,7 @@
         <el-button size="small" @click="cisCreate()">{{$t('commons.button.create')}}</el-button>
       </el-button-group>
     </template>
-    <complex-table style="margin-top: 20px" :data="data" @search="search" :pagination-config="paginationConfig">
+    <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search" :pagination-config="paginationConfig">
       <el-table-column label="ID" min-width="100" prop="id" fix>
         <template v-slot:default="{row}">
           <el-button v-if="row.status ==='Success'" type="text" @click="cisDetail(row)">{{row.id}}</el-button>
@@ -67,6 +67,7 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      loading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -91,8 +92,10 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       listCisByPage(this.clusterName, currentPage, pageSize).then((data) => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       })

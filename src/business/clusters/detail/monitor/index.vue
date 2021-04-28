@@ -14,24 +14,24 @@
     <el-row>
       <el-col :span="12">
         <el-card>
-          <div id="cpuChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
+          <div v-loading="loading_cpu" id="cpuChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
-          <div id="memeryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
+          <div v-loading="loading_memery" id="memeryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
         <el-card>
-          <div id="diskChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
+          <div v-loading="loading_disk" id="diskChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
-          <div id="networkChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
+          <div v-loading="loading_network" id="networkChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -49,6 +49,10 @@ export default {
   components: { LayoutContent },
   data() {
     return {
+      loading_cpu: false,
+      loading_memory: false,
+      loading_disk: false,
+      loading_network: false,
       searchruleForm: {
         node: "",
         timeRange: [],
@@ -70,6 +74,10 @@ export default {
   },
   methods: {
     search() {
+      this.loading_cpu = true
+      this.loading_memory = true
+      this.loading_disk = true
+      this.loading_network = true
       this.clusterName = this.$route.params.name
       listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
@@ -161,14 +169,16 @@ export default {
       })
       Promise.all([system, user, iowait, idle, irq])
         .then(() => {
+          this.loading_cpu = false
           this.initCharts("cpuChart", "CPU Basic", this.cpuDateList, this.cpuValueList, "%")
         })
-        .catch((err) => {
-          alert(err)
+        .finally(() => {
+          this.loading_cpu = false
         })
     },
 
     getMemeryDatas(start, end) {
+      this.loading_memery = false
       this.memeryDateList = []
       this.memeryValueList = []
       let total = new Promise((resolve) => {
@@ -225,26 +235,36 @@ export default {
           resolve()
         })
       })
-      Promise.all([total, used, cache, free, swap]).then(() => {
-        this.initCharts("memeryChart", "Memery Basic", this.memeryDateList, this.memeryValueList, "GiB")
-      })
+      Promise.all([total, used, cache, free, swap])
+        .then(() => {
+          this.loading_memery = false
+          this.initCharts("memeryChart", "Memery Basic", this.memeryDateList, this.memeryValueList, "GiB")
+        })
+        .finally(() => {
+          this.loading_memery = false
+        })
     },
 
     getDiskDatas(start, end) {
       this.diskDateList = []
       this.diskValueList = []
-      QueryDisk(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
-        this.diskDateList = data.data.result[0].values.map(function (item) {
-          const timeNow = new Date(item[0] * 1000)
-          return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+      QueryDisk(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString())
+        .then((data) => {
+          this.diskDateList = data.data.result[0].values.map(function (item) {
+            const timeNow = new Date(item[0] * 1000)
+            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+          })
+          let itemDatas = []
+          itemDatas = data.data.result[0].values.map(function (item) {
+            return Number(item[1]).toFixed(2)
+          })
+          this.diskValueList.push(this.addSeries(itemDatas, "Disk Space Used"))
+          this.loading_disk = false
+          this.initCharts("diskChart", "Disk Space Used Basic", this.diskDateList, this.diskValueList, "%")
         })
-        let itemDatas = []
-        itemDatas = data.data.result[0].values.map(function (item) {
-          return Number(item[1]).toFixed(2)
+        .finally(() => {
+          this.loading_disk = false
         })
-        this.diskValueList.push(this.addSeries(itemDatas, "Disk Space Used"))
-        this.initCharts("diskChart", "Disk Space Used Basic", this.diskDateList, this.diskValueList, "%")
-      })
     },
 
     getNetworkDatas(start, end) {
@@ -278,9 +298,14 @@ export default {
           resolve()
         })
       })
-      Promise.all([recv, trans]).then(() => {
-        this.initCharts("networkChart", "Network Traffic Basic", this.networkDateList, this.networkValueList, "kb/s")
-      })
+      Promise.all([recv, trans])
+        .then(() => {
+          this.loading_network = false
+          this.initCharts("networkChart", "Network Traffic Basic", this.networkDateList, this.networkValueList, "kb/s")
+        })
+        .finally(() => {
+          this.loading_network = false
+        })
     },
     initCharts(chartName, title, xDatas, yDatas, formatStr) {
       const lineChart = echarts.init(document.getElementById(chartName))

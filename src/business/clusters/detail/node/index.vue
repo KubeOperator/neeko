@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table :selects.sync="selects" :data="data" :pagination-config="paginationConfig">
+    <complex-table :selects.sync="selects" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -165,16 +165,14 @@
     <el-dialog :title="$t('cluster.detail.node.cordon')" width="30%" :visible.sync="dialogCordonVisible">
       <el-form label-width="120px">
         <el-form-item :label="$t('cluster.detail.node.mode')">
-           <el-radio-group v-model="modeSelect">
-              <el-radio label="safe">{{$t('cluster.detail.node.safe')}}</el-radio>
-              <el-radio label="force">{{$t('cluster.detail.node.force')}}</el-radio>
-            </el-radio-group>
-            <div v-if="modeSelect === 'safe'"><span class="input-help">{{$t('cluster.detail.node.safe_cordon_help')}}</span></div>
-            <div v-if="modeSelect === 'force'">
-              <div><span class="input-help">{{$t('cluster.detail.node.force_drain_help1')}}</span></div>
-              <div><span class="input-help">{{$t('cluster.detail.node.force_drain_help2')}}</span></div>
-              <div><span class="input-help">{{$t('cluster.detail.node.force_drain_help3')}}</span></div>
-            </div>
+          <el-radio v-model="modeSelect" label="safe">{{$t('cluster.detail.node.safe')}}</el-radio>
+          <div><span class="input-help">{{$t('cluster.detail.node.safe_cordon_help')}}</span></div>
+          <el-radio v-model="modeSelect" label="force">{{$t('cluster.detail.node.force')}}</el-radio>
+          <div>
+            <span class="input-help">{{$t('cluster.detail.node.force_drain_help1')}}</span>
+            <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help2')}}</span></div>
+            <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help3')}}</span></div>
+          </div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -243,6 +241,7 @@ export default {
       errMsg: "",
       clusterName: "",
       selects: [],
+      loading: false,
       data: [],
       createForm: {
         hosts: [],
@@ -279,17 +278,23 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       this.clusterName = this.$route.params.name
       const { currentPage, pageSize } = this.paginationConfig
-      listNodesByPage(this.clusterName, currentPage, pageSize).then((data) => {
-        this.data = data.items
-        this.data.forEach((item) => {
-          if (item.info.spec["unschedulable"]) {
-            item.status = "Running, SchedulingDisabled"
-          }
+      listNodesByPage(this.clusterName, currentPage, pageSize)
+        .then((data) => {
+          this.loading = false
+          this.data = data.items
+          this.data.forEach((item) => {
+            if (item.info.spec["unschedulable"]) {
+              item.status = "Running, SchedulingDisabled"
+            }
+          })
+          this.paginationConfig.total = data.total
         })
-        this.paginationConfig.total = data.total
-      })
+        .finally(() => {
+          this.loading = false
+        })
     },
     selectable(row) {
       return this.getNodeRoles(row).indexOf("master") === -1

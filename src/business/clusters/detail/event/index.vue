@@ -54,11 +54,12 @@ export default {
   },
   methods: {
     search() {
+      this.loading = true
       listNamespace(this.clusterName).then((data) => {
         this.namespaces = data.items
         if (data.items.length > 0) {
           this.currentNamespace = this.namespaces[0].metadata.name
-          this.listEvents(this.currentNamespace)
+          this.loadEvents(this.currentNamespace)
         }
       })
       this.getNpdExists()
@@ -67,11 +68,16 @@ export default {
       this.page.continueToken = continueToken
       this.search()
     },
-    listEvents(namespace) {
-      listEvents(this.clusterName, this.continueToken, namespace).then((data) => {
-        this.data = data.items
-        this.page.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
-      })
+    loadEvents(namespace) {
+      listEvents(this.clusterName, this.continueToken, namespace)
+        .then((data) => {
+          this.loading = false
+          this.data = data.items
+          this.page.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     getNpdExists() {
       listPod(this.clusterName).then((data) => {
@@ -87,8 +93,7 @@ export default {
     changeNpd() {
       let op = this.isNPDon ? "create" : "delete"
       changeNpd(this.clusterName, op).then(
-        (data) => {
-          console.log(data)
+        () => {
           if (op === "delete") {
             this.isNPDon = false
             this.$message({ type: "success", message: this.$t("cluster.detail.event.enable_npd_success") })
@@ -104,7 +109,8 @@ export default {
       )
     },
     changeNamespace() {
-      this.listEvents(this.currentNamespace)
+      this.loading = true
+      this.loadEvents(this.currentNamespace)
     },
   },
   created() {
