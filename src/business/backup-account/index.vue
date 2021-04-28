@@ -6,7 +6,7 @@
         <el-button-group>
           <el-button size="small" @click="create()" v-permission="['ADMIN']">{{$t('commons.button.create')}}</el-button>
 <!--          <el-button size="small" @click="edit()">{{$t('commons.button.edit')}}</el-button>-->
-          <el-button size="small" @click="del()" type="danger" v-permission="['ADMIN']"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="del()" v-permission="['ADMIN']"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
 <!--          <el-button size="small" style="left: 20px" @click="create()">{{$t('commons.button.authorize')}}</el-button>-->
         </el-button-group>
       </template>
@@ -65,7 +65,7 @@ export default {
           }
         }, {
           label: this.$t('commons.button.delete'),
-          icon: "el-icon-delete", type: "danger",
+          icon: "el-icon-delete",
           disabled: !checkPermission("ADMIN"),
           click: (row) => {
             this.del(row.name)

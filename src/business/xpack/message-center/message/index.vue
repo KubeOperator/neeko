@@ -7,7 +7,7 @@
           <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
             {{ $t("message.mark_as_read") }}
           </el-button>
-          <el-button size="small" :disabled="selects.length < 1"  @click="del()" type="danger">
+          <el-button size="small" :disabled="selects.length < 1"  @click="del()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -97,7 +97,7 @@ export default {
       data: [],
       buttons: [
          {
-          label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {
             this.del(row.id)
           }
         },

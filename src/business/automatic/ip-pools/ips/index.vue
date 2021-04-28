@@ -12,7 +12,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small"  type="danger"  :disabled="selects.length===0" @click="del()">
+          <el-button size="small"   :disabled="selects.length===0" @click="del()">
             {{ $t("commons.button.delete") }}
           </el-button>
           <el-button size="small" @click="sync()">
@@ -38,7 +38,7 @@
           <el-tag v-if="row.status === 'IP_AVAILABLE'" type="success" size="small">
             {{ $t("automatic.ip_pool.ip_available") }}
           </el-tag>
-          <el-tag v-if="row.status === 'IP_USED'" type="danger" size="small">
+          <el-tag v-if="row.status === 'IP_USED'" size="small">
             {{ $t("automatic.ip_pool.ip_used") }}
           </el-tag>
           <el-tag v-if="row.status === 'IP_REACHABLE'" type="warning" size="small">
@@ -74,7 +74,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.del(row.address)
           }

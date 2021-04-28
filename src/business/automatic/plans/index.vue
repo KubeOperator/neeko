@@ -13,7 +13,7 @@
           <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()" type="danger" v-permission="['ADMIN']" :disabled="selects.length===0">
+          <el-button size="small" @click="del()" v-permission="['ADMIN']" :disabled="selects.length===0">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -90,7 +90,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.del(row.name)
           },

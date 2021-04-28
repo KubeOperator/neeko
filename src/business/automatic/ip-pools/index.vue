@@ -12,7 +12,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" type="danger"  :disabled="selects.length===0" @click="del()">{{
+          <el-button size="small"  :disabled="selects.length===0" @click="del()">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -55,7 +55,7 @@ export default {
       columns: [],
       buttons: [
         {
-          label: this.$t("commons.button.delete"), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t("commons.button.delete"), icon: "el-icon-delete",  click: (row) => {
             this.del(row.name)
           }
         },

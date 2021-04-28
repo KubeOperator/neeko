@@ -27,7 +27,7 @@
       <el-table-column :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
 
-          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain type="danger">
+          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain>
             {{ $t("commons.status.failed") }}
           </el-button>
           <el-button v-if="row.status === 'Terminating'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
@@ -200,7 +200,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.onDelete(row)
           },

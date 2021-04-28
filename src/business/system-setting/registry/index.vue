@@ -4,7 +4,7 @@
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" @click="del()" type="danger" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="del()" :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
@@ -40,7 +40,7 @@ export default {
             this.$router.push({name: "RegistryEdit", params: {arch: row.architecture}})
           }
         }, {
-          label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {
             this.del(row.architecture)
           }
         },

@@ -100,7 +100,7 @@
       </div>
       <div v-if="baseCfg.cluster_istio.status === 'Running'">
         <el-button @click="onSubmit('restart')" :disabled="btnStartDisable" type="primary" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
-        <el-button @click="onDisable()" type="danger" size="mini">{{$t('cluster.detail.istio.disable_istio')}}</el-button>
+        <el-button @click="onDisable()" size="mini">{{$t('cluster.detail.istio.disable_istio')}}</el-button>
       </div>
       <el-dialog :title="$t('cluster.detail.istio.disable_istio')" width="30%" :visible.sync="dialogShutupVisible">
         <span>{{$t('cluster.detail.istio.ensure_disable_istio')}}</span>
