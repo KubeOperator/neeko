@@ -1,7 +1,6 @@
 <template>
   <layout-content>
-    <el-row>
-      <el-col :span="4"><br /></el-col>
+    <el-row type="flex" justify="center">
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -54,7 +53,6 @@
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"><br /></el-col>
     </el-row>
   </layout-content>
 </template>

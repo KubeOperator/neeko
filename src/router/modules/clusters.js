@@ -28,6 +28,26 @@ const Cluster = {
       },
     },
     {
+      path: "upgrade",
+      hidden: true,
+      component: () => import("@/business/clusters/upgrade"),
+      name: "ClusterUpgrade",
+      meta: {
+        activeMenu: "/clusters",
+        roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
+      },
+    },
+    {
+      path: "import",
+      hidden: true,
+      component: () => import("@/business/clusters/import"),
+      name: "ClusterImport",
+      meta: {
+        activeMenu: "/clusters",
+        roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
+      },
+    },
+    {
       path: "detail/:name",
       props: true,
       hidden: true,

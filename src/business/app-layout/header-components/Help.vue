@@ -1,6 +1,6 @@
 <template>
   <el-menu :unique-opened="true"
-           :default-active="language"
+           default-active="language"
            class="header-menu"
            text-color="inherit"
            mode="horizontal"
