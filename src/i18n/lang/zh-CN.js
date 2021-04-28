@@ -48,7 +48,8 @@ const message = {
       lock: "启用/禁用",
       relation: "关联",
       cordon: "驱散",
-      uncordon: "恢复驱散"
+      uncordon: "恢复驱散",
+      log: "日志"
     },
     msg: {
       success: "{0}成功",
@@ -114,6 +115,7 @@ const message = {
       running: "运行中",
       initializing: "初始化中",
       creating: "创建中",
+      "success": "成功",
       failed: "失败",
       not_ready: "未就绪",
       error: "错误",
@@ -125,6 +127,7 @@ const message = {
       synchronizing: "同步中",
       normal: "正常",
       failure: "异常"
+
     },
     role: {
       admin: "管理员",
@@ -445,7 +448,7 @@ const message = {
         Running: "运行中",
         restore_message: "确定用此备份文件恢复？",
         FAILED: "失败",
-        detail:"详情"
+        detail: "详情"
       },
       security: {
         start_time: "开始时间",
@@ -600,7 +603,7 @@ const message = {
       description: "可用区(Zone): 与公有云中的 AZ 概念相似，可以理解为区域中具体的机房，比如北京1区，北京2区。对于 vSphere，可用区对应于集群，也可以对应于集群下面的资源池",
       ready: "就绪",
       uploadImageError: "上传镜像失败",
-      initializing: "初始化中",
+      initinitializingializing: "初始化中",
       config: "配置参数",
       compute: "计算",
       cluster: "集群",

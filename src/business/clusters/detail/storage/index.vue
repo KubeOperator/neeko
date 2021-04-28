@@ -135,7 +135,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.onDelete(row, "pv", false)
           },
@@ -148,7 +148,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.onDelete(row, "class", false)
           },
@@ -161,7 +161,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.onDelete(row, "provisioner", false)
           },

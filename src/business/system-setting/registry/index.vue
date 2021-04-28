@@ -40,7 +40,7 @@ export default {
             this.$router.push({name: "RegistryEdit", params: {arch: row.architecture}})
           }
         }, {
-          label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {
             this.del(row.architecture)
           }
         },

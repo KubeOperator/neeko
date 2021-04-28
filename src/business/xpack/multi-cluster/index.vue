@@ -64,7 +64,13 @@
             }
           },
           {
-            label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+            label: this.$t('commons.button.log'), icon: "el-icon-notebook-2", click: (row) => {
+              this.$router.push({name: "MultiClusterRepositoryLog", params: {name: row.name}})
+
+            }
+          },
+          {
+            label: this.$t('commons.button.delete'), icon: "el-icon-delete", click: (row) => {
               this.del(row.name)
             }
           },

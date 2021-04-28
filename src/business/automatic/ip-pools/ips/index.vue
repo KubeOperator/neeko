@@ -35,15 +35,18 @@
       </el-table-column>
       <el-table-column :label="$t('automatic.ip_pool.status')" mix-width="100">
         <template v-slot:default="{ row }">
-          <el-tag v-if="row.status === 'IP_AVAILABLE'" type="success" size="small">
+          <div v-if="row.status ==='IP_AVAILABLE'">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
             {{ $t("automatic.ip_pool.ip_available") }}
-          </el-tag>
-          <el-tag v-if="row.status === 'IP_USED'" size="small">
+          </div>
+          <div v-if="row.status ==='IP_USED'">
+            <span class="iconfont iconin-use" style="color: #FA5D50"></span>
             {{ $t("automatic.ip_pool.ip_used") }}
-          </el-tag>
-          <el-tag v-if="row.status === 'IP_REACHABLE'" type="warning" size="small">
+          </div>
+          <div v-if="row.status ==='IP_REACHABLE'">
+            <span class="iconfont iconping" style="color: #FA5D50"></span>
             {{ $t("automatic.ip_pool.ip_reachable") }}
-          </el-tag>
+          </div>
           <el-tag v-if="row.status === 'IP_LOCK'" type="info" size="small">
             {{ $t("automatic.ip_pool.ip_lock") }}
           </el-tag>
@@ -74,7 +77,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.del(row.address)
           }

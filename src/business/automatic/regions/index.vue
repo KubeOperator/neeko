@@ -21,14 +21,24 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">
-          <el-button type="text" @click="openDetailPage(row)">{{ row.name }}</el-button>
+          <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
       <el-table-column
               :label="$t('automatic.cloud_provider')"
-              mix-width="100"
-              v-slot:default="{ row }"
-      >{{ row.regionVars["provider"] }}
+              mix-width="100">
+        <template v-slot:default="{row}">
+          <svg v-if="row.regionVars['provider'] === 'OpenStack'" class="icon" aria-hidden="true">
+            <use xlink:href="#iconopenstack"></use>
+          </svg>
+          <svg v-if="row.regionVars['provider'] === 'vSphere'" class="icon" aria-hidden="true">
+            <use xlink:href="#iconvmware"></use>
+          </svg>
+          <svg v-if="row.regionVars['provider'] === 'FusionCompute'" class="icon" aria-hidden="true">
+            <use xlink:href="#iconhuawei"></use>
+          </svg>
+          {{ row.regionVars["provider"] }}
+        </template>s
       </el-table-column>
       <el-table-column
               :label="$t('automatic.datacenter')"
@@ -125,7 +135,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
+
           click: (row) => {
             this.del(row.name)
           }

@@ -18,7 +18,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text" style="color: #0033FF;"><span style="text-decoration:underline">{{ row.name }}</span></el-button>
+          <el-link v-if="row.status === 'Running'" type="info" @click="goForDetail(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
@@ -239,7 +239,7 @@ export default {
       ],
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0,
       },
       clusterName: "",
