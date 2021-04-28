@@ -1,4 +1,4 @@
-import {saveLicense, getLicense} from "@/api/license"
+import {getLicense} from "@/api/license"
 
 const LicenseKey = "X-License";
 
@@ -42,20 +42,6 @@ const actions = {
         commit('SET_LICENSE', license)
         commit('SET_MESSAGE', message)
         resolve(data)
-      }).catch(error => {
-        commit('SET_STATUS', Status.invalid)
-        reject(error)
-      })
-    })
-  },
-  saveLicense({commit}, content) {
-    return new Promise((resolve, reject) => {
-      saveLicense({license: content}).then(data => {
-        const {status, license, message} = data;
-        commit('SET_STATUS', status)
-        commit('SET_LICENSE', license)
-        commit('SET_MESSAGE', message)
-        resolve(status)
       }).catch(error => {
         commit('SET_STATUS', Status.invalid)
         reject(error)
