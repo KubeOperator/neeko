@@ -57,8 +57,13 @@ $view-padding: 15px;
   background: $--color-ko !important; //自定义颜色
 }
 
-.statusFailed {
+//.statusFailed {
+//  color: #0033FF;
+//  text-decoration: underline;
+//}
+
+.koLink {
   color: #0033FF;
-  text-decoration:underline;
+  text-decoration: underline;
 }
 

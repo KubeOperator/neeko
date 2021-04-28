@@ -8,7 +8,7 @@
     <div v-if="status === 'Failed'">
       <span class="iconfont icongantanhao" style="color: #FA4147"></span>
       <el-button type="text" @click="getDetail()">
-          <span class="statusFailed">
+          <span class="koLink">
               {{ $t("commons.status.failed") }}
           </span>
       </el-button>
@@ -16,7 +16,7 @@
     <div v-if="status === 'Initializing'">
       <span><i class="el-icon-loading"/></span>
       <el-button type="text" @click="getDetail()">
-          <span class="statusFailed">
+          <span class="koLink">
               {{ $t("commons.status.initializing") }}
           </span>
       </el-button>
@@ -24,7 +24,7 @@
     <div v-if="status === 'Upgrading' ">
       <span><i class="el-icon-loading"/></span>
       <el-button type="text" @click="getDetail()">
-          <span class="statusFailed">
+          <span class="koLink">
               {{ $t("commons.status.initializing") }}
           </span>
       </el-button>
@@ -32,7 +32,7 @@
     <div v-if="status === 'Upgrading' ">
       <span><i class="el-icon-loading"/></span>
       <el-button type="text" @click="getDetail()">
-          <span class="statusFailed">
+          <span class="koLink">
               {{ $t("commons.status.initializing") }}
           </span>
       </el-button>
@@ -40,7 +40,7 @@
     <div v-if="status === 'Terminating' && other==='bareMetal' ">
       <span><i class="el-icon-loading"/></span>
       <el-button type="text" @click="getDetail()">
-          <span class="statusFailed">
+          <span class="koLink">
               {{ $t("commons.status.initializing") }}
           </span>
       </el-button>

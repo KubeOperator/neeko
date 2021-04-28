@@ -20,8 +20,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text" style="color: #0033FF;"><span
-                  style="text-decoration:underline">{{ row.name }}</span></el-button>
+          <el-button v-if="row.status === 'Running'" @click="goForDetail(row)" type="text"><span class="koLink">{{ row.name }}</span></el-button>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
