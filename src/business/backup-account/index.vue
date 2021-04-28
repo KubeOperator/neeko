@@ -4,9 +4,9 @@
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
-          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" @click="create()" v-permission="['ADMIN']">{{$t('commons.button.create')}}</el-button>
 <!--          <el-button size="small" @click="edit()">{{$t('commons.button.edit')}}</el-button>-->
-          <el-button size="small" @click="del()" type="danger"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" @click="del()" type="danger" v-permission="['ADMIN']"  :disabled="selects.length===0">{{$t('commons.button.delete')}}</el-button>
 <!--          <el-button size="small" style="left: 20px" @click="create()">{{$t('commons.button.authorize')}}</el-button>-->
         </el-button-group>
       </template>
@@ -42,6 +42,7 @@
 import ComplexTable from "@/components/complex-table";
 import LayoutContent from "@/components/layout/LayoutContent";
 import {deleteBackupAccounts, searchBackupAccounts} from "@/api/backup-account";
+import {checkPermission} from "@/utils/permisstion";
 
 export default {
   name: "BackupAccount",
@@ -56,11 +57,17 @@ export default {
       formLabelWidth: '120px',
       buttons: [
         {
-          label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
+          label: this.$t('commons.button.edit'),
+          icon: "el-icon-edit",
+          disabled: !checkPermission("ADMIN"),
+          click: (row) => {
             this.$router.push({name: "BackupAccountEdit", params: {data: row}})
           }
         }, {
-          label: this.$t('commons.button.delete'), icon: "el-icon-delete", type: "danger", click: (row) => {
+          label: this.$t('commons.button.delete'),
+          icon: "el-icon-delete", type: "danger",
+          disabled: !checkPermission("ADMIN"),
+          click: (row) => {
             this.del(row.name)
           }
         },
