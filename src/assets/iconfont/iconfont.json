@@ -6,6 +6,55 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "6191231",
+      "name": "错误",
+      "font_class": "error",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "7635228",
+      "name": "集群",
+      "font_class": "cluster",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "17021866",
+      "name": "禁用",
+      "font_class": "diable",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "18879564",
+      "name": "帮 助",
+      "font_class": "bangzhu2",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "11905181",
+      "name": "帮 助",
+      "font_class": "bangzhu3",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "5562878",
+      "name": "帮助",
+      "font_class": "bangzhu",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "10284537",
+      "name": "帮 助",
+      "font_class": "bangzhu1",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
       "icon_id": "86517",
       "name": "对号",
       "font_class": "duihao",
@@ -13,53 +62,11 @@
       "unicode_decimal": 58886
     },
     {
-      "icon_id": "7580509",
-      "name": "对号",
-      "font_class": "duihao1",
-      "unicode": "e6e1",
-      "unicode_decimal": 59105
-    },
-    {
-      "icon_id": "8514882",
-      "name": "对号",
-      "font_class": "duihao2",
-      "unicode": "e646",
-      "unicode_decimal": 58950
-    },
-    {
-      "icon_id": "9833502",
-      "name": "感叹号",
-      "font_class": "gantanhao",
-      "unicode": "e639",
-      "unicode_decimal": 58937
-    },
-    {
-      "icon_id": "11967641",
-      "name": "error",
-      "font_class": "error",
-      "unicode": "e73b",
-      "unicode_decimal": 59195
-    },
-    {
       "icon_id": "16555000",
       "name": "警告",
       "font_class": "jinggao",
       "unicode": "e65c",
       "unicode_decimal": 58972
-    },
-    {
-      "icon_id": "19254749",
-      "name": "对号",
-      "font_class": "duihao3",
-      "unicode": "e61b",
-      "unicode_decimal": 58907
-    },
-    {
-      "icon_id": "4288641",
-      "name": "禁用",
-      "font_class": "jinyong",
-      "unicode": "e6ad",
-      "unicode_decimal": 59053
     },
     {
       "icon_id": "6692332",
@@ -95,13 +102,6 @@
       "font_class": "host",
       "unicode": "e62c",
       "unicode_decimal": 58924
-    },
-    {
-      "icon_id": "21279598",
-      "name": "集群",
-      "font_class": "cluster",
-      "unicode": "ebe9",
-      "unicode_decimal": 60393
     },
     {
       "icon_id": "6526097",
@@ -221,20 +221,6 @@
       "font_class": "nvidia1",
       "unicode": "e604",
       "unicode_decimal": 58884
-    },
-    {
-      "icon_id": "9626841",
-      "name": "错误",
-      "font_class": "cuowu",
-      "unicode": "e867",
-      "unicode_decimal": 59495
-    },
-    {
-      "icon_id": "12577265",
-      "name": "T01_10正常状态_zczt",
-      "font_class": "T_zhengchangzhuangtai_zczt",
-      "unicode": "e635",
-      "unicode_decimal": 58933
     },
     {
       "icon_id": "15282647",
