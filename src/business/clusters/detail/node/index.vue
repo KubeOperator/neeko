@@ -76,78 +76,76 @@
     <el-dialog :title="$t('cluster.detail.node.node_detail')" width="50%" :visible.sync="dialogDetailVisible">
       <div style="height: 600px">
         <el-scrollbar style="height:100%">
-          <span>{{$t('cluster.detail.node.base_infomation')}}</span>
-          <el-divider></el-divider>
-          <table style="width: 90%" class="myTable">
-            <tbody>
-              <tr>
-                <th style="width: 50%">Name</th>
-                <td>{{detaiInfo.metadata.name}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">Kernel Version</th>
-                <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">OS Image</th>
-                <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">Container Runtime Version</th>
-                <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">Kubelet Version</th>
-                <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">KubeProxy Version</th>
-                <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">Operating System</th>
-                <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
-              </tr>
-              <tr>
-                <th style="width: 50%">Architecture</th>
-                <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <br />
-          <span>{{$t('cluster.detail.node.label')}}</span>
-          <el-divider></el-divider>
-          <table style="width: 90%" class="myTable">
-            <tbody>
-              <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
-                <th style="width: 50%">{{name}}</th>
-                <td>{{value}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <br />
-          <span>{{$t('cluster.detail.node.status')}}</span>
-          <el-divider></el-divider>
-          <table style="width: 90%" class="myTable">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Time</th>
-                <th>Reason</th>
-                <th>Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="condition in detaiInfo.status.conditions" :key="condition.key">
-                <td class="left">{{condition.type}}</td>
-                <td class="left">{{condition.status}}</td>
-                <td class="left">{{condition.lastTransitionTime | datetimeFormat}}</td>
-                <td class="left">{{condition.reason}}</td>
-                <td class="left">{{condition.message}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div style=" text-align: center;">
+            <span>{{$t ('cluster.detail.node.base_infomation')}}</span>
+            <div align="center" style="margin-top: 15px">
+              <table style="width: 80%" class="myTable">
+                <tbody>
+                  <tr>
+                    <td>Name</td>
+                    <td>{{detaiInfo.metadata.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Kernel Version</td>
+                    <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
+                  </tr>
+                  <tr>
+                    <td>OS Image</td>
+                    <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
+                  </tr>
+                  <tr>
+                    <td>Container Runtime Version</td>
+                    <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
+                  </tr>
+                  <tr>
+                    <td>Kubelet Version</td>
+                    <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
+                  </tr>
+                  <tr>
+                    <td>KubeProxy Version</td>
+                    <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
+                  </tr>
+                  <tr>
+                    <td>Operating System</td>
+                    <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
+                  </tr>
+                  <tr>
+                    <td>Architecture</td>
+                    <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
+
+            <span style="margin-top: 30px">{{$t ('cluster.detail.node.label')}}</span>
+            <div align="center" style="margin-top: 15px">
+              <table style="width: 80%" class="myTable">
+                <tbody>
+                  <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
+                    <td>{{name}}</td>
+                    <td>{{value}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br>
+
+            <span style="margin-top: 30px">{{$t('cluster.detail.node.status')}}</span>
+            <div align="center" style="margin-top: 15px">
+              <el-table :data="detaiInfo.status.conditions" border style="width: 80%">
+                <el-table-column prop="type" label="Type" />
+                <el-table-column prop="status" label="Status" />
+                <el-table-column prop="lastTransitionTime" label="Time">
+                  <template v-slot:default="{row}">
+                    {{ row.lastTransitionTime | datetimeFormat }}
+                  </template>
+                </el-table-column>
+                <el-table-column prop="reason" label="Reason" />
+                <el-table-column prop="message" label="Message" />
+              </el-table>
+            </div>
+          </div>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogDetailVisible = false">{{$t('commons.button.cancel')}}</el-button>
           </div>

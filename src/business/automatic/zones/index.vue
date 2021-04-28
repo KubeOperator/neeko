@@ -22,7 +22,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{row}">
-          <el-button type="text" @click="openDetailPage(row)">{{ row.name }}</el-button>
+          <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
       <el-table-column
@@ -34,15 +34,19 @@
               :label="$t('commons.table.status')"
               mix-width="100"
               v-slot:default="{ row }">
-        <el-tag v-if="row.status === 'READY'" type="success" size="small">
+
+        <div v-if="row.status === 'READY'">
+          <span class="iconfont iconduihao" style="color: #32B350"></span>
           {{ $t("automatic.zone.ready") }}
-        </el-tag>
-        <el-tag v-if="row.status === 'INITIALIZING'" type="info" size="small">
+        </div>
+        <div v-if="row.status === 'INITIALIZING'">
+          <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
           {{ $t("automatic.zone.initializing") }}
-        </el-tag>
-        <el-tag v-if="row.status === 'UPLOADIMAGERROR'" size="small">
+        </div>
+        <div v-if="row.status === 'UPLOADIMAGERROR'">
+          <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
           {{ $t("automatic.zone.uploadImageError") }}
-        </el-tag>
+        </div>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>

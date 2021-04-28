@@ -48,7 +48,8 @@ const message = {
       lock: "启用/禁用",
       relation: "关联",
       cordon: "驱散",
-      uncordon: "恢复驱散"
+      uncordon: "恢复驱散",
+      log: "日志"
     },
     msg: {
       success: "{0}成功",
@@ -127,6 +128,7 @@ const message = {
       running: "运行中",
       initializing: "初始化中",
       creating: "创建中",
+      "success": "成功",
       failed: "失败",
       not_ready: "未就绪",
       error: "错误",
@@ -138,6 +140,7 @@ const message = {
       synchronizing: "同步中",
       normal: "正常",
       failure: "异常"
+
     },
     role: {
       admin: "管理员",
@@ -458,7 +461,7 @@ const message = {
         Running: "运行中",
         restore_message: "确定用此备份文件恢复？",
         FAILED: "失败",
-        detail:"详情"
+        detail: "详情"
       },
       security: {
         start_time: "开始时间",

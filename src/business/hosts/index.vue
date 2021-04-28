@@ -6,7 +6,7 @@
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
+          <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -68,67 +68,56 @@
     </el-dialog>
 
     <el-dialog :title="$t('host.detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <div style="margin: 10px 0">{{$t ('host.base_info')}}</div>
-      <el-divider content-position="left" class="hDivider" />
-      <el-row type="flex" justify="left">
-        <el-col :span="8">
-          <ul>{{$t ('host.cpu')}}</ul>
-          <ul>{{$t ('host.memory')}}</ul>
-          <ul>{{$t ('host.os')}}</ul>
-        </el-col>
-        <el-col :span="8">
-          <ul>{{currentHost['cpuCore']}}</ul>
-          <ul>{{currentHost['memory']}}</ul>
-          <ul>
-            <svg v-if="currentHost['os'] === 'CentOS'" class="icon" aria-hidden="true">
-              <use xlink:href="#iconziyuan"></use>
-            </svg>
-            <svg v-if="currentHost['os'] === 'EulerOS'" class="icon" aria-hidden="true">
-              <use xlink:href="#iconEulerOS"></use>
-            </svg>
-            <svg v-if="currentHost['os'] === 'RedHat'" class="icon" aria-hidden="true">
-              <use xlink:href="#iconred-hat"></use>
-            </svg>
-            <svg v-if="currentHost['os'] === 'Ubuntu'" class="icon" aria-hidden="true">
-              <use xlink:href="#iconubuntu"></use>
-            </svg>
-            <!--            <svg class="icon" aria-hidden="true" >-->
-            <!--              <use xlink:href="#iconziyuan"></use>-->
-            <!--            </svg>-->
-            {{currentHost['os']}} {{currentHost['osVersion']}}
-          </ul>
-        </el-col>
-      </el-row>
-      <div style="margin: 10px 0">{{$t ('host.disk_size')}}</div>
-      <el-divider content-position="left" class="hDivider" />
-      <table style="width: 90%" class="myTable">
-        <thead>
-          <tr>
-            <th>{{$t('commons.table.name')}}</th>
-            <th>{{$t('host.disk_size')}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="vo in currentHost.volumes" :key="vo.name">
-            <td>{{vo.name}}</td>
-            <td>{{vo.size}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-if="currentHost.hasGpu">
-        <el-divider content-position="left">{{$t ('host.gpu_info')}}</el-divider>
-        <table style="width: 90%" class="myTable">
-          <thead>
+      <div style=" text-align: center;">
+        <span>{{$t ('host.base_info')}}</span>
+        <div align="center" style="margin-top: 15px">
+          <table style="width: 80%" class="myTable">
             <tr>
-              <th>{{$t('commons.table.name')}}</th>
+              <td>IP</td>
+              <td>{{currentHost.ip}}</td>
             </tr>
-          </thead>
-          <tbody>
             <tr>
-              <td>{{host.gpuInfo}}</td>
+              <td>{{$t ('host.cpu')}}</td>
+              <td>{{currentHost.cpuCore}}</td>
             </tr>
-          </tbody>
-        </table>
+            <tr>
+              <td>{{$t ('host.gpu')}}</td>
+              <td>{{currentHost.gpuNum}}</td>
+            </tr>
+            <tr>
+              <td>{{$t ('host.memory')}}</td>
+              <td>{{currentHost.memory}}</td>
+            </tr>
+            <tr>
+              <td>{{$t ('host.os')}}</td>
+              <td>{{currentHost.os}}</td>
+            </tr>
+            <tr>
+              <td>{{$t ('host.architecture')}}</td>
+              <td>{{currentHost.architecture}}</td>
+            </tr>
+            <tr>
+              <td>{{$t ('commons.table.create_time')}}</td>
+              <td>{{ currentHost.createdAt | datetimeFormat}}</td>
+            </tr>
+          </table>
+        </div>
+        <br>
+        <span>{{$t ('host.disk_size')}}</span>
+        <div align="center" style="margin-top: 15px">
+          <el-table :data="currentHost.volumes" border style="width: 80%">
+            <el-table-column prop="name" :label="$t('commons.table.name')" />
+            <el-table-column prop="size" :label="$t('host.disk_size')" />
+          </el-table>
+        </div>
+        <div v-if="currentHost.hasGpu">
+          <span>{{$t ('host.disk_size')}}</span>
+          <div align="center" style="margin-top: 15px">
+            <el-table :data="currentHost.hasGpu" border style="width: 80%">
+              <el-table-column prop="gpuInfo" :label="$t('commons.table.name')" />
+            </el-table>
+          </div>
+        </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDetailVisible = false">{{ $t("commons.button.cancel") }}</el-button>
@@ -183,6 +172,7 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
+          type: "danger",
           click: (row) => {
             this.onDelete(row)
           },

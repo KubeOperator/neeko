@@ -67,9 +67,7 @@
           </el-table-column>
           <el-table-column :label="$t('automatic.plan.deploy_template')" mix-width="100">
             <template v-slot:default="{ row }">
-              <el-tag type="info" size="small">
                 {{ $t("automatic.plan." + row.deployTemplate) }}
-              </el-tag>
             </template>
           </el-table-column>
           <el-table-column :label="$t('commons.table.create_time')">
@@ -107,9 +105,7 @@
           </el-table-column>
           <el-table-column :label="$t('backup_account.status')" mix-width="100">
             <template v-slot:default="{ row }">
-              <el-tag type="info" size="small">
                 {{ row.status }}
-              </el-tag>
             </template>
           </el-table-column>
           <el-table-column :label="$t('commons.table.create_time')">

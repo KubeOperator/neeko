@@ -102,10 +102,7 @@ export default {
   methods: {
     onSubmit() {
       createHost(this.form).then(() => {
-        this.$message({
-          type: "success",
-          message: `创建成功`,
-        })
+        this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
         this.$router.push({ name: "HostList" })
       })
     },

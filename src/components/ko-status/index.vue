@@ -6,7 +6,7 @@
       {{ $t("commons.status.running") }}
     </div>
     <div v-if="status === 'Failed'">
-      <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+      <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
       <el-link type="info" @click="getDetail()">{{ $t("commons.status.failed") }}</el-link>
     </div>
     <div v-if="status === 'Initializing'">

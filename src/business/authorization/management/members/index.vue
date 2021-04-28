@@ -27,9 +27,7 @@
       </el-table-column>
       <el-table-column :label="$t('user.role')">
         <template v-slot:default="{ row }">
-          <el-tag type="info" size="small">
             {{ $t("project." + row.role) }}
-          </el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
