@@ -692,7 +692,13 @@ const message = {
       ip_available: "可用",
       ip_lock: "占用",
       ip_used: "使用中",
-      ip_reachable: "可达"
+      ip_reachable: "可达",
+      subnet_help: "例: 172.1.10.0/24",
+      ip_start_help: "例: 172.1.10.1",
+      ip_end_help: "例: 172.1.10.10",
+      gateway_help: "例: 172.1.10.254",
+      dns1_help: "例: 8.8.8.8",
+      dns2_help: "例: 114.114.114.114",
     }
   },
   project: {
@@ -830,7 +836,9 @@ const message = {
     sync_interval: "同步间隔(分钟)",
     pull_timeout: "拉取超时时间(分钟)",
     edit: "编辑",
-    "": "",
+    cluster_list: "集群列表",
+    selected_clusters: "选择集群",
+    relation_management:"关联管理",
     log: "日志"
   }
 }

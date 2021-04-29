@@ -6,7 +6,7 @@
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="onDelete()">
+          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -172,7 +172,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
           click: (row) => {
             this.onDelete(row)
           },

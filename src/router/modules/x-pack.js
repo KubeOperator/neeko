@@ -73,7 +73,7 @@ const XPack = {
       meta: {
         activeMenu: "/xpack/message-center",
         title: "route.message_center",
-        roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+        roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
       },
       redirect: to => {
         return {
@@ -90,7 +90,7 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         },
         {
@@ -101,7 +101,7 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message_receiver",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         },
         {
@@ -112,7 +112,7 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message_subscribe",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         }
       ]
