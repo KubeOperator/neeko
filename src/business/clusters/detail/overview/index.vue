@@ -92,18 +92,18 @@
         </el-col>
       </el-row>
     </div>
-    <el-divider></el-divider>
-    <el-button v-if="currentCluster.source==='local'" size="small" @click="downloadKubeConfig()">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
 
-    <el-card style="margin-top: 40px" v-loading="loading_xterm">
-      <div slot="header" class="clearfix">
-        <span>WebKubeCtl</span>
-        <el-button v-if="!opened" type="primary" @click="onOpen()" style="float: right;">{{$t('cluster.detail.overview.connect')}}</el-button>
-        <el-button v-if="opened" @click="newWindow()" style="float: right;" type="primary" plain>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#iconchuangkou"></use>
-          </svg>
-        </el-button>
+    <el-card style="margin-top: 20px" v-loading="loading_xterm">
+      <div slot="header" style="height: 20px">
+        <el-button v-if="!opened" @click="onOpen()" style="float: right;">{{$t('cluster.detail.overview.connect')}}</el-button>
+        <el-tooltip v-if="opened" effect="dark" :content="$t('cluster.detail.overview.open_in_new_windows')" placement="bottom">
+          <el-button @click="newWindow()" style="float: right;">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#iconchuangkou"></use>
+            </svg>
+          </el-button>  
+        </el-tooltip>
+        <el-button icon="el-icon-document" @click="downloadKubeConfig()" style="float: right; margin-right: 10px">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
       </div>
       <div v-if="opened">
         <iframe style="width: 100%;height: 512px;" :src="url"></iframe>

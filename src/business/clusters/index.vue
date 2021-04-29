@@ -43,25 +43,17 @@
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
           <div>
-            <el-steps direction="vertical" :active="activeName">
-              <div v-for="condition in log.conditions" :key="condition.name">
-                <div v-if="condition.status === 'True'">
-                  <el-step icon="el-icon-success" :title="$t('cluster.condition.' +condition.name)"></el-step>
-                </div>
-                <div v-if="condition.status === 'False'">
-                  <el-step icon="el-icon-error" :title="$t('cluster.condition.' +condition.name)" :description="condition.message | errorFormat "></el-step>
-                </div>
-                <div v-if="condition.status === 'Unknown'">
-                  <el-step icon="el-icon-loading" :title="$t('cluster.condition.' +condition.name)"></el-step>
-                </div>
-              </div>
+            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
+              <el-step v-for="condition in log.conditions" :key="condition.name" :title="$t('cluster.condition.' +condition.name)" :description="condition.message | errorFormat ">
+                <i :class="loadStepIcon(condition.status)" slot="icon"></i>
+              </el-step>
             </el-steps>
           </div>
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="goForLogs()">{{ $t("commons.button.history") }}</el-button>
-        <el-button v-if="log.phase === 'Failed'" :v-loading="retryLoadding" type="primary" @click="onRetry()">
+        <el-button v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
@@ -184,7 +176,7 @@ export default {
       dialogDeleteVisible: false,
       isDeleteButtonDisable: false,
       deleteName: "",
-      
+
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
@@ -209,7 +201,7 @@ export default {
       this.$router.push({ name: "ClusterCreate" })
     },
     onImport() {
-      this.$router.push({ name: "ClusterImport"})
+      this.$router.push({ name: "ClusterImport" })
     },
     onUpgrade(row) {
       this.$router.push({ name: "ClusterUpgrade", params: { name: row.name } })
@@ -303,6 +295,16 @@ export default {
         this.log = data
         this.activeName = this.log.conditions.length + 1
       })
+    },
+    loadStepIcon(status) {
+      switch (status) {
+        case "True":
+          return "el-icon-check"
+        case "False":
+          return "el-icon-close"
+        case "Unknown":
+          return "el-icon-loading"
+      }
     },
     getCurrentCondition() {
       if (this.log.phase !== "Running" && this.log.phase !== "Failed") {

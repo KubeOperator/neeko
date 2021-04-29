@@ -83,7 +83,7 @@
             </tr>
             <tr  v-if="item.cloudVars.templateType === 'customize'">
               <td>{{ $t("automatic.zone.template") }}</td>
-              <td>{{ item.cloudVars.template }}</td>
+              <td>{{ item.cloudVars.imageName }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.ip_pool.name") }}</td>
