@@ -1,5 +1,6 @@
 <template>
   <div>
+    <layout-content :header="$t('route.ldap')" v-loading="loading">
     <br>
       <el-col :span="1"><br/></el-col>
       <el-col :span="15">
@@ -52,28 +53,37 @@
         </div>
       </el-col>
       <el-col :span="4"><br/></el-col>
+    </layout-content>
   </div>
 </template>
 
 <script>
 import {createLDAP, getSetting, syncLDAP} from "@/api/system-setting";
+import LayoutContent from "@/components/layout/LayoutContent"
+
 export default {
   name: "LDAP",
+  components: {
+    LayoutContent
+  },
   data() {
     return {
       form: {
         vars: {},
         tab: ''
       },
-      btn: true
+      btn: true,
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       createLDAP( {
         vars: this.form.vars,
         tab: 'LDAP'
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.save_success')
@@ -83,10 +93,12 @@ export default {
       })
     },
     sync(){
+      this.loading = true
       syncLDAP( {
         vars: this.form.vars,
         tab: 'LDAP'
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')

@@ -5,9 +5,7 @@
       <el-menu-item :index="'/setting/credential'">{{$t('setting.credential')}}</el-menu-item>
       <el-menu-item :index="'/setting/ntp'">{{$t('setting.ntp')}}</el-menu-item>
       <el-menu-item :index="'/setting/email'">{{$t('setting.email')}}</el-menu-item>
-      <el-menu-item :index="'/setting/ldap'">{{$t('setting.ldap')}}</el-menu-item>
       <el-menu-item :index="'/setting/license'">{{$t('setting.license')}}</el-menu-item>
-      <el-menu-item :index="'/setting/theme'">{{$t('setting.theme')}}</el-menu-item>
       <el-menu-item :index="'/setting/message'">{{$t('setting.message')}}</el-menu-item>
     </el-menu>
     <br/>
