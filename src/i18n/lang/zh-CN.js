@@ -317,8 +317,9 @@ const message = {
         cpu: "CPU 使用率",
         memery: "内存 使用率",
         docker: "容器组",
-        connect: "连接",
-        download_kube_config: "下载KubeConfig",
+        connect: "执行 WebKubeCtl 命令行",
+        download_kube_config: "下载 KubeConfig 文件",
+        open_in_new_windows: "在新的窗口中打开",
       },
       node: {
         increment: "增量",
