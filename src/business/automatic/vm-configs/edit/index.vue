@@ -2,7 +2,7 @@
   <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'VmConfigList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
             <el-form-item :label="$t('commons.table.name')">
