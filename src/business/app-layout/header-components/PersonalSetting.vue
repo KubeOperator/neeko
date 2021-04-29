@@ -41,7 +41,7 @@
     </el-dialog>
     <el-dialog
         class="ko-dialog"
-        :show-close="true"
+        :show-close="false"
         :visible.sync="aboutDialogVisible"
         width="40%">
       <div class="aboutBackground" style="padding: 20px 25px;">

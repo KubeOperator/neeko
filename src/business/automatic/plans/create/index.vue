@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="120px" :model="form" :rules="rules" v-loading="loading">
+          <el-form ref="form" label-width="120px" :model="form" :rules="rules" v-loading="loading" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -24,7 +24,8 @@
             <el-form-item :label="$t('automatic.plan.deploy_template')" prop="deployTemplate">
               <el-select v-model="form.deployTemplate"
                          filterable
-                         reserve-keyword>
+                         reserve-keyword
+                         @change="changeTemplate()">
                 <el-option :label="$t('automatic.plan.SINGLE')" value="SINGLE"></el-option>
                 <el-option :label="$t('automatic.plan.MULTIPLE')" value="MULTIPLE"></el-option>
               </el-select>
@@ -32,24 +33,27 @@
             <el-form-item :label="$t('automatic.zone.name')" prop="zone" v-if="form.deployTemplate==='SINGLE'">
               <el-select v-model="form.zone"
                          filterable
-                         reserve-keyword>
+                         reserve-keyword
+                         key="zone">
                 <el-option
                         v-for="(item,index) in zones"
                         :key="index"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.name">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('automatic.zone.name')" prop="zones" v-if="form.deployTemplate==='MULTIPLE'">
               <el-select v-model="form.zones"
                          filterable
-                         reserve-keyword>
+                         multiple
+                         reserve-keyword
+                         key="zones">
                 <el-option
                         v-for="(item,index) in zones"
                         :key="index"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.name">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -218,6 +222,10 @@ export default {
         })
       })
     },
+    changeTemplate() {
+      this.form.zones = []
+      this.form.zone = ""
+    }
   },
   created () {
     listAllRegions().then(res => {
