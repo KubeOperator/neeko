@@ -4,7 +4,7 @@
       <el-col :span="1"><br/></el-col>
       <el-col :span="15">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" :model="form" label-width="100px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="100px">
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.smtp')" required>
               <el-input v-model="form.vars.SMTP_ADDRESS"></el-input>
             </el-form-item>
@@ -59,34 +59,43 @@ export default {
         },
         tab: ''
       },
-      btn: true
+      btn: true,
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       createSetting({
         vars: this.form.vars,
         tab: 'EMAIL'
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.save_success')
         });
         setTimeout(() => location.reload(), 500)
         this.$router.push({name: "EMail"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     verify(){
+      this.loading = true
       check( 'EMAIL',{
         vars: this.form.vars,
         tab: 'EMAIL'
       }
       ).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')
         });
         this.btn = false
+      }).finally(() => {
+        this.loading = false
       })
     }
   },

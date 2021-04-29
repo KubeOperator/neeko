@@ -1,11 +1,11 @@
 <template>
   <div>
-    <layout-content :header="$t('route.ldap')" v-loading="loading">
+    <layout-content :header="$t('route.ldap')">
     <br>
       <el-col :span="2"><br/></el-col>
       <el-col :span="15">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" :model="form" label-width="130px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="130px">
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.address')" required>
               <el-input v-model="form.vars['ldap_address']"></el-input>
             </el-form-item>
@@ -90,6 +90,8 @@ export default {
         });
         setTimeout(() => location.reload(), 500)
         this.$router.push({name: "LDAP"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     sync(){
@@ -104,6 +106,8 @@ export default {
           message: this.$t('commons.msg.verify_success')
         });
         this.btn = false
+      }).finally(() => {
+        this.loading = false
       })
     }
   },

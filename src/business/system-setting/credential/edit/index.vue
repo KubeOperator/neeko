@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" :model="form" label-width="80px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="80px">
             <el-form-item :label="$t('credential.name')" required>
               <el-input v-model="form.name" readonly></el-input>
               <span></span>
@@ -56,11 +56,13 @@ export default {
         password: '',
         privateKey: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       updateCredentials(this.form.name, {
         id: this.form.id,
         name: this.form.name,
@@ -69,11 +71,14 @@ export default {
         privateKey: this.form.privateKey,
         type: this.form.type,
       }).then( () => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: `创建成功`
         });
         this.$router.push({name: "Credential"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {

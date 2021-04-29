@@ -1,14 +1,14 @@
 <template>
   <div >
     <layout-content :header="$t('route.theme')" style="min-height: 600px;">
-      <el-col :span="1"><br/></el-col>
-      <el-col :span="15">
+      <el-col :span="2"><br/></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item  style="width: 100%" :label="$t('setting.table.theme.systemName')" required>
+          <el-form ref="form" v-loading="loading" :model="form" label-width="110px">
+            <el-form-item  style="width: 100%" :label="$t('theme.systemName')" required>
               <el-input v-model="form.systemName"></el-input>
             </el-form-item>
-            <el-form-item style="width: 100%" :label="$t('setting.table.theme.logo')" required>
+            <el-form-item style="width: 100%" :label="$t('theme.logo')" required>
               <el-upload
                 :on-change="onUploadChange"
                 :auto-upload="false"
@@ -24,7 +24,7 @@
                   <svg class="icon" aria-hidden="true"   >
                     <use  xlink:href="#icontishi11"></use>
                   </svg>
-                  {{ $t('setting.table.theme.uploadLogoHelper') }}
+                  {{ $t('theme.uploadLogoHelper') }}
                 </div>
               </el-upload>
               <div style="position: absolute;right: 0px;margin-top: 20px">
@@ -55,20 +55,25 @@ export default {
       },
       logoBase64: '',
       logoFile: '',
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       this.form.logo = this.logoBase64
       importTheme( {
         systemName: this.form.systemName,
         logo: this.form.logo
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.save_success')
         });
         setTimeout(() => location.reload(), 500)
+      }).finally(() => {
+        this.loading = false
       })
     },
     onUploadChange(e) {
@@ -82,7 +87,7 @@ export default {
     uploadInfo() {
       this.$message({
         type: 'warning',
-        message: '默认只能上传一个文件，请删除当前文件后，重新上传!'
+        message: this.$t('theme.uploadLogoNumHelper')
       });
     }
   },

@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" :model="form" label-width="80px">
+          <el-form ref="form" label-position="left" v-loading="loading"  :model="form" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
               <el-input v-model="form.architecture" readonly></el-input>
             </el-form-item>
@@ -57,21 +57,26 @@ export default {
       }, {
         value: 'https',
       }],
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       updateRegistry(this.arch, {
         architecture: this.form.architecture,
         hostname: this.form.hostname,
         protocol: this.form.protocol,
         id: this.form.id
       }).then( () => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: `创建成功`
         });
         this.$router.push({name: "Registry"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {

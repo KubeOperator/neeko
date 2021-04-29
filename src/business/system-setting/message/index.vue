@@ -8,7 +8,7 @@
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="15">
-        <el-form ref="form" label-position="left" :model="wechat" label-width="80px">
+        <el-form ref="form" v-loading="loading" label-position="left" :model="wechat" label-width="80px">
           <el-form-item  style="width: 100%" label="corpid" required>
             <el-input v-model="wechat.vars['WORK_WEIXIN_CORP_ID']"></el-input>
           </el-form-item>
@@ -56,7 +56,7 @@
         <el-col :span="2"><br/></el-col>
         <el-col :span="16">
           <div class="grid-content bg-purple-light">
-            <el-form ref="form" label-position="left" :model="dingTalk" label-width="110px">
+            <el-form ref="form" label-position="left" v-loading="loading" :model="dingTalk" label-width="110px">
               <el-form-item  style="width: 100%" :label="$t('setting.table.message.webhookAddress')" required>
                 <el-input v-model="dingTalk.vars['DING_TALK_WEBHOOK']"></el-input>
               </el-form-item>
@@ -111,15 +111,18 @@ export default {
         tab: ''
       },
       btn: false,
-      btnDk: false
+      btnDk: false,
+      loading: false
     }
   },
   methods: {
     wechatOnSubmit() {
+      this.loading = true
       createMessageSetting("WORK_WEIXIN",{
         vars: this.wechat.vars,
         tab: "WORK_WEIXIN"
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.save_success')
@@ -130,13 +133,17 @@ export default {
           type: "error",
           message: error.error.msg,
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     dingTalkOnSubmit() {
+      this.loading = true
       createMessageSetting("DING_TALK",{
         vars: this.dingTalk.vars,
         tab: "DING_TALK"
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.save_success')
@@ -147,30 +154,40 @@ export default {
           type: "error",
           message: error.error.msg,
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     wechatVerify() {
+      this.loading = true
       checkMessage("WORK_WEIXIN",{
         vars: this.wechat.vars,
         tab: "WORK_WEIXIN"
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')
         });
         this.btn = false
+      }).finally(() => {
+        this.loading = false
       })
     },
     dingTalkVerify() {
+      this.loading = true
       checkMessage("DING_TALK",{
         vars: this.dingTalk.vars,
         tab: "DING_TALK"
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t('commons.msg.verify_success')
         });
         this.btnDk = false
+      }).finally(() => {
+        this.loading = false
       })
     },
     getWechat() {

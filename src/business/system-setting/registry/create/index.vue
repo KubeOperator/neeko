@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left"  :model="form" :rules="rules" label-width="80px">
+          <el-form ref="form" label-position="left" v-loading="loading" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
               <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option
@@ -74,21 +74,26 @@ export default {
       formLabelWidth: '120px',
       rules: {
         hostname: [Rule.IpRule],
-      }
+      },
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       createRegistry({
         architecture: this.form.architecture,
         hostname: this.form.hostname,
         protocol: this.form.protocol
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t("commons.msg.create_success"),
         });
         this.$router.push({name: "Registry"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {

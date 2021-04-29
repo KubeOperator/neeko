@@ -167,6 +167,12 @@ const message = {
     email: "邮箱",
     reset_message: "重制密码成功！请查看邮件"
   },
+  theme: {
+    systemName: "登录页面标题",
+    logo: "Logo",
+    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件",
+    uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
+  },
   route: {
     project: "项目",
     cluster: "集群",
@@ -792,11 +798,6 @@ const message = {
         expired: "已到期",
         licenseFile: "许可证",
         communityEdition: "社区版"
-      },
-      theme: {
-        systemName: "系统名称",
-        logo: "Logo",
-        uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件"
       },
       message: {
         wechat: "企业微信",

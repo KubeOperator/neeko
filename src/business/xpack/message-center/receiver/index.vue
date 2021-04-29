@@ -3,7 +3,7 @@
       <el-col :span="2"><br /></el-col>
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" :model="form" label-width="120px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="120px">
             <el-form-item :label="$t('message.dingTalk_phone')">
               <el-input v-model="form.vars['DING_TALK']"></el-input>
               <div><span class="input-help">{{$t('message.dingTalk_phone_help')}}</span></div>
@@ -20,8 +20,8 @@
             </el-form-item>
             <div style="float: right">
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button type="primary" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
               </el-form-item>
             </div>
           </el-form>
@@ -47,16 +47,21 @@ export default {
           "WORK_WEIXIN": ""
         }
       },
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       updateMessageReceicver(this.form).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: `创建成功`
         });
         this.$router.push({name: "MessageReceiver"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     search() {

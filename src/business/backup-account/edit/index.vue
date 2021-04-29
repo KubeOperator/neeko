@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form"  label-position="left"  :model="form" label-width="90px">
+          <el-form ref="form" v-loading="loading" label-position="left"  :model="form" label-width="90px">
             <el-form-item :label="$t('backup_account.table.name')" aria-readonly="true" required>
               <span>{{ form.name}}</span>
 <!--              <el-input v-model="form.name" readonly></el-input>-->
@@ -94,11 +94,13 @@ export default {
         bucket: '',
         credentialVars: {}
       },
-      buckets: []
+      buckets: [],
+      loading: false
     }
   },
   methods: {
     update() {
+      this.loading = true
       updateBackupAccounts( this.form.name,{
         id: this.form.id,
         bucket: this.form.bucket,
@@ -106,23 +108,30 @@ export default {
         name: this.form.name,
         type: this.form.type
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t("commons.msg.save_success")
         });
         this.$router.push({name: "BackupAccount"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {
       this.$router.push({name: "BackupAccount"})
     },
     getBuckets() {
+      this.loading = true
       listBuckets( {
         name: this.form.name,
         type: this.form.type,
         credentialVars: this.form.credentialVars,
       }).then( data => {
+        this.loading = false
         this.buckets = data
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
