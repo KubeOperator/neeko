@@ -26,12 +26,12 @@
                   </ul>
                 </div>
               </el-col>
-
               <div class="bottom">
-                <el-switch  :active-text="$t('manifest.enable')"
-                            style="margin-left: 100px "
+                <el-switch  style="margin-left: 100px "
                             @change="changeEnable(versionMini)"
                             v-model="versionMini.isActive"
+                            :active-text="$t('commons.button.enable')"
+                            :inactive-text="$t('commons.button.disable')"
                             v-permission="['ADMIN']">
                 </el-switch>
               </div>
@@ -43,92 +43,98 @@
     </div>
 
     <el-scrollbar style="height:100%;">
-    <el-dialog
-      :title="$t('manifest.detail')"
-      :visible.sync="dialogVisible"
-      class="abow_dialog"
-      width="50%">
-      <div style="height: 500px">
-        <el-scrollbar style="height: 500px">
-      <p>{{manifestDetail.name}}</p>
-      <el-divider/>
-        <el-table
-          :data="manifestDetail.coreVars"
-          border
-          style="width: 90%;">
-          <el-table-column
-            prop="name"
-            :label="$t('manifest.component')">
-          </el-table-column>
-          <el-table-column
-            prop="version"
-            :label="$t('manifest.version')">
-          </el-table-column>
-        </el-table>
-          <p>Network</p>
-        <el-table
-          :data="manifestDetail.networkVars"
-          border
-          style="width: 90%">
-          <el-table-column
-            prop="name"
-            :label="$t('manifest.component')">
-          </el-table-column>
-          <el-table-column
-            prop="version"
-            :label="$t('manifest.version')">
-          </el-table-column>
-        </el-table>
-        <p>Tool</p>
-        <el-table
-          :data="manifestDetail.toolVars"
-          border
-          style="width: 90%">
-          <el-table-column
-            prop="name"
-            :label="$t('manifest.component')">
-          </el-table-column>
-          <el-table-column
-            prop="version"
-            :label="$t('manifest.version')">
-          </el-table-column>
-        </el-table>
-        <p>Storage</p>
-        <el-table
-        :data="manifestDetail.storageVars"
-        border
-        style="width: 90%;">
-        <el-table-column
-          prop="name"
-          :label="$t('manifest.component')">
-        </el-table-column>
-        <el-table-column
-          prop="version"
-          :label="$t('manifest.version')">
-        </el-table-column>
-      </el-table>
-      <p>Other</p>
-<!--      <el-divider/>-->
-      <el-table
-        :data="manifestDetail.otherVars"
-        border
-        style="width: 90%">
-        <el-table-column
-          prop="name"
-          :label="$t('manifest.component')">
-        </el-table-column>
-        <el-table-column
-          prop="version"
-          :label="$t('manifest.version')">
-        </el-table-column>
-      </el-table>
-
-      <span slot="footer" class="dialog-footer">
-、    <el-button type="primary" @click="dialogVisible = false">{{$t('commons.button.ok')}}</el-button>
-      </span>
-        </el-scrollbar>
-      </div>
-    </el-dialog>
+      <el-dialog
+        :title="$t('manifest.detail')"
+        :visible.sync="dialogVisible"
+        width="50%">
+        <div style="height: 500px;text-align: center;">
+          <el-scrollbar style="height: 500px">
+            <p>{{manifestDetail.name}}</p>
+            <div align="center" style="margin-top: 15px">
+              <el-table
+                :data="manifestDetail.coreVars"
+                border
+                style="width: 90%;">
+                <el-table-column
+                  prop="name"
+                  :label="$t('manifest.component')">
+                </el-table-column>
+                <el-table-column
+                  prop="version"
+                  :label="$t('manifest.version')">
+                </el-table-column>
+              </el-table>
+            </div>
+            <p>Network</p>
+            <div align="center" style="margin-top: 15px">
+              <el-table
+                :data="manifestDetail.networkVars"
+                border
+                style="width: 90%">
+                <el-table-column
+                  prop="name"
+                  :label="$t('manifest.component')">
+                </el-table-column>
+                <el-table-column
+                  prop="version"
+                  :label="$t('manifest.version')">
+                </el-table-column>
+              </el-table>
+            </div>
+            <p>Tool</p>
+            <div align="center" style="margin-top: 15px">
+              <el-table
+                :data="manifestDetail.toolVars"
+                border
+                style="width: 90%">
+                <el-table-column
+                  prop="name"
+                  :label="$t('manifest.component')">
+                </el-table-column>
+                <el-table-column
+                  prop="version"
+                  :label="$t('manifest.version')">
+                </el-table-column>
+              </el-table>
+            </div>
+            <p>Storage</p>
+            <div align="center" style="margin-top: 15px">
+              <el-table
+                :data="manifestDetail.storageVars"
+                border
+                style="width: 90%;">
+                <el-table-column
+                  prop="name"
+                  :label="$t('manifest.component')">
+                </el-table-column>
+                <el-table-column
+                  prop="version"
+                  :label="$t('manifest.version')">
+                </el-table-column>
+              </el-table>
+            </div>
+            <p>Other</p>
+            <div align="center" style="margin-top: 15px">
+              <el-table
+                :data="manifestDetail.otherVars"
+                border
+                style="width: 90%">
+                <el-table-column
+                  prop="name"
+                  :label="$t('manifest.component')">
+                </el-table-column>
+                <el-table-column
+                  prop="version"
+                  :label="$t('manifest.version')">
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-scrollbar>
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        </div>
+      </el-dialog>
     </el-scrollbar>
 
   </layout-content>
