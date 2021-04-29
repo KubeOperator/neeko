@@ -65,6 +65,7 @@ const message = {
       re_enable_success: "重新启用成功",
       disable_success: "禁用成功",
       update_success: "更新成功",
+      upgrade_start_success: "集群升级已开始，请稍候...",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
@@ -286,6 +287,12 @@ const message = {
       EnsureInitMetricsServer: "初始化监控组件",
       EnsureInitIngressController: "初始化服务暴露组件",
       EnsurePostInit: "配置集群",
+      EnsureBackupETCD: "备份集群",
+      EnsureUpgradeRuntime: "升级容器引擎",
+      EnsureUpgradeETCD: "升级 ETCD",
+      EnsureUpgradeKubernetes: "升级 Kubernetes",
+      EnsureUpdateCertificates: "更新证书",
+      EnsureUpgradeTaskStart: "调度任务",
       DeleteCluster: "删除集群",
     },
     detail: {

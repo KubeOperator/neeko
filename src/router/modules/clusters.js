@@ -28,7 +28,7 @@ const Cluster = {
       },
     },
     {
-      path: "upgrade",
+      path: "upgrade/:name",
       hidden: true,
       component: () => import("@/business/clusters/upgrade"),
       name: "ClusterUpgrade",
