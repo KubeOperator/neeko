@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon label-position="left">
             <el-form-item :label="$t('automatic.ip_pool.subnet')">
               <el-input disabled :placeholder="subnet"></el-input>
             </el-form-item>
