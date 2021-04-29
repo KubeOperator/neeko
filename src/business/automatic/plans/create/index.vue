@@ -24,7 +24,8 @@
             <el-form-item :label="$t('automatic.plan.deploy_template')" prop="deployTemplate">
               <el-select v-model="form.deployTemplate"
                          filterable
-                         reserve-keyword>
+                         reserve-keyword
+                         @change="changeTemplate()">
                 <el-option :label="$t('automatic.plan.SINGLE')" value="SINGLE"></el-option>
                 <el-option :label="$t('automatic.plan.MULTIPLE')" value="MULTIPLE"></el-option>
               </el-select>
@@ -32,24 +33,27 @@
             <el-form-item :label="$t('automatic.zone.name')" prop="zone" v-if="form.deployTemplate==='SINGLE'">
               <el-select v-model="form.zone"
                          filterable
-                         reserve-keyword>
+                         reserve-keyword
+                         key="zone">
                 <el-option
                         v-for="(item,index) in zones"
                         :key="index"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.name">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('automatic.zone.name')" prop="zones" v-if="form.deployTemplate==='MULTIPLE'">
               <el-select v-model="form.zones"
                          filterable
-                         reserve-keyword>
+                         multiple
+                         reserve-keyword
+                         key="zones">
                 <el-option
                         v-for="(item,index) in zones"
                         :key="index"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.name">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -218,6 +222,10 @@ export default {
         })
       })
     },
+    changeTemplate() {
+      this.form.zones = []
+      this.form.zone = ""
+    }
   },
   created () {
     listAllRegions().then(res => {
