@@ -67,7 +67,7 @@
             <!-- SFTP Option end-->
 
             <el-form-item>
-              <el-button v-if="form.type !== 'SFTP'" type="success" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
+              <el-button v-if="form.type !== 'SFTP'" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
               <el-button  @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
               <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
             </el-form-item>
