@@ -1,17 +1,15 @@
 <template>
   <el-dialog
-    title="关联集群"
+    :title="$t('multi_cluster.relation_management')"
     :visible.sync="dialogVisible"
-    width="30%">
+    width="40%">
     <el-row v-loading="loading">
-      <el-col :span="4"><br/></el-col>
-      <el-col :span="18">
-        <el-transfer :titles="['options','targets']" v-model="value" :data="data"></el-transfer>
-      </el-col>
+      <el-transfer sty :titles="[$t('multi_cluster.cluster_list'),$t('multi_cluster.cluster_list')]" v-model="value"
+                   :data="data"></el-transfer>
     </el-row>
     <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible=false">取 消</el-button>
-    <el-button type="primary" @click="onSubmit">确 定</el-button>
+    <el-button @click="dialogVisible=false">{{$t('commons.button.cancel')}}</el-button>
+    <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
   </span>
   </el-dialog>
 </template>
