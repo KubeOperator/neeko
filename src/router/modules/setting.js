@@ -73,33 +73,11 @@ const SystemSetting = {
           }
         },
         {
-          path: "ldap",
-          name: "LDAP",
-          hidden: true,
-          props: true,
-          component: () => import('@/business/system-setting/ldap'),
-          meta: {
-            activeMenu: "/setting",
-            roles: ['ADMIN']
-          }
-        },
-        {
           path: "license",
           name: "License",
           hidden: true,
           props: true,
           component: () => import('@/business/system-setting/license'),
-          meta: {
-            activeMenu: "/setting",
-            roles: ['ADMIN']
-          }
-        },
-        {
-          path: "theme",
-          name: "Theme",
-          hidden: true,
-          props: true,
-          component: () => import('@/business/system-setting/theme'),
           meta: {
             activeMenu: "/setting",
             roles: ['ADMIN']

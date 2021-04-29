@@ -178,7 +178,9 @@ const message = {
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户管理",
-    multi_cluster: "多集群管理"
+    multi_cluster: "多集群管理",
+    theme: "主题",
+    ldap: "LDAP",
   },
   cluster: {
     cluster: "集群",
@@ -750,9 +752,7 @@ const message = {
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",
-    ldap: "LDAP",
     message: "消息",
-    theme: "主题",
     credential: "凭证",
     ntpServer: "NTP服务器",
     table: {

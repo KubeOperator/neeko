@@ -17,7 +17,7 @@ const XPack = {
       name: "MultiCluster",
       meta: {
         title: "route.multi_cluster",
-        roles: ["ADMIN"]
+        roles: ["ADMIN"],
       },
       redirect: () => {
         return {
@@ -116,7 +116,31 @@ const XPack = {
           }
         }
       ]
-    }
+    },
+    {
+      path: "ldap",
+      name: "LDAP",
+      props: true,
+      component: () => import('@/business/xpack/ldap'),
+      meta: {
+        requireLicense: true,
+        title: "route.ldap",
+        activeMenu: "/xpack/ldap",
+        roles: ['ADMIN']
+      }
+    },
+    {
+      path: "theme",
+      name: "Theme",
+      props: true,
+      component: () => import('@/business/xpack/theme'),
+      meta: {
+        requireLicense: true,
+        title: "route.theme",
+        activeMenu: "/xpack/theme",
+        roles: ['ADMIN']
+      }
+    },
   ]
 }
 export default XPack

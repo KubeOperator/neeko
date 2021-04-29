@@ -52,7 +52,7 @@
                 <el-input v-model="form.credentialVars['address']"></el-input>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.port')" required>
-                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535" label="描述文字"></el-input-number>
+                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535"></el-input-number>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.username')" required>
                 <el-input v-model="form.credentialVars['username']"></el-input>
