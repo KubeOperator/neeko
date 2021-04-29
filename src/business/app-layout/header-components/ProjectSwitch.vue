@@ -14,10 +14,6 @@
     </el-submenu>
   </el-menu>
 </template>
-
-import {listProjects} from '@/api/projects'
-
-
 <script>
   import {allProjects} from "@/api/projects";
 

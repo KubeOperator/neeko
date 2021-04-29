@@ -13,9 +13,9 @@
                 :highlight-current="true"
                 @node-click="toPage">
           <span class="custom-tree-node" slot-scope="{ node,data }">
-              <i v-if="data.type ==='CLUSTER'" class="el-icon-c-scale-to-original"></i>
-              <i v-if="data.type ==='PROJECT'" class="el-icon-s-data"></i>
-              <i v-if="data.type ==='PROJECT_LIST'" class="iconfont iconproject"></i>
+              <i v-if="data.type ==='CLUSTER'" class="iconfont iconcluster"></i>
+              <i v-if="data.type ==='PROJECT'" class="iconfont iconproject"></i>
+              <i v-if="data.type ==='PROJECT_LIST'" class="iconfont iconprojectmanage"></i>
             &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ node.label }}</span>
           </span>
         </el-tree>
