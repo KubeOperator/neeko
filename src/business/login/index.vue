@@ -45,7 +45,7 @@
               {{ msg }}
             </div>
             <div class="forget-password">
-              <el-link type="primary" @click="forgetPassword">{{ $t("login.forget_password") }}</el-link>
+              <a style="color: #999999;text-decoration-line: underline" @click="forgetPassword">{{ $t("login.forget_password") }}?</a>
             </div>
           </el-form>
         </el-col>
