@@ -2,9 +2,9 @@
   <layout-content :header="$t('backup_account.edit_backup_account')" :back-to="{ name: 'BackupAccount'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="90px">
+          <el-form ref="form" v-loading="loading" label-position="left"  :model="form" label-width="90px">
             <el-form-item :label="$t('backup_account.table.name')" aria-readonly="true" required>
               <span>{{ form.name}}</span>
 <!--              <el-input v-model="form.name" readonly></el-input>-->
@@ -60,11 +60,13 @@
             </div>
             <!-- SFTP Option end-->
 
-            <el-form-item>
-              <el-button v-if="form.type !== 'SFTP'" type="success" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
-              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" @click="update()">{{$t('commons.button.save')}}</el-button>
-            </el-form-item>
+              <div style="float: right">
+                <el-form-item>
+                  <el-button v-if="form.type !== 'SFTP'" type="success" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
+                  <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                  <el-button type="primary" @click="update()">{{$t('commons.button.submit')}}</el-button>
+                </el-form-item>
+              </div>
           </el-form>
 
         </div>
@@ -92,11 +94,13 @@ export default {
         bucket: '',
         credentialVars: {}
       },
-      buckets: []
+      buckets: [],
+      loading: false
     }
   },
   methods: {
     update() {
+      this.loading = true
       updateBackupAccounts( this.form.name,{
         id: this.form.id,
         bucket: this.form.bucket,
@@ -104,23 +108,30 @@ export default {
         name: this.form.name,
         type: this.form.type
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: this.$t("commons.msg.save_success")
         });
         this.$router.push({name: "BackupAccount"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {
       this.$router.push({name: "BackupAccount"})
     },
     getBuckets() {
+      this.loading = true
       listBuckets( {
         name: this.form.name,
         type: this.form.type,
         credentialVars: this.form.credentialVars,
       }).then( data => {
+        this.loading = false
         this.buckets = data
+      }).finally(() => {
+        this.loading = false
       })
     }
   },

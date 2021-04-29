@@ -68,7 +68,7 @@
     </el-dialog>
 
     <el-dialog :title="$t('host.detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <div style=" text-align: center;">
+      <div style="text-align: center;">
         <span>{{$t ('host.base_info')}}</span>
         <div align="center" style="margin-top: 15px">
           <table style="width: 90%" class="myTable">

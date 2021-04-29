@@ -13,9 +13,9 @@
                 :highlight-current="true"
                 @node-click="toPage">
           <span class="custom-tree-node" slot-scope="{ node,data }">
-              <i v-if="data.type ==='CLUSTER'" class="el-icon-c-scale-to-original"></i>
-              <i v-if="data.type ==='PROJECT'" class="el-icon-s-data"></i>
-              <i v-if="data.type ==='PROJECT_LIST'" class="el-icon-tickets"></i>
+              <i v-if="data.type ==='CLUSTER'" class="iconfont iconcluster"></i>
+              <i v-if="data.type ==='PROJECT'" class="iconfont iconproject"></i>
+              <i v-if="data.type ==='PROJECT_LIST'" class="iconfont iconprojectmanage"></i>
             &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ node.label }}</span>
           </span>
         </el-tree>
@@ -81,6 +81,9 @@ export default {
           this.resources[0].children = data
         } else {
           this.resources = data
+          this.authObj.type ='PROJECT'
+          this.expendType = 'PROJECT'
+          this.expendName = data[0].label
         }
         if (this.expendName !== undefined && this.expendType !== undefined) {
           this.setParam(this.expendType, this.expendName)

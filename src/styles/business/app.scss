@@ -139,4 +139,14 @@ a:hover {
   .iconfont {
     font-size: 14px;
   }
+  .iconStarStar:before {
+    color: #FDBF16;
+  }
+  .aboutBackground {
+    background: url("~@/assets/KubeOperator-about-background.png") no-repeat;
+    background-size: cover;
+  }
+  .el-link--inner {
+    padding-left: 5px;
+  }
 }

@@ -7,7 +7,7 @@
            style="text-align: center">
     <el-submenu index="1" popper-class="header-menu-popper">
       <template slot="title">
-        <i class="iconfont iconbangzhu" style="color: #FA5D50"></i>
+        <i class="iconfont iconbangzhu" style="color: #FA5D50;margin-right: 10px" ></i>
         <span>{{ $t('commons.help.help') }}</span>
       </template>
       <el-menu-item @click="toKoDocs">

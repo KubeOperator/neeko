@@ -6,6 +6,13 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "5192988",
+      "name": "Star Star",
+      "font_class": "StarStar",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
       "icon_id": "15760893",
       "name": "华为",
       "font_class": "huawei",

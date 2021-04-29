@@ -8,6 +8,7 @@ const XPack = {
   meta: {
     title: "X-Pack",
     icon: "iconfont iconx-pack",
+    requireLicense: true
   },
   children: [
     {
@@ -16,7 +17,7 @@ const XPack = {
       name: "MultiCluster",
       meta: {
         title: "route.multi_cluster",
-        roles: ["ADMIN"]
+        roles: ["ADMIN"],
       },
       redirect: () => {
         return {
@@ -72,7 +73,7 @@ const XPack = {
       meta: {
         activeMenu: "/xpack/message-center",
         title: "route.message_center",
-        roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+        roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
       },
       redirect: to => {
         return {
@@ -89,7 +90,7 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         },
         {
@@ -100,7 +101,7 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message_receiver",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         },
         {
@@ -111,11 +112,35 @@ const XPack = {
           meta: {
             activeMenu: "/xpack/message-center",
             title: "message.message_subscribe",
-            roles: ["ADMIN", "PROJECT_MANAGER","CLUSTER_MANAGER"]
+            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
           }
         }
       ]
-    }
+    },
+    {
+      path: "ldap",
+      name: "LDAP",
+      props: true,
+      component: () => import('@/business/xpack/ldap'),
+      meta: {
+        requireLicense: true,
+        title: "route.ldap",
+        activeMenu: "/xpack/ldap",
+        roles: ['ADMIN']
+      }
+    },
+    {
+      path: "theme",
+      name: "Theme",
+      props: true,
+      component: () => import('@/business/xpack/theme'),
+      meta: {
+        requireLicense: true,
+        title: "route.theme",
+        activeMenu: "/xpack/theme",
+        roles: ['ADMIN']
+      }
+    },
   ]
 }
 export default XPack

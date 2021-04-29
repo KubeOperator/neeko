@@ -2,9 +2,9 @@
   <layout-content :header="$t('backup_account.add_backup_account')" :back-to="{ name: 'BackupAccount'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="90px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="90px">
             <el-form-item :label="$t('backup_account.table.name')" required>
               <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -52,7 +52,7 @@
                 <el-input v-model="form.credentialVars['address']"></el-input>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.port')" required>
-                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535" label="描述文字"></el-input-number>
+                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535"></el-input-number>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.username')" required>
                 <el-input v-model="form.credentialVars['username']"></el-input>
@@ -66,11 +66,13 @@
             </div>
             <!-- SFTP Option end-->
 
-            <el-form-item>
-              <el-button v-if="form.type !== 'SFTP'" type="success" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
-              <el-button  @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
-            </el-form-item>
+            <div style="float: right">
+              <el-form-item>
+                <el-button v-if="form.type !== 'SFTP'" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
+                <el-button  @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              </el-form-item>
+            </div>
           </el-form>
 
         </div>
@@ -109,39 +111,48 @@ export default {
         value: 'AZURE',
       }],
       formLabelWidth: '120px',
-      buckets: []
+      buckets: [],
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       createBackupAccounts({
         bucket: this.form.bucket,
         credentialVars: this.form.credentialVars,
         name: this.form.name,
         type: this.form.type
       }).then(() => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: `创建成功`
         });
         this.$router.push({name: "BackupAccount"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {
       this.$router.push({name: "BackupAccount"})
     },
     getBuckets() {
+      this.loading = true
       listBuckets( {
         name: this.form.name,
         type: this.form.type,
         credentialVars: this.form.credentialVars,
       }).then( data => {
+        this.loading = false
         this.buckets = data
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
   created() {
-      // this.form.type = 'OSS'
+      this.form.type = 'SFTP'
   }
 }
 </script>

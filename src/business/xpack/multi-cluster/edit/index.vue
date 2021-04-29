@@ -4,24 +4,19 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
-
-            <el-divider content-position="left">基础设置</el-divider>
-
+          <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item :label="$t('commons.table.name')" required>
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
-
-            <el-divider content-position="left">高级设置</el-divider>
             <el-form-item :label="$t('multi_cluster.sync_interval')">
-              <el-input-number  v-model="form.syncInterval"></el-input-number>
+              <el-input-number v-model="form.syncInterval"></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.pull_timeout')">
-              <el-input-number  v-model="form.gitTimeout"></el-input-number>
+              <el-input-number v-model="form.gitTimeout"></el-input-number>
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
+              <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
               <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
             </el-form-item>
           </el-form>

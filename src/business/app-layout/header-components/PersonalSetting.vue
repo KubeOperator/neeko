@@ -36,27 +36,27 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-    <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword" @click="submit()">{{ $t("commons.button.save") }}</el-button>
+    <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword" @click="submit()">{{ $t("commons.button.submit") }}</el-button>
   </span>
     </el-dialog>
     <el-dialog
         class="ko-dialog"
-        :show-close="true"
+        :show-close="false"
         :visible.sync="aboutDialogVisible"
         width="40%">
-      <div style="background-color: #f5f9ff;padding: 20px">
+      <div class="aboutBackground" style="padding: 20px 25px;">
         <img  style="margin-left: 0;" :src="require('@/assets/KubeOperator-red.png')"
                 class="sidebar-logo"
                 alt="Sidebar Logo">
         <p style="color: #242e42;">{{ $t('commons.personal.ko_introduction') }}</p>
         <strong>{{ $t('commons.personal.version') }}: v3.7.0</strong>
       </div>
-      <div style="padding: 20px">
-        <el-row style="font-size: 6px;color: #242e42">
+      <div style="padding:15px 20px;box-shadow:0px -10px 8px -5px #F0F1F2;">
+        <el-row style="font-size: 6px;color: #242e42;text-align: center">
           <el-col :span="6"><el-link @click="toGithub" class="iconfont iconhuaban88"><span>{{ $t('commons.personal.project_url') }}</span></el-link></el-col>
           <el-col :span="6"><el-link @click="toIssue" class="iconfont iconbug">{{ $t('commons.personal.issue') }}</el-link></el-col>
           <el-col :span="6"><el-link @click="toTalk" class="iconfont icontaolun">{{ $t('commons.personal.talk') }}</el-link></el-col>
-          <el-col :span="6"><el-link @click="toGithubStar" class="iconfont icondianliang">{{ $t('commons.personal.star') }}</el-link></el-col>
+          <el-col :span="6"><el-link @click="toGithubStar" class="iconfont iconStarStar">{{ $t('commons.personal.star') }}</el-link></el-col>
         </el-row>
       </div>
     </el-dialog>

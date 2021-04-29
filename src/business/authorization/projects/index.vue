@@ -12,7 +12,6 @@
           <el-button size="small" @click="create()" v-permission="['ADMIN']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <!--          <el-button size="small">{{ $t("commons.button.delete") }}</el-button>-->
         </template>
         <el-table-column type="selection" fix></el-table-column>
         <el-table-column :label="$t('commons.table.name')" min-width="100" fix>

@@ -2,9 +2,9 @@
   <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'VmConfigList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="12">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
             <el-form-item :label="$t('commons.table.name')">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
@@ -16,7 +16,7 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.save") }}</el-button>
+              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.submit") }}</el-button>
             </el-form-item>
           </el-form>
         </div>

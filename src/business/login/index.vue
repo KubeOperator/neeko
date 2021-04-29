@@ -45,7 +45,7 @@
               {{ msg }}
             </div>
             <div class="forget-password">
-              <el-link type="primary" @click="forgetPassword">{{ $t("login.forget_password") }}</el-link>
+              <a style="color: #999999;text-decoration-line: underline" @click="forgetPassword">{{ $t("login.forget_password") }}?</a>
             </div>
           </el-form>
         </el-col>
@@ -65,7 +65,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
           <el-button @click="opened = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="submitForget('forgetForm')">{{ $t("commons.button.save") }}</el-button>
+        <el-button type="primary" @click="submitForget('forgetForm')">{{ $t("commons.button.submit") }}</el-button>
       </span>
     </el-dialog>
   </div>

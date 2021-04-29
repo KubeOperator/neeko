@@ -2,31 +2,31 @@
   <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'IpList' }">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon label-position="left">
             <el-form-item :label="$t('automatic.ip_pool.subnet')">
-              <el-input disabled :placeholder="subnet"></el-input>
+              <el-input disabled :placeholder="subnet" ></el-input>
             </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.ip_start')" prop="ipStart">
-              <el-input v-model="form.ipStart"></el-input>
+              <el-input v-model="form.ipStart"  :placeholder="$t('automatic.ip_pool.ip_start_help')"></el-input>
             </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.ip_end')" prop="ipEnd">
-              <el-input v-model="form.ipEnd"></el-input>
+              <el-input v-model="form.ipEnd" :placeholder="$t('automatic.ip_pool.ip_end_help')"></el-input>
             </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.gateway')" prop="gateway">
-              <el-input v-model="form.gateway"></el-input>
+              <el-input v-model="form.gateway" :placeholder="$t('automatic.ip_pool.gateway_help')"></el-input>
             </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.dns1')" prop="dns1">
-              <el-input v-model="form.dns1"></el-input>
+              <el-input v-model="form.dns1" :placeholder="$t('automatic.ip_pool.dns1_help')"></el-input>
             </el-form-item>
             <el-form-item :label="$t('automatic.ip_pool.dns2')" prop="dns2">
-              <el-input v-model="form.dns2"></el-input>
+              <el-input v-model="form.dns2" :placeholder="$t('automatic.ip_pool.dns2_help')"></el-input>
             </el-form-item>
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
               </div>
             </el-form-item>
           </el-form>

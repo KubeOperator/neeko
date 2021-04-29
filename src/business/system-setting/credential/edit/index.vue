@@ -1,11 +1,11 @@
 <template>
-  <layout-content :header="$t('setting.option.editCredential')" :back-to="{ name: 'Credential'}">
+  <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'Credential'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item :label="$t('credential.name')">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="80px">
+            <el-form-item :label="$t('credential.name')" required>
               <el-input v-model="form.name" readonly></el-input>
               <span></span>
             </el-form-item>
@@ -24,10 +24,12 @@
             <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')" required>
               <el-input type="textarea" v-model="form.privateKey"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
-              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-            </el-form-item>
+            <div style="float: right">
+              <el-form-item>
+                <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              </el-form-item>
+            </div>
           </el-form>
         </div>
       </el-col>
@@ -54,11 +56,13 @@ export default {
         password: '',
         privateKey: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.loading = true
       updateCredentials(this.form.name, {
         id: this.form.id,
         name: this.form.name,
@@ -67,11 +71,14 @@ export default {
         privateKey: this.form.privateKey,
         type: this.form.type,
       }).then( () => {
+        this.loading = false
         this.$message({
           type: 'success',
           message: `创建成功`
         });
         this.$router.push({name: "Credential"})
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCancel() {

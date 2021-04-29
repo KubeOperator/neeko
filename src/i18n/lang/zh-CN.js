@@ -167,6 +167,12 @@ const message = {
     email: "邮箱",
     reset_message: "重制密码成功！请查看邮件"
   },
+  theme: {
+    systemName: "登录页面标题",
+    logo: "Logo",
+    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件",
+    uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
+  },
   route: {
     project: "项目",
     cluster: "集群",
@@ -178,7 +184,9 @@ const message = {
     system_log: "系统日志",
     complex_table: "复合表格",
     user: "用户管理",
-    multi_cluster: "多集群管理"
+    multi_cluster: "多集群管理",
+    theme: "主题",
+    ldap: "LDAP",
   },
   cluster: {
     cluster: "集群",
@@ -538,7 +546,8 @@ const message = {
     dingTalk_phone: "钉钉手机号",
     dingTalk_phone_help: "用于钉钉接收告警消息",
     work_wechat_id: "企业微信用户ID",
-    work_wechat_id_help: "用于企业微信接收告警消息 userid如何查找？https://work.weixin.qq.com/api/doc/90000/90135/90665",
+    work_wechat_id_help: "用于企业微信接收告警消息 ",
+    work_wechat_url_help: "userid如何查找?",
     email: "邮箱",
     message_type: "消息类型",
     message_in_station: "站内信",
@@ -693,7 +702,13 @@ const message = {
       ip_available: "可用",
       ip_lock: "占用",
       ip_used: "使用中",
-      ip_reachable: "可达"
+      ip_reachable: "可达",
+      subnet_help: "例: 172.1.10.0/24",
+      ip_start_help: "例: 172.1.10.1",
+      ip_end_help: "例: 172.1.10.10",
+      gateway_help: "例: 172.1.10.254",
+      dns1_help: "例: 8.8.8.8",
+      dns2_help: "例: 114.114.114.114",
     }
   },
   project: {
@@ -747,9 +762,7 @@ const message = {
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",
-    ldap: "LDAP",
     message: "消息",
-    theme: "主题",
     credential: "凭证",
     ntpServer: "NTP服务器",
     table: {
@@ -788,11 +801,6 @@ const message = {
         expired: "已到期",
         licenseFile: "许可证",
         communityEdition: "社区版"
-      },
-      theme: {
-        systemName: "系统名称",
-        logo: "Logo",
-        uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件"
       },
       message: {
         wechat: "企业微信",
@@ -833,7 +841,9 @@ const message = {
     sync_interval: "同步间隔(分钟)",
     pull_timeout: "拉取超时时间(分钟)",
     edit: "编辑",
-    "": "",
+    cluster_list: "集群列表",
+    selected_clusters: "选择集群",
+    relation_management:"关联管理",
     log: "日志"
   }
 }

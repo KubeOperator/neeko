@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading">
+          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
@@ -51,7 +51,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.save") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
               </div>
             </el-form-item>
           </el-form>
