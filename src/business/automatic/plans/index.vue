@@ -42,26 +42,38 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
-      <el-card class="box-card">
-        <el-row type="flex">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.region.name") }}</ul>
-            <ul> {{ $t("automatic.zone.name") }}</ul>
-            <ul> {{ $t("automatic.plan.deploy_template") }}</ul>
-            <ul> {{ $t("automatic.plan.master_model") }}</ul>
-            <ul> {{ $t("automatic.plan.worker_model") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionName }}</ul>
-            <ul><span v-for="(zone,index) in item.zoneNames" :key="index">{{ zone }},</span></ul>
-            <ul v-if="item.deployTemplate"> {{ $t("automatic.plan." + item.deployTemplate) }}</ul>
-            <ul> {{ item.planVars.masterModel }}</ul>
-            <ul> {{ item.planVars.workerModel }}</ul>
-          </el-col>
-        </el-row>
-      </el-card>
+
+      <div style=" text-align: center;">
+        <div align="center" style="margin-top: 15px">
+          <table style="width: 90%" class="myTable" >
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.name") }}</td>
+              <td>{{ item.regionName}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.name") }}</td>
+              <td><span v-for="(zone,index) in item.zoneNames" :key="index">{{ zone }},</span></td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.plan.deploy_template") }}</td>
+              <td v-if="item.deployTemplate">{{ $t("automatic.plan." + item.deployTemplate) }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.plan.master_model") }}</td>
+              <td>{{ item.planVars.masterModel }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.plan.worker_model") }}</td>
+              <td>{{ item.planVars.workerModel }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
       <span slot="footer" class="dialog-footer">
           <el-button @click="openDetail = false">{{ $t("commons.button.cancel") }}</el-button>
       </span>
