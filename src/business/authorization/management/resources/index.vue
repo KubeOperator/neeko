@@ -101,7 +101,21 @@
             <template v-slot:default="{ row }">{{ row.bucket }}</template>
           </el-table-column>
           <el-table-column :label="$t('backup_account.type')" mix-width="100">
-            <template v-slot:default="{ row }">{{ row.type }}</template>
+            <template v-slot:default="{row}">
+              <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconoss"></use>
+              </svg>
+              <svg v-if="row.type === 'AZURE'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconAzure"></use>
+              </svg>
+              <svg v-if="row.type === 'SFTP'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconSFTP"></use>
+              </svg>
+              <svg v-if="row.type === 'S3'" class="icon" aria-hidden="true">
+                <use xlink:href="#icons3"></use>
+              </svg>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
+            </template>
           </el-table-column>
           <el-table-column :label="$t('backup_account.status')" mix-width="100">
             <template v-slot:default="{row}">
