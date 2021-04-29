@@ -48,7 +48,7 @@ const Cluster = {
       },
     },
     {
-      path: "detail/:name",
+      path: "detail/:project/:name",
       props: true,
       hidden: true,
       component: () => import("@/business/clusters/detail/index"),

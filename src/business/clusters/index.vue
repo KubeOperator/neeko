@@ -22,6 +22,7 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('cluster.project')" min-width="100" prop="projectName" fix />
       <el-table-column :label="$t('cluster.version')" min-width="100" prop="spec.version" fix />
       <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
@@ -52,8 +53,8 @@
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="goForLogs()">{{ $t("commons.button.history") }}</el-button>
-        <el-button v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
+        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.history") }}</el-button>
+        <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
@@ -66,8 +67,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button :v-loading="deleteLoadding" type="primary" @click="submitDelete()">
+        <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button size="small" :v-loading="deleteLoadding" type="primary" @click="submitDelete()">
           {{ $t("commons.button.submit") }}
         </el-button>
       </div>
@@ -90,7 +91,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button v-if="checkData.level=='error'" type="primary" @click="onRecover()">
+        <el-button size="small" v-if="checkData.level=='error'" type="primary" @click="onRecover()">
           {{ $t("cluster.health_check.recover") }}
         </el-button>
       </div>
@@ -127,7 +128,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status.status !== "Failed"
+            return row.status !== "Running" && row.status !== "Failed"
           },
         },
         {
@@ -137,7 +138,7 @@ export default {
             this.onHealthCheck(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status.status !== "Failed"
+            return row.status !== "Running" && row.status !== "Failed"
           },
         },
       ],
@@ -197,6 +198,13 @@ export default {
         this.paginationConfig.total = data.total
       })
     },
+    searchForPolling(condition) {
+      const { currentPage, pageSize } = this.paginationConfig
+      searchClusters(currentPage, pageSize, condition).then((data) => {
+        this.data = data.items
+        this.paginationConfig.total = data.total
+      })
+    },
     onCreate() {
       this.$router.push({ name: "ClusterCreate" })
     },
@@ -207,7 +215,7 @@ export default {
       this.$router.push({ name: "ClusterUpgrade", params: { name: row.name } })
     },
     goForDetail(row) {
-      this.$router.push({ name: "ClusterOverview", params: { name: row.name } })
+      this.$router.push({ name: "ClusterOverview", params: { project: row.projectName, name: row.name } })
     },
     selectChange() {
       let isOk = true
@@ -370,8 +378,7 @@ export default {
                 this.log.prePhase = data.prePhase
               }
             },
-            (error) => {
-              console.log(error)
+            () => {
               this.opened = false
             }
           )
@@ -390,7 +397,7 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          this.searchForPolling()
         }
       }, 10000)
     },

@@ -14,11 +14,11 @@
             </el-row>
             <el-divider></el-divider>
             <div v-if="tool.status === 'Waiting'">
-              <el-button type="primary" size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
+              <el-button size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Failed'">
               <el-button size="small" @click="onErrorShow(tool)" style="float:right; margin: 5px">{{$t('commons.button.error_msg')}}</el-button>
-              <el-button type="primary" size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
+              <el-button size="small" @click="onEnable(tool)" style="float:right; margin: 5px">{{$t('commons.button.enable')}}</el-button>
             </div>
             <div v-if="tool.status === 'Running'">
               <span v-if="!tool.frame" style="float:right; margin: 12px">{{$t('commons.status.running')}}</span>
@@ -47,7 +47,7 @@
     </el-row>
 
     <el-dialog :title="$t('cluster.detail.tool.enable_title')" width="30%" :visible.sync="dialogEnableVisible">
-      <el-form :model="toolForm" ref="toolForm" label-width="140px">
+      <el-form label-position='left' :model="toolForm" ref="toolForm" label-width="140px">
 
         <el-form-item :label="$t('cluster.detail.tag.namespace')" prop="vars.namespace" :rules="requiredRules">
           <el-select style="width: 80%" filterable v-model="toolForm.vars['namespace']" clearable>
@@ -72,7 +72,6 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
@@ -97,7 +96,6 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['server_nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
@@ -148,7 +146,6 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
@@ -177,7 +174,6 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
@@ -199,7 +195,6 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
@@ -221,14 +216,13 @@
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
-              <div><span class="input-help">{{$t('cluster.detail.tool.node_select_help')}}</span></div>
             </el-form-item>
           </div>
         </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" v-loading="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
+        <el-button v-loading="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -243,7 +237,7 @@
       <span>{{$t('cluster.detail.tool.disable_show_msg')}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDisableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="disable(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button @click="disable(toolForm)">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -251,7 +245,7 @@
       <span>{{toolForm.name}}: {{toolForm.version}} ---> {{toolForm.higher_version}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpgradeVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="upgrade(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button @click="upgrade(toolForm)">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>

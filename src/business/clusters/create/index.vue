@@ -1,7 +1,7 @@
 <template>
   <layout-content>
     <div>
-      <el-form ref="form" label-width="180px" :model="form" :rules="rules">
+      <el-form ref="form" label-position='left' label-width="180px" :model="form" :rules="rules">
         <fu-steps ref="steps" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
@@ -155,8 +155,16 @@
                       <el-option value="host-gw">host-gw</el-option>
                       <el-option value="vxlan">vxlan</el-option>
                     </el-select>
-                    <div v-if="form.flannelBackend === 'host-gw'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route')}}</span></div>
-                    <div v-if="form.flannelBackend === 'vxlan'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel')}}</span></div>
+                    <div v-if="form.flannelBackend === 'host-gw'">
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                    </div>
+                    <div v-if="form.flannelBackend === 'vxlan'">
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                    </div>
                   </el-form-item>
 
                   <el-form-item v-if="form.networkType === 'calico'" :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
@@ -164,8 +172,16 @@
                       <el-option value="off" label="bgp">bgp</el-option>
                       <el-option value="Always" label="ipip">ipip</el-option>
                     </el-select>
-                    <div v-if="form.calicoIpv4PoolIpip === 'off'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route')}}</span></div>
-                    <div v-if="form.calicoIpv4PoolIpip === 'Always'"><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel')}}</span></div>
+                    <div v-if="form.calicoIpv4PoolIpip === 'off'">
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                    </div>
+                    <div v-if="form.calicoIpv4PoolIpip === 'Always'">
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                    </div>
                   </el-form-item>
 
                   <div v-if="form.networkType === 'cilium'">

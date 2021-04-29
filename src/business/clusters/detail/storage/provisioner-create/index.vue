@@ -2,10 +2,10 @@
   <layout-content>
     <el-row style="margin-top: 20px">
       <el-col :span="4"><br /></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" ref="form" label-width="120px">
-            <el-form-item :label="$t('commons.table.type')" required>
+          <el-form label-position='left' :model="form" ref="form" label-width="120px">
+            <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
                 <el-option value="external-ceph" label="external-ceph">external-ceph</el-option>
@@ -36,7 +36,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
@@ -93,7 +93,7 @@
               <el-form-item>
                 <div><span class="input-help">{{$t('cluster.detail.storage.vsphere_select_help')}}</span></div>
               </el-form-item>
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
@@ -123,7 +123,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
@@ -134,10 +134,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.multi_path_networking')" prop="vars.oceanstor_is_multipath" :rules="requiredRules">
-                <el-select style="width: 100%" v-model="form.vars['oceanstor_is_multipath']">
-                  <el-option value="yes" :label="$t('commons.form.yes')">{{$t('commons.form.yes')}}</el-option>
-                  <el-option value="no" :label="$t('commons.form.no')">{{$t('commons.form.no')}}</el-option>
-                </el-select>
+                <el-switch style="width: 80%" active-value="yes" inactive-value="no" v-model="form.vars['oceanstor_is_multipath']" />
               </el-form-item>
               <el-form-item :label="$t('commons.table.type')" prop="vars.oceanstor_type" :rules="requiredRules">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_type']">
@@ -175,13 +172,14 @@
               </el-form-item>
             </div>
             <el-form-item>
-              <el-button @click="onCancel()">取消</el-button>
-              <el-button :disabled="!createType" type="primary" @click="onSubmit">创建</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button :disabled="!createType" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"><br /></el-col>
     </el-row>
   </layout-content>
 </template>
@@ -204,7 +202,7 @@ export default {
       },
       nameRules: [Rule.CommonNameRule],
       requiredRules: [Rule.RequiredRule],
-      passwordRules: [Rule.PasswordRules],
+      passwordRules: [Rule.PasswordRule],
       enableBlockStorage: "disable",
     }
   },

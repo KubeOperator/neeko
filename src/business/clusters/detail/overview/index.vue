@@ -103,7 +103,7 @@
             </svg>
           </el-button>  
         </el-tooltip>
-        <el-button icon="el-icon-document" @click="downloadKubeConfig()" style="float: right; margin-right: 10px">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
+        <el-button v-if="currentCluster.source==='local'" icon="el-icon-document" @click="downloadKubeConfig()" style="float: right; margin-right: 10px">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
       </div>
       <div v-if="opened">
         <iframe style="width: 100%;height: 512px;" :src="url"></iframe>

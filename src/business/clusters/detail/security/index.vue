@@ -8,8 +8,7 @@
     <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search" :pagination-config="paginationConfig">
       <el-table-column label="ID" min-width="150" prop="id" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status ==='Success'" type="text" @click="cisDetail(row)">{{row.id}}</el-button>
-          <span v-if="row.status !=='Success'" />
+          <el-link v-if="row.status ==='Success'" type="info" @click="cisDetail(row)">{{ row.id }}</el-link>
         </template>
       </el-table-column>
       <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
@@ -76,7 +75,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row)
           },
@@ -158,7 +156,11 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          const { currentPage, pageSize } = this.paginationConfig
+          listCisByPage(this.clusterName, currentPage, pageSize).then((data) => {
+            this.data = data.items
+            this.paginationConfig.total = data.total
+          })
         }
       }, 10000)
     },

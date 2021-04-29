@@ -67,26 +67,34 @@
             <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
             <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
               <template v-slot:default="{row}">
-
-                <el-button v-if="row.status === 'Initializing'" size="mini" round @click="openXterm(row)" plain type="primary" icon="el-icon-loading">
-                  {{ $t("commons.status.initializing") }}
-                </el-button>
-                <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain>
-                  {{ $t("commons.status.failed") }}
-                </el-button>
-                <el-button v-if="row.status === 'Terminating'" size="mini" round @click="openXterm(row)" type="primary" plain icon="el-icon-loading">
-                  {{ $t("commons.status.terminating") }}
-                </el-button>
-
-                <el-tag v-if="row.status === 'Running'" type="success">{{ $t("commons.status.running") }}</el-tag>
-                <el-tag v-if="row.status === 'NotReady'" type="info">{{ $t("commons.status.not_ready") }}</el-tag>
-
-                <span v-if="row.status === 'Synchronizing'">
-                  <i class="el-icon-loading" />{{ $t("commons.status.synchronizing") }}
-                </span>
-                <span v-if="row.status === 'Waiting'">
-                  <i class="el-icon-loading" />{{ $t("commons.status.waiting") }}
-                </span>
+                <div v-if="row.status === 'Initializing'">
+                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                  <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.initializing") }}</el-link>
+                </div>
+                <div v-if="row.status === 'Terminating'">
+                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                  <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
+                </div>
+                <div v-if="row.status === 'Failed'">
+                  <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+                  <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+                </div>
+                <div v-if="row.status == 'Running'">
+                  <span class="iconfont iconduihao" style="color: #32B350"></span>
+                  {{ $t("commons.status.running") }}
+                </div>
+                <div v-if="row.status == 'NotReady'">
+                  <span class="iconfont iconerror" style="color: #FA4147"></span>
+                  {{ $t("commons.status.not_ready") }}
+                </div>
+                <div v-if="row.status === 'Synchronizing'">
+                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                  <span>{{ $t("commons.status.synchronizing") }}</span>
+                </div>
+                <div v-if="row.status === 'Waiting'">
+                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                  <span>{{ $t("commons.status.waiting") }}</span>
+                </div>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.create_time')">
@@ -135,7 +143,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row, "pv", false)
           },
@@ -197,28 +204,34 @@ export default {
     search() {
       this.loading = true
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
-        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false).then((data) => {
-          this.loading = false
-          this.pvDatas = data.items
-          this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
-        }).finally(() => {
-          this.loading = false
-        })
+        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false)
+          .then((data) => {
+            this.loading = false
+            this.pvDatas = data.items
+            this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
+          })
+          .finally(() => {
+            this.loading = false
+          })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
-        listStorageClass(this.clusterName, this.classPage.continueToken, false).then((data) => {
-          this.loading = false
-          this.storageClassDatas = data.items
-          this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
-        }).finally(() => {
-          this.loading = false
-        })
+        listStorageClass(this.clusterName, this.classPage.continueToken, false)
+          .then((data) => {
+            this.loading = false
+            this.storageClassDatas = data.items
+            this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
+          })
+          .finally(() => {
+            this.loading = false
+          })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
-        listProvisioner(this.clusterName).then((data) => {
-        this.loading = false
-          this.provisionerDatas = data
-        }).finally(() => {
-          this.loading = false
-        })
+        listProvisioner(this.clusterName)
+          .then((data) => {
+            this.loading = false
+            this.provisionerDatas = data
+          })
+          .finally(() => {
+            this.loading = false
+          })
       }
     },
     getErrorInfo(row) {
@@ -355,7 +368,9 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          listProvisioner(this.clusterName).then((data) => {
+            this.provisionerDatas = data
+          })
         }
       }, 10000)
     },

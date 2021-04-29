@@ -1,22 +1,22 @@
 <template>
   <layout-content>
     <el-row style="margin-top: 20px">
-      <el-col :span="3"><br /></el-col>
-      <el-col :span="16">
+      <el-col :span="4"><br /></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" ref="form" label-width="200px">
+          <el-form label-position='left' :model="form" ref="form" label-width="200px">
             <el-form-item :label="$t('commons.table.name')" prop="metadata.name" :rules="nameRules">
               <el-input size="small" @change="sss" v-model="form.metadata.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.provisioner_short')">
-              <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name">
+              <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name" clearable>
                 <el-option v-for="item of provisioners" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
@@ -155,13 +155,14 @@
               </el-form-item>
             </div>
             <el-form-item>
-              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" :disabled="!(createType && form.metadata.name)" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button :disabled="!(createType && form.metadata.name)" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"><br /></el-col>
     </el-row>
   </layout-content>
 </template>

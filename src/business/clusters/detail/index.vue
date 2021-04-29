@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('cluster.cluster_detail')" :back-to="{ name: 'ClusterList' }">
     <el-menu router :default-active="$route.path" mode="horizontal">
       <el-menu-item :index="'/clusters/detail/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+name+'/node'">{{$t('cluster.detail.tag.node')}}</el-menu-item>
@@ -27,7 +27,7 @@ import { listTool } from "@/api/cluster/tool"
 
 export default {
   name: "ClusterDetail",
-  props: ["name"],
+  props: ["project", "name"],
   components: { LayoutContent },
   data() {
     return {

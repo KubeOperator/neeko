@@ -62,9 +62,13 @@ a:hover {
 }
 
 .input-help {
-  font-size: 4px;
-  word-break:break-all;
+  font-size: 1px;
+  word-break: break-all;
   color: #4A4B4D;
+  transform: scale(0.9);
+  transform-origin: left;
+  width: 110%;
+  display: inline-block;
 }
 
 .input-help-blod {

@@ -11,7 +11,7 @@
       <el-table-column type="selection" :selectable="selectable" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
-          <el-button v-if="row.status.indexOf('Running') !== -1" @click="goForDetail(row)" type="text">{{row.name}}</el-button>
+          <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
         </template>
       </el-table-column>
@@ -26,24 +26,35 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
-
-          <el-button v-if="row.status === 'Failed'" size="mini" round @click="getErrorInfo(row)" plain>
-            {{ $t("commons.status.failed") }}
-          </el-button>
-          <el-button v-if="row.status === 'Terminating'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
-            {{ $t("commons.status.terminating") }}
-          </el-button>
-          <el-button v-if="row.status === 'Initializing'" size="mini" round @click="getStatus(row)" type="primary" plain icon="el-icon-loading">
-            {{ $t("commons.status.initializing") }}
-          </el-button>
-
-          <span v-if="row.status === 'Creating'">
-            <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
-          </span>
-
-          <el-tag v-if="row.status.indexOf('Running') !== -1" type="success">{{ $t("commons.status.running") }}</el-tag>
-          <el-tag v-if="row.status.indexOf('SchedulingDisabled') !== -1" type="primary">{{$t('cluster.detail.node.disable_scheduling')}}</el-tag>
-          <el-tag v-if="row.status === 'NotReady'" type="info">{{ $t("commons.status.not_ready") }}</el-tag>
+          <div v-if="row.status === 'Terminating'">
+            <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
+          </div>
+          <div v-if="row.status === 'Failed'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
+          <div v-if="row.status === 'Initializing'">
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            <span>{{ $t("commons.status.initializing") }}</span>
+            <el-link type="info" @click="getStatus()"> {{ $t("commons.status.initializing") }}</el-link>
+          </div>
+          <div v-if="row.status.indexOf('Running') !== -1">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            {{ $t("commons.status.running") }}
+          </div>
+          <div v-if="row.status.indexOf('SchedulingDisabled') !== -1">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            {{ $t("commons.status.disable_scheduling") }}
+          </div>
+          <div v-if="row.status === 'Creating'">
+            <span class="loading" style="color: #32B350"></span>
+            {{ $t("commons.status.creating") }}
+          </div>
+          <div v-if="row.status === 'NotReady'">
+            <span class="iconfont icondiable" style="color: #FA4147"></span>
+            {{ $t("commons.status.not_ready") }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -56,7 +67,7 @@
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
-      <el-form :model="createForm" ref="createForm" :rules="rules" label-width="80px">
+      <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="80px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
           <el-input style="width: 80%" v-model="createForm.increase" type="number" min="1" clearable />
         </el-form-item>
@@ -66,10 +77,13 @@
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
+        <el-form-item v-if="provider === ''">
+          <span>{{$t('cluster.detail.node.operator_help')}}</span>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button :disabled="provider === ''" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -175,7 +189,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCordonVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button @click="submitCordon(true)" type="primary">{{$t('commons.button.submit')}}</el-button>
+        <el-button @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -188,6 +202,7 @@ import { listNodesByPage, nodeCreate, nodeDelete, cordonNode, evictionNode } fro
 import { listClusterResources } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
 import { listPod } from "@/api/cluster/cluster"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterNode",
@@ -198,7 +213,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row)
           },
@@ -209,7 +223,6 @@ export default {
         {
           label: this.$t("cluster.detail.node.cordon"),
           icon: "el-icon-s-unfold",
-          type: "primary",
           click: (row) => {
             this.onCordon(row, "cordon")
           },
@@ -220,7 +233,6 @@ export default {
         {
           label: this.$t("cluster.detail.node.uncordon"),
           icon: "el-icon-s-fold",
-          type: "primary",
           click: (row) => {
             this.onCordon(row, "uncordon")
           },
@@ -250,8 +262,8 @@ export default {
         nodes: "",
       },
       rules: {
-        increase: [{ required: true, pattern: /^[1-9][0-9]*$/, message: this.$t("commons.validate.number_limit"), trigger: "blur" }],
-        hosts: [{ required: true, message: this.$t("commons.validate.required_msg"), trigger: "change" }],
+        increase: [Rule.NumberRule],
+        hosts: [Rule.RequiredRule],
       },
       dialogDetailVisible: false,
       detaiInfo: {
@@ -277,7 +289,6 @@ export default {
   methods: {
     search() {
       this.loading = true
-      this.clusterName = this.$route.params.name
       const { currentPage, pageSize } = this.paginationConfig
       listNodesByPage(this.clusterName, currentPage, pageSize)
         .then((data) => {
@@ -294,13 +305,25 @@ export default {
           this.loading = false
         })
     },
+    searchForPolling() {
+      const { currentPage, pageSize } = this.paginationConfig
+      listNodesByPage(this.clusterName, currentPage, pageSize).then((data) => {
+        this.data = data.items
+        this.data.forEach((item) => {
+          if (item.info.spec["unschedulable"]) {
+            item.status = "Running, SchedulingDisabled"
+          }
+        })
+        this.paginationConfig.total = data.total
+      })
+    },
     selectable(row) {
       return this.getNodeRoles(row).indexOf("master") === -1
     },
     create() {
       this.dialogCreateVisible = true
       if (this.provider === "bareMetal") {
-        listClusterResources(this.currentCluster.projectName, this.clusterName, "HOST", 1, 10).then((data) => {
+        listClusterResources(this.projectName, this.clusterName, "HOST", 1, 10).then((data) => {
           this.hosts = data.items
         })
       }
@@ -312,7 +335,7 @@ export default {
       this.dialogErrorVisible = true
       this.errMsg = row.message
     },
-    goForDetail(row) {
+    getDetailInfo(row) {
       this.detaiInfo = row.info
       this.dialogDetailVisible = true
     },
@@ -324,6 +347,7 @@ export default {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.dialogCreateVisible = false
               this.search()
+              this.polling()
             },
             (error) => {
               this.$message({ type: "error", message: error })
@@ -352,6 +376,7 @@ export default {
         Promise.all(ps)
           .then(() => {
             this.search()
+            this.polling()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success"),
@@ -480,6 +505,7 @@ export default {
   },
   created() {
     this.clusterName = this.$route.params.name
+    this.projectName = this.$route.params.project
     this.getCluster()
     this.search()
     this.polling()

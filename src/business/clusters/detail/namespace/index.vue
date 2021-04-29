@@ -27,14 +27,14 @@
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :close-on-click-modal="false" :visible.sync="dialogCreateVisible">
-      <el-form label-width="80px">
+      <el-form label-position='left' label-width="80px">
         <el-form-item :label="$t('commons.table.name')">
           <el-input style="width: 80%" v-model="namespace" clearable />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="namespace.length === 0" type="primary" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button :disabled="namespace.length === 0" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -55,7 +55,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row.name)
           },
@@ -83,7 +82,6 @@ export default {
   methods: {
     search() {
       this.loading = true
-      this.clusterName = this.$route.params.name
       listNamespace(this.clusterName)
         .then((data) => {
           this.loading = false
@@ -172,12 +170,15 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          listNamespace(this.clusterName).then((data) => {
+            this.data = data.items
+          })
         }
       }, 10000)
     },
   },
   created() {
+    this.clusterName = this.$route.params.name
     this.search()
     this.polling()
   },

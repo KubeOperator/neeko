@@ -6,7 +6,7 @@
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" type="danger" @click="onDelete()">
+          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -63,7 +63,7 @@
       </ul>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -151,7 +151,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogImportVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
   </layout-content>
@@ -172,7 +172,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-          type: "danger",
           click: (row) => {
             this.onDelete(row)
           },

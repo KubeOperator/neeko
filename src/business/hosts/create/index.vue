@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" clearable></el-input>
             </el-form-item>
@@ -11,7 +11,7 @@
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('host.port')" prop="port">
-              <el-input-number style="width:100%" :step="1" :min="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
+              <el-input-number style="width:20%" :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
 
             <el-form-item :label="$t('credential.credential')">
@@ -48,7 +48,7 @@
             </span>
             <el-form-item>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -85,7 +85,7 @@ export default {
       rules: {
         name: [Rule.RequiredRule],
         ip: [Rule.RequiredRule],
-        port: [Rule.RequiredRule],
+        port: [Rule.NumberRule],
         credentialId: [Rule.RequiredRule],
         credential: {
           username: [Rule.RequiredRule],

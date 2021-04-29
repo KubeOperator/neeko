@@ -1,10 +1,10 @@
 <template>
   <layout-content>
     <el-row style="margin-top: 20px">
-      <el-col :span="3"><br /></el-col>
-      <el-col :span="16">
+      <el-col :span="4"><br /></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" ref="form" label-width="200px">
+          <el-form label-position='left' :model="form" ref="form" label-width="200px">
             <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="nameRules">
               <el-select style="width: 100%" @change="changePvType()" size="small" v-model="form.pvType">
                 <el-option value="Host Path" label="Host Path">Host Path</el-option>
@@ -17,8 +17,8 @@
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
-                <el-input type="number" v-model="form.submitForm.spec.capacity.storage" clearable></el-input>
+              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="numberRules">
+                <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
               <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
@@ -52,7 +52,7 @@
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
-                <el-input v-model="form.submitForm.spec.capacity.storage" clearable></el-input>
+                <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
               <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
@@ -83,13 +83,14 @@
               </el-form-item>
             </div>
             <el-form-item>
-              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-              <el-button type="primary" :disabled="!form.pvType" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button :disabled="!form.pvType" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
       </el-col>
-      <el-col :span="4"><br /></el-col>
     </el-row>
   </layout-content>
 </template>
@@ -147,7 +148,8 @@ export default {
         },
       },
       nameRules: [Rule.CommonNameRule],
-      requiredRules: [ Rule.RequiredRule ],
+      numberRules: [Rule.NumberRule],
+      requiredRules: [Rule.RequiredRule],
     }
   },
   methods: {
