@@ -1,10 +1,10 @@
 <template>
-  <layout-content :header="$t('setting.option.addCredential')" :back-to="{ name: 'Credential'}">
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'Credential'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
+          <el-form ref="form" :model="form" label-position="left"  label-width="100px">
             <el-form-item :label="$t('credential.name')" required>
               <el-input v-model="form.name"></el-input>
             </el-form-item>
@@ -23,10 +23,12 @@
             <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')" required>
               <el-input type="textarea" v-model="form.privateKey"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">{{$t('commons.button.save')}}</el-button>
-              <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-            </el-form-item>
+            <div style="float: right">
+              <el-form-item>
+                <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
+                <el-button type="primary" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+              </el-form-item>
+            </div>
           </el-form>
         </div>
       </el-col>

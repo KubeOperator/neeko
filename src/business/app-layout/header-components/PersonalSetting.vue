@@ -36,7 +36,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-    <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword" @click="submit()">{{ $t("commons.button.save") }}</el-button>
+    <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword" @click="submit()">{{ $t("commons.button.submit") }}</el-button>
   </span>
     </el-dialog>
     <el-dialog

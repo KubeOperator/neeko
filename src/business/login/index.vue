@@ -65,7 +65,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
           <el-button @click="opened = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="submitForget('forgetForm')">{{ $t("commons.button.save") }}</el-button>
+        <el-button type="primary" @click="submitForget('forgetForm')">{{ $t("commons.button.submit") }}</el-button>
       </span>
     </el-dialog>
   </div>

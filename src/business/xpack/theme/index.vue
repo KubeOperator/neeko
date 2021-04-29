@@ -17,11 +17,8 @@
                 :limit=1
                 action=""
                 list-type="picture">
-                <el-button size="small" type="success">
-                  <svg class="icon" aria-hidden="true"   >
-                    <use  xlink:href="#iconshangchuan1"></use>
-                  </svg>
-                  {{ $t('commons.button.upload')}}
+                <el-button size="small" >
+                  <span class="iconfont iconshangchuan5"></span><span style="font-size: 13px">{{ $t('commons.button.upload')}}</span>
                 </el-button>
                 <div class="el-upload__tip" slot="tip">
                   <svg class="icon" aria-hidden="true"   >

@@ -2,7 +2,7 @@
   <div>
     <layout-content :header="$t('route.ldap')" v-loading="loading">
     <br>
-      <el-col :span="1"><br/></el-col>
+      <el-col :span="2"><br/></el-col>
       <el-col :span="15">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" :model="form" label-width="130px">
