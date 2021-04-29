@@ -4,15 +4,13 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px">
+          <el-form ref="form" :model="form" label-width="80px" label-position="left">
 
-            <el-divider content-position="left">{{$t('multi_cluster.basic_setting')}}</el-divider>
 
             <el-form-item :label="$t('commons.table.name')" required>
               <el-input v-model="form.name"></el-input>
             </el-form-item>
 
-            <el-divider content-position="left">{{$t('multi_cluster.repository_setting')}}</el-divider>
 
             <el-form-item :label="$t('multi_cluster.address')" required>
               <el-input v-model="form.source"></el-input>
@@ -30,7 +28,6 @@
             <el-form-item v-if="requireAuth" :label="$t('multi_cluster.password')" required>
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
-            <el-divider content-position="left">{{$t('multi_cluster.senior_setting')}}</el-divider>
             <el-form-item :label="$t('multi_cluster.sync_interval')">
               <el-input-number :min=1 v-model="form.syncInterval"></el-input-number>
             </el-form-item>
