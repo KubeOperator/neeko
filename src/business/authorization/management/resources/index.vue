@@ -101,11 +101,32 @@
             <template v-slot:default="{ row }">{{ row.bucket }}</template>
           </el-table-column>
           <el-table-column :label="$t('backup_account.type')" mix-width="100">
-            <template v-slot:default="{ row }">{{ row.type }}</template>
+            <template v-slot:default="{row}">
+              <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconoss"></use>
+              </svg>
+              <svg v-if="row.type === 'AZURE'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconAzure"></use>
+              </svg>
+              <svg v-if="row.type === 'SFTP'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconSFTP"></use>
+              </svg>
+              <svg v-if="row.type === 'S3'" class="icon" aria-hidden="true">
+                <use xlink:href="#icons3"></use>
+              </svg>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
+            </template>
           </el-table-column>
           <el-table-column :label="$t('backup_account.status')" mix-width="100">
-            <template v-slot:default="{ row }">
-                {{ row.status }}
+            <template v-slot:default="{row}">
+              <div v-if="row.status === 'VALID'">
+                <span class="iconfont iconduihao" style="color: #32B350"></span>
+                {{ $t("commons.status.normal") }}
+              </div>
+              <div v-else>
+                <span class="iconfont iconerror" style="color: #FA4147"></span>
+                {{ $t("commons.status.failure") }}
+              </div>
             </template>
           </el-table-column>
           <el-table-column :label="$t('commons.table.create_time')">
