@@ -54,100 +54,169 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
-      <el-card class="box-card">
-        <el-row type="flex" v-if="item.provider==='vSphere'">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.region.name") }}</ul>
-            <ul> {{ $t("automatic.zone.resource_pool") }}</ul>
-            <ul> {{ $t("automatic.zone.cluster") }}</ul>
-            <ul> {{ $t("automatic.zone.datastore") }}</ul>
-            <ul> {{ $t("automatic.zone.network") }}</ul>
-            <ul v-if="item.cloudVars.templateType === 'customize'"> {{ item.cloudVars.template }}</ul>
-            <ul> {{ $t("automatic.ip_pool.name") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.subnet") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.ip_usage") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.gateway") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns1") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns2") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionName }}</ul>
-            <ul> {{ item.cloudVars.resourcePool }}</ul>
-            <ul> {{ item.cloudVars.cluster }}</ul>
-            <ul> {{ item.cloudVars.datastore }}</ul>
-            <ul> {{ item.cloudVars.network }}</ul>
-            <ul v-if="item.cloudVars.templateType === 'customize'">{{ $t("automatic.zone.template") }}</ul>
-            <ul> {{ item.ipPool.name }}</ul>
-            <ul> {{ item.ipPool.subnet }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns1 }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns2 }}</ul>
-          </el-col>
-        </el-row>
-        <el-row type="flex" v-if="item.provider==='OpenStack'">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.region.name") }}</ul>
-            <ul> {{ $t("automatic.zone.cluster") }}</ul>
-            <ul> {{ $t("automatic.zone.storageType") }}</ul>
-            <ul> {{ $t("automatic.zone.network") }}</ul>
-            <ul> {{ $t("automatic.zone.security_group") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.name") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.subnet") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.ip_usage") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.gateway") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns1") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns2") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionName }}</ul>
-            <ul> {{ item.cloudVars.cluster }}</ul>
-            <ul> {{ item.cloudVars.storageType }}</ul>
-            <ul> {{ item.cloudVars.network }}</ul>
-            <ul> {{ item.cloudVars.securityGroup }}</ul>
-            <ul> {{ item.ipPool.name }}</ul>
-            <ul> {{ item.ipPool.subnet }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns1 }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns2 }}</ul>
-          </el-col>
-        </el-row>
-        <el-row type="flex" v-if="item.provider==='FusionCompute'">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.region.name") }}</ul>
-            <ul> {{ $t("automatic.zone.cluster") }}</ul>
-            <ul> {{ $t("automatic.zone.datastore") }}</ul>
-            <ul> {{ $t("automatic.zone.network") }}</ul>
-            <ul v-if="item.cloudVars.templateType === 'customize'">{{ $t("automatic.zone.template") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.name") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.subnet") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.ip_usage") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.gateway") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns1") }}</ul>
-            <ul> {{ $t("automatic.ip_pool.dns2") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionName }}</ul>
-            <ul> {{ item.cloudVars.cluster }}</ul>
-            <ul> {{ item.cloudVars.datastore }}</ul>
-            <ul> {{ item.cloudVars.portgroup }}</ul>
-            <ul v-if="item.cloudVars.templateType === 'customize'"> {{ item.cloudVars.template }}</ul>
-            <ul> {{ item.ipPool.name }}</ul>
-            <ul> {{ item.ipPool.subnet }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns1 }}</ul>
-            <ul v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].dns2 }}</ul>
-          </el-col>
-        </el-row>
-      </el-card>
+      <div style=" text-align: center;">
+        <div align="center" style="margin-top: 15px">
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='vSphere'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.name") }}</td>
+              <td>{{ item.regionName}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.resource_pool") }}</td>
+              <td>{{ item.cloudVars.resourcePool }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.cluster") }}</td>
+              <td>{{ item.cloudVars.cluster }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.datastore") }}</td>
+              <td>{{ item.cloudVars.datastore }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.network") }}</td>
+              <td>{{ item.cloudVars.network }}</td>
+            </tr>
+            <tr  v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.template") }}</td>
+              <td>{{ item.cloudVars.template }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.name") }}</td>
+              <td>{{ item.ipPool.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
+              <td>{{ item.ipPool.subnet }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
+              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
+              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
+            </tr>
+          </table>
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='FusionCompute'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.name") }}</td>
+              <td>{{ item.regionName}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.cluster") }}</td>
+              <td>{{ item.cloudVars.cluster }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.datastore") }}</td>
+              <td>{{ item.cloudVars.datastore }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.network") }}</td>
+              <td>{{ item.cloudVars.portgroup }}</td>
+            </tr>
+            <tr  v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.template") }}</td>
+              <td>{{ item.cloudVars.template }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.name") }}</td>
+              <td>{{ item.ipPool.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
+              <td>{{ item.ipPool.subnet }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
+              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
+              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
+            </tr>
+
+          </table>
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='OpenStack'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.name") }}</td>
+              <td>{{ item.regionName}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.cluster") }}</td>
+              <td>{{ item.cloudVars.cluster }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.storageType") }}</td>
+              <td>{{ item.cloudVars.storageType }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.network") }}</td>
+              <td>{{ item.cloudVars.network }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.zone.security_group") }}</td>
+              <td>{{ item.cloudVars.securityGroup }}</td>
+            </tr>
+            <tr  v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.template") }}</td>
+              <td>{{ item.cloudVars.template }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.name") }}</td>
+              <td>{{ item.ipPool.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
+              <td>{{ item.ipPool.subnet }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
+              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
+              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
+              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="openDetail = false">{{ $t("commons.button.cancel") }}</el-button>
       </span>

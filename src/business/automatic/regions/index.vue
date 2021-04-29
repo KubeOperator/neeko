@@ -52,60 +52,84 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
-      <el-card class="box-card">
-        <el-row type="flex" v-if="item.provider==='vSphere'">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.cloud_provider") }}</ul>
-            <ul> {{ $t("automatic.datacenter") }}</ul>
-            <ul> {{ $t("automatic.region.vcenter_host") }}</ul>
-            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionVars.provider}}</ul>
-            <ul> {{ item.datacenter }}</ul>
-            <ul> {{ item.regionVars.host }}</ul>
-            <ul> {{ item.regionVars.username }}</ul>
-          </el-col>
-        </el-row>
-        <el-row type="flex" v-if="item.provider==='FusionCompute'">
-          <el-col :span="6">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.cloud_provider") }}</ul>
-            <ul> {{ $t("automatic.datacenter") }}</ul>
-            <ul> {{ $t("automatic.region.fusionCompute_server") }}</ul>
-            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionVars.provider}}</ul>
-            <ul> {{ item.datacenter }}</ul>
-            <ul> {{ item.regionVars.server }}</ul>
-            <ul> {{ item.regionVars.user }}</ul>
-          </el-col>
-        </el-row>
-        <el-row type="flex" v-if="item.provider==='OpenStack'">
-          <el-col :span="5">
-            <ul> {{ $t("commons.table.name") }}</ul>
-            <ul> {{ $t("automatic.cloud_provider") }}</ul>
-            <ul> {{ $t("automatic.datacenter") }}</ul>
-            <ul> {{ $t("automatic.region.openstack_identity") }}</ul>
-            <ul> {{ $t("automatic.region.vcenter_username") }}</ul>
-            <ul> {{ $t("automatic.region.openstack_project") }}</ul>
-            <ul> {{ $t("automatic.region.openstack_domain") }}</ul>
-          </el-col>
-          <el-col>
-            <ul> {{ item.name }}</ul>
-            <ul> {{ item.regionVars.provider}}</ul>
-            <ul> {{ item.datacenter }}</ul>
-            <ul> {{ item.regionVars.identity }}</ul>
-            <ul> {{ item.regionVars.username }}</ul>
-            <ul> {{ item.regionVars.projectId }}</ul>
-            <ul> {{ item.regionVars.domainName }}</ul>
-          </el-col>
-        </el-row>
-      </el-card>
+      <div style=" text-align: center;">
+        <div align="center" style="margin-top: 15px">
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='vSphere'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.cloud_provider") }}</td>
+              <td>{{ item.regionVars.provider}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.datacenter") }}</td>
+              <td>{{ item.datacenter }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.vcenter_host") }}</td>
+              <td>{{ item.regionVars.host }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.vcenter_username") }}</td>
+              <td>{{ item.regionVars.username }}</td>
+            </tr>
+          </table>
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='FusionCompute'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.cloud_provider") }}</td>
+              <td>{{ item.regionVars.provider}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.datacenter") }}</td>
+              <td>{{ item.datacenter }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.fusionCompute_server") }}</td>
+              <td>{{ item.regionVars.server }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.vcenter_username") }}</td>
+              <td>{{ item.regionVars.user }}</td>
+            </tr>
+          </table>
+          <table style="width: 90%" class="myTable"  v-if="item.provider==='OpenStack'">
+            <tr>
+              <td>{{ $t("commons.table.name") }}</td>
+              <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.cloud_provider") }}</td>
+              <td>{{ item.regionVars.provider}}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.datacenter") }}</td>
+              <td>{{ item.datacenter }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.openstack_identity") }}</td>
+              <td>{{ item.regionVars.identity }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.vcenter_username") }}</td>
+              <td>{{ item.regionVars.username }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.openstack_project") }}</td>
+              <td>{{ item.regionVars.projectId }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t("automatic.region.openstack_domain") }}</td>
+              <td>{{ item.regionVars.domainName }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
           <el-button @click="openDetail = false">{{ $t("commons.button.cancel") }}</el-button>
       </span>
