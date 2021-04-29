@@ -6,11 +6,116 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "15760893",
+      "name": "华为",
+      "font_class": "huawei",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "6480549",
+      "name": "openstack",
+      "font_class": "openstack",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "16383206",
+      "name": "VMware Vsphere对接数据源",
+      "font_class": "vmware",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "20612244",
+      "name": "FusionCompute",
+      "font_class": "funsioncompute",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "13532955",
+      "name": "SFTP",
+      "font_class": "SFTP",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "17895439",
+      "name": "Amazon S3上传",
+      "font_class": "s3",
+      "unicode": "e8e4",
+      "unicode_decimal": 59620
+    },
+    {
+      "icon_id": "1760690",
+      "name": "讨论",
+      "font_class": "taolun",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "6642940",
+      "name": "bug",
+      "font_class": "bug",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "14814885",
+      "name": "点亮",
+      "font_class": "dianliang",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "15337722",
+      "name": "Logo GitHub",
+      "font_class": "huaban88",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "8287588",
+      "name": "Azure",
+      "font_class": "Azure",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "16268521",
+      "name": "oss",
+      "font_class": "oss",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "5209522",
+      "name": "ping",
+      "font_class": "ping",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "2310534",
+      "name": "使用中",
+      "font_class": "in-use",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
       "icon_id": "6191231",
       "name": "错误",
       "font_class": "error",
       "unicode": "e60d",
       "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "21310037",
+      "name": "错误",
+      "font_class": "error2",
+      "unicode": "ed19",
+      "unicode_decimal": 60697
     },
     {
       "icon_id": "7635228",
