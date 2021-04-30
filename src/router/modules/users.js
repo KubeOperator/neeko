@@ -6,7 +6,6 @@ const Users = {
   component: Layout,
   name: "User",
   meta: {
-    requireLicense: true,
     roles: ["ADMIN"]
   },
   children: [
