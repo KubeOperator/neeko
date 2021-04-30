@@ -6,6 +6,7 @@ const message = {
     message_box: {
       alert: "警告",
       confirm: "确认",
+      prompt: "提示"
     },
     dialog: {
       delete: "删除"

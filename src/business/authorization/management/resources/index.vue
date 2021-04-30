@@ -3,6 +3,7 @@
     <el-tabs tab-position="left" v-model="resourceType" @tab-click="changeTab()">
       <el-tab-pane :label="$t('host.host')" name="HOST">
         <complex-table
+                :key="key"
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
@@ -11,10 +12,10 @@
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
-              <el-button size="small" @click="create()" v-permission="['ADMIN']">
+              <el-button size="small" @click="create()" v-permission=role>
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission=role>
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -45,6 +46,7 @@
       </el-tab-pane>
       <el-tab-pane :label="$t('automatic.plan.name')" name="PLAN" v-if="authObj">
         <complex-table
+                :key="key"
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
@@ -53,10 +55,10 @@
                 @search="getProjectResourceList">
           <template #header v-if="authObj.type !== 'CLUSTER'">
             <el-button-group>
-              <el-button size="small" @click="create()" v-permission="['ADMIN']">
+              <el-button size="small" @click="create()" v-permission=role>
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="role">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -77,6 +79,7 @@
       </el-tab-pane>
       <el-tab-pane :label="$t('backup_account.name')" name="BACKUP_ACCOUNT">
         <complex-table
+                :key="key"
                 :data="data"
                 :colums="columns"
                 :pagination-config="paginationConfig"
@@ -85,10 +88,10 @@
                 @search="getProjectResourceList">
           <template #header>
             <el-button-group>
-              <el-button size="small" @click="create()" v-permission="['ADMIN']">
+              <el-button size="small" @click="create()" v-permission=role>
                 {{ $t("commons.button.create") }}
               </el-button>
-              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="['ADMIN']">
+              <el-button size="small" :disabled="selects.length === 0"  @click="openDelete()" v-permission="role">
                 {{ $t("commons.button.delete") }}
               </el-button>
             </el-button-group>
@@ -317,9 +320,18 @@ export default {
       this.getProjectResourceList()
     }
   },
-  computed: {},
+  computed: {
+    role: function () {
+      if (this.authObj.type === "PROJECT") {
+        return ["ADMIN"]
+      } else {
+        return ["ADMIN", "PROJECT_MANAGER"]
+      }
+    }
+  },
   watch: {
     authObj () {
+      this.key++
       this.getProjectResourceList()
     },
   }
