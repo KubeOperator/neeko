@@ -1,46 +1,41 @@
 <template>
-  <el-menu :unique-opened="true"
-           default-active="language"
-           class="header-menu"
-           text-color="inherit"
-           mode="horizontal"
-           style="text-align: center">
-    <el-submenu index="1" popper-class="header-menu-popper">
-      <template slot="title">
-        <i class="iconfont iconbangzhu" style="color: #FA5D50;margin-right: 10px" ></i>
+  <el-dropdown trigger="click" @command="handleCommand">
+    <span class="el-dropdown-link">
+        <i class="iconfont iconbangzhu" style="color: #FA5D50;margin-right: 3px" ></i>
         <span>{{ $t('commons.help.help') }}</span>
-      </template>
-      <el-menu-item @click="toKoDocs">
-        <span>{{ $t('commons.help.ko_docs') }}</span>
-      </el-menu-item>
-      <el-menu-item @click="toSupport">
-        <span>{{ $t('commons.help.business_support') }}</span>
-      </el-menu-item>
-      <el-menu-item @click="toAPIDocs">
-        <span>{{ $t('commons.help.api_docs') }}</span>
-      </el-menu-item>
-    </el-submenu>
-  </el-menu>
+        <i class="el-icon-arrow-down el-icon--right"></i>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item command="docs">{{ $t('commons.help.ko_docs') }}</el-dropdown-item>
+      <el-dropdown-item command="support">{{ $t('commons.help.business_support') }}</el-dropdown-item>
+      <el-dropdown-item command="toAPIDocs">{{ $t('commons.help.api_docs') }}</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
 </template>
 
 <script>
 export default {
   name: "Help",
   methods: {
-    toSupport() {
-      window.open("https://kubeoperator.io/", "_blank");
-
-    },
-    toKoDocs() {
-      window.open("https://kubeoperator.io/docs/", "_blank");
-    },
-    toAPIDocs() {
-      window.open("/swagger/index.html", "_blank");
-    },
+    handleCommand(command) {
+      switch (command) {
+        case 'support':
+          window.open("https://kubeoperator.io/", "_blank");
+          break
+        case 'docs':
+          window.open("https://kubeoperator.io/docs/", "_blank");
+          break
+        default:
+          window.open("/swagger/index.html", "_blank");
+          break
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-
+.el-dropdown-link {
+  cursor: pointer;
+}
 </style>

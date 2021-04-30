@@ -1,25 +1,22 @@
 <template>
-  <el-menu class="header-menu" text-color="inherit" mode="horizontal">
-    <el-submenu index="none" popper-class="header-menu-popper">
-      <template slot="title">
-        <i class="el-icon-user-solid" style="color: #FA5D50"></i>
+  <el-dropdown trigger="click" @command="handleCommand">
+    <span class="el-dropdown-link">
+        <i class="el-icon-user-solid" style="color: #FA5D50;margin-right: 3px" ></i>
         <span>{{ name }}</span>
-      </template>
-      <el-menu-item @click="toPersonal">
-        <span>{{ $t('commons.personal.change_password') }}</span>
-      </el-menu-item>
-      <el-menu-item @click="logout">
-        <span>{{ $t('commons.personal.exit_system') }}</span>
-      </el-menu-item>
-      <el-menu-item @click="toBbout">
-        <span>{{ $t('commons.personal.about') }}</span>
-      </el-menu-item>
-    </el-submenu>
+        <i class="el-icon-arrow-down el-icon--right"></i>
+    </span>
+      <el-dropdown-menu slot="dropdown">
+        <div class="personalDropdown">
+        <el-dropdown-item class="iconfont icongenggaimima" command="password">{{ $t('commons.personal.change_password') }}</el-dropdown-item>
+        <el-dropdown-item class="iconfont iconguanyu"  command="about">{{ $t('commons.personal.about') }}</el-dropdown-item>
+        <el-dropdown-item class="iconfont icontuichudenglu"  divided command="logout">{{ $t('commons.personal.exit_system') }}</el-dropdown-item>
+        </div>
+      </el-dropdown-menu>
     <el-dialog
       :title="$t('commons.personal.change_password')"
       :visible.sync="dialogVisible"
       width="30%">
-      <el-form ref="form" :model="form"  label-width="100px">
+      <el-form ref="form" label-position="left" :model="form"  label-width="100px">
         <el-form-item  style="width: 100%" :label="$t('commons.personal.original_password')" required>
           <el-input v-model="form.original" show-password></el-input>
         </el-form-item>
@@ -29,8 +26,8 @@
         <el-form-item  style="width: 100%"  :rules="rules.password" :label="$t('commons.personal.confirm_password')" prop="password" required>
           <el-input  v-model="confirmPassword" show-password></el-input>
           <el-alert v-if="!checkPassword() && form.password &&confirmPassword"
-            :title="$t('commons.personal.confirm_password1_info')"
-            type="error">
+                    :title="$t('commons.personal.confirm_password1_info')"
+                    type="error">
           </el-alert>
         </el-form-item>
       </el-form>
@@ -40,14 +37,14 @@
   </span>
     </el-dialog>
     <el-dialog
-        class="ko-dialog"
-        :show-close="false"
-        :visible.sync="aboutDialogVisible"
-        width="40%">
+      class="ko-dialog"
+      :show-close="false"
+      :visible.sync="aboutDialogVisible"
+      width="40%">
       <div class="aboutBackground" style="padding: 20px 25px;">
         <img  style="margin-left: 0;" :src="require('@/assets/KubeOperator-red.png')"
-                class="sidebar-logo"
-                alt="Sidebar Logo">
+              class="sidebar-logo"
+              alt="Sidebar Logo">
         <p style="color: #242e42;">{{ $t('commons.personal.ko_introduction') }}</p>
         <strong>{{ $t('commons.personal.version') }}: v3.7.0</strong>
       </div>
@@ -60,7 +57,7 @@
         </el-row>
       </div>
     </el-dialog>
-  </el-menu>
+  </el-dropdown>
 </template>
 
 <script>
@@ -92,6 +89,22 @@ export default {
     }
   },
   methods: {
+    handleCommand(command) {
+      switch (command) {
+        case 'password':
+          this.getRole();
+          this.dialogVisible = true;
+          break
+        case 'logout':
+          this.$store.dispatch("user/logout").then(() => {
+            location.reload()
+          });
+          break
+        default:
+          this.aboutDialogVisible = true;
+          break
+      }
+    },
     toGithub() {
       window.open("https://github.com/KubeOperator/KubeOperator", "_blank");
     },
@@ -103,18 +116,6 @@ export default {
     },
     toGithubStar() {
       window.open("https://github.com/KubeOperator/KubeOperator", "_blank");
-    },
-    toPersonal() {
-      this.getRole()
-      this.dialogVisible = true
-    },
-    toBbout() {
-      this.aboutDialogVisible = true
-    },
-    logout() {
-      this.$store.dispatch("user/logout").then(() => {
-        location.reload()
-      })
     },
     checkPassword() {
       return this.form.password === this.confirmPassword;
@@ -148,5 +149,17 @@ export default {
 .sidebar-logo {
   height: $logo-height;
   vertical-align: middle;
+}
+.personalDropdown{
+  .icongenggaimima:before {
+    padding-right: 5px;
+  }
+  .iconguanyu:before {
+    padding-right: 5px;
+  }
+}
+
+.el-dropdown-link {
+  cursor: pointer;
 }
 </style>
