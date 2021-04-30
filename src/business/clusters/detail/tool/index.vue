@@ -189,7 +189,7 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
-              <el-input style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input>
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
