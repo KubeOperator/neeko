@@ -2,7 +2,7 @@
   <main class="view-container">
     <transition name="el-fade-in" mode="out-in">
       <keep-alive :include="caches">
-        <router-view :key="key"></router-view>
+        <router-view></router-view>
       </keep-alive>
     </transition>
   </main>
