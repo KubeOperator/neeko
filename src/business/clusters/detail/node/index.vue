@@ -199,7 +199,7 @@
 import ComplexTable from "@/components/complex-table"
 
 import { listNodesByPage, nodeCreate, nodeDelete, cordonNode, evictionNode } from "@/api/cluster/node"
-import { listClusterResources } from "@/api/cluster-resource"
+import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
@@ -323,7 +323,7 @@ export default {
     create() {
       this.dialogCreateVisible = true
       if (this.provider === "bareMetal") {
-        listClusterResources(this.projectName, this.clusterName, "HOST", 1, 10).then((data) => {
+        listClusterResourcesAll(this.projectName, this.clusterName, "HOST").then((data) => {
           this.hosts = data.items
         })
       }

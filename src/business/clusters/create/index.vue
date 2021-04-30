@@ -387,7 +387,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listActive } from "@/api/manifest"
-import { listProjectResources } from "@/api/project-resource"
+import { listProjectResourcesAll } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkClusterNameExistence, createCluster } from "@/api/cluster"
 import { allProjects } from "@/api/projects"
@@ -519,7 +519,7 @@ export default {
       this.loadPlan()
     },
     loadHosts() {
-      listProjectResources(this.form.projectName, "HOST", 1, 10).then((data) => {
+      listProjectResourcesAll(this.form.projectName, "HOST").then((data) => {
         const list = []
         if (data.items.length !== 0) {
           data.items
@@ -536,7 +536,7 @@ export default {
       })
     },
     loadPlan() {
-      listProjectResources(this.form.projectName, "PLAN", 1, 10).then((data) => {
+      listProjectResourcesAll(this.form.projectName, "PLAN").then((data) => {
         this.plans = data.items
       })
     },

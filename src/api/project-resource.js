@@ -9,6 +9,10 @@ export function listProjectResources (project_name, resourceType, currentPage, p
   return get(`${projectResourceUrl(project_name)}?pageNum=${currentPage}&pageSize=${pageSize}&resourceType=${resourceType}`)
 }
 
+export function listProjectResourcesAll (project_name, resourceType) {
+  return get(`${projectResourceUrl(project_name)}?resourceType=${resourceType}`)
+}
+
 export function getResourceList (project_name, resourceType) {
   return get(`${projectResourceUrl(project_name)}/list?resourceType=${resourceType}`)
 }
