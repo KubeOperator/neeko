@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('backup_account.add_backup_account')" :back-to="{ name: 'BackupAccount'}">
+  <layout-content :header="$t('commons.button.create')"  :back-to="{ name: 'BackupAccount'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
@@ -49,7 +49,7 @@
           <!-- SFTP Option start-->
             <div v-if="form.type === 'SFTP'">
               <el-form-item  :label="$t('backup_account.table.address')" required>
-                <el-input v-model="form.credentialVars['address']"></el-input>
+                <el-input placeholder="172.16.10.100" v-model="form.credentialVars['address']"></el-input>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.port')" required>
                 <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535"></el-input-number>

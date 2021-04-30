@@ -25,31 +25,31 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
-                <el-input v-model="form.parameters['monitors']" placeholder="eg: 172.16.10.10:6389" clearable></el-input>
+                <el-input v-model="form.parameters['monitors']" placeholder=" 172.16.10.10:6389" clearable></el-input>
               </el-form-item>
               <el-form-item label="OSD Pool" prop="parameters.pool" :rules="requiredRules">
-                <el-input v-model="form.parameters['pool']" placeholder="eg: kube" clearable></el-input>
+                <el-input v-model="form.parameters['pool']" placeholder=" kube" clearable></el-input>
               </el-form-item>
               <el-form-item label="Admin Id" prop="parameters.adminId" :rules="requiredRules">
-                <el-input v-model="form.parameters['adminId']" placeholder="eg: secret" clearable></el-input>
+                <el-input v-model="form.parameters['adminId']" placeholder=" secret" clearable></el-input>
               </el-form-item>
               <el-form-item label="Admin Secret Name" prop="parameters.adminSecretName" :rules="requiredRules">
-                <el-input v-model="form.parameters['adminSecretName']" placeholder="eg: secret" clearable></el-input>
+                <el-input v-model="form.parameters['adminSecretName']" placeholder=" secret" clearable></el-input>
               </el-form-item>
               <el-form-item label="Admin Secret Namespace" prop="parameters.adminSecretName" :rules="requiredRules">
-                <el-input v-model="form.parameters['adminSecretNamespace']" placeholder="eg: kube-system" clearable></el-input>
+                <el-input v-model="form.parameters['adminSecretNamespace']" placeholder=" kube-system" clearable></el-input>
               </el-form-item>
               <el-form-item label="User Id" prop="parameters.userId" :rules="requiredRules">
-                <el-input v-model="form.parameters['userId']" placeholder="eg: kube" clearable></el-input>
+                <el-input v-model="form.parameters['userId']" placeholder=" kube" clearable></el-input>
               </el-form-item>
               <el-form-item label="User Secret Name" prop="parameters.userSecretName" :rules="requiredRules">
-                <el-input v-model="form.parameters['userSecretName']" placeholder="eg: secret" clearable></el-input>
+                <el-input v-model="form.parameters['userSecretName']" placeholder=" secret" clearable></el-input>
               </el-form-item>
               <el-form-item label="FS Type" prop="parameters.fsType" :rules="requiredRules">
-                <el-input v-model="form.parameters['fsType']" placeholder="eg: ext4" clearable></el-input>
+                <el-input v-model="form.parameters['fsType']" placeholder=" ext4" clearable></el-input>
               </el-form-item>
               <el-form-item label="ImageFormat" prop="parameters.imageFormat" :rules="requiredRules">
-                <el-input v-model="form.parameters['imageFormat']" placeholder="eg: 2" clearable></el-input>
+                <el-input v-model="form.parameters['imageFormat']" placeholder=" 2" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
@@ -90,32 +90,32 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="REST URL" prop="parameters.resturl" :rules="requiredRules">
-                <el-input v-model="form.parameters['resturl']" placeholder="eg: 172.0.0.1:8081" clearable></el-input>
+                <el-input v-model="form.parameters['resturl']" placeholder=" 172.0.0.1:8081" clearable></el-input>
               </el-form-item>
               <el-form-item label="REST USER" prop="parameters.restuser" :rules="requiredRules">
-                <el-input v-model="form.parameters['restuser']" placeholder="eg: admin" clearable></el-input>
+                <el-input v-model="form.parameters['restuser']" placeholder=" admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="REST PASSWORD" prop="parameters.restuserkey" :rules="passwordRules">
                 <el-input v-model="form.parameters['restuserkey']" type="password" name="restuserkey" clearable></el-input>
               </el-form-item>
               <el-form-item label="Namespace" prop="parameters.secretNamespace" :rules="requiredRules">
-                <el-input @change="checkSecrets()" v-model="form.parameters['secretNamespace']" placeholder="eg: kube-system" clearable></el-input>
+                <el-input @change="checkSecrets()" v-model="form.parameters['secretNamespace']" placeholder=" kube-system" clearable></el-input>
               </el-form-item>
               <el-form-item label="Secret Name" prop="parameters.secretName" :rules="requiredRules">
-                <el-input @change="checkSecrets()" v-model="form.parameters['secretName']" placeholder="eg: heketi-secret" clearable></el-input>
+                <el-input @change="checkSecrets()" v-model="form.parameters['secretName']" placeholder=" heketi-secret" clearable></el-input>
                 <div><span v-if="isSecretsExit" class="input-err">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item label="CLUSTER ID" prop="parameters.clusterid" :rules="requiredRules">
-                <el-input v-model="form.parameters['clusterid']" placeholder="eg: 8a4ff57af81910e8324368a23afe3bdc" clearable></el-input>
+                <el-input v-model="form.parameters['clusterid']" placeholder=" 8a4ff57af81910e8324368a23afe3bdc" clearable></el-input>
               </el-form-item>
               <el-form-item label="GID MIN" prop="parameters.gidMin" :rules="requiredRules">
-                <el-input v-model="form.parameters['gidMin']" placeholder="eg: 40000" clearable></el-input>
+                <el-input v-model="form.parameters['gidMin']" placeholder=" 40000" clearable></el-input>
               </el-form-item>
               <el-form-item label="GID MAX" prop="parameters.gidMax" :rules="requiredRules">
-                <el-input v-model="form.parameters['gidMax']" placeholder="eg: 50000" clearable></el-input>
+                <el-input v-model="form.parameters['gidMax']" placeholder=" 50000" clearable></el-input>
               </el-form-item>
               <el-form-item label="VOLUME TYPE" prop="parameters.volumetype" :rules="requiredRules">
-                <el-input v-model="form.parameters['volumetype']" placeholder="eg: replicate:3" clearable></el-input>
+                <el-input v-model="form.parameters['volumetype']" placeholder=" replicate:3" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">

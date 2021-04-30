@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.create')"  :back-to="{ name: 'HostList'}">
     <el-row type="flex" justify="center">
       <el-col :span="16">
         <div class="grid-content bg-purple-light">

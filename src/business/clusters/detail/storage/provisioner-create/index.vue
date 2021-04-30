@@ -57,22 +57,22 @@
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item label="Identity" prop="vars.cinder_auth_url" :rules="requiredRules">
-                <el-input v-model="form.vars['cinder_auth_url']" placeholder="eg: http://128.110.154.166/identity" clearable></el-input>
+                <el-input v-model="form.vars['cinder_auth_url']" placeholder=" http://128.110.154.166/identity" clearable></el-input>
               </el-form-item>
               <el-form-item label="UserName" prop="vars.cinder_username" :rules="requiredRules">
-                <el-input v-model="form.vars['cinder_username']" placeholder="eg: admin" clearable></el-input>
+                <el-input v-model="form.vars['cinder_username']" placeholder=" admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="Password" prop="vars.cinder_password" :rules="passwordRules">
                 <el-input type="password" v-model="form.vars['cinder_password']" clearable></el-input>
               </el-form-item>
               <el-form-item label="Region" prop="vars.cinder_region" :rules="requiredRules">
-                <el-input v-model="form.vars['cinder_region']" placeholder="eg: RegionOne" clearable></el-input>
+                <el-input v-model="form.vars['cinder_region']" placeholder=" RegionOne" clearable></el-input>
               </el-form-item>
               <el-form-item label="Tenant Name" prop="vars.cinder_tenant_name" :rules="requiredRules">
-                <el-input v-model="form.vars['cinder_tenant_name']" placeholder="eg: admin" clearable></el-input>
+                <el-input v-model="form.vars['cinder_tenant_name']" placeholder=" admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="Domain Name" prop="vars.cinder_domain_name" :rules="requiredRules">
-                <el-input v-model="form.vars['cinder_domain_name']" placeholder="eg: Default" clearable></el-input>
+                <el-input v-model="form.vars['cinder_domain_name']" placeholder=" Default" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
                 <el-switch style="width: 80%" active-value="enable" inactive-value="disable" v-model="enableBlockStorage" />
@@ -85,7 +85,7 @@
                   <div><span class="input-help">{{$t('cluster.detail.storage.cinder_version_help')}}</span></div>
                 </el-form-item>
                 <el-form-item label="Attach Limit" prop="vars.node_volume_attach_limit" :rules="requiredRules">
-                  <el-input v-model="form.vars['node_volume_attach_limit']" placeholder="eg: 256" clearable></el-input>
+                  <el-input v-model="form.vars['node_volume_attach_limit']" placeholder=" 256" clearable></el-input>
                 </el-form-item>
               </div>
             </div>

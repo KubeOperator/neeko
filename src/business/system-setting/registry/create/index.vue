@@ -26,7 +26,7 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname" required>
-              <el-input placeholder="eg: 172.16.10.100" v-model="form.hostname"></el-input>
+              <el-input placeholder="172.16.10.100" v-model="form.hostname"></el-input>
             </el-form-item>
             <div style="float: right">
               <el-form-item>
