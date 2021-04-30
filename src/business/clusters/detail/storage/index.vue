@@ -115,7 +115,7 @@
       </ul>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="submitSync()">{{$t('commons.button.ok')}}</el-button>
+        <el-button @click="submitSync()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 

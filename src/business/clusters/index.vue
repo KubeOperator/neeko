@@ -68,7 +68,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" :v-loading="deleteLoadding" type="primary" @click="submitDelete()">
+        <el-button size="small" :v-loading="deleteLoadding" @click="submitDelete()">
           {{ $t("commons.button.submit") }}
         </el-button>
       </div>
@@ -91,7 +91,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="checkData.level=='error'" type="primary" @click="onRecover()">
+        <el-button size="small" v-if="checkData.level=='error'" @click="onRecover()">
           {{ $t("cluster.health_check.recover") }}
         </el-button>
       </div>

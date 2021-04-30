@@ -15,7 +15,7 @@
           <el-option v-for="item in values" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </el-form-item>
-      <el-button @click="search()" type="primary" size="small">{{$t('commons.button.search')}}</el-button>
+      <el-button @click="search()" size="small">{{$t('commons.button.search')}}</el-button>
     </el-form>
 
     <complex-table :data="data" v-loading="loading">

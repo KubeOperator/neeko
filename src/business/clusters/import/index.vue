@@ -25,7 +25,7 @@
             </el-form-item>
             <el-form-item>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
