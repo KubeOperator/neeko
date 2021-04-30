@@ -44,7 +44,7 @@
             {{ $t("commons.status.running") }}
           </div>
           <div v-if="row.status.indexOf('SchedulingDisabled') !== -1">
-            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            <span class="iconfont icondiable" style="color: #FA4147"></span>
             {{ $t("commons.status.disable_scheduling") }}
           </div>
           <div v-if="row.status === 'Creating'">
@@ -52,7 +52,7 @@
             {{ $t("commons.status.creating") }}
           </div>
           <div v-if="row.status === 'NotReady'">
-            <span class="iconfont icondiable" style="color: #FA4147"></span>
+            <span class="iconfont iconping" style="color: #FA4147"></span>
             {{ $t("commons.status.not_ready") }}
           </div>
         </template>
