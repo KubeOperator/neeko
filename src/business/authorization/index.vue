@@ -11,7 +11,8 @@
                 :current-node-key="currentKey"
                 ref="tree"
                 :highlight-current="true"
-                @node-click="toPage">
+                @node-click="toPage"
+                style="margin: 5px">
           <span class="custom-tree-node" slot-scope="{ node,data }">
               <i v-if="data.type ==='CLUSTER'" class="iconfont iconcluster"></i>
               <i v-if="data.type ==='PROJECT'" class="iconfont iconproject"></i>
