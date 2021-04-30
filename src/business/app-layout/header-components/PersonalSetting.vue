@@ -9,7 +9,7 @@
         <div class="personalDropdown">
         <el-dropdown-item class="iconfont icongenggaimima" command="password">{{ $t('commons.personal.change_password') }}</el-dropdown-item>
         <el-dropdown-item class="iconfont iconguanyu"  command="about">{{ $t('commons.personal.about') }}</el-dropdown-item>
-        <el-dropdown-item class="iconfont icontuichudenglu"  divided command="logout">{{ $t('commons.personal.exit_system') }}</el-dropdown-item>
+        <el-dropdown-item class="iconfont icontuichudenglu"  style="text-align: center" divided command="logout">{{ $t('commons.personal.exit_system') }}</el-dropdown-item>
         </div>
       </el-dropdown-menu>
     <el-dialog
