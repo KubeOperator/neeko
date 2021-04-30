@@ -702,12 +702,12 @@ const message = {
       ip_lock: "占用",
       ip_used: "使用中",
       ip_reachable: "可达",
-      subnet_help: "例: 172.1.10.0/24",
-      ip_start_help: "例: 172.1.10.1",
-      ip_end_help: "例: 172.1.10.10",
-      gateway_help: "例: 172.1.10.254",
-      dns1_help: "例: 8.8.8.8",
-      dns2_help: "例: 114.114.114.114",
+      subnet_help: "172.1.10.0/24",
+      ip_start_help: "172.1.10.1",
+      ip_end_help: "172.1.10.10",
+      gateway_help: "172.1.10.254",
+      dns1_help: "8.8.8.8",
+      dns2_help: "114.114.114.114",
     }
   },
   project: {
@@ -737,8 +737,6 @@ const message = {
     bucket: "桶",
     type: "类型",
     status: "状态",
-    add_backup_account: "添加备份账号",
-    edit_backup_account: "编辑备份账号",
     select_placeholder: "请选择",
     table: {
       name: "名称",

@@ -1,20 +1,17 @@
 <template>
-  <el-menu :unique-opened="true"
-           :default-active="language"
-           class="header-menu"
-           text-color="inherit"
-           mode="horizontal">
-    <el-submenu index="1" popper-class="header-menu-popper">
-      <template slot="title">
-        <font-awesome-icon class="language-icon ko-color" :icon="['fas', 'globe']"/>
+  <el-dropdown trigger="click" @command="handleCommand">
+    <span class="el-dropdown-link">
+        <font-awesome-icon class="language-icon ko-color" style="color: #FA5D50;margin-right: 3px" :icon="['fas', 'globe']"/>
         <span>{{ languageMap[language] }}</span>
-      </template>
-      <el-menu-item v-for="(value, key) in languageMap" :key="key" :index="key" @click="setLanguage(key)">
+        <i class="el-icon-arrow-down el-icon--right"></i>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item v-for="(value, key) in languageMap" :key="key" :index="key" :command="key">
         <span>{{ value }}</span>
         <i class="el-icon-check" v-if="key === language"/>
-      </el-menu-item>
-    </el-submenu>
-  </el-menu>
+      </el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
 </template>
 
 <script>
@@ -39,6 +36,19 @@ export default {
       this.$store.dispatch('user/setLanguage', lang).then(() => {
         // do something
       })
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 'zh-CN':
+          this.setLanguage('zh-CN');
+          break
+        case 'en-US':
+          this.setLanguage('zh-CN');
+          break
+        default:
+          window.open("/swagger/index.html", "_blank");
+          break
+      }
     }
   }
 }
@@ -46,11 +56,14 @@ export default {
 
 <style lang="scss">
 @import "~@/styles/business/header-menu.scss";
-
 .header-menu {
   .language-icon {
     width: 24px;
   }
+}
+
+.el-dropdown-link {
+  cursor: pointer;
 }
 
 .header-menu-popper {
