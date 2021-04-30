@@ -36,7 +36,7 @@
     </complex-table>
     <el-dialog
             :visible="openCreatePage"
-            :title="$t('project.add_project_manager')"
+            :title="title"
             width="30%"
             @close="cancel">
       <el-select
@@ -94,6 +94,7 @@ export default {
         names: []
       },
       selects: [],
+      title:"",
     }
   },
   created () {
@@ -104,6 +105,7 @@ export default {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       if (this.authObj.type === "PROJECT") {
+        this.title = this.$t('project.add_project_manager')
         listProjectMembers(this.authObj.projectName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
@@ -111,6 +113,7 @@ export default {
         })
       }
       if (this.authObj.type === "CLUSTER") {
+        this.title = this.$t('project.add_cluster_manager')
         listClusterMembers(this.authObj.projectName, this.authObj.clusterName, currentPage, pageSize).then(data => {
           this.loading = false
           this.data = data.items
