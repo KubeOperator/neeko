@@ -1,7 +1,7 @@
 <template>
   <el-dropdown trigger="click" @command="handleCommand">
     <span class="el-dropdown-link">
-        <font-awesome-icon class="iconfont iconproject" style="color: #FA5D50;margin-right: 3px" :icon="['fas', 'globe']"/>
+        <i class="iconfont iconproject" style="color: #FA5D50;margin-right: 3px" :icon="['fas', 'globe']"/>
         <span >{{currentProject}}</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
     </span>
