@@ -82,12 +82,12 @@
                     <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
                   </el-form-item>
                   <el-form-item :label="$t('cluster.creation.max_node_pod_num')" prop="maxNodePodNum">
-                    <el-select filterable style="width: 100%" v-model.number="form.maxNodePodNum" clearable>
+                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxNodePodNum" clearable>
                       <el-option v-for="item of podMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t('cluster.creation.max_cluster_service_num')" prop="maxClusterServiceNum">
-                    <el-select filterable style="width: 100%" v-model.number="form.maxClusterServiceNum" clearable>
+                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxClusterServiceNum" clearable>
                       <el-option v-for="item of serviceMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                   </el-form-item>
@@ -792,6 +792,7 @@ export default {
     this.loadPlan()
     this.loadProject()
     this.loadVersion()
+    this.onPart1Change()
   },
 }
 </script>
