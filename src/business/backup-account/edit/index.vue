@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('backup_account.edit_backup_account')" :back-to="{ name: 'BackupAccount'}">
+  <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'BackupAccount'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
