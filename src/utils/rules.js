@@ -8,7 +8,7 @@ var checkName = (rule, value, callback) => {
     return callback(new Error(i18n.t("commons.validate.required_msg")))
   }
   if (!Global.NamePattern.test(value)) {
-    return callback(new Error(i18n.t("commons.validate.name_validate_msg")))
+    return callback(new Error(i18n.t("commons.validate.name_not_compliant")))
   }
   callback()
 }
@@ -58,6 +58,12 @@ const PasswordRule = {
   trigger: "blur"
 }
 
+const LengthRule = {
+  min: 1,
+  max: 30,
+  message: i18n.t("commons.validate.limit", [1, 30]),
+  trigger: "blur"
+}
 export default {
-  NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule
+  NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule, LengthRule
 }

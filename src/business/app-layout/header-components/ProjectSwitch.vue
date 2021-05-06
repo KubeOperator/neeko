@@ -1,18 +1,17 @@
 <template>
-  <el-menu :unique-opened="true"
-           class="header-menu"
-           text-color="inherit"
-           mode="horizontal">
-    <el-submenu index="1" popper-class="header-menu-popper">
-      <template slot="title">
-        <i class="iconfont iconproject" style="color: #FA5D50;" />&nbsp;&nbsp;
+  <el-dropdown trigger="click" @command="handleCommand">
+    <span class="el-dropdown-link">
+        <i class="iconfont iconproject" style="color: #FA5D50;margin-right: 3px" :icon="['fas', 'globe']"/>
         <span >{{currentProject}}</span>
-      </template>
-      <el-menu-item v-for="p in projects" :key="p.name" @click="setCurrentProject(p.name)">
+        <i class="el-icon-arrow-down el-icon--right"></i>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item  v-for="p in projects" :key="p.name" :command="p.name">
         <span>{{ p.name }}</span>
-      </el-menu-item>
-    </el-submenu>
-  </el-menu>
+      </el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
+
 </template>
 <script>
   import {allProjects} from "@/api/projects";
@@ -23,17 +22,23 @@
       return {
         projects: []
       }
-    }, created() {
+    },
+    created() {
       allProjects().then((data) => {
         this.projects = data.items
       })
-    }, methods: {
+    },
+    methods: {
       setCurrentProject(project) {
         this.$store.dispatch('user/setCurrentProject', project).then(() => {
           location.reload();
         })
+      },
+      handleCommand(command) {
+        this.setCurrentProject(command)
       }
-    }, computed: {
+    },
+    computed: {
       currentProject() {
         return this.$store.getters.currentProject;
       }
@@ -42,5 +47,7 @@
 </script>
 
 <style scoped>
-
+.el-dropdown-link {
+  cursor: pointer;
+}
 </style>

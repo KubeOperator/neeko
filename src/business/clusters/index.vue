@@ -31,7 +31,7 @@
           </ko-status>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column width="150px" :label="$t('commons.table.create_time')">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

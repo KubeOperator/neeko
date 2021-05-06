@@ -80,7 +80,7 @@ const message = {
       email: "邮箱格式不正确",
       common_name_help: "支持小写英文、数字和-",
       ip_range_error: "IP范围错误",
-      subnet_error: "子网错误"
+      subnet_error: "子网错误",
     },
     search: {
       name: "",
@@ -100,7 +100,7 @@ const message = {
       exit_system: "退出系统",
       new_password: "新密码",
       original_password: "原密码",
-      confirm_password: "确认旧密码",
+      confirm_password: "确认密码",
       confirm_password1_info: "密码不一致",
       about: "关于",
       project_url: "项目地址",
@@ -163,9 +163,9 @@ const message = {
     expires: "认证信息已过期，请重新登录",
     captcha: "验证码",
     forget_password: "忘记密码",
-    reset_password: "重制密码",
+    reset_password: "重置密码",
     email: "邮箱",
-    reset_message: "重制密码成功！请查看邮件"
+    reset_message: "重置密码成功！请查看邮件"
   },
   theme: {
     systemName: "登录页面标题",
@@ -665,6 +665,7 @@ const message = {
       nfs_password: "NFS服务器密码",
       old_datastores: "已选存储",
       new_datastores: "新增存储",
+      initializing:"初始化中"
     },
     plan: {
       name: "部署计划",
@@ -703,12 +704,12 @@ const message = {
       ip_lock: "占用",
       ip_used: "使用中",
       ip_reachable: "可达",
-      subnet_help: "例: 172.1.10.0/24",
-      ip_start_help: "例: 172.1.10.1",
-      ip_end_help: "例: 172.1.10.10",
-      gateway_help: "例: 172.1.10.254",
-      dns1_help: "例: 8.8.8.8",
-      dns2_help: "例: 114.114.114.114",
+      subnet_help: "172.1.10.0/24",
+      ip_start_help: "172.1.10.1",
+      ip_end_help: "172.1.10.10",
+      gateway_help: "172.1.10.254",
+      dns1_help: "8.8.8.8",
+      dns2_help: "114.114.114.114",
     }
   },
   project: {
@@ -720,6 +721,7 @@ const message = {
     description: "描述",
     add_project_manager: "添加项目管理员",
     add_project_resource: "添加资源",
+    add_cluster_manager: "添加集群管理员",
     key_words: "请输入姓名",
     list: "项目列表",
     header_description: "左侧是项目-集群树，右侧是人员和资源管理",
@@ -737,8 +739,6 @@ const message = {
     bucket: "桶",
     type: "类型",
     status: "状态",
-    add_backup_account: "添加备份账号",
-    edit_backup_account: "编辑备份账号",
     select_placeholder: "请选择",
     table: {
       name: "名称",

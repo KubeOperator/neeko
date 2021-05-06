@@ -54,6 +54,9 @@
 
       .navbar-item {
         color: #2E2E2E;
+        line-height: 50px;
+        display: inline-block;
+        padding-right: 20px;
       }
 
       .navbar-item + .navbar-item {

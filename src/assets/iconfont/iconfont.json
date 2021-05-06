@@ -6,6 +6,41 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "923716",
+      "name": "lock h5",
+      "font_class": "lock",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "4720923",
+      "name": "更改密码",
+      "font_class": "genggaimima",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "1645892",
+      "name": "关于",
+      "font_class": "guanyu",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    },
+    {
+      "icon_id": "6035351",
+      "name": "项目管理",
+      "font_class": "projectmanage",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "19719374",
+      "name": "传输_上传",
+      "font_class": "shangchuan5",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "5192988",
       "name": "Star Star",
       "font_class": "StarStar",
@@ -34,13 +69,6 @@
       "unicode_decimal": 58906
     },
     {
-      "icon_id": "20612244",
-      "name": "FusionCompute",
-      "font_class": "funsioncompute",
-      "unicode": "e62f",
-      "unicode_decimal": 58927
-    },
-    {
       "icon_id": "13532955",
       "name": "SFTP",
       "font_class": "SFTP",
@@ -67,13 +95,6 @@
       "font_class": "bug",
       "unicode": "e616",
       "unicode_decimal": 58902
-    },
-    {
-      "icon_id": "14814885",
-      "name": "点亮",
-      "font_class": "dianliang",
-      "unicode": "e6b5",
-      "unicode_decimal": 59061
     },
     {
       "icon_id": "15337722",

@@ -4,9 +4,6 @@
       <el-row type="flex" v-loading="loading">
         <el-col :span="12">
           <el-form :model="form" :rules="rules" ref="form" size="default">
-            <!--            <div class="login-logo">-->
-            <!--              <img src="../../assets/KubeOperator-black.png" alt="">-->
-            <!--            </div>-->
             <div class="login-title">
               {{ systemName }}
             </div>
@@ -16,12 +13,11 @@
             </div>
             <div class="login-form">
               <el-form-item prop="username">
-                <el-input v-model="form.username" :placeholder="$t('login.username')" autofocus/>
+                <el-input v-model="form.username" :placeholder="$t('login.username')" autofocus />
               </el-form-item>
               <el-form-item prop="password">
                 <el-input v-model="form.password" :placeholder="$t('login.password')"
-                          show-password maxlength="30" show-word-limit
-                          autocomplete="new-password"/>
+                          show-password maxlength="30" show-word-limit/>
               </el-form-item>
               <el-form-item v-if="hasCode">
                 <el-col :span="18">
@@ -40,9 +36,6 @@
               <el-button type="primary" class="submit" @click="submit('form')" size="default">
                 {{ $t("commons.button.login") }}
               </el-button>
-            </div>
-            <div class="login-msg">
-              {{ msg }}
             </div>
             <div class="forget-password">
               <a style="color: #999999;text-decoration-line: underline" @click="forgetPassword">{{ $t("login.forget_password") }}?</a>
@@ -147,7 +140,11 @@ export default {
     watchEnter (e) {
       let keyCode = e.keyCode
       if (keyCode === 13) {
-        this.submit("form")
+        if (this.opened) {
+          this.submitForget("forgetForm")
+        }else {
+          this.submit("form")
+        }
       }
     },
     submit (form) {

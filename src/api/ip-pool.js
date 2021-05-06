@@ -42,3 +42,7 @@ export function syncIp (ipPoolName) {
 export function searchIp (currentPage, pageSize, ipPoolName, conditions) {
   return post(`${ipPoolUrl}/${ipPoolName}/ips/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }
+
+export function updateIp (ipPoolName, name, data) {
+  return patch(`${ipPoolUrl}/${ipPoolName}/ips/${name}`,data)
+}
