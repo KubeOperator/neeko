@@ -12,7 +12,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small"   :disabled="selects.length===0" @click="del()">
+          <el-button size="small" :disabled="selects.length===0" @click="del()">
             {{ $t("commons.button.delete") }}
           </el-button>
           <el-button size="small" @click="sync()">
@@ -47,9 +47,10 @@
             <span class="iconfont iconping" style="color: #FA5D50"></span>
             {{ $t("automatic.ip_pool.ip_reachable") }}
           </div>
-          <el-tag v-if="row.status === 'IP_LOCK'" type="info" size="small">
+          <div v-if="row.status ==='IP_LOCK'">
+            <span class="iconfont iconlock" style="color: #FA5D50"></span>
             {{ $t("automatic.ip_pool.ip_lock") }}
-          </el-tag>
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -64,7 +65,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {deleteIpBy, syncIp, searchIp} from "@/api/ip-pool"
+import {deleteIpBy, syncIp, searchIp, updateIp} from "@/api/ip-pool"
 
 export default {
   name: "IpList",
@@ -75,13 +76,17 @@ export default {
       columns: [],
       buttons: [
         {
+          label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
+            this.update(row)
+          }
+        },
+        {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.del(row.address)
           }
-        }
+        },
       ],
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
@@ -167,6 +172,21 @@ export default {
         this.$message({
           type: "success",
           message: this.$t("commons.msg.sync_success")
+        })
+      })
+    },
+    update (row) {
+      let operation = "LOCK"
+      if (row.status === "IP_LOCK") {
+        operation = "UNLOCK"
+      }
+      updateIp(this.name, row.address, {
+        operation: operation
+      }).then(() => {
+        this.search()
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.update_success")
         })
       })
     }
