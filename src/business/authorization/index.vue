@@ -75,6 +75,7 @@ export default {
       this.permission = roles[0]
     },
     getTree () {
+      this.getRole()
       this.loading = true
       getResourceTree().then(data => {
         this.loading = false
@@ -137,7 +138,6 @@ export default {
   },
   watch: {},
   created () {
-    this.getRole()
     this.getTree()
   },
 }
