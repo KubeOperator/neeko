@@ -85,7 +85,7 @@
             </el-form-item>
             <el-form-item>
               <div style="float: right">
-                <el-button type="info" @click="onCheckParams()">{{ $t("automatic.region.get_datacenter") }}</el-button>
+                <el-button @click="onCheckParams()">{{ $t("automatic.region.get_datacenter") }}</el-button>
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
                 <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
               </div>
@@ -180,9 +180,13 @@ export default {
     },
   },
   created () {
+    this.loading = true
     getRegionBy(this.name).then(res => {
       this.form = res
       this.form.Datacnter = ""
+      this.loading = false
+    }).finally(() => {
+      this.loading = false
     })
   }
 }
