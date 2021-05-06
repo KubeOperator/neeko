@@ -1,5 +1,6 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{name:'ProjectAuthorizationList'}" v-loading="loading">
+  <layout-content :header="$t('commons.button.create')" :back-to="{name:'ProjectAuthorizationList'}"
+                  v-loading="loading">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -7,14 +8,16 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
+              <div><span class="input-help">{{ $t("commons.validate.common_name_help") }}</span></div>
             </el-form-item>
             <el-form-item :label="$t('project.description')" prop="description">
               <el-input v-model="form.description"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
@@ -41,7 +44,7 @@ export default {
         name: [Rule.NameRule, Rule.LengthRule],
         description: [Rule.LengthRule]
       },
-      loading:false
+      loading: false
     }
   },
   methods: {
@@ -66,7 +69,7 @@ export default {
             name: "ProjectAuthorizationList",
             params: { expendType: "PROJECT", expendName: this.form.name }
           })
-        }).finally(()=>{
+        }).finally(() => {
           this.loading = false
         })
       })

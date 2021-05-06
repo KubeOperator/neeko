@@ -12,8 +12,10 @@
               <el-input v-model="form.description"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.submit") }}</el-button>
+              <div style="float: right">
+                <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
+                <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.submit") }}</el-button>
+              </div>
             </el-form-item>
           </el-form>
         </div>
