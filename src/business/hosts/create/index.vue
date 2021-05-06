@@ -1,7 +1,8 @@
 <template>
   <layout-content>
-    <el-row type="flex" justify="center">
-      <el-col :span="16">
+    <el-row>
+      <el-col :span="4"><br /></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
@@ -46,7 +47,7 @@
                 <el-input type="textarea" v-model="form.credential.privateKey" clearable></el-input>
               </el-form-item>
             </span>
-            <el-form-item>
+            <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
               <el-button @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>
@@ -60,7 +61,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { createHost } from "@/api/hosts"
-import { listCredentialAll } from "@/api/credentials";
+import { listCredentialAll } from "@/api/credentials"
 import Rule from "@/utils/rules"
 
 export default {
@@ -92,7 +93,7 @@ export default {
           password: [Rule.PasswordRule],
           name: [Rule.RequiredRule],
           privateKey: [Rule.RequiredRule],
-        }
+        },
       },
       credentialList: [],
     }
@@ -105,7 +106,7 @@ export default {
       })
     },
     getCredentials() {
-      listCredentialAll().then(data => {
+      listCredentialAll().then((data) => {
         this.credentialList = data.items
       })
     },
@@ -115,7 +116,7 @@ export default {
   },
   created() {
     this.getCredentials()
-  }
+  },
 }
 </script>
 

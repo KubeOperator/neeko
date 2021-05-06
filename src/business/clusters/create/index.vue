@@ -262,7 +262,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                    <el-input v-model="form.workerAmount" clearable></el-input>
+                    <el-input-number v-model.number="form.workerAmount" clearable></el-input-number>
                   </el-form-item>
                 </el-card>
               </el-scrollbar>
@@ -334,7 +334,9 @@
                     <el-col :span="6">
                       <ul>{{form.networkInterface}}</ul>
                       <ul>{{form.networkType}}</ul>
-                      <ul>{{form.flannelBackend}}</ul>
+                      <ul v-if="form.networkType !== 'calico'">{{form.flannelBackend}}</ul>
+                      <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'off'">bgp</ul>
+                      <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'Always'">ipip</ul>
                     </el-col>
                   </el-row>
 
@@ -348,7 +350,8 @@
                     <el-col :span="6">
                       <ul>{{form.helmVersion}}</ul>
                       <ul>{{form.ingressControllerType}}</ul>
-                      <ul>{{form.supportGpu}}</ul>
+                      <ul v-if="form.supportGpu === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.supportGpu === 'disable'">{{$t ('commons.button.disable')}}</ul>
                     </el-col>
                   </el-row>
 
@@ -449,6 +452,7 @@ export default {
         maxNodePodNum: [Rule.RequiredRule],
         maxClusterServiceNum: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
+        enableDnsCache: [Rule.RequiredRule],
         kubernetesAudit: [Rule.RequiredRule],
         networkType: [Rule.RequiredRule],
         flannelBackend: [Rule.RequiredRule],
@@ -458,7 +462,7 @@ export default {
         ingressControllerType: [Rule.RequiredRule],
         supportGpu: [Rule.RequiredRule],
         plan: [Rule.RequiredRule],
-        workerAmount: [Rule.RequiredRule],
+        workerAmount: [Rule.NumberRule],
         masters: [Rule.RequiredRule],
         workers: [Rule.RequiredRule],
       },
@@ -795,5 +799,8 @@ export default {
 .example {
   height: 500px;
   margin: 1% 10%;
+  ul {
+    height: 20px;
+  }
 }
 </style>

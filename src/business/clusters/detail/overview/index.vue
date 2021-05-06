@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="example">
       <el-row>
         <el-col :span="6">
           <el-card style="height: 350px">
@@ -238,5 +238,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.example {
+  ul {
+    height: 20px;
+  }
+}
 </style>

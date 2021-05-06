@@ -1,9 +1,10 @@
 <template>
   <layout-content>
-    <el-row type="flex" justify="center">
-      <el-col :span="16">
+    <el-row>
+      <el-col :span="4"><br /></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form :model="form" ref="form" :rules="rules" label-width="120px">
+          <el-form :model="form" ref="form" label-position='left' :rules="rules" label-width="120px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input style="width: 100%" v-model="form.name" clearable></el-input>
             </el-form-item>
@@ -13,17 +14,15 @@
               </el-select>
             </el-form-item>
             <el-form-item label="apiServer" prop="apiServer">
-              <el-input style="width: 100%" v-model="form.apiServer" clearable></el-input>
-              <div><span class="input-help">{{ $t("cluster.import.api_server_help") }}</span></div>
+              <el-input style="width: 100%" v-model="form.apiServer" :placeholder="$t('cluster.import.api_server_help')" clearable></el-input>
             </el-form-item>
             <el-form-item label="router" prop="router">
-              <el-input style="width: 100%" v-model="form.router" clearable></el-input>
-              <div><span class="input-help">{{ $t("cluster.import.router_help") }}</span></div>
+              <el-input style="width: 100%" v-model="form.router" :placeholder="$t('cluster.import.router_help')" clearable></el-input>
             </el-form-item>
             <el-form-item label="token" prop="token">
               <el-input type="textarea" :autosize="{ minRows: 2}" style="width: 100%" v-model="form.token" clearable></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
               <el-button v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>

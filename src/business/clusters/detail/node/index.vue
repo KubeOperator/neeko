@@ -148,15 +148,15 @@
             <span style="margin-top: 30px">{{$t('cluster.detail.node.status')}}</span>
             <div align="center" style="margin-top: 15px">
               <el-table :data="detaiInfo.status.conditions" border style="width: 90%">
-                <el-table-column prop="type" label="Type" />
-                <el-table-column prop="status" label="Status" />
-                <el-table-column prop="lastTransitionTime" label="Time">
+                <el-table-column prop="type" min-width="80" show-overflow-tooltip label="Type" />
+                <el-table-column prop="status" min-width="50" label="Status" />
+                <el-table-column prop="lastTransitionTime" min-width="100" label="Time">
                   <template v-slot:default="{row}">
                     {{ row.lastTransitionTime | datetimeFormat }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="reason" label="Reason" />
-                <el-table-column prop="message" label="Message" />
+                <el-table-column prop="reason" show-overflow-tooltip min-width="100" label="Reason" />
+                <el-table-column prop="message" show-overflow-tooltip min-width="100" label="Message" />
               </el-table>
             </div>
           </div>
