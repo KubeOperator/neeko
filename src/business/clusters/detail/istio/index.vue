@@ -2,7 +2,7 @@
   <layout-content>
     <div>
       <el-collapse v-model="activeNames">
-        <el-collapse-item title="istio-pilot" name="1">
+        <el-collapse-item title="Istio-pilot" name="1">
           <el-form :model="pilotCfg" ref="pilotCfg" label-width="200px">
             <el-form-item v-if="pilotCfg.cluster_istio.message">
               <el-tooltip class="item" effect="light" :content="pilotCfg.cluster_istio.message" placement="right-end">
@@ -32,7 +32,7 @@
             </el-row>
           </el-form>
         </el-collapse-item>
-        <el-collapse-item title="istio-ingress" name="2">
+        <el-collapse-item title="Istio-ingress" name="2">
           <el-switch v-model="ingressCfg.enable"></el-switch>
           <div v-if="ingressCfg.enable">
             <el-form :model="ingressCfg" ref="ingressCfg" label-width="200px">
@@ -66,7 +66,7 @@
             </el-form>
           </div>
         </el-collapse-item>
-        <el-collapse-item title="istio-egress" name="3">
+        <el-collapse-item title="Istio-egress" name="3">
           <el-switch v-model="egressCfg.enable"></el-switch>
           <div v-if="egressCfg.enable">
             <el-form :model="egressCfg" ref="egressCfg" label-width="200px">
@@ -96,11 +96,11 @@
         </el-collapse-item>
       </el-collapse>
       <div v-if="baseCfg.cluster_istio.status === 'Waiting'">
-        <el-button @click="onSubmit('start')" :disabled="btnStartDisable" size="mini">{{$t('cluster.detail.istio.enable_istio')}}</el-button>
+        <el-button @click="onSubmit('start')" :disabled="btnStartDisable" size="mini">{{$t('commons.button.enable')}}</el-button>
       </div>
       <div v-if="baseCfg.cluster_istio.status === 'Running'">
         <el-button @click="onSubmit('restart')" :disabled="btnStartDisable" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
-        <el-button @click="onDisable()" size="mini">{{$t('cluster.detail.istio.disable_istio')}}</el-button>
+        <el-button @click="onDisable()" size="mini">{{$t('commons.button.disable')}}</el-button>
       </div>
       <el-dialog :title="$t('cluster.detail.istio.disable_istio')" width="30%" :visible.sync="dialogShutupVisible">
         <span>{{$t('cluster.detail.istio.ensure_disable_istio')}}</span>

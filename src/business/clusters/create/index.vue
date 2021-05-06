@@ -2,7 +2,7 @@
   <layout-content>
     <div>
       <el-form ref="form" label-position='left' label-width="180px" :model="form" :rules="rules">
-        <fu-steps ref="steps" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
+        <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
               <el-scrollbar style="height:100%">
@@ -147,7 +147,7 @@
                       <el-option value="calico">calico</el-option>
                       <el-option v-if="form.architectures === 'amd64'" value="cilium">cilium</el-option>
                     </el-select>
-                    <div v-if="form.networkType==='cilium'"><span class="input-help-blod">{{$t('cluster.creation.network_interface_help')}}</span></div>
+                    <div v-if="form.networkType==='cilium'"><span class="input-help-blod">{{$t('cluster.creation.cilium_help')}}</span></div>
                   </el-form-item>
 
                   <el-form-item v-if="form.networkType === 'flannel'" :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">

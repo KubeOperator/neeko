@@ -58,7 +58,7 @@ export default {
       listNamespace(this.clusterName).then((data) => {
         this.namespaces = data.items
         if (data.items.length > 0) {
-          this.currentNamespace = this.namespaces[0].metadata.name
+          this.currentNamespace = this.currentNamespace ? this.currentNamespace : this.namespaces[0].metadata.name
           this.loadEvents(this.currentNamespace)
         }
       })
