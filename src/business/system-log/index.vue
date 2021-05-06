@@ -47,7 +47,7 @@ export default {
     search(condition) {
       const { currentPage, pageSize } = this.paginationConfig
       systemQuery(currentPage, pageSize, condition).then((response) => {
-        const currentLanguage = localStorage.getItem("language") || this.translate.getBrowserCultureLang()
+        const currentLanguage = this.$store.getters.language || "zh-CN"
         if (response.items != null) {
           for (const item of response.items) {
             if (currentLanguage == "en-US") {
