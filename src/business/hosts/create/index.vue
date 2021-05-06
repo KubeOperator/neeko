@@ -12,15 +12,15 @@
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('host.port')" prop="port">
-              <el-input-number style="width:20%" :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
+              <el-input-number :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
-            <el-form-item :label="$t('route.project')" prop="project">
+            <el-form-item :label="$t('host.project_auth')" prop="project">
               <el-select style="width:100%" v-model="form.project" clearable filterable>
                 <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="$t('credential.credential')" required>
+            <el-form-item :label="$t('host.type')" required>
               <el-radio-group v-model="credentialType">
                 <el-radio label="exists">{{$t('host.exists_credential')}}</el-radio>
                 <el-radio label="new">{{$t('host.new_credential')}}</el-radio>
@@ -39,7 +39,7 @@
               <el-form-item :label="$t('credential.username')" prop="credential.username">
                 <el-input v-model="form.credential.username" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('credential.credential')" prop="credential.type">
+              <el-form-item :label="$t('host.credential_type')" prop="credential.type" required>
                 <el-radio-group v-model="form.credential.type">
                   <el-radio label="password">{{$t('credential.password')}}</el-radio>
                   <el-radio label="privateKey">{{$t('credential.privateKey')}}</el-radio>
