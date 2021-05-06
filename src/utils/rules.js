@@ -61,7 +61,7 @@ const PasswordRule = {
 const LengthRule = {
   min: 1,
   max: 30,
-  message: this.$t("commons.validate.limit", [1, 30]),
+  message: i18n.t("commons.validate.limit", [1, 30]),
   trigger: "blur"
 }
 export default {
