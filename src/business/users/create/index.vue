@@ -54,7 +54,7 @@ export default {
         role: "user",
       },
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.CommonNameRule, Rule.RequiredRule],
         email: [Rule.EmailRule, Rule.RequiredRule],
         password: [Rule.RequiredRule],
         confirmPassword: [Rule.RequiredRule],
