@@ -22,6 +22,10 @@
       <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
       <el-link type="info" @click="getDetail()">{{ $t("commons.status.terminating") }} </el-link>
     </div>
+    <div v-if="status === 'Terminating' && other==='plan' ">
+      <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
+      <span>{{ $t("commons.status.terminating") }} </span>
+    </div>
     <div v-if="status === 'Terminating' && other==='host' ">
       <i class="el-icon-loading"/> &nbsp; &nbsp; &nbsp;
       <span>{{ $t("commons.status.terminating") }} </span>
