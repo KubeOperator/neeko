@@ -100,7 +100,7 @@ const message = {
       exit_system: "退出系统",
       new_password: "新密码",
       original_password: "原密码",
-      confirm_password: "确认旧密码",
+      confirm_password: "确认密码",
       confirm_password1_info: "密码不一致",
       about: "关于",
       project_url: "项目地址",

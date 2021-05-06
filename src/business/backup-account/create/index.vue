@@ -65,7 +65,19 @@
               </el-form-item>
             </div>
             <!-- SFTP Option end-->
-
+            <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects" required>
+              <el-select v-model="form.projects"
+                         multiple
+                         filterable
+                         reserve-keyword>
+                <el-option
+                  v-for="(item,index) in projects"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.name">
+                </el-option>
+              </el-select>
+            </el-form-item>
             <div style="float: right">
               <el-form-item>
                 <el-button v-if="form.type !== 'SFTP'" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
@@ -86,6 +98,8 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
 import {createBackupAccounts, listBuckets} from "@/api/backup-account";
+import {allProjects} from "@/api/projects"
+
 export default {
   name: "RegistryCreate",
   components: {LayoutContent},
@@ -95,6 +109,7 @@ export default {
   data() {
     return {
       form: {
+        projects: [],
         name: '',
         type: '',
         bucket: '',
@@ -112,7 +127,8 @@ export default {
       }],
       formLabelWidth: '120px',
       buckets: [],
-      loading: false
+      loading: false,
+      projects: [],
     }
   },
   methods: {
@@ -122,7 +138,8 @@ export default {
         bucket: this.form.bucket,
         credentialVars: this.form.credentialVars,
         name: this.form.name,
-        type: this.form.type
+        type: this.form.type,
+        projects: this.form.projects
       }).then(() => {
         this.loading = false
         this.$message({
@@ -152,7 +169,11 @@ export default {
     }
   },
   created() {
-      this.form.type = 'SFTP'
+    this.form.type = 'SFTP',
+    allProjects().then(res => {
+      this.projects = res.items
+      console.log(this.projects)
+    })
   }
 }
 </script>
