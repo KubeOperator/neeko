@@ -12,6 +12,7 @@
               <el-select v-model="form.regionName"
                          filterable
                          reserve-keyword
+                         size="medium"
                          @change="changeRegion(form.regionName)">
                 <el-option
                         v-for="(item,index) in regions"
@@ -27,6 +28,7 @@
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
                            reserve-keyword
+                           size="medium"
                            @change="changeCloudZone(form.cloudVars.cluster)">
                   <el-option
                           v-for="(item,index) in cloudZones"
@@ -40,6 +42,7 @@
                             prop="cloudVars.resourcePool">
                 <el-select v-model="form.cloudVars.resourcePool"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.resourcePools"
@@ -61,6 +64,7 @@
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudDatastores"
@@ -85,6 +89,7 @@
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
+                             size="medium"
                              @change="changeTemplate(form.cloudVars.imageName)">
                     <el-option
                             v-for="(item,index) in cloudTemplates"
@@ -97,6 +102,7 @@
                 <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
+                             size="medium"
                              reserve-keyword>
                     <el-option
                             v-for="(item,index) in credentials"
@@ -111,6 +117,7 @@
               <el-form-item :label="$t('automatic.zone.network_adapter')"  prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.networks"
@@ -123,6 +130,7 @@
               <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in ipPools"
@@ -139,6 +147,7 @@
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
                            reserve-keyword
+                           size="medium"
                            @change="changeCloudZone(form.cloudVars.cluster)">
                   <el-option
                           v-for="(item,index) in cloudZones"
@@ -152,6 +161,7 @@
               <el-form-item :label="$t('automatic.zone.storageType')"  prop="cloudVars.storageType">
                 <el-select v-model="form.cloudVars.storageType"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.storages"
@@ -176,6 +186,7 @@
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
+                             size="medium"
                              @change="changeTemplate(form.cloudVars.imageName)">
                     <el-option
                             v-for="(item,index) in cloudTemplates"
@@ -188,6 +199,7 @@
                 <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
+                             size="medium"
                              reserve-keyword>
                     <el-option
                             v-for="(item,index) in credentials"
@@ -203,6 +215,7 @@
                             prop="cloudVars.securityGroup">
                 <el-select v-model="form.cloudVars.securityGroup"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.securityGroups"
@@ -216,6 +229,7 @@
                 <el-select v-model="form.cloudVars.network"
                            filterable
                            reserve-keyword
+                           size="medium"
                            @change="changeNetwork(form.cloudVars.network)">
                   <el-option
                           v-for="(item,index) in cloudZone.networkList"
@@ -228,6 +242,7 @@
               <el-form-item :label="$t('automatic.zone.ip_type')" prop="cloudVars.ipType">
                 <el-select v-model="form.cloudVars.ipType"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.ipTypes"
@@ -241,6 +256,7 @@
                             v-if="form.cloudVars.ipType==='private'">
                 <el-select v-model="form.cloudVars.subnet"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in subnetList"
@@ -255,6 +271,7 @@
                             v-if="form.cloudVars.ipType==='floating'">
                 <el-select v-model="form.cloudVars.floatingNetwork"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudZone.floatingNetworkList"
@@ -267,6 +284,7 @@
               <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in ipPools"
@@ -282,6 +300,7 @@
               <el-form-item :label="$t('automatic.zone.cluster')"  prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
+                           size="medium"
                            reserve-keyword
                            @change="changeCloudZone(form.cloudVars.cluster)">
                   <el-option
@@ -296,6 +315,7 @@
               <el-form-item :label="$t('automatic.zone.datastore')"  prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
+                           size="medium"
                            filterable
                            reserve-keyword>
                   <el-option
@@ -340,6 +360,7 @@
                   <el-select v-model="form.cloudVars.imageName"
                              filterable
                              reserve-keyword
+                             size="medium"
                              @change="changeTemplate(form.cloudVars.imageName)">
                     <el-option
                             v-for="(item,index) in cloudZone.templates"
@@ -352,6 +373,7 @@
                 <el-form-item :label="$t('credential.credential')"  prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable
+                             size="medium"
                              reserve-keyword>
                     <el-option
                             v-for="(item,index) in credentials"
@@ -367,6 +389,7 @@
                 <el-select v-model="form.cloudVars.switch"
                            filterable
                            reserve-keyword
+                           size="medium"
                            @change="changeSwitch(form.cloudVars.switch)">
                   <el-option
                           v-for="(item,index) in cloudZone.switchs"
@@ -379,6 +402,7 @@
               <el-form-item :label="$t('automatic.zone.portgroup')"  prop="cloudVars.portgroup">
                 <el-select v-model="form.cloudVars.portgroup"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in portgroups"
@@ -391,6 +415,7 @@
               <el-form-item :label="$t('automatic.ip_pool.name')"  prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
                            filterable
+                           size="medium"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in ipPools"
