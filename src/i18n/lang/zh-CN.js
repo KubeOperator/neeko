@@ -448,10 +448,9 @@ const message = {
         memory_request: "Memory 预留(Mb)",
         trace: "跟踪抽样比例(%)",
         gateways_type: "网关服务类型",
-        enable_istio: "启用 ISTIO",
-        disable_istio: "禁用 ISTIO",
+        disable_istio: "禁用 Istio",
         resave: "重新保存",
-        ensure_disable_istio: "是否确认禁用集群 istio？",
+        ensure_disable_istio: "是否确认禁用集群 Istio？",
       },
       backup: {
         backup_strategy: "备份策略",

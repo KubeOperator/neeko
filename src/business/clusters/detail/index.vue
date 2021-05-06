@@ -14,7 +14,7 @@
       <el-menu-item v-if="isLokiOn" :index="'/clusters/detail/'+project+'/'+name+'/loki'">{{$t('cluster.detail.tag.log')}}
       </el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/tool'">{{$t('cluster.detail.tag.tool')}}</el-menu-item>
-      <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/istio'">ISTIO</el-menu-item>
+      <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/istio'">Istio</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.tag.backup')}}</el-menu-item>
       <el-menu-item v-if="hasLicense" :index="'/clusters/detail/'+project+'/'+name+'/f5'">F5</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/security'">
