@@ -36,7 +36,7 @@
               </span>
             </div>
             <div v-if="tool.status === 'Terminating'">
-              <span style="float:right; margin: 12px">{{$t('commons.status.Terminating')}}
+              <span style="float:right; margin: 12px">{{$t('commons.status.terminating')}}
                 <i class="el-icon-loading"></i>
               </span>
             </div>

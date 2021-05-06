@@ -69,7 +69,7 @@
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
       <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="80px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
-          <el-input style="width: 80%" v-model="createForm.increase" type="number" min="1" clearable />
+          <el-input-number style="width: 80%" v-model.number="createForm.increase" clearable />
         </el-form-item>
 
         <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')">

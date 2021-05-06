@@ -402,7 +402,7 @@ export default {
       }, 10000)
     },
   },
-  created() {
+  mounted() {
     this.search()
     this.polling()
   },
