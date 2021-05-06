@@ -58,6 +58,12 @@ const PasswordRule = {
   trigger: "blur"
 }
 
+const LengthRule = {
+  min: 1,
+  max: 30,
+  message: this.$t("commons.validate.limit", [1, 30]),
+  trigger: "blur"
+}
 export default {
-  NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule
+  NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule, LengthRule
 }
