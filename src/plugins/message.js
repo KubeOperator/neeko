@@ -2,7 +2,7 @@ import {MessageBox, Message} from 'element-ui';
 import i18n from "@/i18n";
 
 export const $alert = (message, callback, options) => {
-  let title = i18n.t("common.message_box.alert");
+  let title = i18n.t("commons.message_box.alert");
   MessageBox.alert(message, title, options).then(() => {
     callback();
   });
@@ -10,12 +10,12 @@ export const $alert = (message, callback, options) => {
 
 export const $confirm = (message, callback, options = {}) => {
   let defaultOptions = {
-    confirmButtonText: i18n.t("common.button.ok"),
-    cancelButtonText: i18n.t("common.button.cancel"),
+    confirmButtonText: i18n.t("commons.button.ok"),
+    cancelButtonText: i18n.t("commons.button.cancel"),
     type: 'warning',
     ...options
   }
-  let title = i18n.t("common.message_box.confirm");
+  let title = i18n.t("commons.message_box.confirm");
   MessageBox.confirm(message, title, defaultOptions).then(() => {
     callback();
   });

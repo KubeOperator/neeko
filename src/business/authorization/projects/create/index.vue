@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{name:'ProjectAuthorizationList'}">
+  <layout-content :header="$t('commons.button.create')" :back-to="{name:'ProjectAuthorizationList'}" v-loading="loading">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -39,7 +39,8 @@ export default {
       rules: {
         name: [Rule.NameRule, Rule.LengthRule],
         description: [Rule.LengthRule]
-      }
+      },
+      loading:false
     }
   },
   methods: {
@@ -48,10 +49,12 @@ export default {
         if (!valid) {
           return false
         }
+        this.loading = true
         createProject({
           name: this.form.name,
           description: this.form.description,
         }).then(() => {
+          this.loading = false
           this.$message(
             {
               type: "success",
@@ -62,6 +65,8 @@ export default {
             name: "ProjectAuthorizationList",
             params: { expendType: "PROJECT", expendName: this.form.name }
           })
+        }).finally(()=>{
+          this.loading = false
         })
       })
     },

@@ -82,12 +82,12 @@
                     <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
                   </el-form-item>
                   <el-form-item :label="$t('cluster.creation.max_node_pod_num')" prop="maxNodePodNum">
-                    <el-select filterable style="width: 100%" v-model.number="form.maxNodePodNum" clearable>
+                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxNodePodNum" clearable>
                       <el-option v-for="item of podMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t('cluster.creation.max_cluster_service_num')" prop="maxClusterServiceNum">
-                    <el-select filterable style="width: 100%" v-model.number="form.maxClusterServiceNum" clearable>
+                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxClusterServiceNum" clearable>
                       <el-option v-for="item of serviceMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
                   </el-form-item>
@@ -262,7 +262,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                    <el-input v-model="form.workerAmount" clearable></el-input>
+                    <el-input-number v-model.number="form.workerAmount" clearable></el-input-number>
                   </el-form-item>
                 </el-card>
               </el-scrollbar>
@@ -334,7 +334,9 @@
                     <el-col :span="6">
                       <ul>{{form.networkInterface}}</ul>
                       <ul>{{form.networkType}}</ul>
-                      <ul>{{form.flannelBackend}}</ul>
+                      <ul v-if="form.networkType !== 'calico'">{{form.flannelBackend}}</ul>
+                      <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'off'">bgp</ul>
+                      <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'Always'">ipip</ul>
                     </el-col>
                   </el-row>
 
@@ -348,7 +350,8 @@
                     <el-col :span="6">
                       <ul>{{form.helmVersion}}</ul>
                       <ul>{{form.ingressControllerType}}</ul>
-                      <ul>{{form.supportGpu}}</ul>
+                      <ul v-if="form.supportGpu === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.supportGpu === 'disable'">{{$t ('commons.button.disable')}}</ul>
                     </el-col>
                   </el-row>
 
@@ -449,6 +452,7 @@ export default {
         maxNodePodNum: [Rule.RequiredRule],
         maxClusterServiceNum: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
+        enableDnsCache: [Rule.RequiredRule],
         kubernetesAudit: [Rule.RequiredRule],
         networkType: [Rule.RequiredRule],
         flannelBackend: [Rule.RequiredRule],
@@ -458,7 +462,7 @@ export default {
         ingressControllerType: [Rule.RequiredRule],
         supportGpu: [Rule.RequiredRule],
         plan: [Rule.RequiredRule],
-        workerAmount: [Rule.RequiredRule],
+        workerAmount: [Rule.NumberRule],
         masters: [Rule.RequiredRule],
         workers: [Rule.RequiredRule],
       },
@@ -788,6 +792,7 @@ export default {
     this.loadPlan()
     this.loadProject()
     this.loadVersion()
+    this.onPart1Change()
   },
 }
 </script>
@@ -795,5 +800,8 @@ export default {
 .example {
   height: 500px;
   margin: 1% 10%;
+  ul {
+    height: 20px;
+  }
 }
 </style>

@@ -69,7 +69,7 @@
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
       <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="80px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
-          <el-input style="width: 80%" v-model="createForm.increase" type="number" min="1" clearable />
+          <el-input-number style="width: 80%" v-model.number="createForm.increase" clearable />
         </el-form-item>
 
         <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')">
@@ -148,15 +148,15 @@
             <span style="margin-top: 30px">{{$t('cluster.detail.node.status')}}</span>
             <div align="center" style="margin-top: 15px">
               <el-table :data="detaiInfo.status.conditions" border style="width: 90%">
-                <el-table-column prop="type" label="Type" />
-                <el-table-column prop="status" label="Status" />
-                <el-table-column prop="lastTransitionTime" label="Time">
+                <el-table-column prop="type" min-width="80" show-overflow-tooltip label="Type" />
+                <el-table-column prop="status" min-width="50" label="Status" />
+                <el-table-column prop="lastTransitionTime" min-width="100" label="Time">
                   <template v-slot:default="{row}">
                     {{ row.lastTransitionTime | datetimeFormat }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="reason" label="Reason" />
-                <el-table-column prop="message" label="Message" />
+                <el-table-column prop="reason" show-overflow-tooltip min-width="100" label="Reason" />
+                <el-table-column prop="message" show-overflow-tooltip min-width="100" label="Message" />
               </el-table>
             </div>
           </div>

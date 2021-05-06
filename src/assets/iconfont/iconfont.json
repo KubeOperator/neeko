@@ -6,6 +6,13 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "923716",
+      "name": "lock h5",
+      "font_class": "lock",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
       "icon_id": "4720923",
       "name": "更改密码",
       "font_class": "genggaimima",

@@ -61,7 +61,7 @@ export default {
         projectName: "",
         clusterName: "",
       },
-      permission:""
+      permission: ""
     }
   },
   methods: {
@@ -75,6 +75,7 @@ export default {
       this.permission = roles[0]
     },
     getTree () {
+      this.getRole()
       this.loading = true
       getResourceTree().then(data => {
         this.loading = false
@@ -82,11 +83,11 @@ export default {
           this.resources[0].children = data
         } else {
           this.resources = data
-          this.authObj.type ='PROJECT'
-          this.expendType = 'PROJECT'
+          this.authObj.type = "PROJECT"
+          this.expendType = "PROJECT"
           this.expendName = data[0].label
         }
-        if (this.expendName !== undefined && this.expendType !== undefined) {
+        if (this.authObj.type !== "PROJECT_LIST" && this.expendName !== undefined && this.expendType !== undefined) {
           this.setParam(this.expendType, this.expendName)
           this.getExpendItem(data)
         }
@@ -137,7 +138,6 @@ export default {
   },
   watch: {},
   created () {
-    this.getRole()
     this.getTree()
   },
 }

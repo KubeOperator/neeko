@@ -80,7 +80,7 @@ const message = {
       email: "邮箱格式不正确",
       common_name_help: "支持小写英文、数字和-",
       ip_range_error: "IP范围错误",
-      subnet_error: "子网错误"
+      subnet_error: "子网错误",
     },
     search: {
       name: "",
@@ -163,9 +163,9 @@ const message = {
     expires: "认证信息已过期，请重新登录",
     captcha: "验证码",
     forget_password: "忘记密码",
-    reset_password: "重制密码",
+    reset_password: "重置密码",
     email: "邮箱",
-    reset_message: "重制密码成功！请查看邮件"
+    reset_message: "重置密码成功！请查看邮件"
   },
   theme: {
     systemName: "登录页面标题",

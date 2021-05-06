@@ -26,7 +26,7 @@
 import {deleteCredentials, searchCredential} from "@/api/credentials";
 import ComplexTable from "@/components/complex-table";
 export default {
-  name: "Credential",
+  name: "CredentialList",
   components: {
     ComplexTable
   },
@@ -70,7 +70,7 @@ export default {
       },
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0,
       },
       data: [],
