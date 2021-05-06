@@ -665,6 +665,7 @@ const message = {
       nfs_password: "NFS服务器密码",
       old_datastores: "已选存储",
       new_datastores: "新增存储",
+      initializing:"初始化中"
     },
     plan: {
       name: "部署计划",
