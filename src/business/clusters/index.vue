@@ -23,9 +23,9 @@
         </template>
       </el-table-column>
       <el-table-column :label="$t('cluster.project')" min-width="100" prop="projectName" fix />
-      <el-table-column :label="$t('cluster.version')" min-width="100" prop="spec.version" fix />
-      <el-table-column :label="$t('cluster.node_size')" min-width="60" prop="nodeSize" />
-      <el-table-column :label="$t('commons.table.status')" min-width="80" prop="status">
+      <el-table-column :label="$t('cluster.version')" min-width="80" prop="spec.version" fix />
+      <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
+      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" :other="row.provider" @detail="getStatus(row)">
           </ko-status>
@@ -402,7 +402,7 @@ export default {
       }, 10000)
     },
   },
-  created() {
+  mounted() {
     this.search()
     this.polling()
   },

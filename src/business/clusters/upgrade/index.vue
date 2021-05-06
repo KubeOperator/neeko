@@ -1,11 +1,12 @@
 <template>
   <layout-content>
-    <el-row type="flex" justify="center">
-      <el-col :span="16">
+    <el-row>
+      <el-col :span="4"><br /></el-col>
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form :model="form" ref="form" :rules="rules" label-width="120px">
             <el-form-item :label="$t('cluster.version')" prop="version">
-              <el-select style="width: 80%" @change="changeUpgradeVersions" v-model="form.version" clearable>
+              <el-select style="width: 100%" @change="changeUpgradeVersions" v-model="form.version" clearable>
                 <el-option v-for="item of upgradeVersions" :key="item" :value="item">{{ item }}</el-option>
               </el-select>
               <div v-if="upgradeVersions.length === 0"><span class="input-help">{{
@@ -14,7 +15,7 @@
             </el-form-item>
             <el-form-item>
               <div v-if="newManifest.coreVars.length !== 0 && oldManifest.coreVars !== 0">
-                <table style="width: 80%;" class="myTable">
+                <table style="width: 100%;" class="myTable">
                   <tr>
                     <td style="width: 40%">{{ $t("commons.table.name") }}</td>
                     <td style="width: 30%">{{ $t("cluster.upgrade.current_version") }}</td>
@@ -43,7 +44,7 @@
                 </table>
               </div>
             </el-form-item>
-            <el-form-item style="margin-top: 20px">
+            <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
               <el-button v-loading="loadding" @click="onSubmit">{{ $t("commons.button.ok") }}</el-button>
             </el-form-item>
