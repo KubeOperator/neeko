@@ -14,8 +14,13 @@
             <el-form-item :label="$t('host.port')" prop="port">
               <el-input-number style="width:20%" :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
+            <el-form-item :label="$t('route.project')" prop="project">
+              <el-select style="width:100%" v-model="form.project" clearable filterable>
+                <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
+              </el-select>
+            </el-form-item>
 
-            <el-form-item :label="$t('credential.credential')">
+            <el-form-item :label="$t('credential.credential')" required>
               <el-radio-group v-model="credentialType">
                 <el-radio label="exists">{{$t('host.exists_credential')}}</el-radio>
                 <el-radio label="new">{{$t('host.new_credential')}}</el-radio>
@@ -62,6 +67,7 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { createHost } from "@/api/hosts"
 import { listCredentialAll } from "@/api/credentials"
+import { allProjects } from "@/api/projects"
 import Rule from "@/utils/rules"
 
 export default {
@@ -87,6 +93,7 @@ export default {
         name: [Rule.RequiredRule],
         ip: [Rule.RequiredRule],
         port: [Rule.NumberRule],
+        project: [Rule.RequiredRule],
         credentialId: [Rule.RequiredRule],
         credential: {
           username: [Rule.RequiredRule],
@@ -96,6 +103,7 @@ export default {
         },
       },
       credentialList: [],
+      projectList: [],
     }
   },
   methods: {
@@ -110,12 +118,18 @@ export default {
         this.credentialList = data.items
       })
     },
+    getProjects() {
+      allProjects().then((data) => {
+        this.projectList = data.items
+      })
+    },
     onCancel() {
       this.$router.push({ name: "HostList" })
     },
   },
   created() {
     this.getCredentials()
+    this.getProjects()
   },
 }
 </script>
