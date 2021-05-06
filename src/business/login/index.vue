@@ -41,9 +41,9 @@
                 {{ $t("commons.button.login") }}
               </el-button>
             </div>
-            <div class="login-msg">
-              {{ msg }}
-            </div>
+<!--            <div class="login-msg">-->
+<!--              {{ msg }}-->
+<!--            </div>-->
             <div class="forget-password">
               <a style="color: #999999;text-decoration-line: underline" @click="forgetPassword">{{ $t("login.forget_password") }}?</a>
             </div>
