@@ -80,7 +80,7 @@ const message = {
       email: "邮箱格式不正确",
       common_name_help: "支持小写英文、数字和-",
       ip_range_error: "IP范围错误",
-      subnet_error: "子网错误"
+      subnet_error: "子网错误",
     },
     search: {
       name: "",

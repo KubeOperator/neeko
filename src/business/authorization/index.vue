@@ -61,7 +61,7 @@ export default {
         projectName: "",
         clusterName: "",
       },
-      permission:""
+      permission: ""
     }
   },
   methods: {
@@ -82,11 +82,11 @@ export default {
           this.resources[0].children = data
         } else {
           this.resources = data
-          this.authObj.type ='PROJECT'
-          this.expendType = 'PROJECT'
+          this.authObj.type = "PROJECT"
+          this.expendType = "PROJECT"
           this.expendName = data[0].label
         }
-        if (this.expendName !== undefined && this.expendType !== undefined) {
+        if (this.authObj.type !== "PROJECT_LIST" && this.expendName !== undefined && this.expendType !== undefined) {
           this.setParam(this.expendType, this.expendName)
           this.getExpendItem(data)
         }
