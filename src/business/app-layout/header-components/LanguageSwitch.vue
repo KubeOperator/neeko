@@ -43,10 +43,10 @@ export default {
           this.setLanguage('zh-CN');
           break
         case 'en-US':
-          this.setLanguage('zh-CN');
+          this.setLanguage('en-US');
           break
         default:
-          window.open("/swagger/index.html", "_blank");
+          this.setLanguage('zh-CN');
           break
       }
     }

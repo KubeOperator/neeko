@@ -31,7 +31,7 @@ const Automatic = {
       }
     },
     {
-      path: "regions/edit",
+      path: "regions/edit/:name",
       hidden: true,
       name: "RegionEdit",
       props: true,
@@ -61,7 +61,7 @@ const Automatic = {
       }
     },
     {
-      path: "zones/edit/:/name",
+      path: "zones/edit/:name",
       props: true,
       hidden: true,
       component: () => import("@/business/automatic/zones/edit"),
