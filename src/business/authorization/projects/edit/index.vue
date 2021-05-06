@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.edit')" :back-to="{name:'ProjectAuthorizationList'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
@@ -26,6 +26,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import {updateProject, getProject} from "@/api/projects"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ProjectEdit",
@@ -37,7 +38,9 @@ export default {
         name: "",
         description: ""
       },
-      rules: {}
+      rules: {
+        description: [Rule.LengthRule]
+      }
     }
   },
   methods: {
