@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" style="width: 50%;background: #FFFFFF" >
+  <el-card class="box-card" style="width: 50%;background: #FFFFFF" v-loading="loading" >
     <div slot="header" class="clearfix" >
       <span >{{$t('setting.table.license.title')}}</span>
     </div>
@@ -47,16 +47,17 @@ export default {
   components: {DetailCard},
   data() {
     return {
-        form: {
-          message: '',
-          status: '',
-          license: {
-            corporation: '',
-            product: '',
-            edition: '',
-            count: '',
-            expired: ''
-          }
+      loading: false,
+      form: {
+        message: '',
+        status: '',
+        license: {
+          corporation: '',
+          product: '',
+          edition: '',
+          count: '',
+          expired: ''
+        }
         },
         dialogVisible: false,
         licenseData: {},
@@ -65,9 +66,13 @@ export default {
       }
   },
   created() {
+    this.loading = true
     getLicense().then( data => {
+      this.loading = false
       this.form.license = data.license,
       this.form.status = data.status
+    }).finally(() => {
+      this.loading = false
     })
   },
   methods: {
