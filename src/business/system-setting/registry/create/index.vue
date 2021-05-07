@@ -27,6 +27,7 @@
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname" required>
               <el-input placeholder="172.16.10.100" v-model="form.hostname"></el-input>
+              <div><span class="input-help">{{$t('setting.table.registry.hostname_help')}}</span></div>
             </el-form-item>
             <div style="float: right">
               <el-form-item>
