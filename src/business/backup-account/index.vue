@@ -12,9 +12,14 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('backup_account.table.name')" mix-width="80" fix prop="name"/>
-      <el-table-column :label="$t('backup_account.table.bucket')" mix-width="30" prop="bucket"/>
-      <el-table-column :label="$t('backup_account.table.type')" min-width="100" prop="credentialVars.type">
+      <el-table-column :label="$t('backup_account.table.name')" fix prop="name"/>
+      <el-table-column :label="$t('backup_account.table.project')">
+        <template v-slot:default="{row}">
+          <span v-for="(zone,index) in row.projects" :key="index">{{ zone }},</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('backup_account.table.bucket')"  prop="bucket"/>
+      <el-table-column :label="$t('backup_account.table.type')"  prop="credentialVars.type">
         <template v-slot:default="{row}">
           <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconoss"></use>
@@ -31,7 +36,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('backup_account.table.status')" min-width="100" prop="status">
+      <el-table-column :label="$t('backup_account.table.status')"  prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status === 'VALID'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -48,7 +53,7 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
+      <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
   </layout-content>
 </template>
@@ -114,7 +119,7 @@ export default {
             ],
             multiple: true
           },
-          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
@@ -123,6 +128,7 @@ export default {
         total: 0,
       },
       data: [],
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {

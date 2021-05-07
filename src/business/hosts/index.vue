@@ -56,7 +56,7 @@
         </template>
       </el-table-column>
 
-      <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
+      <fu-table-operations v-if="isAdmin" fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
@@ -167,6 +167,7 @@ import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { deleteProjectResource } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
+import {checkPermission} from "@/utils/permisstion"
 
 export default {
   name: "HostList",
@@ -206,10 +207,11 @@ export default {
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ],
       },
       loading: false,
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {

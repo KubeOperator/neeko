@@ -3,7 +3,6 @@
                   v-loading="loading">
     <complex-table
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             @search="search"
@@ -36,10 +35,17 @@
               v-slot:default="{ row }">
         <span v-for="zoneName in row.zones" v-bind:key="zoneName">{{ zoneName }},</span>
       </el-table-column>
+      <el-table-column
+              v-if="isAdmin"
+              :label="$t('project.project')"
+              mix-width="100"
+              v-slot:default="{ row }">
+        <span v-for="name in row.projects" v-bind:key="name">{{ name }},</span>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
+      <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
 
@@ -92,7 +98,6 @@ export default {
   data () {
     return {
       loading: false,
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"),
@@ -120,7 +125,7 @@ export default {
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
-          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" }
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" }
         ]
       },
       paginationConfig: {
@@ -134,7 +139,8 @@ export default {
         zones: [],
         planVars: {}
       },
-      openDetail: false
+      openDetail: false,
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {
@@ -183,7 +189,7 @@ export default {
     openDetailPage (row) {
       this.openDetail = true
       this.item = row
-    }
+    },
   },
   created () {
     this.search()
