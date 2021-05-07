@@ -78,11 +78,7 @@ export default {
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               }
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -100,11 +96,7 @@ export default {
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
               }
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }

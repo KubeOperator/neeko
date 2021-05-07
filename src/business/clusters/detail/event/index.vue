@@ -102,9 +102,8 @@ export default {
             this.$message({ type: "success", message: this.$t("cluster.detail.event.disable_npd_success") })
           }
         },
-        (error) => {
+        () => {
           this.isNPDon = op === "delete"
-          this.$message({ type: "error", message: error })
         }
       )
     },

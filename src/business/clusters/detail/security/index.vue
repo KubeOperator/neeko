@@ -112,11 +112,7 @@ export default {
           () => {
             this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
             this.search()
-          },
-          (error) => {
-            this.$message({ type: "error", message: error })
-          }
-        )
+          })
       })
     },
     onDelete(row) {
@@ -129,11 +125,7 @@ export default {
           () => {
             this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
             this.search()
-          },
-          (error) => {
-            this.$message({ type: "error", message: error })
-          }
-        )
+          })
       })
     },
     cisDetail(row) {

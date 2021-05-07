@@ -118,8 +118,7 @@ export default {
           this.dialogCreateVisible = false
           this.search()
         },
-        (error) => {
-          this.$message({ type: "error", message: error })
+        () => {
           this.dialogCreateVisible = false
         }
       )

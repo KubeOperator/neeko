@@ -323,7 +323,12 @@ export default {
       this.dialogCreateVisible = true
       if (this.provider === "bareMetal") {
         listClusterResourcesAll(this.projectName, this.clusterName, "HOST").then((data) => {
-          this.hosts = data.items
+          this.hosts = []
+          data.items.forEach((item) => {
+            if (item.status === "Running" && item.clusterId === "") {
+              this.hosts.push(item)
+            }
+          })
         })
       }
     },
@@ -346,10 +351,8 @@ export default {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.dialogCreateVisible = false
               this.search()
-              this.polling()
             },
-            (error) => {
-              this.$message({ type: "error", message: error })
+            () => {
               this.dialogCreateVisible = false
             }
           )
@@ -375,7 +378,6 @@ export default {
         Promise.all(ps)
           .then(() => {
             this.search()
-            this.polling()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.delete_success"),
@@ -412,8 +414,7 @@ export default {
         }
         this.search()
       }),
-        (error) => {
-          this.$message({ type: "error", message: error })
+        () => {
           this.dialogCordonVisible = false
         }
     },

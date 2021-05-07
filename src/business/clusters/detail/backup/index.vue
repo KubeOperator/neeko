@@ -225,11 +225,7 @@ export default {
           startBackup(backupFile).then(
             () => {
               this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -246,11 +242,7 @@ export default {
             () => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.getBackupStrategy()
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -275,11 +267,7 @@ export default {
       localRestore(formData).then(
         () => {
           this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
-        }
-      )
+        })
     },
     restoreByFiles (row) {
       this.$confirm(

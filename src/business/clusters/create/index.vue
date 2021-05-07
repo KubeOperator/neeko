@@ -297,14 +297,12 @@
                       <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
                       <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
-                      <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.clusterCidr}}</ul>
                       <ul>{{form.maxNodePodNum}}</ul>
                       <ul>{{form.maxClusterServiceNum}}</ul>
                       <ul>{{form.kubeProxyMode}}</ul>
-                      <ul>{{form.yumOperate}}</ul>
                     </el-col>
                   </el-row>
 
