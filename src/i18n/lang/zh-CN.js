@@ -774,6 +774,7 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
+        hostname_help: "默认为部署 KubeOperator 的服务器 IP，将使用该 IP 来访问 nexus 仓库"
       },
       mail: {
         smtp: "SMTP 地址",

@@ -118,6 +118,7 @@ const SystemSetting = {
     },{
       name: "CredentialCreate",
       path: "credential/create",
+      props: true,
       hidden: true,
       component: () => import('@/business/system-setting/credential/create'),
       meta: {
