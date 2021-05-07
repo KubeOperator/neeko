@@ -176,7 +176,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status.status !== "Failed"
+            return row.status !== "Running" && row.status !== "Failed"
           },
         },
       ],

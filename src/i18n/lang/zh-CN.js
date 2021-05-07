@@ -318,7 +318,7 @@ const message = {
         log: "日志",
         tool: "工具",
         backup: "备份",
-        security: "CSI扫描",
+        security: "CIS扫描",
         grade: "集群评分",
       },
       overview: {
