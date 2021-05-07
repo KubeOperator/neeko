@@ -5,7 +5,7 @@
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
-          <el-button size="small" @click="dialogImportVisible = true">{{ $t("commons.button.batch_import") }}</el-button>
+          <el-button size="small" @click="onImport()">{{ $t("commons.button.batch_import") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
@@ -139,7 +139,7 @@
         <el-button type="text" @click="download()">{{ $t("host.template_download") }}</el-button>
         <el-form-item>
           <el-row type="flex" justify="center">
-            <el-upload :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
+            <el-upload ref="my-upload" :on-change="onUploadChange" action="" :auto-upload="false" class="upload-demo" drag>
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">{{$t('commons.form.file_upload_help')}}</div>
               <div class="el-upload__tip" slot="tip">
@@ -165,6 +165,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
+import { deleteProjectResource } from "@/api/project-resource"
 
 export default {
   name: "HostList",
@@ -176,7 +177,7 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           click: (row) => {
-            this.onDelete(row)
+            this.onDelete(row.name)
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status !== "Failed"
@@ -233,6 +234,12 @@ export default {
     onUploadChange(file) {
       this.file = file
     },
+    onImport() {
+      this.dialogImportVisible = true
+      if (this.$refs["my-upload"]) {
+        this.$refs["my-upload"].clearFiles()
+      }
+    },
     download() {
       window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
     },
@@ -263,10 +270,11 @@ export default {
       importHosts(formData).then(
         () => {
           this.$message({ type: "success", message: this.$t("commons.msg.import_success") })
+          this.search()
           this.dialogImportVisible = false
         },
-        (error) => {
-          this.$message({ type: "error", message: error })
+        () => {
+          this.search()
           this.dialogImportVisible = false
         }
       )
@@ -299,7 +307,23 @@ export default {
       })
     },
     onRevoke() {
-      
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        const ps = []
+        for (const item of this.hostSelections) {
+          ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
+        }
+        Promise.all(ps).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.search()
+        })
+      })
     },
     search(condition) {
       this.loading = true
