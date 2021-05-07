@@ -79,7 +79,7 @@ const message = {
       password_help: "有效密码:8-30位,英文字母+数字+特殊字符(可选)",
       number_limit: "请输入正确的数字",
       email: "邮箱格式不正确",
-      common_name_help: "支持小写英文、数字和-",
+      common_name_help: "支持中文小写英文、数字和-",
       ip_range_error: "IP范围错误",
       subnet_error: "子网错误",
     },
