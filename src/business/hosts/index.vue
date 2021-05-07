@@ -9,6 +9,9 @@
           <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
+          <el-button :disabled="hostSelections.length<1" size="small" @click="onRevoke()">
+            {{ $t("commons.button.revoke_authorize") }}
+          </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
@@ -294,6 +297,9 @@ export default {
             this.search()
           })
       })
+    },
+    onRevoke() {
+      
     },
     search(condition) {
       this.loading = true

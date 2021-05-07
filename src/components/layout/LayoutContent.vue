@@ -50,7 +50,7 @@ export default {
     height: 100%;
     padding: 20px;
     border-radius: 4px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 14%);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .14);
     box-sizing: border-box;
 
     .content-container__header {
