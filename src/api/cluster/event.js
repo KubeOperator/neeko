@@ -2,7 +2,7 @@ import {get, post} from "@/plugins/request"
 
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
 const eventByNamespaceUrl = "api/v1/namespaces/{namespace}/events"
-const eventsUrl = "events"
+const eventsUrl = "clusters/events"
 const limit = 10
 
 export function listEvents(clusterName, continueToken, namespace) {
@@ -20,6 +20,6 @@ export function listEvents(clusterName, continueToken, namespace) {
 }
 
 export function changeNpd(clusterName, operation) {
-    const itemUrl = `${eventsUrl}/npd/${operation}/` + clusterName + '/';
+    const itemUrl = `${eventsUrl}/npd/${operation}/` + clusterName
     return post(itemUrl, {});
 }
