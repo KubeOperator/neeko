@@ -108,9 +108,15 @@ export default {
   },
   methods: {
     onSubmit() {
-      createHost(this.form).then(() => {
-        this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-        this.$router.push({ name: "HostList" })
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          createHost(this.form).then(() => {
+            this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+            this.$router.push({ name: "HostList" })
+          })
+        } else {
+          return false
+        }
       })
     },
     getCredentials() {

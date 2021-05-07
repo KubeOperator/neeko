@@ -154,7 +154,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogImportVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button :disabled="isUploadDisable" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
   </layout-content>
@@ -166,6 +166,7 @@ import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { deleteProjectResource } from "@/api/project-resource"
+import { listRegistryAll } from "@/api/system-setting"
 
 export default {
   name: "HostList",
@@ -198,6 +199,7 @@ export default {
       syncHostList: [],
       dialogSyncVisible: false,
       dialogImportVisible: false,
+      isUploadDisable: true,
       file: {},
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
@@ -212,7 +214,13 @@ export default {
   },
   methods: {
     create() {
-      this.$router.push({ name: "HostCreate" })
+      listRegistryAll().then((data) => {
+        if (data.items !== null) {
+          this.$router.push({ name: "HostCreate" })
+        } else {
+          this.$message({ type: "info", message: this.$t("cluster.creation.repo_err") })
+        }
+      })
     },
     sync() {
       this.dialogSyncVisible = true
@@ -232,13 +240,21 @@ export default {
       })
     },
     onUploadChange(file) {
+      this.isUploadDisable = false
       this.file = file
     },
     onImport() {
-      this.dialogImportVisible = true
-      if (this.$refs["my-upload"]) {
-        this.$refs["my-upload"].clearFiles()
-      }
+      listRegistryAll().then((data) => {
+        if (data.items !== null) {
+          this.dialogImportVisible = true
+          this.isUploadDisable = true
+          if (this.$refs["my-upload"]) {
+            this.$refs["my-upload"].clearFiles()
+          }
+        } else {
+          this.$message({ type: "info", message: this.$t("cluster.creation.repo_err") })
+        }
+      })
     },
     download() {
       window.open(process.env.VUE_APP_BASE_API + "/hosts/template")

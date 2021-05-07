@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('cluster.cluster_detail')" :back-to="{ name: 'ClusterList' }">
-    <el-menu router :default-active="$route.path" mode="horizontal">
+    <el-menu @select="search" router :default-active="$route.path" mode="horizontal">
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/node'">{{$t('cluster.detail.tag.node')}}</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/namespace'">{{$t('cluster.detail.tag.namespace')}}</el-menu-item>
@@ -65,6 +65,7 @@ export default {
     this.$store.dispatch("license/getLicense").then((data) => {
       this.hasLicense = data.status === "valid"
     })
+    this.search()
   },
 }
 </script>
