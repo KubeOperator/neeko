@@ -758,7 +758,8 @@ const message = {
       port: "端口",
       username: "用户名",
       password: "密码",
-      path: "路径"
+      path: "路径",
+      project: "项目"
     }
   },
   setting: {

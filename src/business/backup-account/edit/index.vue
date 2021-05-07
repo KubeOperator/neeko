@@ -7,11 +7,9 @@
           <el-form ref="form" v-loading="loading" label-position="left"  :model="form" label-width="90px">
             <el-form-item :label="$t('backup_account.table.name')" aria-readonly="true" required>
               <span>{{ form.name}}</span>
-<!--              <el-input v-model="form.name" readonly></el-input>-->
             </el-form-item>
             <el-form-item :label="$t('backup_account.table.type')" aria-readonly="true" required>
               <span>{{ form.type}}</span>
-<!--              <el-input v-model="form.type" readonly></el-input>-->
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey" required>
               <el-input  v-model="form.credentialVars['accessKey']"></el-input>
@@ -46,7 +44,7 @@
                 <el-input v-model="form.credentialVars['address']"></el-input>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.port')" required>
-                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535" label="描述文字"></el-input-number>
+                <el-input-number v-model="form.credentialVars['port']"  :min="0" :max="65535"></el-input-number>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.username')" required>
                 <el-input v-model="form.credentialVars['username']"></el-input>
@@ -59,7 +57,19 @@
               </el-form-item>
             </div>
             <!-- SFTP Option end-->
-
+            <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects" required>
+              <el-select v-model="form.projects"
+                         multiple
+                         filterable
+                         reserve-keyword>
+                <el-option
+                  v-for="(item,index) in projects"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.name">
+                </el-option>
+              </el-select>
+            </el-form-item>
               <div style="float: right">
                 <el-form-item>
                   <el-button v-if="form.type !== 'SFTP'" type="success" plain @click="getBuckets">{{$t('commons.button.getBucket')}}</el-button>
@@ -79,6 +89,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
 import {listBuckets, updateBackupAccounts} from "@/api/backup-account";
+import {allProjects} from "@/api/projects";
 export default {
   components: {
     LayoutContent,
@@ -88,6 +99,7 @@ export default {
   data() {
     return{
       form: {
+        projects: [],
         id: '',
         name: '',
         type: '',
@@ -95,18 +107,21 @@ export default {
         credentialVars: {}
       },
       buckets: [],
-      loading: false
+      loading: false,
+      projects: [],
     }
   },
   methods: {
     update() {
       this.loading = true
+      console.log(3,this.form)
       updateBackupAccounts( this.form.name,{
         id: this.form.id,
         bucket: this.form.bucket,
         credentialVars: this.form.credentialVars,
         name: this.form.name,
-        type: this.form.type
+        type: this.form.type,
+        projects: this.form.projects
       }).then(() => {
         this.loading = false
         this.$message({
@@ -137,6 +152,11 @@ export default {
   },
   created() {
     this.form = this.data
+    console.log(1,this.form)
+    console.log(2,this.data)
+    allProjects().then(res => {
+      this.projects = res.items
+    })
   }
 }
 </script>
