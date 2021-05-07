@@ -7,6 +7,7 @@
           <el-form ref="form" v-loading="loading" :model="form" :rules="rules" label-position="left"  label-width="100px">
             <el-form-item :label="$t('credential.name')" prop="name" required>
               <el-input v-model="form.name"></el-input>
+              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('credential.username')" prop="username" required>
               <el-input v-model="form.username"></el-input>
@@ -57,9 +58,9 @@ export default {
       formLabelWidth: '120px',
       loading: false,
       rules: {
-        name: [Rule.RequiredRule],
+        name: [Rule.NameRule],
         username: [Rule.RequiredRule],
-        password: [Rule.PasswordRule],
+        password: [Rule.RequiredRule],
         privateKey: [Rule.RequiredRule],
       }
     }
