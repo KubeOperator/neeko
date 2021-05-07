@@ -28,13 +28,13 @@
               :label="$t('automatic.region.name')"
               mix-width="100"
               v-slot:default="{ row }">
-        {{ row.regionName }}
+        {{ row.region }}
       </el-table-column>
       <el-table-column
               :label="$t('automatic.zone.name')"
               mix-width="100"
               v-slot:default="{ row }">
-        <span v-for="zoneName in row.zoneNames" v-bind:key="zoneName">{{ zoneName }},</span>
+        <span v-for="zoneName in row.zones" v-bind:key="zoneName">{{ zoneName }},</span>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
@@ -45,18 +45,18 @@
 
       <div style=" text-align: center;">
         <div align="center" style="margin-top: 15px">
-          <table style="width: 90%" class="myTable" >
+          <table style="width: 90%" class="myTable">
             <tr>
               <td>{{ $t("commons.table.name") }}</td>
               <td>{{ item.name }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.region.name") }}</td>
-              <td>{{ item.regionName}}</td>
+              <td>{{ item.region}}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.zone.name") }}</td>
-              <td><span v-for="(zone,index) in item.zoneNames" :key="index">{{ zone }},</span></td>
+              <td><span v-for="(zone,index) in item.zones" :key="index">{{ zone }},</span></td>
             </tr>
             <tr>
               <td>{{ $t("automatic.plan.deploy_template") }}</td>
@@ -95,6 +95,14 @@ export default {
       columns: [],
       buttons: [
         {
+          label: this.$t("commons.button.edit"),
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "PlanEdit", params: { name: row.name } })
+          },
+          disabled: !checkPermission("ADMIN")
+        },
+        {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           click: (row) => {
@@ -123,7 +131,7 @@ export default {
       data: [],
       selects: [],
       item: {
-        zoneNames: [],
+        zones: [],
         planVars: {}
       },
       openDetail: false

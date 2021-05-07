@@ -1,4 +1,4 @@
-import {get, del, post} from "@/plugins/request"
+import {get, del, post, patch} from "@/plugins/request"
 
 const planUrl = "/plans"
 
@@ -20,4 +20,12 @@ export function listVmConfigs (regionName) {
 
 export function createPlan (data) {
   return post(`${planUrl}`, data)
+}
+
+export function getPlanBy (name) {
+  return get(`${planUrl}/${name}`)
+}
+
+export function updatePlanBy (name, data) {
+  return patch(`${planUrl}/${name}`, data)
 }
