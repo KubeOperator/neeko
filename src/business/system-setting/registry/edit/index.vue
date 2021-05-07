@@ -4,7 +4,7 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" v-loading="loading"  :model="form" label-width="80px">
+          <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
               <el-input v-model="form.architecture" readonly></el-input>
             </el-form-item>
@@ -18,7 +18,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.hostname')" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname"  required>
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
             <div style="float: right">
@@ -38,6 +38,8 @@
 <script>
 import {getRegistry, updateRegistry} from "@/api/system-setting";
 import LayoutContent from "@/components/layout/LayoutContent";
+import Rule from "@/utils/rules";
+
 export default {
   components: {
     LayoutContent
@@ -52,6 +54,9 @@ export default {
         protocol: '',
         id: '',
       },
+      rules: {
+        hostname: [Rule.IpRule],
+      },
       protocolOptions: [{
         value: 'http',
       }, {
@@ -62,21 +67,26 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.loading = true
-      updateRegistry(this.arch, {
-        architecture: this.form.architecture,
-        hostname: this.form.hostname,
-        protocol: this.form.protocol,
-        id: this.form.id
-      }).then( () => {
-        this.loading = false
-        this.$message({
-          type: 'success',
-          message: `创建成功`
-        });
-        this.$router.push({name: "Registry"})
-      }).finally(() => {
-        this.loading = false
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.loading = true
+        updateRegistry(this.arch, {
+          architecture: this.form.architecture,
+          hostname: this.form.hostname,
+          protocol: this.form.protocol,
+          id: this.form.id
+        }).then(() => {
+          this.loading = false
+          this.$message({
+            type: 'success',
+            message: this.$t("commons.msg.update_success")
+          });
+          this.$router.push({name: "Registry"})
+        }).finally(() => {
+          this.loading = false
+        })
       })
     },
     onCancel() {

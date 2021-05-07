@@ -61,6 +61,9 @@ export default {
         hostname: '',
         protocol: ''
       },
+      rules: {
+        hostname: [Rule.IpRule],
+      },
       architectureOptions: [{
         value: 'x86_64',
       }, {
@@ -72,48 +75,51 @@ export default {
         value: 'https',
       }],
       formLabelWidth: '120px',
-      rules: {
-        hostname: [Rule.IpRule],
-      },
       loading: false
     }
   },
   methods: {
     onSubmit() {
-      this.loading = true
-      createRegistry({
-        architecture: this.form.architecture,
-        hostname: this.form.hostname,
-        protocol: this.form.protocol
-      }).then(() => {
-        this.loading = false
-        this.$message({
-          type: 'success',
-          message: this.$t("commons.msg.create_success"),
-        });
-        this.$router.push({name: "Registry"})
-      }).finally(() => {
-        this.loading = false
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        this.loading = true
+        createRegistry({
+          architecture: this.form.architecture,
+          hostname: this.form.hostname,
+          protocol: this.form.protocol
+        }).then(() => {
+          this.loading = false
+          this.$message({
+            type: 'success',
+            message: this.$t("commons.msg.create_success"),
+          });
+          this.$router.push({name: "Registry"})
+        }).finally(() => {
+          this.loading = false
+        })
       })
     },
     onCancel() {
       this.$router.push({name: "Registry"})
-    }
-  },
-  created() {
+    },
+    created() {
       this.form.architecture = 'x86_64';
       this.form.protocol = 'http';
+    }
   },
   computed: {
     validateCommit() {
       if (this.form.architecture && this.form.hostname && this.form.protocol) {
         return false
-      }else {
+      } else {
         return true
       }
     }
   }
 }
+
 </script>
 
 <style scoped>
