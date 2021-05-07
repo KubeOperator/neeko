@@ -119,7 +119,7 @@ export default {
             ],
             multiple: true
           },
-          { field: "create_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
