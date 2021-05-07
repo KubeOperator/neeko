@@ -27,8 +27,33 @@
       <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
-          <ko-status :status="row.status" :other="row.provider" @detail="getStatus(row)">
-          </ko-status>
+          <div v-if="row.status ==='Running'">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            {{ $t("commons.status.running") }}
+          </div>
+          <div v-if="row.status === 'Failed'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
+          <div v-if="row.status === 'Initializing'">
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)"> {{ $t("commons.status.initializing") }}</el-link>
+          </div>
+          <div v-if="row.status === 'Upgrading' ">
+            <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
+            <el-link @click="getStatus(row)" type="info"> {{ $t("commons.status.upgrading") }} </el-link>
+          </div>
+          <div v-if="row.status === 'Terminating' && row.provider==='bareMetal' ">
+            <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
+          </div>
+          <div v-if="row.status === 'Terminating' && row.provider==='plan' ">
+            <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
+            <span>{{ $t("commons.status.terminating") }} </span>
+          </div>
+          <div v-if="row.status === 'Creating'">
+            <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column width="150px" :label="$t('commons.table.create_time')">
@@ -39,8 +64,8 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
-    <el-dialog :before-close="closeDialogLog" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div style="height: 400px">
+    <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
+      <div :style="{height: dialogHeight}">
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
           <div>
@@ -103,11 +128,10 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import { getClusterStatus, initCluster, upgradeCluster, openLogger, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
-import KoStatus from "@/components/ko-status"
 
 export default {
   name: "ClusterList",
-  components: { KoStatus, ComplexTable, LayoutContent },
+  components: { ComplexTable, LayoutContent },
   data() {
     return {
       buttons: [
@@ -161,6 +185,7 @@ export default {
 
       // cluster logs
       dialogLogVisible: false,
+      dialogHeight: "400px",
       log: {
         phase: "",
         prePhase: "",
@@ -295,6 +320,7 @@ export default {
 
     // cluster logs
     getStatus(row) {
+      this.dialogHeight = row.status === "Terminating" ? "100px" : "400px"
       this.currentCluster = row
       this.dialogLogVisible = true
       this.clusterName = row.name

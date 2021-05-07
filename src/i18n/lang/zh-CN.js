@@ -39,6 +39,7 @@ const message = {
       submit: "提交",
       refresh: "刷新",
       authorize: "授权",
+      revoke_authorize: "取消授权",
       getBucket: "获取桶",
       update: "更新",
       upload: "上传",

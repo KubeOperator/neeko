@@ -494,10 +494,12 @@ export default {
       let bool
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          const lenMaster = this.form.masters.length
-          if (lenMaster !== 0) {
-            if (lenMaster !== 1 && lenMaster !== 3) {
-              return false
+          if (this.form.masters) {
+            const lenMaster = this.form.masters.length
+            if (lenMaster !== 0) {
+              if (lenMaster !== 1 && lenMaster !== 3) {
+                return false
+              }
             }
           }
           bool = true
