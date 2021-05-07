@@ -79,7 +79,8 @@ const message = {
       password_help: "有效密码:8-30位,英文字母+数字+特殊字符(可选)",
       number_limit: "请输入正确的数字",
       email: "邮箱格式不正确",
-      common_name_help: "支持中文小写英文、数字和-",
+      common_name_help: "小写英文、数字和-",
+      name_help: "中文、大小写英文、数字和-",
       ip_range_error: "IP范围错误",
       subnet_error: "子网错误",
     },
@@ -668,7 +669,7 @@ const message = {
       nfs_password: "NFS服务器密码",
       old_datastores: "已选存储",
       new_datastores: "新增存储",
-      initializing:"初始化中"
+      initializing: "初始化中"
     },
     plan: {
       name: "部署计划",
@@ -846,7 +847,7 @@ const message = {
     edit: "编辑",
     cluster_list: "集群列表",
     selected_clusters: "选择集群",
-    relation_management:"关联管理",
+    relation_management: "关联管理",
     log: "日志"
   }
 }

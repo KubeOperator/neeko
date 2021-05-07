@@ -8,7 +8,7 @@
                    label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
+              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('automatic.region.name')" prop="regionName">
               <el-select v-model="form.regionName"
