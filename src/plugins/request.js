@@ -38,7 +38,7 @@ instance.interceptors.response.use(response => {
   if (error.response) {
     checkAuth(error.response)
     checkPermission(error.response)
-    msg = error.response.data.message || error.response.data
+    msg = error.response.data.msg || error.response.data
   } else {
     console.log("error: " + error) // for debug
     msg = error.message
@@ -69,30 +69,30 @@ const promise = (request, loading = {}) => {
 }
 
 export const get = (url, data, loading) => {
-  return promise(request({ url: url, method: "get", params: data }), loading)
+  return promise(request({url: url, method: "get", params: data}), loading)
 }
 
 export const post = (url, data, loading) => {
-  return promise(request({ url: url, method: "post", data }), loading)
+  return promise(request({url: url, method: "post", data}), loading)
 }
 
 export const put = (url, data, loading) => {
-  return promise(request({ url: url, method: "put", data }), loading)
+  return promise(request({url: url, method: "put", data}), loading)
 }
 
 export const del = (url, loading) => {
-  return promise(request({ url: url, method: "delete" }), loading)
+  return promise(request({url: url, method: "delete"}), loading)
 }
 
 export const patch = (url, data, headers, loading) => {
   if (headers) {
-    return promise(request({ url: url, headers: headers, method: "patch", data }), loading)
+    return promise(request({url: url, headers: headers, method: "patch", data}), loading)
   }
-  return promise(request({ url: url, method: "patch", data }), loading)
+  return promise(request({url: url, method: "patch", data}), loading)
 }
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.prototype.$get = get
     Vue.prototype.$post = post
     Vue.prototype.$put = put
