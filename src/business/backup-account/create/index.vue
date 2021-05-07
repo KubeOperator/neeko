@@ -144,7 +144,7 @@ export default {
         this.loading = false
         this.$message({
           type: 'success',
-          message: `创建成功`
+          message: this.$t("commons.msg.create_success")
         });
         this.$router.push({name: "BackupAccount"})
       }).finally(() => {
@@ -172,7 +172,6 @@ export default {
     this.form.type = 'SFTP',
     allProjects().then(res => {
       this.projects = res.items
-      console.log(this.projects)
     })
   }
 }
