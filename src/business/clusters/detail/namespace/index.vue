@@ -12,9 +12,13 @@
       <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
         <template v-slot:default="{row}">
-          <span style="margin: 12px">{{row.status.phase}}
-            <i v-if="row.status.phase === 'Terminating'" class="el-icon-loading" />
-          </span>
+          <div v-if="row.status.phase !=='Terminating'">
+            <span></span>{{row.status.phase}}
+          </div>
+          <div v-if="row.status.phase === 'Terminating'">
+            <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
+            <span>{{ $t("commons.status.terminating") }} </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -84,13 +88,25 @@ export default {
       this.loading = true
       listNamespace(this.clusterName)
         .then((data) => {
-          this.loading = false
           this.data = data.items
+          listTool(this.clusterName).then((tools) => {
+            for (const ns of this.data) {
+              let exitStr = ""
+              for (const tool of tools) {
+                if (tool.vars["namespace"] === ns && tool.status !== "Waiting") {
+                  exitStr += tool.name + ","
+                }
+              }
+              ns.toolDetails = exitStr
+            }
+          })
+          this.loading = false
         })
         .finally(() => {
           this.loading = false
         })
     },
+
     create() {
       this.dialogCreateVisible = true
     },
@@ -120,15 +136,19 @@ export default {
       }).then(() => {
         this.ps = []
         if (row) {
-          listTool(this.clusterName).then((tools) => {
-            this.checkNsToolExist(row.metadata.name, tools)
-          })
+          if (row.toolDetails) {
+            this.$message({ type: "info", message: row.metadata.name + this.$t("cluster.detail.namespace.before_delete") + row.toolDetails })
+          } else {
+            this.ps.push(deleteNamespace(this.clusterName, row.metadata.name))
+          }
         } else {
-          listTool(this.clusterName).then((tools) => {
-            for (const item of this.nsSelection) {
-              this.checkNsToolExist(item.metadata.name, tools)
+          for (const item of this.nsSelection) {
+            if (item.toolDetails) {
+              this.$message({ type: "info", message: item.metadata.name + this.$t("cluster.detail.namespace.before_delete") + item.toolDetails })
+            } else {
+              this.ps.push(deleteNamespace(this.clusterName, item.metadata.name))
             }
-          })
+          }
         }
         if (this.ps.length !== 0) {
           Promise.all(this.ps)
@@ -145,26 +165,12 @@ export default {
         }
       })
     },
-    checkNsToolExist(ns, tools) {
-      let exitStr = ""
-      for (const tool of tools) {
-        if (tool.vars["namespace"] === ns && tool.status !== "Waiting") {
-          exitStr += tool.name + ","
-        }
-      }
-      if (exitStr !== "") {
-        exitStr = exitStr.substring(0, exitStr.length - 1)
-        this.$message({ type: "info", message: ns + this.$t("cluster.detail.namespace.before_delete") + exitStr })
-      } else {
-        this.ps.push(deleteNamespace(this.clusterName, ns))
-      }
-    },
     polling() {
       this.timer = setInterval(() => {
         let flag = false
         const needPolling = ["Terminating"]
-        for (const item of this.provisionerDatas) {
-          if (needPolling.indexOf(item.status) !== -1) {
+        for (const item of this.data) {
+          if (needPolling.indexOf(item.status.phase) !== -1) {
             flag = true
             break
           }

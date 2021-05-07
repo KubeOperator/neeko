@@ -7,6 +7,7 @@
           <el-form ref="form" label-width="120px" :model="form" :rules="rules" v-loading="loading" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
+              <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('automatic.region.name')" prop="region">
               <el-select v-model="form.region"
