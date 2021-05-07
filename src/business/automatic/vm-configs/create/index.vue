@@ -7,7 +7,7 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
+              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('automatic.vm_config.cpu')" prop="cpu" >
               <el-input-number v-model="form.cpu" :step="1" :min="0" :max="300"></el-input-number>

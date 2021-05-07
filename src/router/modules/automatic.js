@@ -91,6 +91,17 @@ const Automatic = {
       }
     },
     {
+      path: "plans/edit/:name",
+      props: true,
+      hidden: true,
+      component: () => import("@/business/automatic/plans/edit"),
+      name: "PlanEdit",
+      meta: {
+        activeMenu: "/automatic/plans",
+        roles: ["ADMIN"]
+      }
+    },
+    {
       path: "vmconfigs",
       component: () => import("@/business/automatic/vm-configs"),
       name: "VmConfigList",
