@@ -36,7 +36,6 @@
           </div>
           <div v-if="row.status === 'Initializing'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-            <span>{{ $t("commons.status.initializing") }}</span>
             <el-link type="info" @click="getStatus()"> {{ $t("commons.status.initializing") }}</el-link>
           </div>
           <div v-if="row.status.indexOf('Running') !== -1">
