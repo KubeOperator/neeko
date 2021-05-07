@@ -53,7 +53,7 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
+      <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
   </layout-content>
 </template>
@@ -128,6 +128,7 @@ export default {
         total: 0,
       },
       data: [],
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {

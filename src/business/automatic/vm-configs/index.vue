@@ -39,7 +39,7 @@
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
+      <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
   </layout-content>
 </template>
@@ -94,7 +94,8 @@ export default {
       },
       data: [],
       loading: false,
-      selects: []
+      selects: [],
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {

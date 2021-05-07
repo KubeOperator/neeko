@@ -56,7 +56,7 @@
         </template>
       </el-table-column>
 
-      <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
+      <fu-table-operations v-if="isAdmin" fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
@@ -166,6 +166,7 @@ import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { deleteProjectResource } from "@/api/project-resource"
+import {checkPermission} from "@/utils/permisstion"
 
 export default {
   name: "HostList",
@@ -208,6 +209,7 @@ export default {
         ],
       },
       loading: false,
+      isAdmin: checkPermission('ADMIN')
     }
   },
   methods: {
