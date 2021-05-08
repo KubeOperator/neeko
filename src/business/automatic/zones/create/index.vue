@@ -506,7 +506,8 @@ export default {
           nfsPort: "",
           nfsFolder: "",
           nfsUsername: "",
-          nfsPassword: ""
+          nfsPassword: "",
+          resourcePool: ""
         },
         credentialName: "",
         ipPoolName: ""
@@ -592,6 +593,8 @@ export default {
         }
       })
       this.cloudZoneRequest.cloudVars["cluster"] = cluster
+      this.form.cloudVars.resourcePool =  ""
+      this.form.cloudVars.datastore =  []
       this.loading = true
       listDatastores(this.cloudZoneRequest).then(res => {
         this.cloudDatastores = res

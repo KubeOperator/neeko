@@ -74,20 +74,22 @@ export default {
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
+          }, disabled: (row) => {
+            return  row.type === "LDAP"
           }
         },
         {
           label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
             this.update(row)
           }, disabled: (row) => {
-            return this.currentUser.user.name === row.name || row.name=== 'admin'
+            return this.currentUser.user.name === row.name || row.name === "admin" || row.type === "LDAP"
           }
         },
         {
           label: this.$t("commons.button.delete"), icon: "el-icon-delete", click: (row) => {
             this.del(row.name)
           }, disabled: (row) => {
-            return this.currentUser.user.name === row.name || row.name=== 'admin'
+            return this.currentUser.user.name === row.name || row.name === "admin"
           }
         },
       ],
@@ -115,7 +117,12 @@ export default {
             ],
             multiple: true
           },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
+          {
+            field: "created_at",
+            label: this.$t("commons.table.create_time"),
+            component: "FuComplexDateTime",
+            valueFormat: "yyyy-MM-dd"
+          },
         ]
       },
       paginationConfig: {
