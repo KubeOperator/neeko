@@ -172,7 +172,7 @@ const message = {
   theme: {
     systemName: "登录页面标题",
     logo: "Logo",
-    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件,若上传的图片为空，则会恢复成默认的Logo",
+    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件。若上传的图片为空，则会恢复成默认的 Logo",
     uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
   },
   route: {
