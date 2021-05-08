@@ -537,6 +537,7 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
+    project: "项目"
   },
   message: {
     message: "消息",
