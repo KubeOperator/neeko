@@ -1,5 +1,5 @@
 <template>
-    <complex-table :header="$t('message.message_subscribe')" :data="data">
+    <complex-table :header="$t('message.message_subscribe')" :data="data" v-loading="loading">
       <el-table-column :label="$t('message.message_type')" min-width="100" prop="type" fix/>
       <el-table-column :label="$t('message.message_in_station')">
         <template  v-slot:default="{row}">
@@ -34,14 +34,19 @@
     data() {
       return {
         data: [],
+        loading: false,
       }
     },
     methods: {
       search() {
+        this.loading = true
         getMessageOfSubscribe().then(data => {
           if (data !== null) {
+            this.loading = false
             this.data = data
           }
+        }).finally(() => {
+          this.loading = false
         })
       },
       updateConfig(item) {
