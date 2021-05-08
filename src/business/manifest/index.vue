@@ -167,9 +167,9 @@ export default {
           this.loading = false
           this.activeNames.push(item.largeVersion)
           this.currentVersion = this.activeNames[0]
-        }).finally(() => {
-          this.loading = false
         })
+      }).finally(() => {
+        this.loading = false
       })
     },
     getLatestManifest(){

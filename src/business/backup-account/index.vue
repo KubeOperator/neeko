@@ -137,7 +137,6 @@ export default {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       searchBackupAccounts(currentPage, pageSize, conditions).then(data => {
-        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
       }).finally(() => {
