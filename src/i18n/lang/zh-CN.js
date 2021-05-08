@@ -57,7 +57,6 @@ const message = {
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      delete_cancel: "已取消删除",
       sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
@@ -131,7 +130,7 @@ const message = {
       running: "运行中",
       initializing: "初始化中",
       creating: "创建中",
-      "success": "成功",
+      success: "成功",
       failed: "失败",
       not_ready: "未就绪",
       error: "错误",
@@ -172,11 +171,11 @@ const message = {
   theme: {
     systemName: "登录页面标题",
     logo: "Logo",
-    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件",
+    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件。若上传的图片为空，则会恢复成默认的 Logo",
     uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
   },
   route: {
-    project: "项目",
+    project_management: "项目管理",
     cluster: "集群",
     host: "主机",
     system_setting: "系统设置",
@@ -540,6 +539,7 @@ const message = {
     authorize_project: "授权到项目",
     existing_authorized: "存在已授权主机",
     existing_unauthorized: "存在未授权主机",
+    project: "项目"
   },
   message: {
     message: "消息",

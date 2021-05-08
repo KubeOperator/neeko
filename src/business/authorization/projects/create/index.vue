@@ -3,12 +3,12 @@
                   v-loading="loading">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="16">
+      <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{ $t("commons.validate.common_name_help") }}</span></div>
+              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('project.description')" prop="description">
               <el-input v-model="form.description"></el-input>
@@ -41,7 +41,7 @@ export default {
         description: ""
       },
       rules: {
-        name: [Rule.NameRule, Rule.LengthRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         description: [Rule.LengthRule]
       },
       loading: false

@@ -45,7 +45,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button @click="sync" :disabled="!btnSlect">{{$t('commons.button.sync')}}</el-button>
-                <el-button type="primary" @click="onSubmit" :disabled="btn">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" @click="onSubmit" >{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
             </div>
 
@@ -76,10 +76,9 @@ export default {
       rules: {
         vars: {
           ldap_address: [Rule.RequiredRule],
-          ldap_port: [Rule.NumberRule],
+          ldap_port: [Rule.RequiredRule],
         }
       },
-      btn: true,
       loading: false
     }
   },
@@ -99,7 +98,6 @@ export default {
           type: 'success',
           message: this.$t('commons.msg.save_success')
         });
-        setTimeout(() => location.reload(), 500)
         this.$router.push({name: "LDAP"})
       }).finally(() => {
         this.loading = false
@@ -117,7 +115,6 @@ export default {
           type: 'success',
           message: this.$t('commons.msg.verify_success')
         });
-        this.btn = false
       }).finally(() => {
         this.loading = false
       })

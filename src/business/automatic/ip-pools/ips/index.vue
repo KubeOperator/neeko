@@ -173,6 +173,7 @@ export default {
           type: "success",
           message: this.$t("commons.msg.sync_success")
         })
+        this.search()
       })
     },
     update (row) {
