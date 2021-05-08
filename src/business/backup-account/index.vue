@@ -13,7 +13,7 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('backup_account.table.name')" fix prop="name"/>
-      <el-table-column :label="$t('backup_account.table.project')">
+      <el-table-column :label="$t('backup_account.table.project')" v-if="isAdmin">
         <template v-slot:default="{row}">
           <span v-for="(zone,index) in row.projects" :key="index">{{ zone }},</span>
         </template>

@@ -4,20 +4,20 @@
       <el-col :span="1"><br/></el-col>
       <el-col :span="15">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="100px">
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.smtp')" required>
+          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules"  :model="form" label-width="100px">
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.smtp')" prop="vars.SMTP_ADDRESS">
               <el-input v-model="form.vars.SMTP_ADDRESS"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.port')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.port')"  prop="vars.SMTP_PORT">
               <el-input v-model="form.vars.SMTP_PORT"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.username')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.username')"  prop="vars.SMTP_USERNAME">
               <el-input v-model="form.vars.SMTP_USERNAME"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.password')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.password')"  prop="vars.SMTP_PASSWORD">
               <el-input :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars.SMTP_PASSWORD" show-password></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.testUser')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.testUser')"  prop="vars.SMTP_TEST_USER">
               <el-input v-model="form.vars.SMTP_TEST_USER"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.status')" required>
@@ -44,6 +44,7 @@
 
 <script>
 import {check, createSetting, getSetting} from "@/api/system-setting";
+import Rule from "@/utils/rules";
 export default {
   name: "EMail",
   data() {
@@ -60,11 +61,24 @@ export default {
         tab: ''
       },
       btn: true,
-      loading: false
+      loading: false,
+      rules: {
+        vars: {
+          SMTP_ADDRESS: [Rule.RequiredRule],
+          SMTP_PASSWORD: [Rule.RequiredRule],
+          SMTP_PORT: [Rule.RequiredRule],
+          SMTP_TEST_USER: [Rule.EmailRule, Rule.RequiredRule],
+          SMTP_USERNAME: [Rule.EmailRule, Rule.RequiredRule],
+        },
+      },
     }
   },
   methods: {
     onSubmit() {
+      this.$refs.form.validate((valid) => {
+          if (!valid) {
+            return false
+          }
       this.loading = true
       createSetting({
         vars: this.form.vars,
@@ -80,8 +94,13 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    })
     },
     verify(){
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          return false
+        }
       this.loading = true
       check( 'EMAIL',{
         vars: this.form.vars,
@@ -97,6 +116,7 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    })
     }
   },
   computed: {
