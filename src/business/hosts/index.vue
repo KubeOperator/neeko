@@ -21,13 +21,13 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('route.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
-      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
+      <el-table-column :label="$t('host.project')" v-if="isAdmin" show-overflow-tooltip min-width="100" prop="projectName" />
+      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="80" prop="clusterName" />
       <el-table-column label="IP" width="120px" prop="ip" />
       <el-table-column :label="$t('host.cpu')" width="70px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="70px" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" min-width="40" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="40">
+      <el-table-column :label="$t('host.memory')" min-width="60" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="80">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="80">
+      <el-table-column :label="$t('commons.table.status')" min-width="60">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>

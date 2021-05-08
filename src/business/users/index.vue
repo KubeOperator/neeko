@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
-            <ko-status :status="row.status"></ko-status>
+          <ko-status :status="row.status"></ko-status>
         </template>
       </el-table-column>
       <el-table-column :label="$t('user.type')">
@@ -61,6 +61,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import {searchUsers, deleteUser, updateUser} from "@/api/user"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
+import {getSession} from "@/api/auth"
 
 
 export default {
@@ -78,11 +79,15 @@ export default {
         {
           label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
             this.update(row)
+          }, disabled: (row) => {
+            return this.currentUser.user.name === row.name || row.name=== 'admin'
           }
         },
         {
           label: this.$t("commons.button.delete"), icon: "el-icon-delete", click: (row) => {
             this.del(row.name)
+          }, disabled: (row) => {
+            return this.currentUser.user.name === row.name || row.name=== 'admin'
           }
         },
       ],
@@ -120,7 +125,8 @@ export default {
       },
       data: [],
       loading: false,
-      selects: []
+      selects: [],
+      currentUser: {}
     }
   },
   methods: {
@@ -181,10 +187,12 @@ export default {
     }
   },
   created () {
-    this.search()
+    getSession().then(res => {
+      this.currentUser = res
+      this.search()
+    })
   },
 }
 </script>
-
 <style scoped lang="scss">
 </style>
