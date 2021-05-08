@@ -283,7 +283,8 @@
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
-                      <ul>{{form.provider}}</ul>
+                      <ul v-if="form.provider === 'plan'">{{$t ('cluster.creation.provide_plan')}}</ul>
+                      <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
                       <ul>{{form.architectures}}</ul>
                       <ul>{{form.yumOperate}}</ul>

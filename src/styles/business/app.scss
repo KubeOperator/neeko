@@ -93,6 +93,16 @@ a:hover {
   color: #606266;
 }
 
+.el-step__title.is-success {
+  font-weight: bold;
+  color: #FA5D50;
+}
+
+.el-step__head.is-success {
+  color: #FA5D50;
+  border-color: #FA5D50;
+}
+
 .myTable {
   border-collapse: collapse;
   font-size: 12px;

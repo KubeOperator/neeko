@@ -5,7 +5,7 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form label-position='left' :model="form" ref="form" label-width="200px">
-            <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="nameRules">
+            <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="requiredRules">
               <el-select style="width: 100%" @change="changePvType()" size="small" v-model="form.pvType">
                 <el-option value="Host Path" label="Host Path">Host Path</el-option>
                 <el-option value="Local Volume" label="Local Volume">Local Volume</el-option>
@@ -13,7 +13,7 @@
             </el-form-item>
 
             <div v-if="form.pvType === 'Host Path'">
-              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="nameRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
@@ -197,6 +197,7 @@ export default {
           this.form.submitForm.spec.capacity["storage"] += "Gi"
           createPersistentVolume(this.clusterName, this.form.submitForm).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+            this.$router.push({ name: "ClusterStorage" })
           })
         } else {
           return false

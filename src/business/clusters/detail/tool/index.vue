@@ -437,7 +437,7 @@ export default {
       })
     },
     listStorages() {
-      listStorageClass(this.clusterName).then((data) => {
+      listStorageClass(this.clusterName, null, true).then((data) => {
         this.storages = []
         data.items.forEach((item) => {
           this.storages.push(item.metadata.name)
