@@ -155,7 +155,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row, "class", false)
           },
@@ -168,7 +167,6 @@ export default {
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
-
           click: (row) => {
             this.onDelete(row, "provisioner", false)
           },
@@ -204,7 +202,7 @@ export default {
     search() {
       this.loading = true
       if (this.activeName === this.$t("cluster.detail.storage.pv")) {
-        listPersistentVolumes(this.clusterName, this.pvPage.continueToken, false)
+        listPersistentVolumes(this.clusterName, this.pvPage.continueToken)
           .then((data) => {
             this.loading = false
             this.pvDatas = data.items
@@ -322,7 +320,7 @@ export default {
         switch (type) {
           case "pv":
             this.pvSelection.forEach((item) => {
-              this.onDelete(item, "provisioner", true)
+              this.onDelete(item, "pv", true)
             })
             break
           case "class":

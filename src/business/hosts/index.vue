@@ -9,6 +9,9 @@
           <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
+          <el-button :disabled="hostSelections.length<1" size="small" @click="onGrant()">
+            {{ $t("commons.button.authorize") }}
+          </el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="onRevoke()">
             {{ $t("commons.button.revoke_authorize") }}
           </el-button>
@@ -21,13 +24,13 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.project')" v-if="isAdmin" show-overflow-tooltip min-width="100" prop="projectName" />
-      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="80" prop="clusterName" />
-      <el-table-column label="IP" width="120px" prop="ip" />
-      <el-table-column :label="$t('host.cpu')" width="70px" prop="cpuCore" />
-      <el-table-column :label="$t('host.gpu')" :show="false" width="70px" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" min-width="60" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="80">
+      <el-table-column :label="$t('host.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
+      <el-table-column label="IP" min-width="120px" prop="ip" />
+      <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />
+      <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
+      <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="120px">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -44,8 +47,8 @@
           {{ row.os }} {{ row['osVersion'] }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="60">
+      <el-table-column :label="$t('host.architecture')" width="100px" prop="architecture" />
+      <el-table-column :label="$t('commons.table.status')" min-width="100px">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
@@ -134,6 +137,20 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="$t('commons.button.authorize')" width="30%" :visible.sync="dialogGrantVisible">
+      <el-form label-position='left' label-width="100px">
+        <el-form-item :label="$t('host.authorize_project')">
+          <el-select style="width: 80%" v-model="authorizedProject" clearable>
+            <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogGrantVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button v-loading="grantLoading" :disabled="!authorizedProject" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog :title="$t('commons.button.batch_import')" width="30%" :visible.sync="dialogImportVisible">
       <el-form>
         <el-button type="text" @click="download()">{{ $t("host.template_download") }}</el-button>
@@ -165,9 +182,10 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
-import { deleteProjectResource } from "@/api/project-resource"
+import { deleteProjectResource, createProjectResource } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
+import { allProjects } from "@/api/projects"
 
 export default {
   name: "HostList",
@@ -208,10 +226,15 @@ export default {
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
         ],
       },
       loading: false,
+      dialogGrantVisible: false,
+      projectList: [],
+      grantHostNames: [],
+      grantLoading: false,
+      authorizedProject: "kubeoperator",
       isAdmin: checkPermission("ADMIN"),
     }
   },
@@ -326,6 +349,12 @@ export default {
       })
     },
     onRevoke() {
+      for (const item of this.hostSelections) {
+        if (!item.projectName) {
+          this.$message({ type: "info", message: this.$t("host.existing_unauthorized") })
+          return
+        }
+      }
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -338,11 +367,41 @@ export default {
         Promise.all(ps).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.delete_success"),
+            message: this.$t("commons.msg.op_success"),
           })
           this.search()
         })
       })
+    },
+    onGrant() {
+      this.grantHostNames = []
+      for (const item of this.hostSelections) {
+        if (item.projectName) {
+          this.$message({ type: "info", message: this.$t("host.existing_authorized") })
+          return
+        }
+        this.grantHostNames.push(item.name)
+      }
+      allProjects().then((data) => {
+        this.projectList = data.items
+      })
+      this.dialogGrantVisible = true
+    },
+    submitGrant() {
+      this.grantLoading = true
+      createProjectResource(this.authorizedProject, {
+        resourceType: "HOST",
+        names: this.grantHostNames,
+      })
+        .then(() => {
+          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.dialogGrantVisible = false
+          this.search()
+          this.grantLoading = true
+        })
+        .finally(() => {
+          this.grantLoading = true
+        })
     },
     search(condition) {
       this.loading = true
@@ -380,9 +439,14 @@ export default {
     this.search()
     this.polling()
   },
-  destroyed() {
+  beforeDestroy() {
     clearInterval(this.timer)
     localStorage.setItem("host_columns", JSON.stringify(this.columns))
+  },
+  created: function () {
+    window.onbeforeunload = () => {
+      localStorage.setItem("host_columns", JSON.stringify(this.columns))
+    }
   },
 }
 </script>

@@ -179,7 +179,11 @@ export default {
     },
     changeEnable(version) {
       changeStatus(version.name, version).then((data) => {
-        this.$message({ message: this.$t("manifest.message", [data.name]), type: "success" })
+        if(data.isActive) {
+            this.$message({ message: this.$t("manifest.enable_message", [data.name]), type: "success" })
+        }else{
+            this.$message({ message: this.$t("manifest.disable_message", [data.name]), type: "success" })
+        }
         this.getLatestManifest()
       })
     },

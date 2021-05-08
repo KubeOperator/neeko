@@ -113,7 +113,7 @@ export default {
       if (condition.namespace !== undefined) {
         if (condition.namespace.value.indexOf("-") === -1) {
           queryArry.push({
-            term: { "kubernetes.namespace_name": this.namespace.value },
+            term: { "kubernetes.namespace_name": condition.namespace.value },
           })
         } else {
           const namespaceArry = condition.namespace.value.split("-")
@@ -129,7 +129,7 @@ export default {
             term: { "kubernetes.pod_name": condition.pod.value },
           })
         } else {
-          const podArry = this.pod.value.split("-")
+          const podArry = condition.pod.value.split("-")
           for (const p of podArry) {
             queryArry.push({ term: { "kubernetes.pod_name": p } })
           }
@@ -139,7 +139,7 @@ export default {
       if (condition.container !== undefined) {
         if (condition.container.value.indexOf("-") === -1) {
           queryArry.push({
-            term: { "kubernetes.container_name": this.container.value },
+            term: { "kubernetes.container_name": condition.container.value },
           })
         } else {
           const containerArry = condition.container.value.split("-")

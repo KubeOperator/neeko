@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <div>
     <el-form :inline="true">
       <el-form-item :label="$t('cluster.detail.log.monitor_node')">
         <el-select size="small" @change="search()" clearable allow-create filterable v-model="searchruleForm.node">
@@ -35,18 +35,17 @@
         </el-card>
       </el-col>
     </el-row>
-  </layout-content>
+  </div>
 </template>
 
 <script>
-import LayoutContent from "@/components/layout/LayoutContent"
 import { listNodeInDB } from "@/api/cluster/node"
 let echarts = require("echarts/lib/echarts")
 import { QueryCPU, QueryMemoryTotal, QueryMemoryUsed, QueryMemoryCacheBuffer, QueryMemoryFree, QueryMemorySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
 
 export default {
   name: "ClusterMonitor",
-  components: { LayoutContent },
+  components: { },
   data() {
     return {
       loading_cpu: false,

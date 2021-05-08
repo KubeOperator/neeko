@@ -62,7 +62,7 @@ a:hover {
 }
 
 .input-help {
-  font-size: 1px;
+  font-size: 12px;
   word-break: break-all;
   color: #4A4B4D;
   transform: scale(0.9);
@@ -91,6 +91,16 @@ a:hover {
 
 .el-step__description.is-finish {
   color: #606266;
+}
+
+.el-step__title.is-success {
+  font-weight: bold;
+  color: #FA5D50;
+}
+
+.el-step__head.is-success {
+  color: #FA5D50;
+  border-color: #FA5D50;
 }
 
 .myTable {

@@ -2,7 +2,7 @@
   <layout-content>
     <div>
       <el-form ref="form" label-position='left' label-width="180px" :model="form" :rules="rules">
-        <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeNext="beforeNext" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
+        <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
               <el-scrollbar style="height:100%">
@@ -283,7 +283,8 @@
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
-                      <ul>{{form.provider}}</ul>
+                      <ul v-if="form.provider === 'plan'">{{$t ('cluster.creation.provide_plan')}}</ul>
+                      <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
                       <ul>{{form.architectures}}</ul>
                       <ul>{{form.yumOperate}}</ul>
@@ -410,7 +411,7 @@ export default {
         maxClusterServiceNum: 256,
         maxNodePodNum: 256,
         kubeProxyMode: "iptables",
-        enableDnsCache: "enable",
+        enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
         kubernetesAudit: "no",
         clusterCidr: "192.168.0.0/16",
@@ -553,7 +554,10 @@ export default {
         this.form.version = data[0].name
       })
     },
-    beforeNext(step) {
+    beforeLeave(step, isNext ) {
+      if (!isNext) {
+        return
+      }
       if (this.checkFormValidate()) {
         if (this.validateCluster !== true) {
           if (step.index === 0) {

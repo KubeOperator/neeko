@@ -276,7 +276,8 @@ export default {
           {
             field: "create_time",
             label: this.$t("commons.table.create_time"),
-            component: "FuComplexDateTime"
+            component: "FuComplexDateTime",
+            valueFormat: "yyyy-MM-dd"
           }
         ]
       },
