@@ -4,10 +4,10 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" :model="form" label-width="80px" label-position="left">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
 
 
-            <el-form-item :label="$t('commons.table.name')" required>
+            <el-form-item :label="$t('commons.table.name')" prop="name" required>
               <el-input v-model="form.name"></el-input>
             </el-form-item>
 
@@ -49,6 +49,8 @@
 <script>
   import LayoutContent from "@/components/layout/LayoutContent";
   import {createMultiClusterRepository} from "@/api/xpack/multi-cluster"
+  import Rule from "@/utils/rules"
+
 
   export default {
     name: "MultiClusterRepositoryCreate",
@@ -64,7 +66,10 @@
           password: '',
           gitTimeout: 5,
           syncInterval: 30,
-        }
+        },
+        rules: {
+          name: [Rule.ClusterNameRule],
+        },
       }
     },
     methods: {
