@@ -2,7 +2,7 @@
   <div >
     <layout-content :header="$t('route.theme')" style="min-height: 600px;">
       <el-col :span="2"><br/></el-col>
-      <el-col :span="10">
+      <el-col :span="13">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading" :model="form" label-width="110px">
             <el-form-item  style="width: 100%" :label="$t('theme.systemName')" required>
