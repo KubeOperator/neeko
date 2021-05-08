@@ -24,7 +24,7 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('route.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column :label="$t('host.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
       <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />

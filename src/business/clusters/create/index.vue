@@ -410,7 +410,7 @@ export default {
         maxClusterServiceNum: 256,
         maxNodePodNum: 256,
         kubeProxyMode: "iptables",
-        enableDnsCache: "enable",
+        enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
         kubernetesAudit: "no",
         clusterCidr: "192.168.0.0/16",
