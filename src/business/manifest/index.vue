@@ -41,7 +41,6 @@
         </div>
       </div>
     </div>
-
     <el-scrollbar style="height:100%;">
       <el-dialog
         :title="$t('manifest.detail')"
@@ -137,6 +136,23 @@
       </el-dialog>
     </el-scrollbar>
 
+    <el-dialog
+      :title="$t('commons.message_box.prompt')"
+      :show-close="true"
+      :visible.sync="manifestVisible"
+      width="40%">
+      <span>{{$t('manifest.manifest_help')}}</span>
+      <br><br>
+      <div style="line-height: 150%">
+        <span style="font-weight: bolder">{{$t('manifest.see_documentation')}}:</span><br>
+        <a style="color: #447DF7" href="https://kubeoperator.io/docs/user_manual/version/" target="_blank">https://kubeoperator.io/docs/user_manual/version/</a>
+        <span slot="footer" class="dialog-footer">
+      </span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+      <el-button  type="primary" @click="manifestVisible = false">{{$t('commons.button.ok')}}</el-button>
+      </span>
+    </el-dialog>
   </layout-content>
 </template>
 
@@ -154,7 +170,8 @@ export default {
       currentVersion: '',
       dialogVisible: false,
       manifestDetail: {},
-      loading: false
+      loading: false,
+      manifestVisible: false
     }
   },
   methods: {
@@ -180,9 +197,10 @@ export default {
     changeEnable(version) {
       changeStatus(version.name, version).then((data) => {
         if(data.isActive) {
-            this.$message({ message: this.$t("manifest.enable_message", [data.name]), type: "success" })
+          this.manifestVisible = true
+          this.$message({ message: this.$t("manifest.enable_message", [data.name]), type: "success" })
         }else{
-            this.$message({ message: this.$t("manifest.disable_message", [data.name]), type: "success" })
+          this.$message({ message: this.$t("manifest.disable_message", [data.name]), type: "success" })
         }
         this.getLatestManifest()
       })
