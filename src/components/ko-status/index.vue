@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ko-status">
 
     <div v-if="status ==='Running'">
       <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -61,5 +61,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

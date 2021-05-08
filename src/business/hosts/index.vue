@@ -17,7 +17,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
-          <el-link v-if="row.status === 'Running'" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
+          <el-link v-if="row.status === 'Running'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
