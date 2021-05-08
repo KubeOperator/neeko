@@ -21,7 +21,7 @@
             </el-form-item>
 
             <el-form-item :label="$t('host.type')" required>
-              <el-radio-group v-model="credentialType">
+              <el-radio-group v-model="credentialType" @change="updateCredentialType">
                 <el-radio label="exists">{{$t('host.exists_credential')}}</el-radio>
                 <el-radio label="new">{{$t('host.new_credential')}}</el-radio>
               </el-radio-group>
@@ -97,7 +97,7 @@ export default {
         credentialId: [Rule.RequiredRule],
         credential: {
           username: [Rule.RequiredRule],
-          password: [Rule.PasswordRule],
+          password: [Rule.RequiredRule],
           name: [Rule.RequiredRule],
           privateKey: [Rule.RequiredRule],
         },
@@ -119,6 +119,9 @@ export default {
         }
       })
     },
+    updateCredentialType() {
+      this.form.credentialId = this.credentialType === "exists" ? this.form.credentialId : ""
+    },  
     getCredentials() {
       listCredentialAll().then((data) => {
         this.credentialList = data.items
