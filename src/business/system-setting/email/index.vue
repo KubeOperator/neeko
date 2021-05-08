@@ -32,7 +32,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button  @click="verify" :disabled="!btnSlect">{{$t('commons.button.verify')}}</el-button>
-                <el-button type="primary" @click="onSubmit" :disabled="btn">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" @click="onSubmit" >{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
             </div>
           </el-form>
