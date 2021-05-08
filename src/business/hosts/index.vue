@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -17,7 +17,7 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
-          <el-link v-if="row.status === 'Running'" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
+          <el-link v-if="row.status === 'Running'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
@@ -167,7 +167,7 @@ import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { deleteProjectResource } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
-import {checkPermission} from "@/utils/permisstion"
+import { checkPermission } from "@/utils/permisstion"
 
 export default {
   name: "HostList",
@@ -186,6 +186,7 @@ export default {
           },
         },
       ],
+      columns: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -211,7 +212,7 @@ export default {
         ],
       },
       loading: false,
-      isAdmin: checkPermission('ADMIN')
+      isAdmin: checkPermission("ADMIN"),
     }
   },
   methods: {
@@ -348,6 +349,9 @@ export default {
       const { currentPage, pageSize } = this.paginationConfig
       searchHosts(currentPage, pageSize, condition)
         .then((data) => {
+          if (localStorage.getItem("host_columns")) {
+            this.columns = JSON.parse(localStorage.getItem("host_columns"))
+          }
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -378,6 +382,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    localStorage.setItem("host_columns", JSON.stringify(this.columns))
   },
 }
 </script>

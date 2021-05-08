@@ -176,7 +176,7 @@ const message = {
     uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
   },
   route: {
-    project: "项目",
+    project_management: "项目管理",
     cluster: "集群",
     host: "主机",
     system_setting: "系统设置",

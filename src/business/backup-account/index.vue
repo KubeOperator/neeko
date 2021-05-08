@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('backup_account.name')">
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
+    <complex-table :data="data" :columns="columns" v-loading="loading" :search-config="searchConfig" :selects.sync="selects"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
@@ -74,6 +74,7 @@ export default {
     return {
       columns: [],
       selects: [],
+      loading: false,
       formLabelWidth: "120px",
       buttons: [
         {
@@ -133,10 +134,14 @@ export default {
   },
   methods: {
     search (conditions) {
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       searchBackupAccounts(currentPage, pageSize, conditions).then(data => {
+        this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
+      }).finally(() => {
+        this.loading = false
       })
     },
     create () {

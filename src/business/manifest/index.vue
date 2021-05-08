@@ -1,6 +1,6 @@
 <template>
-  <layout-content :header="$t('route.manifest')">
-    <el-tabs v-model="currentVersion"  @tab-click="handleClick">
+  <layout-content :header="$t('route.manifest')" v-loading="loading" >
+    <el-tabs v-model="currentVersion"  @tab-click="handleClick" >
         <el-tab-pane v-for="item in activeNames" :key="item" :label="item" :name="item"/>
     </el-tabs>
 
@@ -153,17 +153,22 @@ export default {
       activeNames: [],
       currentVersion: '',
       dialogVisible: false,
-      manifestDetail: {}
+      manifestDetail: {},
+      loading: false
     }
   },
   methods: {
     search() {
       manifestGroup().then((data) => {
+        this.loading = true
         this.versionList = data
         this.activeNames = []
         this.versionList.forEach((item) => {
+          this.loading = false
           this.activeNames.push(item.largeVersion)
           this.currentVersion = this.activeNames[0]
+        }).finally(() => {
+          this.loading = false
         })
       })
     },
