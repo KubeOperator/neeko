@@ -536,6 +536,9 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
+    authorize_project: "授权到项目",
+    existing_authorized: "存在已授权主机",
+    existing_unauthorized: "存在未授权主机",
     project: "项目"
   },
   message: {
@@ -594,7 +597,8 @@ const message = {
     title: "版本管理",
     detail: "详情",
     enable: "启用",
-    message: "版本 {0} 启用/停用成功！",
+    enable_message: "版本 {0} 启用成功！",
+    disable_message: "版本 {0} 禁用成功！",
     component: "组件",
     version: "版本"
   },
