@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -21,13 +21,13 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('route.project')" show-overflow-tooltip min-width="120" prop="projectName" />
-      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="120" prop="clusterName" />
+      <el-table-column :label="$t('route.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" width="120px" prop="ip" />
       <el-table-column :label="$t('host.cpu')" width="70px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="70px" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" width="80px" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="120">
+      <el-table-column :label="$t('host.memory')" min-width="40" prop="memory" />
+      <el-table-column :label="$t('host.os')" min-width="40">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -167,7 +167,7 @@ import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { deleteProjectResource } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
-import {checkPermission} from "@/utils/permisstion"
+import { checkPermission } from "@/utils/permisstion"
 
 export default {
   name: "HostList",
@@ -186,6 +186,7 @@ export default {
           },
         },
       ],
+      columns: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -211,7 +212,7 @@ export default {
         ],
       },
       loading: false,
-      isAdmin: checkPermission('ADMIN')
+      isAdmin: checkPermission("ADMIN"),
     }
   },
   methods: {
@@ -348,6 +349,9 @@ export default {
       const { currentPage, pageSize } = this.paginationConfig
       searchHosts(currentPage, pageSize, condition)
         .then((data) => {
+          if (localStorage.getItem("host_columns")) {
+            this.columns = JSON.parse(localStorage.getItem("host_columns"))
+          }
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -378,6 +382,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    localStorage.setItem("host_columns", JSON.stringify(this.columns))
   },
 }
 </script>
