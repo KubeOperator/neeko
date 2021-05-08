@@ -57,7 +57,6 @@ const message = {
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      delete_cancel: "已取消删除",
       sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
@@ -131,7 +130,7 @@ const message = {
       running: "运行中",
       initializing: "初始化中",
       creating: "创建中",
-      "success": "成功",
+      success: "成功",
       failed: "失败",
       not_ready: "未就绪",
       error: "错误",
@@ -537,6 +536,9 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
+    authorize_project: "授权到项目",
+    existing_authorized: "存在已授权主机",
+    existing_unauthorized: "存在未授权主机",
     project: "项目"
   },
   message: {

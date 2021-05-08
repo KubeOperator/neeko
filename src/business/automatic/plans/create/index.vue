@@ -160,7 +160,7 @@ export default {
         }
       },
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         region: [Rule.RequiredRule],
         zone: [Rule.RequiredRule],
         deployTemplate: [Rule.RequiredRule],

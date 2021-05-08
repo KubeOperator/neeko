@@ -45,7 +45,7 @@ export default {
         name: "",
       },
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         cpu: [{
           required: true,
           trigger: "blur",

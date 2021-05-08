@@ -2,7 +2,7 @@
   <layout-content>
     <div>
       <el-form ref="form" label-position='left' label-width="180px" :model="form" :rules="rules">
-        <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeNext="beforeNext" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
+        <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
               <el-scrollbar style="height:100%">
@@ -553,7 +553,10 @@ export default {
         this.form.version = data[0].name
       })
     },
-    beforeNext(step) {
+    beforeLeave(step, isNext ) {
+      if (!isNext) {
+        return
+      }
       if (this.checkFormValidate()) {
         if (this.validateCluster !== true) {
           if (step.index === 0) {

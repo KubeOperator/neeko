@@ -75,6 +75,7 @@ export default {
               this.loadding = false
             }
         } else {
+          this.loadding = false
           return false
         }
       })
