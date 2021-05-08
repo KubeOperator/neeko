@@ -229,8 +229,7 @@ export default {
           this.btnStartDisable = false
           this.search()
         },
-        (error) => {
-          this.$message({ type: "error", message: error })
+        () => {
           this.btnStartDisable = false
         }
       )
@@ -276,8 +275,7 @@ export default {
           this.dialogShutupVisible = false
           this.search()
         },
-        (error) => {
-          this.$message({ type: "error", message: error })
+        () => {
           this.isSubmitGoing = false
         }
       )

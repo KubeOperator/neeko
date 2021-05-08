@@ -44,7 +44,7 @@
                     <el-button :disabled="strategyForm.id == ''" @click="backupNow('strategyForm')">
                       {{ $t("cluster.detail.backup.backup_now") }}
                     </el-button>
-                    <el-button type="primary" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
+                    <el-button @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
                     </el-button>
                   </div>
                 </el-form-item>
@@ -68,7 +68,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-row type="flex" justify="center">
-                    <el-button type="primary" @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
+                    <el-button @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
                   </el-row>
                 </el-form-item>
               </el-form>
@@ -130,7 +130,7 @@
                     <el-button  slot="reference" type="text" style="color: #2D61A2" >{{ $t("commons.status.failed") }}</el-button>
                 </el-popover>
               </div>
-              <el-button v-if="row.status === 'Running'" size="mini" round type="primary"
+              <el-button v-if="row.status === 'Running'" size="mini" round
                          plain icon="el-icon-loading">
                 {{ $t("cluster.detail.backup." + row.status) }}
               </el-button>
@@ -225,11 +225,7 @@ export default {
           startBackup(backupFile).then(
             () => {
               this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -246,11 +242,7 @@ export default {
             () => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.getBackupStrategy()
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -275,11 +267,7 @@ export default {
       localRestore(formData).then(
         () => {
           this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
-        },
-        (error) => {
-          this.$message({ type: "error", message: error })
-        }
-      )
+        })
     },
     restoreByFiles (row) {
       this.$confirm(

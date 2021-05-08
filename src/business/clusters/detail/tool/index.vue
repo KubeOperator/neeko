@@ -300,6 +300,7 @@ export default {
       nodes: [],
       nodeNum: 0,
       storages: [],
+      loadMenu: false,
     }
   },
   methods: {
@@ -312,10 +313,18 @@ export default {
       listTool(this.clusterName).then((data) => {
         this.loading = false
         this.tools = data
+        const needLoad = ["Initializing", "Terminating", "Upgrading"]
+        for(const to of this.tools) {
+          if (to.name === "logging" || to.name === "loki" || to.name === "prometheus") {
+            if (needLoad.indexOf(to.status) !== -1) { 
+              this.loadMenu = true
+            }
+          }
+        }
       })
     },
     openFrame(item) {
-      window.open(process.env.VUE_APP_BASE_API + process.env.VUE_APP_PUBLIC_PATH + item.url.replace("{cluster_name}", this.clusterName), "_blank")
+      window.open(process.env.VUE_APP_BASE_API + item.url.replace("{cluster_name}", this.clusterName), "_blank")
     },
     onEnable(item) {
       this.conditions = ""
@@ -361,6 +370,7 @@ export default {
       }
     },
     enable() {
+      this.loadMenu = (this.toolForm.name === "logging" || this.toolForm.name === "loki" || this.toolForm.name === "prometheus")
       this.submitLoading = true
       this.$refs["toolForm"].validate((valid) => {
         if (valid && this.isPasswordValid && this.isReplicasValid) {
@@ -393,6 +403,7 @@ export default {
       this.dialogDisableVisible = true
     },
     disable(item) {
+      this.loadMenu = (item.name === "logging" || item.name === "loki" || item.name === "prometheus")
       disableTool(this.clusterName, item).then(() => {
         this.dialogDisableVisible = false
         this.search()
@@ -447,6 +458,11 @@ export default {
           listTool(this.clusterName).then((data) => {
             this.tools = data
           })
+        } else {
+          if (this.loadMenu) {
+            window.location.reload()
+          }
+          this.loadMenu = false
         }
       }, 10000)
     },

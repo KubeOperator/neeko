@@ -96,9 +96,8 @@ export default {
               this.$message({ type: "success", message: this.$t("commons.msg.upgrade_start_success") })
               this.$router.push({ name: "ClusterList" })
             },
-            (error) => {
+            () => {
               this.loadding = false
-              this.$message({ type: "error", message: error })
             }
           )
         }

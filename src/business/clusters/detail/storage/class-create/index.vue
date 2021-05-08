@@ -6,7 +6,7 @@
         <div class="grid-content bg-purple-light">
           <el-form label-position='left' :model="form" ref="form" label-width="200px">
             <el-form-item :label="$t('commons.table.name')" prop="metadata.name" :rules="nameRules">
-              <el-input size="small" @change="sss" v-model="form.metadata.name"></el-input>
+              <el-input size="small" v-model="form.metadata.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.provisioner_short')">
@@ -239,14 +239,7 @@ export default {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
           this.$router.push({ name: "ClusterStorage" })
           console.log(data)
-        },
-        (error) => {
-          this.$message({ type: "error", message: error.error })
-        }
-      )
-    },
-    sss() {
-      console.log(this.createType)
+        })
     },
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
@@ -258,10 +251,8 @@ export default {
           console.log(data)
           this.isSecretsExit = true
         },
-        (error) => {
-          console.log(error)
+        () => {
           this.isSecretsExit = false
-          return
         }
       )
     },

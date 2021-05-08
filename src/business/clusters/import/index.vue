@@ -71,9 +71,8 @@ export default {
             this.loadding = false
             this.$router.push({ name: "ClusterList" })
           }),
-            (error) => {
+            () => {
               this.loadding = false
-              this.$message({ type: "error", message: error })
             }
         } else {
           return false
@@ -83,10 +82,7 @@ export default {
     getProjects() {
       allProjects().then((data) => {
         this.projects = data.items
-      }),
-        (error) => {
-          this.$message({ type: "error", message: error })
-        }
+      })
     },
     onCancel() {
       this.$router.push({ name: "ClusterList" })

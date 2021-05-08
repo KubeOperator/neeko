@@ -19,8 +19,7 @@
 
             <div v-if="createType === 'nfs'">
               <el-form-item :label="$t('commons.table.name')" prop="name" :rules="nameRules">
-                <el-input v-model="form.name"></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
+                <el-input v-model="form.name" :placeholder="$t('commons.validate.common_name_help')"></el-input>
               </el-form-item>
               <el-form-item label="Version" prop="vars.storage_nfs_server_version" :rules="requiredRules">
                 <el-select style="width: 100%" v-model="form.vars['storage_nfs_server_version']" clearable>
@@ -38,13 +37,11 @@
             <div v-if="createType === 'external-ceph'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.disk_name')" prop="vars.storage_rook_path" :rules="requiredRules">
                 <el-input v-model="form.vars['storage_rook_path']" clearable></el-input>
@@ -54,7 +51,6 @@
             <div v-if="createType === 'cinder'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item label="Identity" prop="vars.cinder_auth_url" :rules="requiredRules">
                 <el-input v-model="form.vars['cinder_auth_url']" placeholder=" http://128.110.154.166/identity" clearable></el-input>
@@ -95,7 +91,6 @@
               </el-form-item>
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.vcenter_host')" prop="vars.vc_host" :rules="requiredRules">
                 <el-input v-model="form.vars['vc_host']" clearable></el-input>
@@ -119,13 +114,11 @@
             <div v-if="createType === 'glusterfs'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
-                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.deploy_mode')" prop="vars.oceanstor_controller_type" :rules="requiredRules">
                 <el-select style="width: 100%" v-model="form.vars['oceanstor_controller_type']">
@@ -227,6 +220,7 @@ export default {
       this.$router.push({ name: "ClusterStorage" })
     },
     changeSelection() {
+      this.$refs["form"].clearValidate()
       this.form.vars = {}
       this.form.name = ""
       switch (this.createType) {

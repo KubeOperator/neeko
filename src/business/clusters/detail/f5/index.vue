@@ -1,7 +1,7 @@
 <template>
   <layout-content v-loading="loading">
-    <el-col :span="1"><br/></el-col>
-    <el-col :span="15">
+    <el-col :span="4"><br/></el-col>
+    <el-col :span="10">
     <div class="grid-content bg-purple-light">
       <el-form :model="form"  label-position="left" ref="form" :rules="rules" label-width="130px">
         <el-form-item :label="$t('cluster.detail.f5.big_ip_addr')"  prop="url">
@@ -20,8 +20,8 @@
           <el-input v-model="form.publicIP" clearable></el-input>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button @click="onSubmit()" v-if="form.id === ''" type="primary">{{$t('commons.button.submit')}}</el-button>
-          <el-button @click="onUpdate()" v-if="form.id !== ''" type="primary">{{$t('commons.button.update')}}</el-button>
+          <el-button @click="onSubmit()" v-if="form.id === ''">{{$t('commons.button.submit')}}</el-button>
+          <el-button @click="onUpdate()" v-if="form.id !== ''">{{$t('commons.button.update')}}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -78,11 +78,7 @@ export default {
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               }
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
@@ -100,11 +96,7 @@ export default {
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
               }
-            },
-            (error) => {
-              this.$message({ type: "error", message: error })
-            }
-          )
+            })
         } else {
           return false
         }
