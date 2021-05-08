@@ -3,7 +3,7 @@ import AuthorizationComponent from "@/business/authorization"
 
 
 const Authorization = {
-  sort: 1,
+  sort: 7,
   path: "/authorization",
   component: Layout,
   name: "Authorization",
@@ -14,7 +14,7 @@ const Authorization = {
       name: "ProjectAuthorizationList",
       props: true,
       meta: {
-        title: "route.project",
+        title: "route.project_management",
         icon: "iconfont iconproject",
         roles: ["ADMIN", "PROJECT_MANAGER"]
       }
