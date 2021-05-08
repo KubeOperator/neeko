@@ -537,6 +537,9 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
+    authorize_project: "授权到项目",
+    existing_authorized: "存在已授权主机",
+    existing_unauthorized: "存在未授权主机",
   },
   message: {
     message: "消息",
