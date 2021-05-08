@@ -96,9 +96,7 @@ export default {
           this.dialogVisible = true;
           break
         case 'logout':
-          this.$store.dispatch("user/logout").then(() => {
-            location.reload()
-          });
+          this.logout()
           break
         default:
           this.aboutDialogVisible = true;
@@ -113,6 +111,11 @@ export default {
     },
     toTalk() {
       window.open("https://kubeoperator.io/#contact", "_blank");
+    },
+    logout() {
+      this.$store.dispatch("user/logout").then(() => {
+        location.reload()
+      })
     },
     toGithubStar() {
       window.open("https://github.com/KubeOperator/KubeOperator", "_blank");

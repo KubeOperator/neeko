@@ -6,7 +6,7 @@
         <div class="grid-content bg-purple-light">
           <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="80px">
             <el-form-item :label="$t('credential.name')" required>
-              <el-input v-model="form.name" readonly></el-input>
+              <el-input v-model="form.name" disabled></el-input>
               <span></span>
             </el-form-item>
             <el-form-item :label="$t('credential.username')" required>
