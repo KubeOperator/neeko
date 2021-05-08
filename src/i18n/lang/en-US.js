@@ -505,6 +505,17 @@ const message = {
       },
     },
   },
+  manifest: {
+    title: "Version Management",
+    detail: "Detail",
+    enable: "enable",
+    enable_message: "version {0} successfully enabled！",
+    disable_message: "version {0} successfully disabled！",
+    component: "component",
+    version: "version",
+    see_documentation: "documentation",
+    manifest_help: "By default, Kubernetes in the offline package only carries the latest two versions. If the current environment is offline, you need to execute the script to generate the old version of Kubernetes offline package and push it to the nexus warehouse."
+  },
 }
 
 export default {
