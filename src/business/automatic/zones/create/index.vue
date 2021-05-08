@@ -539,7 +539,7 @@ export default {
       subnetList: [],
       portgroups: [],
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         regionName: [Rule.RequiredRule],
         cloudVars: {
           cluster: [Rule.RequiredRule],

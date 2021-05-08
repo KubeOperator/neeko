@@ -41,7 +41,7 @@ export default {
         description: ""
       },
       rules: {
-        name: [Rule.NameRule, Rule.LengthRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         description: [Rule.LengthRule]
       },
       loading: false

@@ -66,7 +66,7 @@ export default {
         dns2: "",
       },
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.LengthRule,Rule.NameRule],
         subnet: [Rule.RequiredRule],
         ipStart: [Rule.IpRule],
         ipEnd: [Rule.IpRule],
