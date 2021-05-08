@@ -6,7 +6,7 @@
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
-              <span >{{form.architecture}}</span>
+              <el-input v-model="form.architecture" disabled></el-input>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" required>
               <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">

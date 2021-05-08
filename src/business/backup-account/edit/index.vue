@@ -6,10 +6,10 @@
         <div class="grid-content bg-purple-light">
           <el-form ref="form" v-loading="loading" label-position="left"  :model="form" label-width="90px">
             <el-form-item :label="$t('backup_account.table.name')" aria-readonly="true" required>
-              <span>{{ form.name}}</span>
+              <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
             <el-form-item :label="$t('backup_account.table.type')" aria-readonly="true" required>
-              <span>{{ form.type}}</span>
+              <el-input v-model="form.type" disabled></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey" required>
               <el-input  v-model="form.credentialVars['accessKey']"></el-input>
