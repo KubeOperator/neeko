@@ -194,7 +194,7 @@ const message = {
     project: "Project",
     cluster_detail: "Cluster details",
     version: "Version",
-    node_size: "Number of nodes",
+    node_size: "Nodes",
     creation: {
       step1: "Cluster Information",
       name: "Name",
