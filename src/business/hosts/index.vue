@@ -27,10 +27,10 @@
       <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
-      <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />
+      <el-table-column :label="$t('host.cpu')" width="100px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="120px">
+      <el-table-column :label="$t('host.os')" min-width="125px">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>

@@ -35,3 +35,7 @@ export function updateMultiClusterRepositoryRelations(name, data) {
 export function getMultiClusterSyncLogs(name, currentPage, pageSize) {
   return get(`${baseUrl}/repositories/logs/${name}?pageNum=${currentPage}&pageSize=${pageSize}`,)
 }
+
+export function getMultiClusterSyncLogsDetail(name, logId) {
+  return get(`${baseUrl}/repositories/logs/detail/${name}/${logId}`,)
+}

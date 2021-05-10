@@ -1,7 +1,7 @@
 <template>
   <layout-content>
     <div>
-      <el-form ref="form" label-position='left' label-width="180px" :model="form" :rules="rules">
+      <el-form ref="form" label-position='left' label-width="220px" :model="form" :rules="rules">
         <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
