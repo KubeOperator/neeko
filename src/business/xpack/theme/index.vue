@@ -4,7 +4,7 @@
       <el-col :span="2"><br/></el-col>
       <el-col :span="13">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" v-loading="loading" :model="form" label-width="110px">
+          <el-form ref="form" label-position="left" v-loading="loading" :model="form" label-width="120px">
             <el-form-item  style="width: 100%" :label="$t('theme.systemName')" required>
               <el-input v-model="form.systemName"></el-input>
             </el-form-item>

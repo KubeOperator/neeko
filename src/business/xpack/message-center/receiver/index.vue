@@ -1,9 +1,9 @@
 <template>
     <el-row>
       <el-col :span="2"><br /></el-col>
-      <el-col :span="12">
+      <el-col :span="13">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="120px">
+          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="180px">
             <el-form-item :label="$t('message.dingTalk_phone')">
               <el-input v-model="form.vars['DING_TALK']"></el-input>
               <div><span class="input-help">{{$t('message.dingTalk_phone_help')}}</span></div>

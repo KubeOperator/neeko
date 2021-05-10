@@ -568,7 +568,8 @@ const message = {
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
-      CLUSTER_REMOVE_WORKER: "节点删除"
+      CLUSTER_REMOVE_WORKER: "节点删除",
+      CLUSTER_ADD_WORKER: "添加节点"
     },
     detail: {
       basicInformation: "基本信息",
@@ -771,6 +772,7 @@ const message = {
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",
+    apply_licensee: "申请许可证",
     message: "消息",
     credential: "凭证",
     ntpServer: "NTP服务器",

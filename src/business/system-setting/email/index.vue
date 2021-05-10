@@ -2,9 +2,9 @@
   <div>
     <br>
       <el-col :span="1"><br/></el-col>
-      <el-col :span="15">
+      <el-col :span="12">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules"  :model="form" label-width="100px">
+          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules"  :model="form" label-width="120px">
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.smtp')" prop="vars.SMTP_ADDRESS">
               <el-input v-model="form.vars.SMTP_ADDRESS"></el-input>
             </el-form-item>
