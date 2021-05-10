@@ -202,10 +202,9 @@ export default {
             clusterBackupStrategyID: this.strategyForm.id,
             folder: "",
           }
-          startBackup(backupFile)
-            .then(() => {
-              this.submitLoading = false
-              this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
+          startBackup(backupFile).then(
+            () => {
+              this.$message({ type: "success", message: this.$t("commons.detail.backup.backup_start") })
             })
             .catch(() => {
               this.submitLoading = false
