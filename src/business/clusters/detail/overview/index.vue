@@ -180,7 +180,7 @@ export default {
     newWindow() {
       this.opened = true
       getClusterToken(this.clusterName).then((data) => {
-        this.url = `/webkubectl/terminal/?token=${data.token}`
+        this.url = `api/v1/webkubectl/terminal/?token=${data.token}`
         window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
       })
     },
