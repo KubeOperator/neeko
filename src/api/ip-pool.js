@@ -1,6 +1,6 @@
 import {get, del, post, patch} from "@/plugins/request"
 
-const ipPoolUrl = "/ippools"
+const ipPoolUrl = "/api/v1/ippools"
 
 export function listIpPools (page, size) {
   return get(`${ipPoolUrl}?pageNum=${page}&pageSize=${size}`)

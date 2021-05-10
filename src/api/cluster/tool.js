@@ -1,6 +1,6 @@
 import {get, post} from "@/plugins/request"
 
-const toolUrl = "clusters/tool"
+const toolUrl = "/api/v1/clusters/tool"
 
 export function listTool(clusterName) {
   return get(`${toolUrl}/${clusterName}`)

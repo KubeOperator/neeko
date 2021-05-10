@@ -1,15 +1,15 @@
 import {get, patch} from "@/plugins/request"
 
-const baseUrl = '/manifests';
+const baseUrl = "/api/v1/manifests";
 
 export function manifestGroup() {
-  return get("manifests/group")
+  return get(`${baseUrl}/group`)
 }
 
 export function listActive() {
-  return get(baseUrl + '/active');
+  return get(`${baseUrl}/active`);
 }
 
 export function changeStatus(versionName, manifest) {
-  return patch(`manifests/${versionName}`, manifest)
+  return patch(`${baseUrl}/${versionName}`, manifest)
 }

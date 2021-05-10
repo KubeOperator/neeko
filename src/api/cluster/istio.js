@@ -1,6 +1,6 @@
 import {get, post} from "@/plugins/request"
 
-const istioUrl = "clusters/istio/{operation}/{cluster_name}"
+const istioUrl = "/api/v1/clusters/istio/{operation}/{cluster_name}"
 
 export function listIstio(clusterName) {
   return get(istioUrl.replace("/{operation}", "").replace("{cluster_name}", clusterName))

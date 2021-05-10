@@ -1,6 +1,6 @@
 import {get,post} from "@/plugins/request"
 
-const userUrl = "/theme"
+const userUrl = "/api/v1/theme"
 
 export function getTheme() {
   return get(userUrl)

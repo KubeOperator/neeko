@@ -1,6 +1,6 @@
 import {get} from "@/plugins/request"
 
-const baseUrl = "/clusters/grade"
+const baseUrl = "/api/v1/clusters/grade"
 
 export function getGrade(clusterName) {
     const gradeUrl = `${baseUrl}/${clusterName}`

@@ -86,7 +86,9 @@ a:hover {
 
 
 .el-step__title.is-finish {
-  color: #606266;
+  color: #717379;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .el-step__description.is-finish {
@@ -133,7 +135,11 @@ a:hover {
   color: #FA5D50;
 }
 
-.ko-dialog {
+.el-table thead {
+  color: #57595f;
+  font-weight: bold;
+}
+  .ko-dialog {
   font-size: 12px;
   font-weight: 400;
   line-height: 25px;

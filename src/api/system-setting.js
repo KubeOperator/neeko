@@ -1,6 +1,6 @@
 import {get, patch, post, del} from "@/plugins/request"
 
-const settingUrl = "/settings"
+const settingUrl = "/api/v1/settings"
 const messageUrl = "message/setting"
 
 // Settings

@@ -2,7 +2,7 @@ import {del, get, post} from "@/plugins/request"
 
 
 const projectResourceUrl = (project_name) => {
-  return `/projects/${project_name}/resources`
+  return `/api/v1/projects/${project_name}/resources`
 }
 
 export function listProjectResources (project_name, resourceType, currentPage, pageSize) {

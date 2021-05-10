@@ -1,6 +1,6 @@
 import {get, del, post, patch} from "@/plugins/request"
 
-const vmConfigUrl = "/vmconfigs"
+const vmConfigUrl = "/api/v1/vmconfigs"
 
 export function listVmConfigs (page, size) {
   return get(`${vmConfigUrl}/search?pageNum=${page}&pageSize=${size}`)

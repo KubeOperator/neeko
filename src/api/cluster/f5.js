@@ -1,6 +1,6 @@
 import {get, post, patch} from "@/plugins/request"
 
-const baseUrl = "/clusters/f5"
+const baseUrl = "/api/v1/clusters/f5"
 
 export function getF5(clusterName) {
     const itemUrl = `${baseUrl}/${clusterName}`

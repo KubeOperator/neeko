@@ -1,6 +1,6 @@
 import {get, del, post, patch} from "@/plugins/request"
 
-const planUrl = "/plans"
+const planUrl = "/api/v1/plans"
 
 export function listPlans (page, size) {
   return get(`${planUrl}?pageNum=${page}&pageSize=${size}`)

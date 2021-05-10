@@ -19,4 +19,3 @@ export function deleteNamespace(clusterName, namespace) {
   const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", namespaceOpUrl).replace("{namespace}", namespace)
   return del(url)
 }
-  

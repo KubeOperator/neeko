@@ -1,25 +1,28 @@
 import {del, get, patch, post} from "@/plugins/request"
 
+const backupAccountUrl="/api/v1/backupaccounts"
+
+
 export function getBackupAccounts(currentPage,pageSize) {
-  return get(`/backupaccounts?pageNum=${currentPage}&pageSize=${pageSize}`)
+  return get(`${backupAccountUrl}/?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
 export function createBackupAccounts(data) {
-  return post(`/backupaccounts`,data)
+  return post(`${backupAccountUrl}`,data)
 }
 
 export function listBuckets(data) {
-  return post(`/backupaccounts/buckets`,data)
+  return post(`${backupAccountUrl}/buckets`,data)
 }
 
 export function updateBackupAccounts(name, data) {
-  return patch(`/backupaccounts/${name}`,data)
+  return patch(`${backupAccountUrl}/${name}`,data)
 }
 
 export function deleteBackupAccounts(name) {
-  return del(`/backupaccounts/${name}`)
+  return del(`${backupAccountUrl}/${name}`)
 }
 
 export function searchBackupAccounts(currentPage, pageSize, conditions) {
-  return post(`/backupaccounts/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+  return post(`${backupAccountUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }

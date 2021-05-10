@@ -1,6 +1,6 @@
 import {get, del, post, patch} from "@/plugins/request"
 
-const regionUrl = "/regions"
+const regionUrl = "/api/v1/regions"
 
 export function listRegions (page, size) {
   return get(`${regionUrl}/search?pageNum=${page}&pageSize=${size}`)

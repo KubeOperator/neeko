@@ -3,10 +3,10 @@ import {get, post, del, patch} from "@/plugins/request"
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
 const limit = 10
 
-const nodesUrl = "api/v1/nodes"
+const nodesUrl = "/api/v1/nodes"
 const evictionUrl = "api/v1/namespaces/{namespace}/pods/{pod}/eviction"
 const nodeStatsSummaryUrl = "apis/metrics.k8s.io/v1beta1/nodes"
-const baseUrl = "/clusters/node/{clusterName}"
+const baseUrl = "/api/v1/clusters/node/{clusterName}"
 
 export function listNodesUsage(clusterName, continueToken) {
   let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl)
@@ -29,7 +29,7 @@ export function evictionNode(clusterName, namespace, pod, data) {
 }
 
 export function listNodeInDB(clusterName) {
-  return get(`clusters/node/${clusterName}`)
+  return get(`/api/v1/clusters/node/${clusterName}`)
 }
 
 export function listNodeInCluster(clusterName, continueToken) {
@@ -42,7 +42,7 @@ export function listNodeInCluster(clusterName, continueToken) {
 }
 
 export function listNodesByPage(clusterName, pageNum, pageSize) {
-  return get(`/clusters/node/${clusterName}?pageNum=${pageNum}&pageSize=${pageSize}`)
+  return get(`/api/v1/clusters/node/${clusterName}?pageNum=${pageNum}&pageSize=${pageSize}`)
 }
 
 export function nodeCreate(clusterName, data) {
