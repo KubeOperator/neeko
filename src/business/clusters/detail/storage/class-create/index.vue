@@ -9,19 +9,19 @@
               <el-input size="small" v-model="form.metadata.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.storage.provisioner_short')">
+            <el-form-item :label="$t('cluster.detail.storage.provisioner_short')" required>
               <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name" clearable>
                 <el-option v-for="item of provisioners" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')">
+              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
@@ -53,17 +53,17 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'cinder'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'vsphere'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.class.storage_policy_type')">
@@ -86,40 +86,40 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'glusterfs'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
-              <el-form-item label="REST URL" prop="parameters.resturl" :rules="requiredRules">
+              <el-form-item label="resturl" prop="parameters.resturl" :rules="requiredRules">
                 <el-input v-model="form.parameters['resturl']" placeholder=" 172.0.0.1:8081" clearable></el-input>
               </el-form-item>
-              <el-form-item label="REST USER" prop="parameters.restuser" :rules="requiredRules">
+              <el-form-item label="restuser" prop="parameters.restuser" :rules="requiredRules">
                 <el-input v-model="form.parameters['restuser']" placeholder=" admin" clearable></el-input>
               </el-form-item>
-              <el-form-item label="REST PASSWORD" prop="parameters.restuserkey" :rules="passwordRules">
+              <el-form-item label="restpassword" prop="parameters.restuserkey" :rules="passwordRules">
                 <el-input v-model="form.parameters['restuserkey']" type="password" name="restuserkey" clearable></el-input>
               </el-form-item>
               <el-form-item label="Namespace" prop="parameters.secretNamespace" :rules="requiredRules">
                 <el-input @change="checkSecrets()" v-model="form.parameters['secretNamespace']" placeholder=" kube-system" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Secret Name" prop="parameters.secretName" :rules="requiredRules">
+              <el-form-item label="secretName" prop="parameters.secretName" :rules="requiredRules">
                 <el-input @change="checkSecrets()" v-model="form.parameters['secretName']" placeholder=" heketi-secret" clearable></el-input>
                 <div><span v-if="isSecretsExit" class="input-err">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="CLUSTER ID" prop="parameters.clusterid" :rules="requiredRules">
+              <el-form-item label="clusterid" prop="parameters.clusterid" :rules="requiredRules">
                 <el-input v-model="form.parameters['clusterid']" placeholder=" 8a4ff57af81910e8324368a23afe3bdc" clearable></el-input>
               </el-form-item>
-              <el-form-item label="GID MIN" prop="parameters.gidMin" :rules="requiredRules">
+              <el-form-item label="gidmin" prop="parameters.gidMin" :rules="requiredRules">
                 <el-input v-model="form.parameters['gidMin']" placeholder=" 40000" clearable></el-input>
               </el-form-item>
-              <el-form-item label="GID MAX" prop="parameters.gidMax" :rules="requiredRules">
+              <el-form-item label="gidmax" prop="parameters.gidMax" :rules="requiredRules">
                 <el-input v-model="form.parameters['gidMax']" placeholder=" 50000" clearable></el-input>
               </el-form-item>
-              <el-form-item label="VOLUME TYPE" prop="parameters.volumetype" :rules="requiredRules">
+              <el-form-item label="volumetype" prop="parameters.volumetype" :rules="requiredRules">
                 <el-input v-model="form.parameters['volumetype']" placeholder=" replicate:3" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="volumeType" prop="parameters.volumeType" :rules="requiredRules">
@@ -196,7 +196,7 @@ export default {
       },
       nameRules: [Rule.CommonNameRule],
       requiredRules: [Rule.RequiredRule],
-      passwordRules: [Rule.PasswordRule],
+      passwordRules: [Rule.RequiredRule],
     }
   },
   methods: {
@@ -220,13 +220,16 @@ export default {
             const mySecret = this.newV1Secrets()
             createSecret(this.clusterName, this.form.parameters["secretNamespace"], mySecret)
               .then(() => {
-                if (this.item.parameters["restuserkey"]) {
-                  delete this.item.parameters["restuserkey"]
+                if (this.form.parameters["restuserkey"]) {
+                  delete this.form.parameters["restuserkey"]
                 }
                 this.addStorageClass()
               })
               .catch(() => {
-                this.submitLoading = false
+                if (this.form.parameters["restuserkey"]) {
+                  delete this.form.parameters["restuserkey"]
+                }
+                this.addStorageClass()
               })
           } else {
             this.addStorageClass()

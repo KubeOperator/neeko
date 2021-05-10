@@ -28,10 +28,6 @@ const eventsUrl = "api/v1/events"
 
 export function listDeployment(clusterName, continueToken, namespace) {
   let url = proxyUrl.replace("{cluster_name}", clusterName)
-  url += "?limit=" + limit
-  if (continueToken !== undefined && continueToken !== null) {
-    url += "&continue=" + continueToken
-  }
   if (namespace !== undefined && namespace !== null) {
     url = url.replace("{resource_url}", namespaceDeploymentUrl).replace("{namespace}", namespace)
   } else {

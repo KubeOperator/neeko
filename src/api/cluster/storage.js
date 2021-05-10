@@ -11,7 +11,7 @@ const persistentVolumesOpUrl = "api/v1/persistentvolumes/{name}"
 const storageClassOpUrl = "apis/storage.k8s.io/v1/storageclasses/{name}"
 
 const provisionerUrl = "/api/v1/clusters/provisioner/{cluster_name}"
-const secretUrl = "namespaces/{namespace}/secrets"
+const secretUrl = "api/v1/namespaces/{namespace}/secrets"
 
 export function listProvisioner(clusterName) {
   return get(provisionerUrl.replace("{cluster_name}", clusterName))
