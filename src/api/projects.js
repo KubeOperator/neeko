@@ -1,6 +1,6 @@
 import {get, post, del, patch} from "@/plugins/request"
 
-const projectUrl = "/projects"
+const projectUrl = "/api/v1/projects"
 
 export function createProject (data) {
   return post(projectUrl, data)

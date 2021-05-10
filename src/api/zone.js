@@ -1,6 +1,6 @@
 import {get, del, post, patch} from "@/plugins/request"
 
-const zoneUrl = "/zones"
+const zoneUrl = "/api/v1/zones"
 
 export function listZones (page, size) {
   return get(`${zoneUrl}?pageNum=${page}&pageSize=${size}`)

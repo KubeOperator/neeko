@@ -1,7 +1,7 @@
 import {del, get, post} from "@/plugins/request"
 
 const projectMemberUrl = (project_name) => {
-  return `/projects/${project_name}/members`
+  return `/api/v1/projects/${project_name}/members`
 }
 
 
@@ -21,6 +21,6 @@ export function updateProjectMember(project_name, name, data) {
   return get(`${projectMemberUrl(project_name)}/${name}`, data)
 }
 
-export function listUsers(project_name,name){
+export function listUsers(project_name, name) {
   return get(`${projectMemberUrl(project_name)}/users?name=${name}`)
 }

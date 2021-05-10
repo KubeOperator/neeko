@@ -1,6 +1,6 @@
 import {get, patch, post, del} from "@/plugins/request"
 
-const userUrl = "/users"
+const userUrl = "/api/v1/users"
 
 
 export function updateUser(name, data) {

@@ -2,7 +2,7 @@
 import {get, post, put} from "@/plugins/request"
 
 export function login(data) {
-  return post("/samples/user-token/login", data)
+  return post("/api/v1/samples/user-token/login", data)
 }
 
 export function logout() {

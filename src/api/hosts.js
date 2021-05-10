@@ -1,6 +1,6 @@
 import {get, post, del} from "@/plugins/request"
 
-const hostUrl = "/hosts"
+const hostUrl = "/api/v1/hosts"
 
 export function createHost(data) {
   return post(hostUrl, data)

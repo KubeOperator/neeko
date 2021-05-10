@@ -1,6 +1,6 @@
 import {get, patch, post, del} from "@/plugins/request"
 
-const settingUrl = "/credentials"
+const settingUrl = "/api/v1/credentials"
 
 // Registry
 export function listCredentials(currentPage, pageSize) {

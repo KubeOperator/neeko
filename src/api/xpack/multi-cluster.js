@@ -1,6 +1,6 @@
 import {get, post, del, patch} from "@/plugins/request"
 
-const baseUrl = "/multicluster"
+const baseUrl = "/api/v1/multicluster"
 
 export function listMultiClusterRepositories(currentPage, pageSize) {
   return get(`${baseUrl}/repositories?pageNum=${currentPage}&pageSize=${pageSize}`,)
