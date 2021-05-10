@@ -568,7 +568,8 @@ const message = {
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
-      CLUSTER_REMOVE_WORKER: "节点删除"
+      CLUSTER_REMOVE_WORKER: "节点删除",
+      CLUSTER_ADD_WORKER: "添加节点"
     },
     detail: {
       basicInformation: "基本信息",
@@ -752,15 +753,9 @@ const message = {
   backup_account: {
     name: "备份账号",
     bucket: "桶",
-    type: "类型",
-    status: "状态",
     select_placeholder: "请选择",
     table: {
-      name: "名称",
       bucket: "桶",
-      type: "类型",
-      status: "状态",
-      create_time: "创建时间",
       endpoint: "Endpoint",
       region: "区域",
       accountName: "账户名称",
@@ -770,7 +765,6 @@ const message = {
       username: "用户名",
       password: "密码",
       path: "路径",
-      project: "项目"
     }
   },
   setting: {
@@ -778,6 +772,7 @@ const message = {
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",
+    apply_licensee: "申请许可证",
     message: "消息",
     credential: "凭证",
     ntpServer: "NTP服务器",

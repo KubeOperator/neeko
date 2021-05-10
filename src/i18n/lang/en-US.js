@@ -505,6 +505,34 @@ const message = {
       },
     },
   },
+  host: {
+    detail: "Detail",
+    host: "Host",
+    memory: "Memory(MB)",
+    os: "OS",
+    architecture: "Srchitecture",
+    port: "Port",
+    ensure_host_sync: "Are you sure to synchronize the following hosts？",
+    start_host_sync: "Host synchronization has started, please wait...",
+    template_download: "Template download",
+    not_support_format: "Unsupported file format",
+    project_auth: "Authorization",
+    new_credential: "Create credential",
+    credential_type: "Credential Type",
+    credential_name: "Credential Name",
+    exists_credential: "Credentials already exist",
+    ip: "IP",
+    gpu: "GPU(Num)",
+    err_title: "Error message",
+    base_info: "basic information",
+    disk_size: "Disk capacity",
+    cpu: "CPU(core)",
+    size: "Size",
+    gpu_info: "GPU Info",
+    authorize_project: "Authorize",
+    existing_authorized: "Authorized host exists",
+    existing_unauthorized: "There are unauthorized hosts",
+  },
   message: {
     message: "message",
     message_center: "Message Center",
@@ -515,7 +543,7 @@ const message = {
     level: "Level",
     mark_as_read: "Mark",
     dingTalk_phone: "DingTalk Phone",
-    dingTalk_phone_help: "Used for Dingding to receive alarm messages",
+    dingTalk_phone_help: "Used for DingTalk to receive alarm messages",
     work_wechat_id: "Enterprise WeChat User ID",
     work_wechat_id_help: "Used for enterprise WeChat to receive alarm messages",
     work_wechat_url_help: "How to find userid?",
@@ -528,7 +556,8 @@ const message = {
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",
-      CLUSTER_REMOVE_WORKER: "Node delete"
+      CLUSTER_REMOVE_WORKER: "Node delete",
+      CLUSTER_ADD_WORKER: "Node add"
     },
     detail: {
       basicInformation: "Information",
@@ -557,6 +586,17 @@ const message = {
     version: "version",
     see_documentation: "documentation",
     manifest_help: "By default, Kubernetes in the offline package only carries the latest two versions. If the current environment is offline, you need to execute the script to generate the old version of Kubernetes offline package and push it to the nexus warehouse."
+  },
+  user: {
+    username: "username",
+    password: "Password",
+    confirm_password: "Confirm Password",
+    role: "Role",
+    email: "Email",
+    user: "User",
+    type: "Type",
+    ldap: "LDAP",
+    local: "Local"
   },
   system_log: {
     title: "SystemLog",
@@ -637,7 +677,7 @@ const message = {
       deploy_template: "Deployment Model",
       SINGLE: "One master and multiple nodes",
       MULTIPLE: "Multi-master and multi-node",
-      project_auth: "Project Authorization",
+      project_auth: "Authorization",
       master_model: "Master Specification",
       worker_model: "Worker Specification",
       config: "Specification Reference"
@@ -698,14 +738,31 @@ const message = {
     privateKey: "Key",
     type: "Type"
   },
+  backup_account: {
+    name: "Backup Account",
+    select_placeholder: "Select",
+    table: {
+      bucket: "Bucket",
+      endpoint: "Endpoint",
+      region: "Region",
+      accountName: "AccountName",
+      accountKey: "AccountKey",
+      address: "Address",
+      port: "Port",
+      username: "Username",
+      password: "Password",
+      path: "Path",
+    }
+  },
   setting: {
     registry: "Registry",
     ntp: "NTP",
     email: "Email",
     license: "License",
+    apply_licensee: "Apply Licensee",
     message: "Message",
     credential: "Credential",
-    ntpServer: "NTP server",
+    ntpServer: "NTP Server",
     table: {
       registry: {
         protocol: "Protocol",
@@ -732,7 +789,7 @@ const message = {
         ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!"
       },
       license: {
-        title: "KubeOperator license",
+        title: "KubeOperator License",
         corporation: "Company",
         count: "Count",
         expiration: "Expire Date",
@@ -746,16 +803,16 @@ const message = {
       },
       message: {
         wechat: "Enterprise WeChat",
-        dingTalk: "DingDing",
+        dingTalk: "DingTalk",
         testUser: "Test User",
         status: "Status",
         webhookAddress: "Webhook Address",
-        dingTalkConcept: "Basic concepts of DingDing",
-        dingTalkLimit: "DingDing message frequency limit",
+        dingTalkConcept: "Basic concepts of DingTalk",
+        dingTalkLimit: "DingTalk message frequency limit",
         wechatConcept: "Basic Concepts of Enterprise WeChat",
         wechatLimit: "Enterprise WeChat message frequency limit",
         wechatSetting: "Enterprise WeChat settings",
-        dingTalkSetting: "Dingding settings",
+        dingTalkSetting: "DingTalk settings",
       }
     },
     option: {

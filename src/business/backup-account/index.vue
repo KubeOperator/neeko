@@ -12,14 +12,14 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('backup_account.table.name')" fix prop="name"/>
-      <el-table-column :label="$t('backup_account.table.project')" v-if="isAdmin">
+      <el-table-column :label="$t('commons.table.name')" fix prop="name"/>
+      <el-table-column :label="$t('project.project')" v-if="isAdmin">
         <template v-slot:default="{row}">
           <span v-for="(zone,index) in row.projects" :key="index">{{ zone }},</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('backup_account.table.bucket')"  prop="bucket"/>
-      <el-table-column :label="$t('backup_account.table.type')"  prop="credentialVars.type">
+      <el-table-column :label="$t('commons.table.type')"  prop="credentialVars.type">
         <template v-slot:default="{row}">
           <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconoss"></use>
@@ -36,7 +36,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('backup_account.table.status')"  prop="status">
+      <el-table-column :label="$t('commons.table.status')"  prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status === 'VALID'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -48,7 +48,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('backup_account.table.create_time')">
+      <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
@@ -120,7 +120,7 @@ export default {
             ],
             multiple: true
           },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
         ]
       },
       paginationConfig: {

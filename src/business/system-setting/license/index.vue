@@ -8,14 +8,14 @@
         <DetailCard :title="cardTitle" :items="detailItems" />
       </el-col>
     </el-row>
-    <el-button type="primary" style="float: right;margin: 0 10px 8px " @click="dialogVisible = true">导入</el-button>
+    <el-button type="primary" style="float: right;margin: 0 10px 8px " @click="dialogVisible = true">{{ $t('commons.button.import')}}</el-button>
     <el-dialog
       :title="$t('setting.option.addLicense')"
       :visible.sync="dialogVisible"
       @cancel="dialogLicenseImport = false"
       width="30%"
       @confirm="importLicense">
-      <el-button type="text" @click="applyLicensee()">申请许可证</el-button>
+      <el-button type="text" @click="applyLicensee()">{{ $t('setting.apply_licensee') }}</el-button>
       <el-form>
         <el-form-item>
           <el-row type="flex" justify="center">
