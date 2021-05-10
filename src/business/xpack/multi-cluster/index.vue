@@ -3,6 +3,11 @@
     <relations-management :visible="relationManagementOpened"
                           v-on:update:visible="relationManagementOpened=$event"
                           :name="currentRepositoryName"></relations-management>
+    <repository-error-message :visible="repositoryErrorMessageOpened"
+                              v-on:update:visible="repositoryErrorMessageOpened=$event"
+                              :message="errorMessage"></repository-error-message>
+
+
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
@@ -19,9 +24,18 @@
       <el-table-column :label="$t('multi_cluster.address')" min-width="100" prop="source" fix/>
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
-          <el-tag v-if="row.status.toLowerCase() === 'running'" type="success" size="small">
-            {{$t('commons.status.running')}}
-          </el-tag>
+          <div v-if="row.status ==='Running'">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            {{ $t("commons.status.running") }}
+          </div>
+          <div v-if="row.status ==='Initializing'">
+            <i class="el-icon-loading" />&nbsp;
+            {{ $t("commons.status.initializing") }}
+          </div>
+          <div v-if="row.status === 'Failed'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="showErrorMessage(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -40,15 +54,18 @@
   import ComplexTable from "@/components/complex-table";
   import RelationsManagement from "./dialog/RelationsManagement"
   import {listMultiClusterRepositories, deleteMultiClusterRepository} from "@/api/xpack/multi-cluster"
+  import RepositoryErrorMessage from "./dialog/RepositoryErrorMessage";
 
 
   export default {
     name: "MultiClusterRepositoriesList",
-    components: {RelationsManagement, ComplexTable, LayoutContent},
+    components: {RepositoryErrorMessage, RelationsManagement, ComplexTable, LayoutContent},
     data() {
       return {
         relationManagementOpened: false,
+        repositoryErrorMessageOpened: false,
         currentRepositoryName: "",
+        errorMessage: "123",
         columns: [],
         buttons: [
           {
@@ -99,7 +116,12 @@
               ],
               multiple: true
             },
-            {field: "created_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss"},
+            {
+              field: "created_at",
+              label: this.$t('commons.table.create_time'),
+              component: "FuComplexDateTime",
+              valueFormat: "yyyy-MM-dd"
+            },
           ]
         },
         paginationConfig: {
@@ -113,6 +135,10 @@
     methods: {
       select(selection) {
         console.log(selection)
+      },
+      showErrorMessage(item) {
+        this.errorMessage = item.message
+        this.repositoryErrorMessageOpened = true
       },
       create() {
         this.$router.push({name: "MultiClusterRepositoryCreate"})

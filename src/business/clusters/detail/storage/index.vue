@@ -119,8 +119,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
-      <span>{{ errMsg | errorFormat }}</span>
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="50%" :visible.sync="dialogErrorVisible">
+      <div style="margin: 0 50px"><span style="line-height: 30px">{{ errMsg | errorFormat }}</span></div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
@@ -208,7 +208,7 @@ export default {
             this.pvDatas = data.items
             this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
           })
-          .finally(() => {
+          .catch(() => {
             this.loading = false
           })
       } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
@@ -218,7 +218,7 @@ export default {
             this.storageClassDatas = data.items
             this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
           })
-          .finally(() => {
+          .catch(() => {
             this.loading = false
           })
       } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
@@ -227,7 +227,7 @@ export default {
             this.loading = false
             this.provisionerDatas = data
           })
-          .finally(() => {
+          .catch(() => {
             this.loading = false
           })
       }

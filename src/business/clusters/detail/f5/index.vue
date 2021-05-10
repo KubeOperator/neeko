@@ -1,30 +1,30 @@
 <template>
   <layout-content v-loading="loading">
-    <el-col :span="4"><br/></el-col>
+    <el-col :span="4"><br /></el-col>
     <el-col :span="10">
-    <div class="grid-content bg-purple-light">
-      <el-form :model="form"  label-position="left" ref="form" :rules="rules" label-width="130px">
-        <el-form-item :label="$t('cluster.detail.f5.big_ip_addr')"  prop="url">
-          <el-input v-model="form.url" placeholder="https://172.16.10.100" clearable></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('cluster.detail.f5.big_ip_user_name')"  prop="user">
-          <el-input v-model="form.user" placeholder="admin" clearable></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('cluster.detail.f5.big_ip_password')"  prop="password">
-          <el-input type="password" v-model="form.password" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="Partition" prop="partition">
-          <el-input v-model="form.partition" placeholder="Partition Name" clearable></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('cluster.detail.f5.big_ip_public')" prop="publicIP">
-          <el-input v-model="form.publicIP" clearable></el-input>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button @click="onSubmit()" v-if="form.id === ''">{{$t('commons.button.submit')}}</el-button>
-          <el-button @click="onUpdate()" v-if="form.id !== ''">{{$t('commons.button.update')}}</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+      <div class="grid-content bg-purple-light">
+        <el-form :model="form" label-position="left" ref="form" :rules="rules" label-width="130px">
+          <el-form-item :label="$t('cluster.detail.f5.big_ip_addr')" prop="url">
+            <el-input v-model="form.url" placeholder="https://172.16.10.100" clearable></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.f5.big_ip_user_name')" prop="user">
+            <el-input v-model="form.user" placeholder="admin" clearable></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.f5.big_ip_password')" prop="password">
+            <el-input type="password" v-model="form.password" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="Partition" prop="partition">
+            <el-input v-model="form.partition" placeholder="Partition Name" clearable></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.f5.big_ip_public')" prop="publicIP">
+            <el-input v-model="form.publicIP" clearable></el-input>
+          </el-form-item>
+          <el-form-item style="float: right">
+            <el-button :disabled="submitLoading" @click="onSubmit()" v-if="form.id === ''">{{$t('commons.button.submit')}}</el-button>
+            <el-button :disabled="submitLoading" @click="onUpdate()" v-if="form.id !== ''">{{$t('commons.button.update')}}</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-col>
   </layout-content>
 </template>
@@ -57,27 +57,37 @@ export default {
         partition: [Rule.RequiredRule],
         publicIP: [Rule.RequiredRule],
       },
-      loading: false
+      loading: false,
+      submitLoading: false,
     }
   },
   methods: {
     search() {
-      getF5(this.clusterName).then((data) => {
-        this.form = data
-      })
+      this.loading = true
+      getF5(this.clusterName)
+        .then((data) => {
+          this.form = data
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     onSubmit() {
-      this.loading = true
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           this.form.clusterName = this.clusterName
-          createF5(this.form).then(
-            (data) => {
+          createF5(this.form)
+            .then((data) => {
               if (data.status === "Running") {
-                this.loading = false
+                this.submitLoading = false
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               }
+            })
+            .catch(() => {
+              this.submitLoading = false
             })
         } else {
           return false
@@ -85,17 +95,20 @@ export default {
       })
     },
     onUpdate() {
-      this.loading = true
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           this.form.clusterName = this.clusterName
-          updateF5(this.form).then(
-            (data) => {
+          updateF5(this.form)
+            .then((data) => {
               if (data.status === "Running") {
-                this.loading = false
+                this.submitLoading = false
                 this.form = data
                 this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
               }
+            })
+            .catch(() => {
+              this.submitLoading = false
             })
         } else {
           return false

@@ -167,7 +167,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button :disabled="!createType" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
+                <el-button :disabled="!createType || submitLoading" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -187,6 +187,7 @@ export default {
   components: { LayoutContent },
   data() {
     return {
+      submitLoading: false,
       createType: "",
       form: {
         name: "",
@@ -203,14 +204,20 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           this.form.type = this.createType
           if (this.form.type === "conder") {
             this.form.vars["enable_blockstorage"] = this.enableBlockStorage
           }
-          createProvisioner(this.clusterName, this.form).then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
-            this.$router.push({ name: "ClusterStorage" })
-          })
+          createProvisioner(this.clusterName, this.form)
+            .then(() => {
+              this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
+              this.$router.push({ name: "ClusterStorage" })
+              this.submitLoading = true
+            })
+            .catch(() => {
+              this.submitLoading = false
+            })
         } else {
           return false
         }
