@@ -846,6 +846,7 @@ const message = {
     }
   },
   multi_cluster: {
+    sync_detail: "同步详情",
     multi_cluster: "多集群",
     repository_setting: "仓库设置",
     basic_setting: "基础设置",
