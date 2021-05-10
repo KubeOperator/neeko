@@ -226,7 +226,7 @@ export default {
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
         ],
       },
       loading: false,
@@ -283,7 +283,7 @@ export default {
       })
     },
     download() {
-      window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
+      window.open("/hosts/template")
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true

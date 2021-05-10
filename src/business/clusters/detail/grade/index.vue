@@ -60,8 +60,8 @@ export default {
   name: "ClusterGrade",
   data() {
     return {
+      loading: false,
       gradeInfo: {
-        loading: false,
         grade: "",
         score: 0,
         totalSum: 0,
