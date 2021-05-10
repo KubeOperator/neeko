@@ -604,7 +604,9 @@ const message = {
     enable_message: "版本 {0} 启用成功！",
     disable_message: "版本 {0} 禁用成功！",
     component: "组件",
-    version: "版本"
+    version: "版本",
+    see_documentation: "参阅文档",
+    manifest_help: "离线包中 Kubernetes 默认只携带最新的两个版本。如果当前是离线环境，需要执行脚本生成旧版本Kubernetes离线包，并推送至nexus仓库。"
   },
   system_log: {
     title: "系统日志",

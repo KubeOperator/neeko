@@ -16,8 +16,8 @@
                 <el-input v-model="form.username" :placeholder="$t('login.username')" autofocus />
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="form.password" :placeholder="$t('login.password')"
-                          show-password maxlength="30" show-word-limit/>
+                <el-input type="password" v-model="form.password" :placeholder="$t('login.password')"
+                          maxlength="30"/>
               </el-form-item>
               <el-form-item v-if="hasCode">
                 <el-col :span="18">

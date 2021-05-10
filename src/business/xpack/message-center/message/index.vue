@@ -1,7 +1,7 @@
 <template>
   <div>
-    <complex-table :header="$t('message.message')" :selects.sync="selects"
-                   v-loading="loading" :data="data" :columns="columns" :pagination-config="paginationConfig" >
+    <complex-table :header="$t('message.message')" :selects.sync="selects" :fit="true"
+                   v-loading="loading" :data="data" :columns="columns" @search="search" :pagination-config="paginationConfig" >
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
@@ -89,7 +89,7 @@ export default {
     return {
       paginationConfig: {
         currentPage: 1,
-        pageSize: 8,
+        pageSize: 10,
         total: 0,
       },
       selects: [],
@@ -190,13 +190,10 @@ export default {
         }
       })
     },
-    search(conditions) {
+    search(condition) {
+      this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      // getMessages(currentPage, pageSize).then((data) => {
-      //   this.data = data.items
-      //   this.paginationConfig.total = data.total
-      // })
-      searchMessages(currentPage, pageSize,conditions).then((data) => {
+      searchMessages(currentPage, pageSize,condition).then((data) => {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
