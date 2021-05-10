@@ -96,17 +96,17 @@
         </el-collapse-item>
       </el-collapse>
       <div v-if="baseCfg.cluster_istio.status === 'Waiting'">
-        <el-button @click="onSubmit('start')" :disabled="btnStartDisable" size="mini">{{$t('commons.button.enable')}}</el-button>
+        <el-button @click="onSubmit('start')" :disabled="submitLoading" size="mini">{{$t('commons.button.enable')}}</el-button>
       </div>
       <div v-if="baseCfg.cluster_istio.status === 'Running'">
-        <el-button @click="onSubmit('restart')" :disabled="btnStartDisable" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
+        <el-button @click="onSubmit('restart')" :disabled="submitLoading" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
         <el-button @click="onDisable()" size="mini">{{$t('commons.button.disable')}}</el-button>
       </div>
       <el-dialog :title="$t('cluster.detail.istio.disable_istio')" width="30%" :visible.sync="dialogShutupVisible">
         <span>{{$t('cluster.detail.istio.ensure_disable_istio')}}</span>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogShutupVisible = false">{{$t('commons.button.cancel')}}</el-button>
-          <el-button @click="submitDisable()">{{$t('commons.button.ok')}}</el-button>
+          <el-button :disabled="submitLoading" @click="submitDisable()">{{$t('commons.button.ok')}}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -124,10 +124,10 @@ export default {
   components: { LayoutContent },
   data() {
     return {
+      submitLoading: false,
       clusterName: "",
       activeNames: ["1", "2", "3"],
       accordionLoading: false,
-      btnStartDisable: false,
       baseCfg: {
         cluster_istio: {},
         enable: false,
@@ -205,11 +205,10 @@ export default {
       })
     },
     onSubmit(operation) {
-      this.checkFormValidate()
+      this.submitLoading = true
       changeUnderLineToPoint(this.pilotCfg.vars)
       changeUnderLineToPoint(this.ingressCfg.vars)
       changeUnderLineToPoint(this.egressCfg.vars)
-      this.btnStartDisable = true
       var items = []
       if (operation === "start") {
         this.baseCfg.enable = true
@@ -219,66 +218,40 @@ export default {
       this.getOperation(items, this.pilotCfg)
       this.getOperation(items, this.ingressCfg)
       this.getOperation(items, this.egressCfg)
-      enableIstio(this.clusterName, items).then(
-        () => {
+      enableIstio(this.clusterName, items)
+        .then(() => {
           if (operation === "start") {
             this.$message({ type: "success", message: this.$t("cluster.detail.istio.enable_istio") })
           } else {
             this.$message({ type: "success", message: this.$t("commons.msg.re_enable_success") })
           }
-          this.btnStartDisable = false
           this.search()
-        },
-        () => {
-          this.btnStartDisable = false
-        }
-      )
-    },
-    checkFormValidate() {
-      if (this.pilotCfg.enable) {
-        this.$refs["pilotCfg"].validate((valid) => {
-          if (!valid) {
-            return false
-          }
+          this.submitLoading = false
         })
-      }
-      if (this.ingressCfg.enable) {
-        this.$refs["ingressCfg"].validate((valid) => {
-          if (!valid) {
-            return false
-          }
+        .catch(() => {
+          this.submitLoading = false
         })
-      }
-      if (this.egressCfg.enable) {
-        this.$refs["egressCfg"].validate((valid) => {
-          if (!valid) {
-            return false
-          }
-        })
-      }
-      return true
     },
     onDisable() {
       this.dialogShutupVisible = true
     },
     submitDisable() {
-      this.isSubmitGoing = true
+      this.submitLoading = true
       var items = []
       this.disAble(items, this.baseCfg)
       this.disAble(items, this.pilotCfg)
       this.disAble(items, this.ingressCfg)
       this.disAble(items, this.egressCfg)
-      disableIstio(this.clusterName, items).then(
-        () => {
+      disableIstio(this.clusterName, items)
+        .then(() => {
           this.$message({ type: "success", message: this.$t("cluster.detail.istio.disable_istio") })
-          this.isSubmitGoing = false
+          this.submitLoading = false
           this.dialogShutupVisible = false
           this.search()
-        },
-        () => {
-          this.isSubmitGoing = false
-        }
-      )
+        })
+        .catch(() => {
+          this.submitLoading = false
+        })
     },
     disAble(items, istio) {
       if (istio.cluster_istio.status !== "Waiting") {

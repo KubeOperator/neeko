@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('cluster.cluster_detail')" :back-to="{ name: 'ClusterList' }">
-    <el-menu @select="search" router :default-active="$route.path" mode="horizontal">
+    <el-menu class="menuClass" @select="search" router :default-active="$route.path" mode="horizontal">
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/node'">{{$t('cluster.detail.tag.node')}}</el-menu-item>
       <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/namespace'">{{$t('cluster.detail.tag.namespace')}}</el-menu-item>
@@ -24,7 +24,9 @@
       </el-menu-item>
     </el-menu>
     <br />
+    <div class="detailClass">
     <router-view></router-view>
+    </div>
   </layout-content>
 </template>
 
@@ -71,4 +73,14 @@ export default {
 </script>
 
 <style scoped>
+.menuClass {
+  position: fixed;
+  z-index: 1;
+  width: calc(100vw - 330px);
+}
+.detailClass {
+  margin-top: 60px;
+  height: calc(100% - 140px);
+  overflow: auto;
+}
 </style>

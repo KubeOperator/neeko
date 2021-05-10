@@ -157,7 +157,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button :disabled="!(createType && form.metadata.name)" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button :disabled="!(createType && form.metadata.name) || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -177,6 +177,7 @@ export default {
   components: { LayoutContent },
   data() {
     return {
+      submitLoading: false,
       provisioners: [],
       isSecretsExit: false,
       createType: "",
@@ -214,14 +215,19 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           if (this.provisioner.type === "glusterfs") {
             const mySecret = this.newV1Secrets()
-            createSecret(this.clusterName, this.form.parameters["secretNamespace"], mySecret).then(() => {
-              if (this.item.parameters["restuserkey"]) {
-                delete this.item.parameters["restuserkey"]
-              }
-              this.addStorageClass()
-            })
+            createSecret(this.clusterName, this.form.parameters["secretNamespace"], mySecret)
+              .then(() => {
+                if (this.item.parameters["restuserkey"]) {
+                  delete this.item.parameters["restuserkey"]
+                }
+                this.addStorageClass()
+              })
+              .catch(() => {
+                this.submitLoading = false
+              })
           } else {
             this.addStorageClass()
           }
@@ -234,27 +240,27 @@ export default {
       if (this.form.parameters["storagePolicyType"]) {
         delete this.form.parameters["storagePolicyType"]
       }
-      createStorageClass(this.clusterName, this.form).then(
-        (data) => {
+      createStorageClass(this.clusterName, this.form)
+        .then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
+          this.submitLoading = false
           this.$router.push({ name: "ClusterStorage" })
-          console.log(data)
+        })
+        .catch(() => {
+          this.submitLoading = false
         })
     },
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
     },
     checkSecrets() {
-      console.log("zouiosadqwdq")
-      getSecretByName(this.clusterName, this.form.parameters["secretName"], this.form.parameters["secretNamespace"]).then(
-        (data) => {
-          console.log(data)
+      getSecretByName(this.clusterName, this.form.parameters["secretName"], this.form.parameters["secretNamespace"])
+        .then(() => {
           this.isSecretsExit = true
-        },
-        () => {
+        })
+        .catch(() => {
           this.isSecretsExit = false
-        }
-      )
+        })
     },
     changeClassType() {
       this.createType = this.provisioner.type

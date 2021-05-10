@@ -60,8 +60,8 @@ export default {
   name: "ClusterGrade",
   data() {
     return {
+      loading: false,
       gradeInfo: {
-        loading: false,
         grade: "",
         score: 0,
         totalSum: 0,
@@ -78,6 +78,8 @@ export default {
         this.initPieChart(this.gradeInfo)
         this.initBarChart(this.gradeInfo)
         this.gradeInfo.grade = this.getGrade(this.gradeInfo.score)
+        this.loading = false
+      }).catch(() => {
         this.loading = false
       })
     },

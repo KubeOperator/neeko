@@ -83,7 +83,7 @@ export default {
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
 
         ]
       },

@@ -1,7 +1,7 @@
 import {get, patch, post, del} from "@/plugins/request"
 
 const settingUrl = "/api/v1/settings"
-const messageUrl = "message/setting"
+const messageUrl = "/api/v1/message/setting"
 
 // Settings
 export function getSetting(tabName) {

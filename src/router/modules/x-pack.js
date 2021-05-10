@@ -17,7 +17,7 @@ const XPack = {
       name: "MultiCluster",
       meta: {
         title: "route.multi_cluster",
-        roles: ["ADMIN"],
+        roles: ["ADMIN", "PROJECT_MANAGER"]
       },
       redirect: () => {
         return {
@@ -33,6 +33,7 @@ const XPack = {
           meta: {
             title: "route.multi_cluster",
             activeMenu: "/xpack/multi-cluster",
+            roles: ["ADMIN", "PROJECT_MANAGER"]
           },
         },
         {
@@ -42,6 +43,7 @@ const XPack = {
           name: "MultiClusterRepositoryCreate",
           meta: {
             activeMenu: "/xpack/multi-cluster",
+            roles: ["ADMIN", "PROJECT_MANAGER"]
           },
         },
         {
@@ -52,6 +54,7 @@ const XPack = {
           name: "MultiClusterRepositoryEdit",
           meta: {
             activeMenu: "/xpack/multi-cluster",
+            roles: ["ADMIN", "PROJECT_MANAGER"]
           }
         },
         {
@@ -62,6 +65,7 @@ const XPack = {
           name: "MultiClusterRepositoryLog",
           meta: {
             activeMenu: "/xpack/multi-cluster",
+            roles: ["ADMIN", "PROJECT_MANAGER"]
           }
         },
       ],

@@ -24,7 +24,7 @@
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
       <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
-      <el-table-column :label="$t('commons.table.status')" prop="status" fix>
+      <el-table-column class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status.indexOf('Terminating') !== -1">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
@@ -82,7 +82,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="provider === ''" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button :disabled="provider === '' || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -166,8 +166,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="30%" :visible.sync="dialogErrorVisible">
-      <span>{{errMsg | errorFormat}}</span>
+    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="50%" :visible.sync="dialogErrorVisible">
+      <div style="margin: 0 50px"><span style="line-height: 30px">{{ errMsg | errorFormat }}</span></div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
@@ -190,7 +190,7 @@
       </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCordonVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
+        <el-button :disabled="submitLoading" @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -233,6 +233,7 @@ export default {
       clusterName: "",
       selects: [],
       loading: false,
+      submitLoading: false,
       data: [],
       createForm: {
         hosts: [],
@@ -282,7 +283,7 @@ export default {
           })
           this.paginationConfig.total = data.total
         })
-        .finally(() => {
+        .catch(() => {
           this.loading = false
         })
     },
@@ -326,16 +327,18 @@ export default {
     submitCreate() {
       this.$refs["createForm"].validate((valid) => {
         if (valid) {
-          nodeCreate(this.clusterName, this.createForm).then(
-            () => {
+          this.submitLoading = true
+          nodeCreate(this.clusterName, this.createForm)
+            .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.dialogCreateVisible = false
               this.search()
-            },
-            () => {
+              this.submitLoading = false
+            })
+            .catch(() => {
+              this.submitLoading = false
               this.dialogCreateVisible = false
-            }
-          )
+            })
         } else {
           return false
         }
@@ -407,6 +410,7 @@ export default {
       }
     },
     submitCordon(isCordon) {
+      this.submitLoading = true
       let data = { spec: { unschedulable: isCordon } }
       const ps = []
       for (const item of this.selects) {
@@ -424,9 +428,11 @@ export default {
         .then(() => {
           this.search()
           this.dialogCordonVisible = false
+          this.submitLoading = false
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
         })
         .catch(() => {
+          this.submitLoading = false
           this.dialogCordonVisible = false
           this.search()
         })

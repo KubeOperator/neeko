@@ -207,7 +207,7 @@ export default {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
         ],
       },
       loading: false,
@@ -389,8 +389,8 @@ export default {
     dialogPolling() {
       this.timer2 = setInterval(() => {
         if (this.keepPolling) {
-          getClusterStatus(this.clusterName).then(
-            (data) => {
+          getClusterStatus(this.clusterName)
+            .then((data) => {
               this.activeName = this.log.conditions.length + 1
               if (this.log.phase !== "Running") {
                 this.log.conditions = data.conditions
@@ -403,11 +403,10 @@ export default {
               if (this.log.prePhase !== data.prePhase) {
                 this.log.prePhase = data.prePhase
               }
-            },
-            () => {
-              this.opened = false
-            }
-          )
+            })
+            .catch(() => {
+              this.dialogLogVisible = false
+            })
         }
       }, 3000)
     },

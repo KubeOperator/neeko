@@ -567,7 +567,8 @@ const message = {
     dingTalk: "钉钉",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
-      CLUSTER_INSTALL: "集群安装"
+      CLUSTER_INSTALL: "集群安装",
+      CLUSTER_REMOVE_WORKER: "节点删除"
     },
     detail: {
       basicInformation: "基本信息",
