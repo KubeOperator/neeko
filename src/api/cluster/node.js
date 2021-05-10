@@ -50,5 +50,5 @@ export function nodeCreate(clusterName, data) {
 }
 
 export function nodeDelete(clusterName, nodeName) {
-  return del(`/clusters/node/${clusterName}/${nodeName}`)
+  return del(`/api/v1/clusters/node/${clusterName}/${nodeName}`)
 }
