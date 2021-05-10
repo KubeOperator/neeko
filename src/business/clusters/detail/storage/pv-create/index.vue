@@ -85,7 +85,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button :disabled="!form.pvType" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button :disabled="!form.pvType || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -105,6 +105,7 @@ export default {
   components: { LayoutContent },
   data() {
     return {
+      submitLoading: false,
       storageClassList: [],
       form: {
         selectorOperation: "In",
@@ -168,6 +169,7 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           if (this.form.pvType === "Local Volume") {
             delete this.form.submitForm.spec["hostPath"]
           } else {
@@ -195,10 +197,15 @@ export default {
             delete this.form.submitForm.spec["nodeAffinity"]
           }
           this.form.submitForm.spec.capacity["storage"] += "Gi"
-          createPersistentVolume(this.clusterName, this.form.submitForm).then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-            this.$router.push({ name: "ClusterStorage" })
-          })
+          createPersistentVolume(this.clusterName, this.form.submitForm)
+            .then(() => {
+              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.$router.push({ name: "ClusterStorage" })
+              this.submitLoading = false
+            })
+            .catch(() => {
+              this.submitLoading = false
+            })
         } else {
           return false
         }

@@ -1,9 +1,7 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;"
-             v-loading="loading">
-      <el-tab-pane :label="$t('cluster.detail.backup.backup_recover')"
-                   :name="$t('cluster.detail.backup.backup_recover')">
+    <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;" v-loading="loading">
+      <el-tab-pane :label="$t('cluster.detail.backup.backup_recover')" :name="$t('cluster.detail.backup.backup_recover')">
         <el-row type="flex">
           <el-col :span="12">
             <el-form :model="strategyForm" ref="strategyForm" :rules="rules" label-width="150px" label-position="left">
@@ -12,18 +10,15 @@
                   <span>{{ $t("cluster.detail.backup.backup_strategy") }}</span>
                 </div>
                 <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300"
-                                   v-model.number="strategyForm.cron" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.cron" clearable />
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300"
-                                   v-model.number="strategyForm.saveNum" clearable/>
+                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.saveNum" clearable />
                   <div><span class="input-help">1 - 300</span></div>
                 </el-form-item>
                 <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
-                  <el-select style="width:80%" size="small" allow-create filterable
-                             v-model="strategyForm.backupAccountName">
+                  <el-select style="width:80%" size="small" allow-create filterable v-model="strategyForm.backupAccountName">
                     <el-option v-for="b in backupAccounts" :key="b.name" :label="b.name" :value="b.name">
                       {{ b.name }}({{ b.bucket }})
                     </el-option>
@@ -41,10 +36,10 @@
                 </el-form-item>
                 <el-form-item>
                   <div style="float: right">
-                    <el-button :disabled="strategyForm.id == ''" @click="backupNow('strategyForm')">
+                    <el-button :disabled="strategyForm.id == '' || submitLoading" @click="backupNow('strategyForm')">
                       {{ $t("cluster.detail.backup.backup_now") }}
                     </el-button>
-                    <el-button @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
+                    <el-button :disabled="submitLoading" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
                     </el-button>
                   </div>
                 </el-form-item>
@@ -68,7 +63,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-row type="flex" justify="center">
-                    <el-button @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
+                    <el-button :disabled="submitLoading" @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
                   </el-row>
                 </el-form-item>
               </el-form>
@@ -76,8 +71,7 @@
           </el-col>
         </el-row>
         <br>
-        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data" @search="search"
-                       :pagination-config="paginationConfig" :selects.sync="selects">
+        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="data" @search="search" :pagination-config="paginationConfig" :selects.sync="selects">
           <template #header>
             <el-button-group>
               <el-button size="small" :disabled="selects.length!==1" @click="restoreByFiles(selects[0])">
@@ -89,8 +83,8 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix/>
-          <el-table-column :label="$t('cluster.detail.backup.backup_location')" min-width="100" prop="folder" fix/>
+          <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
+          <el-table-column :label="$t('cluster.detail.backup.backup_location')" min-width="100" prop="folder" fix />
           <el-table-column :label="$t('cluster.detail.log.time')">
             <template v-slot:default="{row}">
               {{ row.createdAt | datetimeFormat }}
@@ -121,17 +115,11 @@
             <template v-slot:default="{row}">
               <div v-if="row.status==='FAILED'" type="text">
                 <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-                <el-popover
-                        placement="top"
-                        :title="$t('cluster.detail.backup.detail')"
-                        width="200"
-                        trigger="click"
-                        :content="row.message">
-                    <el-button  slot="reference" type="text" style="color: #2D61A2" >{{ $t("commons.status.failed") }}</el-button>
+                <el-popover placement="top" :title="$t('cluster.detail.backup.detail')" width="200" trigger="click" :content="row.message">
+                  <el-button slot="reference" type="text" style="color: #2D61A2">{{ $t("commons.status.failed") }}</el-button>
                 </el-popover>
               </div>
-              <el-button v-if="row.status === 'Running'" size="mini" round
-                         plain icon="el-icon-loading">
+              <el-button v-if="row.status === 'Running'" size="mini" round plain icon="el-icon-loading">
                 {{ $t("cluster.detail.backup." + row.status) }}
               </el-button>
               <el-button v-if="row.status === 'SUCCESS'" size="mini" round type="success">
@@ -152,25 +140,16 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {
-  listBackupByPage,
-  startBackup,
-  createStrategy,
-  getStrategy,
-  localRestore,
-  getBackupLog,
-  listBackupAccounts,
-  startRestore,
-  deleteBackupFile
-} from "@/api/cluster/backup"
+import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestore, getBackupLog, listBackupAccounts, startRestore, deleteBackupFile } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterBackup",
   components: { ComplexTable },
-  data () {
+  data() {
     return {
       loading: false,
+      submitLoading: false,
       clusterName: "",
       activeName: this.$t("cluster.detail.backup.backup_recover"),
       data: [],
@@ -196,11 +175,11 @@ export default {
       },
       backupAccounts: [],
       logs: [],
-      selects: []
+      selects: [],
     }
   },
   methods: {
-    search () {
+    search() {
       if (this.activeName === this.$t("cluster.detail.backup.backup_recover")) {
         const { currentPage, pageSize } = this.paginationConfig
         listBackupByPage(this.clusterName, currentPage, pageSize).then((data) => {
@@ -213,118 +192,125 @@ export default {
         })
       }
     },
-    backupNow () {
+    backupNow() {
       this.$refs["strategyForm"].validate((valid) => {
         if (valid) {
+          this.submitLoading = true
           const backupFile = {
             name: "",
             clusterName: this.clusterName,
             clusterBackupStrategyID: this.strategyForm.id,
             folder: "",
           }
-          startBackup(backupFile).then(
-            () => {
+          startBackup(backupFile)
+            .then(() => {
+              this.submitLoading = false
               this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
             })
-        } else {
-          return false
-        }
-      })
-    },
-    handleClick () {
-      this.search()
-    },
-    onSubmit () {
-      this.$refs["strategyForm"].validate((valid) => {
-        if (valid) {
-          this.strategyForm.clusterName = this.clusterName
-          createStrategy(this.strategyForm).then(
-            () => {
-              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-              this.getBackupStrategy()
+            .catch(() => {
+              this.submitLoading = false
             })
         } else {
           return false
         }
       })
     },
-    getBackupStrategy () {
-      this.loading = true
-      getStrategy(this.clusterName).then((data) => {
-        this.loading = false
-        this.strategyForm = data
-      }).finally(() => {
-        this.loading = false
+    handleClick() {
+      this.search()
+    },
+    onSubmit() {
+      this.$refs["strategyForm"].validate((valid) => {
+        if (valid) {
+          this.submitLoading = true
+          this.strategyForm.clusterName = this.clusterName
+          createStrategy(this.strategyForm)
+            .then(() => {
+              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.getBackupStrategy()
+              this.submitLoading = false
+            })
+            .catch(() => {
+              this.submitLoading = false
+            })
+        } else {
+          return false
+        }
       })
     },
-    onUploadChange (file) {
+    getBackupStrategy() {
+      this.loading = true
+      getStrategy(this.clusterName)
+        .then((data) => {
+          this.loading = false
+          this.strategyForm = data
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    onUploadChange(file) {
       this.file = file
     },
-    onUploadFile () {
+    onUploadFile() {
+      this.submitLoading = true
       const formData = new FormData()
       formData.append("file", this.file.raw)
       formData.append("clusterName", this.clusterName)
-      localRestore(formData).then(
-        () => {
+      localRestore(formData)
+        .then(() => {
+          this.submitLoading = false
           this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
         })
+        .catch(() => {
+          this.submitLoading = false
+        })
     },
-    restoreByFiles (row) {
-      this.$confirm(
-        this.$t("cluster.detail.backup.restore_message"),
-        this.$t("cluster.detail.backup.CLUSTER_RESTORE"),
-        {
-          confirmButtonText: this.$t("commons.button.confirm"),
-          cancelButtonText: this.$t("commons.button.cancel"),
-          type: "info"
-        }
-      ).then(() => {
-        startRestore({
-          name: row.name,
-          clusterName: this.clusterName,
-        }).then(() => {
+    restoreByFiles(row) {
+      this.$confirm(this.$t("cluster.detail.backup.restore_message"), this.$t("cluster.detail.backup.CLUSTER_RESTORE"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "info",
+      }).then(() => {
+        startRestore({ name: row.name, clusterName: this.clusterName,}).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("cluster.detail.backup.recover_success")
+            message: this.$t("cluster.detail.backup.recover_success"),
           })
         })
       })
     },
-    deleteBackupFile (name) {
-      this.$confirm(
-        this.$t("commons.confirm_message.delete"),
-        this.$t("commons.message_box.prompt"),
-        {
-          confirmButtonText: this.$t("commons.button.confirm"),
-          cancelButtonText: this.$t("commons.button.cancel"),
-          type: "warning"
-        }
-      )
-        .then(() => {
-          const ps = []
-          if (name) {
-            ps.push(deleteBackupFile(name))
-          } else {
-            for (const item of this.selects) {
-              ps.push(deleteBackupFile(item.name))
-            }
+    deleteBackupFile(name) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        const ps = []
+        if (name) {
+          ps.push(deleteBackupFile(name))
+        } else {
+          for (const item of this.selects) {
+            ps.push(deleteBackupFile(item.name))
           }
-          Promise.all(ps).then(() => {
+        }
+        Promise.all(ps)
+          .then(() => {
             this.search()
             this.$message({
               type: "success",
-              message: this.$t("commons.msg.delete_success")
+              message: this.$t("commons.msg.delete_success"),
             })
-          }).catch(() => {
+          })
+          .catch(() => {
             this.search()
           })
-        })
-    }
+      })
+    },
   },
-  created () {
+  created() {
     this.clusterName = this.$route.params.name
     this.search()
-    listBackupAccounts(this.clusterName).then(res => {
+    listBackupAccounts(this.clusterName).then((res) => {
       this.backupAccounts = res
     })
     this.getBackupStrategy()

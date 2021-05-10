@@ -79,6 +79,8 @@ export default {
         this.initBarChart(this.gradeInfo)
         this.gradeInfo.grade = this.getGrade(this.gradeInfo.score)
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
     getGrade(score) {
