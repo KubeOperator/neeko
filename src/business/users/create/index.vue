@@ -7,7 +7,7 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name" required>
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
+              <div><span class="input-help">{{ $t("commons.validate.name_help") }}</span></div>
             </el-form-item>
             <el-form-item :label="$t('user.email')" prop="email" required>
               <el-input type="email" v-model="form.email"></el-input>
@@ -57,8 +57,10 @@ export default {
       rules: {
         name: [Rule.CommonNameRule, Rule.RequiredRule],
         email: [Rule.EmailRule, Rule.RequiredRule],
-        password: [Rule.RequiredRule],
-        confirmPassword: [Rule.RequiredRule],
+        password: [Rule.RequiredRule, Rule.PasswordRule],
+        confirmPassword: [Rule.RequiredRule, Rule.PasswordRule, {
+          validator: this.checkPassword, trigger: "blur"
+        }],
         role: [Rule.RequiredRule],
       }
     }
@@ -85,7 +87,13 @@ export default {
     },
     onCancel () {
       this.$router.push({ name: "UserList" })
-    }
+    },
+    checkPassword (rule, value, callback) {
+      if (this.form.password !== this.form.confirmPassword) {
+        return callback(new Error(this.$t("commons.personal.confirm_password1_info")))
+      }
+      callback()
+    },
   }
 }
 </script>
