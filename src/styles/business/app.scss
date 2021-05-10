@@ -139,7 +139,8 @@ a:hover {
   color: #57595f;
   font-weight: bold;
 }
-  .ko-dialog {
+
+.ko-dialog {
   font-size: 12px;
   font-weight: 400;
   line-height: 25px;
@@ -167,6 +168,9 @@ a:hover {
   }
 }
 
+.el-dialog__headerbtn .el-dialog__close {
+  color: #fa5d50;
+}
 .ko-status {
   .el-link--inner {
     font-size: 12px;
