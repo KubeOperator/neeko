@@ -637,7 +637,7 @@ const message = {
       deploy_template: "Deployment Model",
       SINGLE: "One master and multiple nodes",
       MULTIPLE: "Multi-master and multi-node",
-      project_auth: "Project Authorization",
+      project_auth: "Authorization",
       master_model: "Master Specification",
       worker_model: "Worker Specification",
       config: "Specification Reference"
@@ -697,6 +697,22 @@ const message = {
     password: "Password",
     privateKey: "Key",
     type: "Type"
+  },
+  backup_account: {
+    name: "Backup Account",
+    select_placeholder: "Select",
+    table: {
+      bucket: "Bucket",
+      endpoint: "Endpoint",
+      region: "Region",
+      accountName: "AccountName",
+      accountKey: "AccountKey",
+      address: "Address",
+      port: "Port",
+      username: "Username",
+      password: "Password",
+      path: "Path",
+    }
   },
   setting: {
     registry: "Registry",

@@ -752,15 +752,9 @@ const message = {
   backup_account: {
     name: "备份账号",
     bucket: "桶",
-    type: "类型",
-    status: "状态",
     select_placeholder: "请选择",
     table: {
-      name: "名称",
       bucket: "桶",
-      type: "类型",
-      status: "状态",
-      create_time: "创建时间",
       endpoint: "Endpoint",
       region: "区域",
       accountName: "账户名称",
@@ -770,7 +764,6 @@ const message = {
       username: "用户名",
       password: "密码",
       path: "路径",
-      project: "项目"
     }
   },
   setting: {
