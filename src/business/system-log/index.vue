@@ -32,7 +32,7 @@ export default {
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput" },
           { field: "operation", label: this.$t("system_log.operation"), component: "FuComplexInput" },
           { field: "operation_info", label: this.$t("system_log.operation_info"), component: "FuComplexInput" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
         ],
       },
       paginationConfig: {
