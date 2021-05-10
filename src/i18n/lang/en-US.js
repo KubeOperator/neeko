@@ -510,7 +510,7 @@ const message = {
     host: "Host",
     memory: "Memory(MB)",
     os: "OS",
-    architecture: "Srchitecture",
+    architecture: "Architecture",
     port: "Port",
     ensure_host_sync: "Are you sure to synchronize the following hosts？",
     start_host_sync: "Host synchronization has started, please wait...",

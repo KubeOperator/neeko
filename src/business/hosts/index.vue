@@ -24,7 +24,7 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
       <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />
@@ -69,7 +69,7 @@
       </ul>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button :disabled="submitLoading" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -131,7 +131,7 @@
     </el-dialog>
 
     <el-dialog :title="$t('host.err_title')" width="30%" :visible.sync="dialogErrorVisible">
-      <div style="margin: 0 50px"><span style="line-height: 30px">{{ errMsg | errorFormat }}</span></div>
+      <span>{{ errMsg | errorFormat }}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogErrorVisible = false">{{ $t("commons.button.cancel") }}</el-button>
       </div>
@@ -147,7 +147,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogGrantVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button :disabled="!authorizedProject || submitLoading" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button v-loading="grantLoading" :disabled="!authorizedProject" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -171,7 +171,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogImportVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button :disabled="isUploadDisable || submitLoading" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button :disabled="isUploadDisable" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
   </layout-content>
@@ -192,8 +192,6 @@ export default {
   components: { KoStatus, ComplexTable, LayoutContent },
   data() {
     return {
-      loading: false,
-      submitLoading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -228,12 +226,14 @@ export default {
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd" },
         ],
       },
+      loading: false,
       dialogGrantVisible: false,
       projectList: [],
       grantHostNames: [],
+      grantLoading: false,
       authorizedProject: "kubeoperator",
       isAdmin: checkPermission("ADMIN"),
     }
@@ -252,7 +252,6 @@ export default {
       this.dialogSyncVisible = true
     },
     submitSync() {
-      this.submitLoading = true
       this.syncHostList = []
       this.hostSelections.forEach((item) => {
         this.syncHostList.push({
@@ -260,16 +259,11 @@ export default {
           hostStatus: item.status,
         })
       })
-      syncHosts(this.syncHostList)
-        .then(() => {
-          this.search()
-          this.$message({ type: "success", message: this.$t("host.start_host_sync") })
-          this.dialogSyncVisible = false
-          this.submitLoading = false
-        })
-        .catch(() => {
-          this.submitLoading = false
-        })
+      syncHosts(this.syncHostList).then(() => {
+        this.search()
+        this.$message({ type: "success", message: this.$t("host.start_host_sync") })
+        this.dialogSyncVisible = false
+      })
     },
     onUploadChange(file) {
       this.isUploadDisable = false
@@ -289,7 +283,7 @@ export default {
       })
     },
     download() {
-      window.open("/hosts/template")
+      window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true
@@ -300,7 +294,6 @@ export default {
       this.currentHost = row
     },
     onUploadFile() {
-      this.submitLoading = true
       const startIndex = this.file.name.lastIndexOf(".")
       if (startIndex !== -1) {
         const fileType = this.file.name.substring(startIndex + 1, this.file.name.length).toLowerCase()
@@ -316,18 +309,17 @@ export default {
       }
       const formData = new FormData()
       formData.append("file", this.file.raw)
-      importHosts(formData)
-        .then(() => {
+      importHosts(formData).then(
+        () => {
           this.$message({ type: "success", message: this.$t("commons.msg.import_success") })
           this.search()
           this.dialogImportVisible = false
-          this.submitLoading = false
-        })
-        .catch(() => {
+        },
+        () => {
           this.search()
           this.dialogImportVisible = false
-          this.submitLoading = false
-        })
+        }
+      )
     },
     onDelete(name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
@@ -396,7 +388,7 @@ export default {
       this.dialogGrantVisible = true
     },
     submitGrant() {
-      this.submitLoading = true
+      this.grantLoading = true
       createProjectResource(this.authorizedProject, {
         resourceType: "HOST",
         names: this.grantHostNames,
@@ -405,10 +397,10 @@ export default {
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
           this.dialogGrantVisible = false
           this.search()
-          this.submitLoading = false
+          this.grantLoading = true
         })
         .finally(() => {
-          this.submitLoading = false
+          this.grantLoading = true
         })
     },
     search(condition) {
@@ -423,7 +415,7 @@ export default {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     },
