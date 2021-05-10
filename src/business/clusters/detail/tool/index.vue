@@ -384,7 +384,7 @@
         getSecret(this.clusterName).then(data => {
           sessionStorage.setItem("kubeapps_auth_token_oidc", "false")
           sessionStorage.setItem("kubeapps_auth_token", data.kubernetesToken)
-          window.open(process.env.VUE_APP_BASE_API + item.url.replace("{cluster_name}", this.clusterName), "_blank")
+          window.open("" + item.url.replace("{cluster_name}", this.clusterName), "_blank")
         })
       },
       onEnable(item) {

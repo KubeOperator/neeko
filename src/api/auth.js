@@ -1,8 +1,8 @@
 import {get, post, del} from "@/plugins/request"
 
-const authUrl = "/auth/session"
-const codeUrl = "/captcha"
-const forgetPassword = "/user/forgot/password"
+const authUrl = "/api/v1/auth/session"
+const codeUrl = "/api/v1/captcha"
+const forgetPassword = "/api/v1/user/forgot/password"
 
 export function login(data) {
   return post(authUrl, data)

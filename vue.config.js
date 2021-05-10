@@ -19,6 +19,11 @@ module.exports = {
         ws: true,
         secure: false,
       },
+      '/proxy': {
+        target: 'http://0.0.0.0:8080',
+        ws: true,
+        secure: false,
+      },
     }
   },
   configureWebpack: {

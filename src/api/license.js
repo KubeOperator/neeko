@@ -1,6 +1,6 @@
 import {get, post} from "@/plugins/request"
 
-const licenseUrl = "/license"
+const licenseUrl = "/api/v1/license"
 
 export function getLicense() {
   return get(`${licenseUrl}`)

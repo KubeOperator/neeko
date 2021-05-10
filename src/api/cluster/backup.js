@@ -1,8 +1,8 @@
 import {del, get, post} from "@/plugins/request"
 
-const fileUrl = "/clusters/backup/files"
-const strategyUrl = "/clusters/backup/strategy"
-const clusterUrl = "/clusters/backupaccounts"
+const fileUrl = "/api/v1/clusters/backup/files"
+const strategyUrl = "/api/v1/clusters/backup/strategy"
+const clusterUrl = "/api/v1/clusters/backupaccounts"
 
 export function listBackupByPage (clusterName, page, size) {
   const itemUrl = `${fileUrl}?pageNum=${page}&pageSize=${size}&clusterName=${clusterName}`

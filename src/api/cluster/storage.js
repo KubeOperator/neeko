@@ -10,7 +10,7 @@ const namespacePersistentVolumeClaimsUrl = "api/v1/namespaces/{namespace}/deploy
 const persistentVolumesOpUrl = "api/v1/persistentvolumes/{name}"
 const storageClassOpUrl = "apis/storage.k8s.io/v1/storageclasses/{name}"
 
-const provisionerUrl = "/clusters/provisioner/{cluster_name}"
+const provisionerUrl = "/api/v1/clusters/provisioner/{cluster_name}"
 const secretUrl = "namespaces/{namespace}/secrets"
 
 export function listProvisioner(clusterName) {
@@ -22,14 +22,14 @@ export function createProvisioner(clusterName, item) {
 }
 
 export function syncProvisioner(clusterName, hosts) {
-  const syncUrl = "/clusters/provisioner/sync/{cluster_name}"
-  const url = syncUrl.replace("{cluster_name}", clusterName) 
+  const syncUrl = "/api/v1/clusters/provisioner/sync/{cluster_name}"
+  const url = syncUrl.replace("{cluster_name}", clusterName)
   return post(url, hosts)
 }
 
 export function deleteProvisioner(clusterName, item) {
-  const deleteUrl = "/clusters/provisioner/delete/{cluster_name}"
-  const url = deleteUrl.replace("{cluster_name}", clusterName) 
+  const deleteUrl = "/api/v1/clusters/provisioner/delete/{cluster_name}"
+  const url = deleteUrl.replace("{cluster_name}", clusterName)
   return post(url, item)
 }
 
@@ -76,7 +76,7 @@ export function listPersistentVolumeClaims(clusterName, continueToken, namespace
   }
   return get(url)
 }
-  
+
 export function deleteStorageClass(clusterName, name) {
   const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", storageClassOpUrl).replace("{name}", name)
   return del(url)
