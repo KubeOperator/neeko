@@ -54,13 +54,17 @@ export default {
   methods: {
     search() {
       this.loading = true
-      listNamespace(this.clusterName).then((data) => {
-        this.namespaces = data.items
-        if (data.items.length > 0) {
-          this.currentNamespace = this.currentNamespace ? this.currentNamespace : this.namespaces[0].metadata.name
-          this.loadEvents(this.currentNamespace)
-        }
-      })
+      listNamespace(this.clusterName)
+        .then((data) => {
+          this.namespaces = data.items
+          if (data.items.length > 0) {
+            this.currentNamespace = this.currentNamespace ? this.currentNamespace : this.namespaces[0].metadata.name
+            this.loadEvents(this.currentNamespace)
+          }
+        })
+        .catch(() => {
+          this.loading = true
+        })
       this.getNpdExists()
     },
     pageChange(continueToken) {
@@ -74,7 +78,7 @@ export default {
           this.data = data.items
           this.page.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
         })
-        .finally(() => {
+        .catch(() => {
           this.loading = false
         })
     },

@@ -64,18 +64,18 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.loadding = true
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          importCluster(this.form).then(() => {
-            this.loadding = false
-            this.$router.push({ name: "ClusterList" })
-          }),
-            () => {
+          this.loadding = true
+          importCluster(this.form)
+            .then(() => {
               this.loadding = false
-            }
+              this.$router.push({ name: "ClusterList" })
+            })
+            .catch(() => {
+              this.loadding = false
+            })
         } else {
-          this.loadding = false
           return false
         }
       })

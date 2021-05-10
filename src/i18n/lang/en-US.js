@@ -676,6 +676,118 @@ const message = {
       dns2_help: "114.114.114.114",
     }
   },
+  project: {
+    project: "Project",
+    member: "Member Management",
+    resource: "Resource Management",
+    CLUSTER_MANAGER: "Cluster manager",
+    PROJECT_MANAGER: "Project manager",
+    description: "Description",
+    add_project_manager: "Add project manager",
+    add_project_resource: "Add resource",
+    add_cluster_manager: "Add cluster manager",
+    key_words: "Please type in your name",
+    list: "Project list",
+    header_description: "On the left is the project-cluster tree, on the right is personnel and resource management",
+  },
+  credential: {
+    name: "Credential Name",
+    credential: "Credential",
+    username: "Username",
+    password: "Password",
+    privateKey: "Key",
+    type: "Type"
+  },
+  setting: {
+    registry: "Registry",
+    ntp: "NTP",
+    email: "Email",
+    license: "License",
+    message: "Message",
+    credential: "Credential",
+    ntpServer: "NTP server",
+    table: {
+      registry: {
+        protocol: "Protocol",
+        hostname: "Address",
+        arch: "CPU architecture",
+        hostname_help: "The default is the IP of the server where KubeOperator is deployed. This IP will be used to access the nexus registry"
+      },
+      mail: {
+        smtp: "SMTP Address",
+        port: "Port",
+        username: "Username",
+        password: "Password",
+        testUser: "Test User",
+        status: "Status"
+      },
+      ldap: {
+        address: "Address",
+        port: "Port",
+        username: "Username",
+        password: "Password",
+        filterDN: "User filtering DN",
+        filterRule: "User filtering rules",
+        status: "Status",
+        ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!"
+      },
+      license: {
+        title: "KubeOperator license",
+        corporation: "Company",
+        count: "Count",
+        expiration: "Expire Date",
+        edition: "Version",
+        status: "Status",
+        valid: "Valid",
+        invalid: "InValid",
+        expired: "Be Expired",
+        licenseFile: "License",
+        communityEdition: "Community Edition"
+      },
+      message: {
+        wechat: "Enterprise WeChat",
+        dingTalk: "DingDing",
+        testUser: "Test User",
+        status: "Status",
+        webhookAddress: "Webhook Address",
+        dingTalkConcept: "Basic concepts of DingDing",
+        dingTalkLimit: "DingDing message frequency limit",
+        wechatConcept: "Basic Concepts of Enterprise WeChat",
+        wechatLimit: "Enterprise WeChat message frequency limit",
+        wechatSetting: "Enterprise WeChat settings",
+        dingTalkSetting: "Dingding settings",
+      }
+    },
+    option: {
+      addRegistry: "Add Registry",
+      editRegistry: "Edit Registry",
+      addCredential: "Add SSH Credentials",
+      editCredential: "Add SSH Credential",
+      addLicense: "Add License"
+    },
+    helpInfo: {
+      inputPassword: "Please enter the password",
+      messageInfo: "Note: As each company has different message restrictions, KubeOperator does not make active restrictions. Please use it according to your own circumstances."
+    }
+  },
+  multi_cluster: {
+    multi_cluster: "Multi-cluster",
+    repository_setting: "Registry settings",
+    basic_setting: "Basic Settings",
+    senior_setting: "Advanced settings",
+    address: "Address",
+    branch: "Branch",
+    auth: "Certification",
+    username: "Username",
+    password: "Password",
+    sync_interval: "Synchronization interval (minutes)",
+    pull_timeout: "Pull timeout time (minutes)",
+    edit: "Edit",
+    cluster_list: "Cluster list",
+    selected_clusters: "Choose a cluster",
+    relation_management: "Association management",
+    log: "Log"
+  }
 }
 
 export default {

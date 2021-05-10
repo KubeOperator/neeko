@@ -2,7 +2,7 @@
   <div>
     <template>
       <el-button-group>
-        <el-button size="small" @click="cisCreate()">{{$t('commons.button.create')}}</el-button>
+        <el-button size="small" :disabled="submitLoading" @click="cisCreate()">{{$t('commons.button.create')}}</el-button>
       </el-button-group>
     </template>
     <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search" :pagination-config="paginationConfig">
@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       loading: false,
+      submitLoading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -100,6 +101,8 @@ export default {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
+      }).catch(() => {
+        this.loading = false
       })
     },
     cisCreate() {
@@ -108,10 +111,15 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        cisCreate(this.clusterName).then(
-          () => {
+        this.submitLoading = true
+        cisCreate(this.clusterName)
+          .then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
             this.search()
+            this.submitLoading = false
+          })
+          .catch(() => {
+            this.submitLoading = false
           })
       })
     },
@@ -121,11 +129,10 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        cisDelete(this.clusterName, row.id).then(
-          () => {
-            this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
-            this.search()
-          })
+        cisDelete(this.clusterName, row.id).then(() => {
+          this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+          this.search()
+        })
       })
     },
     cisDetail(row) {

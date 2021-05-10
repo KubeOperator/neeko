@@ -90,16 +90,15 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           this.loadding = true
-          upgradeCluster(this.form.clusterName, this.form.version).then(
-            () => {
+          upgradeCluster(this.form.clusterName, this.form.version)
+            .then(() => {
               this.loadding = false
               this.$message({ type: "success", message: this.$t("commons.msg.upgrade_start_success") })
               this.$router.push({ name: "ClusterList" })
-            },
-            () => {
+            })
+            .catch(() => {
               this.loadding = false
-            }
-          )
+            })
         }
       })
     },

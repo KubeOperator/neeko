@@ -7,7 +7,7 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('commons.search.time')">
-        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
+        <el-date-picker :picker-options="pickerOptions" @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
         </el-date-picker>
       </el-form-item>
     </el-form>
@@ -40,14 +40,19 @@
 
 <script>
 import { listNodeInDB } from "@/api/cluster/node"
+import { listTool } from "@/api/cluster/tool"
 let echarts = require("echarts/lib/echarts")
 import { QueryCPU, QueryMemoryTotal, QueryMemoryUsed, QueryMemoryCacheBuffer, QueryMemoryFree, QueryMemorySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
 
 export default {
   name: "ClusterMonitor",
-  components: { },
+  components: {},
   data() {
     return {
+      startDate: Date.now(),
+      pickerOptions: {
+        disabledDate : time => time.getTime() < this.startDate,
+      },
       loading_cpu: false,
       loading_memory: false,
       loading_disk: false,
@@ -77,7 +82,6 @@ export default {
       this.loading_memory = true
       this.loading_disk = true
       this.loading_network = true
-      this.clusterName = this.$route.params.name
       listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
           return item.ip
@@ -171,13 +175,12 @@ export default {
           this.loading_cpu = false
           this.initCharts("cpuChart", "CPU Basic", this.cpuDateList, this.cpuValueList, "%")
         })
-        .finally(() => {
+        .catch(() => {
           this.loading_cpu = false
         })
     },
 
     getMemoryDatas(start, end) {
-      this.loading_memory = false
       this.memoryDateList = []
       this.memoryValueList = []
       let total = new Promise((resolve) => {
@@ -239,7 +242,7 @@ export default {
           this.loading_memory = false
           this.initCharts("memoryChart", "Memory Basic", this.memoryDateList, this.memoryValueList, "GiB")
         })
-        .finally(() => {
+        .catch(() => {
           this.loading_memory = false
         })
     },
@@ -261,7 +264,7 @@ export default {
           this.loading_disk = false
           this.initCharts("diskChart", "Disk Space Used Basic", this.diskDateList, this.diskValueList, "%")
         })
-        .finally(() => {
+        .catch(() => {
           this.loading_disk = false
         })
     },
@@ -302,7 +305,7 @@ export default {
           this.loading_network = false
           this.initCharts("networkChart", "Network Traffic Basic", this.networkDateList, this.networkValueList, "kb/s")
         })
-        .finally(() => {
+        .catch(() => {
           this.loading_network = false
         })
     },
@@ -357,6 +360,14 @@ export default {
     },
   },
   mounted() {
+    this.clusterName = this.$route.params.name
+    listTool(this.clusterName).then((data) => {
+      for (const tool of data) {
+        if (tool.name === "prometheus") {
+          this.startDate = new Date(tool.updatedAt).getTime()
+        }
+      }
+    })
     this.search()
   },
 }
