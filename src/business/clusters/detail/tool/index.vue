@@ -382,8 +382,8 @@
       },
       openFrame(item) {
         getSecret(this.clusterName).then(data => {
-          sessionStorage.setItem("kubeapps_auth_token_oidc", "false")
-          sessionStorage.setItem("kubeapps_auth_token", data.kubernetesToken)
+          localStorage.setItem("kubeapps_auth_token_oidc", "false")
+          localStorage.setItem("kubeapps_auth_token", data.kubernetesToken)
           window.open("" + item.url.replace("{cluster_name}", this.clusterName), "_blank")
         })
       },
