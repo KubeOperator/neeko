@@ -5,10 +5,12 @@
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" :selectable="selectable" fix></el-table-column>
+      <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
@@ -21,12 +23,10 @@
       <el-table-column :label="$t('cluster.version')" width="100px" fix>
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
-      <el-table-column label="Roles" show-overflow-tooltip min-width="100" fix>
-        <template v-slot:default="{row}">{{getNodeRoles(row)}}</template>
-      </el-table-column>
+      <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
       <el-table-column :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
-          <div v-if="row.status === 'Terminating'">
+          <div v-if="row.status.indexOf('Terminating') !== -1">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
           </div>
@@ -173,19 +173,21 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.node.cordon')" width="30%" :visible.sync="dialogCordonVisible">
-      <el-form label-width="120px">
-        <el-form-item :label="$t('cluster.detail.node.mode')">
-          <el-radio v-model="modeSelect" label="safe">{{$t('cluster.detail.node.safe')}}</el-radio>
-          <div><span class="input-help">{{$t('cluster.detail.node.safe_cordon_help')}}</span></div>
-          <el-radio v-model="modeSelect" label="force">{{$t('cluster.detail.node.force')}}</el-radio>
-          <div>
-            <span class="input-help">{{$t('cluster.detail.node.force_drain_help1')}}</span>
-            <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help2')}}</span></div>
-            <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help3')}}</span></div>
-          </div>
-        </el-form-item>
-      </el-form>
+    <el-dialog :title="$t('cluster.detail.node.cordon')" width="50%" :visible.sync="dialogCordonVisible">
+      <el-row type="flex" justify="center">
+        <el-form label-width="120px">
+          <el-form-item :label="$t('cluster.detail.node.mode')">
+            <el-radio v-model="modeSelect" label="safe">{{$t('cluster.detail.node.safe')}}</el-radio>
+            <div><span class="input-help">{{$t('cluster.detail.node.safe_cordon_help')}}</span></div>
+            <el-radio v-model="modeSelect" label="force">{{$t('cluster.detail.node.force')}}</el-radio>
+            <div>
+              <span class="input-help">{{$t('cluster.detail.node.force_drain_help1')}}</span>
+              <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help2')}}</span></div>
+              <div><span class="input-help" style="margin-left: 20px">{{$t('cluster.detail.node.force_drain_help3')}}</span></div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCordonVisible = false">{{$t('commons.button.cancel')}}</el-button>
         <el-button @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
@@ -217,26 +219,6 @@ export default {
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
-          },
-        },
-        {
-          label: this.$t("cluster.detail.node.cordon"),
-          icon: "el-icon-s-unfold",
-          click: (row) => {
-            this.onCordon(row, "cordon")
-          },
-          disabled: (row) => {
-            return row.status !== "Running"
-          },
-        },
-        {
-          label: this.$t("cluster.detail.node.uncordon"),
-          icon: "el-icon-s-fold",
-          click: (row) => {
-            this.onCordon(row, "uncordon")
-          },
-          disabled: (row) => {
-            return row.status !== "Running, SchedulingDisabled"
           },
         },
       ],
@@ -282,7 +264,6 @@ export default {
       provider: "",
       dialogCordonVisible: false,
       modeSelect: "safe",
-      nodeName: "",
     }
   },
   methods: {
@@ -294,8 +275,9 @@ export default {
           this.loading = false
           this.data = data.items
           this.data.forEach((item) => {
+            item.roles = this.getNodeRoles(item)
             if (item.info.spec["unschedulable"]) {
-              item.status = "Running, SchedulingDisabled"
+              item.status += ", SchedulingDisabled"
             }
           })
           this.paginationConfig.total = data.total
@@ -309,15 +291,13 @@ export default {
       listNodesByPage(this.clusterName, currentPage, pageSize).then((data) => {
         this.data = data.items
         this.data.forEach((item) => {
+          item.roles = this.getNodeRoles(item)
           if (item.info.spec["unschedulable"]) {
-            item.status = "Running, SchedulingDisabled"
+            item.status += ", SchedulingDisabled"
           }
         })
         this.paginationConfig.total = data.total
       })
-    },
-    selectable(row) {
-      return this.getNodeRoles(row).indexOf("master") === -1
     },
     create() {
       this.dialogCreateVisible = true
@@ -362,6 +342,19 @@ export default {
       })
     },
     onDelete(row) {
+      if (row) {
+        if (row.roles.indexOf("master") !== -1) {
+          this.$message({ type: "info", message: this.$t("cluster.detail.node.is_master_node") })
+          return
+        }
+      } else {
+        for (const item of this.selects) {
+          if (item.roles.indexOf("master") !== -1) {
+            this.$message({ type: "info", message: this.$t("cluster.detail.node.is_master_node") })
+            return
+          }
+        }
+      }
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -388,11 +381,22 @@ export default {
           })
       })
     },
-    onCordon(row, operation) {
-      this.nodeName = row.name
+    onCordon(operation) {
       if (operation === "cordon") {
+        for (const item of this.selects) {
+          if (item.status !== "Running") {
+            this.$message({ type: "info", message: this.$t("cluster.detail.node.existing_cordoned") })
+            return
+          }
+        }
         this.dialogCordonVisible = true
       } else {
+        for (const item of this.selects) {
+          if (item.status !== "Running, SchedulingDisabled") {
+            this.$message({ type: "info", message: this.$t("cluster.detail.node.existing_actived") })
+            return
+          }
+        }
         this.$confirm(this.$t("commons.confirm_message.uncordon"), this.$t("commons.message_box.prompt"), {
           confirmButtonText: this.$t("commons.button.confirm"),
           cancelButtonText: this.$t("commons.button.cancel"),
@@ -404,24 +408,33 @@ export default {
     },
     submitCordon(isCordon) {
       let data = { spec: { unschedulable: isCordon } }
-      cordonNode(this.clusterName, this.nodeName, data).then(() => {
-        this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-        this.dialogCordonVisible = false
-        if (this.modeSelect === "force" && isCordon) {
-          listPod(this.clusterName).then((data) => {
-            this.bacthDeletePod(data.items)
+      const ps = []
+      for (const item of this.selects) {
+        ps.push(
+          cordonNode(this.clusterName, item.name, data).then(() => {
+            if (this.modeSelect === "force" && isCordon) {
+              listPod(this.clusterName).then((data) => {
+                this.bacthDeletePod(data.items, item.name)
+              })
+            }
           })
-        }
-        this.search()
-      }),
-        () => {
+        )
+      }
+      Promise.all(ps)
+        .then(() => {
+          this.search()
           this.dialogCordonVisible = false
-        }
+          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+        })
+        .catch(() => {
+          this.dialogCordonVisible = false
+          this.search()
+        })
     },
-    bacthDeletePod(datas) {
+    bacthDeletePod(datas, nodeName) {
       const ps = []
       for (const pod of datas) {
-        if (pod.spec.nodeName === this.nodeName && pod.metadata.ownerReferences.kind !== "daemonset") {
+        if (pod.spec.nodeName === nodeName && pod.metadata.ownerReferences.kind !== "daemonset") {
           const rmPod = {
             apiVersion: "policy/v1beta1",
             kind: "Eviction",
@@ -490,7 +503,7 @@ export default {
     polling() {
       this.timer = setInterval(() => {
         let flag = false
-        const needPolling = ["Initializing", "Terminating"]
+        const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
         for (const item of this.data) {
           if (needPolling.indexOf(item.status) !== -1) {
             flag = true
@@ -498,7 +511,7 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          this.searchForPolling()
         }
       }, 10000)
     },

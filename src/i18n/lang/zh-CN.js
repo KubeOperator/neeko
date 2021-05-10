@@ -48,8 +48,8 @@ const message = {
       error_msg: "错误",
       lock: "启用/禁用",
       relation: "关联",
+      active: "激活",
       cordon: "驱散",
-      uncordon: "恢复驱散",
       log: "日志"
     },
     msg: {
@@ -342,8 +342,8 @@ const message = {
         base_infomation: "基础信息",
         label: "标签",
         status: "状态",
+        active: "激活",
         cordon: "驱散",
-        uncordon: "恢复",
         mode: "模式",
         safe: "安全",
         force: "强制",
@@ -351,6 +351,10 @@ const message = {
         force_drain_help1: "永久删除：",
         force_drain_help2: "1.  独立 Pods 和它们的数据",
         force_drain_help3: "2.  配置了Empty Dir卷的Pods和它们的数据",
+        existing_cordoned: "存在已驱逐节点",
+        existing_actived: "存在已激活节点",
+        is_master_node: "主节点禁止删除",
+        drain_success: "节点强制驱逐成功",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
