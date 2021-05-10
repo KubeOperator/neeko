@@ -224,7 +224,7 @@ export default {
           }
           startBackup(backupFile).then(
             () => {
-              this.$message({ type: "success", message: this.$t("commons.msg.backup_start") })
+              this.$message({ type: "success", message: this.$t("commons.detail.backup.backup_start") })
             })
         } else {
           return false
