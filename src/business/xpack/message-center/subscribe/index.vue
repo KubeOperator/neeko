@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column :label="$t('message.work_wechat')">
         <template  v-slot:default="{row}">
-          <el-switch v-model="row.vars['WORK_Wechat']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row)"></el-switch>
+          <el-switch v-model="row.vars['WORK_WEIXIN']" active-value="ENABLE" inactive-value="DISABLE" @change="updateConfig(row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.dingTalk')">

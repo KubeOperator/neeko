@@ -95,12 +95,12 @@
             <el-switch style="width: 80%" v-model="toolForm.vars['server_persistentVolume_enabled']"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['server_persistentVolume_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistentVolume_storageClass" :rules="requiredRules">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['server.persistentVolume_storageClass']" clearable>
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.server_persistentVolume_storageClass" :rules="requiredRules">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['server_persistentVolume_storageClass']" clearable>
                 <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistentVolume_storageClass" :rules="numberRules">
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.server_persistentVolume_size" :rules="numberRules">
               <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['server_persistentVolume_size']" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
@@ -391,9 +391,9 @@ export default {
       }
     },
     enable() {
-      this.loadMenu = this.toolForm.name === "logging" || this.toolForm.name === "loki" || this.toolForm.name === "prometheus"
       this.$refs["toolForm"].validate((valid) => {
         if (valid && this.isPasswordValid && this.isReplicasValid) {
+          this.loadMenu = this.toolForm.name === "logging" || this.toolForm.name === "loki" || this.toolForm.name === "prometheus"
           this.submitLoading = true
           changeUnderLineToPoint(this.toolForm.vars)
           enableTool(this.clusterName, this.toolForm).then(() => {
