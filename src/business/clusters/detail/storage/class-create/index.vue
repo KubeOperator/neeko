@@ -99,11 +99,10 @@
                 <el-input v-model="form.parameters['restuserkey']" type="password" name="restuserkey" clearable></el-input>
               </el-form-item>
               <el-form-item label="Namespace" prop="parameters.secretNamespace" :rules="requiredRules">
-                <el-input @change="checkSecrets()" v-model="form.parameters['secretNamespace']" placeholder=" kube-system" clearable></el-input>
+                <el-input v-model="form.parameters['secretNamespace']" placeholder=" kube-system" clearable></el-input>
               </el-form-item>
               <el-form-item label="secretName" prop="parameters.secretName" :rules="requiredRules">
-                <el-input @change="checkSecrets()" v-model="form.parameters['secretName']" placeholder=" heketi-secret" clearable></el-input>
-                <div><span v-if="isSecretsExit" class="input-err">{{$t('commons.validate.common_name_help')}}</span></div>
+                <el-input v-model="form.parameters['secretName']" placeholder=" heketi-secret" clearable></el-input>
               </el-form-item>
               <el-form-item label="clusterid" prop="parameters.clusterid" :rules="requiredRules">
                 <el-input v-model="form.parameters['clusterid']" placeholder=" 8a4ff57af81910e8324368a23afe3bdc" clearable></el-input>
@@ -169,7 +168,7 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listProvisioner, createStorageClass, createSecret, getSecretByName } from "@/api/cluster/storage"
+import { listProvisioner, createStorageClass, createSecret } from "@/api/cluster/storage"
 import Rule from "@/utils/rules"
 
 export default {
@@ -179,7 +178,6 @@ export default {
     return {
       submitLoading: false,
       provisioners: [],
-      isSecretsExit: false,
       createType: "",
       createName: "",
       provisioner: {},
@@ -255,15 +253,6 @@ export default {
     },
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
-    },
-    checkSecrets() {
-      getSecretByName(this.clusterName, this.form.parameters["secretName"], this.form.parameters["secretNamespace"])
-        .then(() => {
-          this.isSecretsExit = true
-        })
-        .catch(() => {
-          this.isSecretsExit = false
-        })
     },
     changeClassType() {
       this.createType = this.provisioner.type
