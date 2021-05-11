@@ -231,11 +231,11 @@ export default {
       this.errMsg = row.message
     },
     classPageChange(continueToken) {
-      this.classPage.continueToken = continueToken
+      this.classPage.continueToken = continueToken.token
       this.search()
     },
     pvPageChange(continueToken) {
-      this.pvPage.continueToken = continueToken
+      this.pvPage.continueToken = continueToken.token
       this.search()
     },
     handleClick() {

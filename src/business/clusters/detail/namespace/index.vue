@@ -61,7 +61,7 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           click: (row) => {
-            this.onDelete(row.name)
+            this.onDelete(row)
           },
           disabled: (row) => {
             return !this.isInSystemSpace(row)
@@ -77,6 +77,7 @@ export default {
       },
       nsSelection: [],
       namespace: "",
+      toolList: [],
       dialogCreateVisible: false,
       clusterName: "",
       selects: [],
@@ -90,17 +91,6 @@ export default {
       listNamespace(this.clusterName)
         .then((data) => {
           this.data = data.items
-          listTool(this.clusterName).then((tools) => {
-            for (const ns of this.data) {
-              let exitStr = ""
-              for (const tool of tools) {
-                if (tool.vars["namespace"] === ns && tool.status !== "Waiting") {
-                  exitStr += tool.name + ","
-                }
-              }
-              ns.toolDetails = exitStr
-            }
-          })
           this.loading = false
         })
         .catch(() => {
@@ -109,6 +99,11 @@ export default {
     },
     create() {
       this.dialogCreateVisible = true
+    },
+    loadTools() {
+      listTool(this.clusterName).then((tools) => {
+        this.toolList = tools
+      })
     },
     submitCreate() {
       this.submitLoading = true
@@ -129,7 +124,29 @@ export default {
       const systemSpaces = ["default", "kube-public", "kube-operator", "kube-system", "istio-system", "kube-node-lease"]
       return systemSpaces.indexOf(row.metadata.name) === -1
     },
+    checkIsEmptyNs(row) {
+      if (row) {
+        let exitStr = ""
+        for (const tool of this.toolList) {
+          if (tool.vars["namespace"] === row.metadata.name && tool.status !== "Waiting") {
+            exitStr += tool.name + ","
+          }
+        }
+        row.toolDetails = exitStr
+      } else {
+        for (const ns of this.nsSelection) {
+          let exitStr = ""
+          for (const tool of this.toolList) {
+            if (tool.vars["namespace"] === ns.metadata.name && tool.status !== "Waiting") {
+              exitStr += tool.name + ","
+            }
+          }
+          ns.toolDetails = exitStr
+        }
+      }
+    },
     onDelete(row) {
+      this.checkIsEmptyNs(row)
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -187,6 +204,7 @@ export default {
   created() {
     this.clusterName = this.$route.params.name
     this.search()
+    this.loadTools()
     this.polling()
   },
   destroyed() {

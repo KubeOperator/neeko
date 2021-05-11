@@ -11,11 +11,18 @@ export default {
   name: "K8sPage",
   props: {
     nextToken: String,
+    currentPage: Number,
   },
   watch: {
     nextToken: {
       handler(newName) {
         this.ko_nextToken = newName
+      },
+      immediate: true,
+    },
+    currentPage: {
+      handler(newName) {
+        this.ko_currentPage = newName ? newName : this.ko_currentPage
       },
       immediate: true,
     },
@@ -35,14 +42,14 @@ export default {
       this.ko_currentPage--
       this.ko_continueToken = this.ko_aheadToken[this.ko_aheadToken.length - 1]
       this.ko_aheadToken.pop()
-      this.$emit("pageChange", this.ko_continueToken)
+      this.$emit("pageChange", {token: this.ko_continueToken, page: this.ko_currentPage})
       this.ko_btnLoading = false
     },
     getPageNext() {
       this.ko_currentPage++
       this.ko_aheadToken.push(this.ko_continueToken)
       this.ko_continueToken = this.ko_nextToken
-      this.$emit("pageChange", this.ko_continueToken)
+      this.$emit("pageChange", {token: this.ko_continueToken, page: this.ko_currentPage})
     },
   },
 }
