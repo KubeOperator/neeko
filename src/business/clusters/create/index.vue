@@ -752,7 +752,6 @@ export default {
           delw.forEach((d) => {
             cw.splice(cw.indexOf(d), 1)
             this.form.workers = cw
-            this.form.nodes.push({ hostName: d, role: "master" })
           })
           break
         }
