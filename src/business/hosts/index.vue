@@ -430,7 +430,14 @@ export default {
           }
         }
         if (flag) {
-          this.search()
+          const { currentPage, pageSize } = this.paginationConfig
+          searchHosts(currentPage, pageSize).then((data) => {
+            if (localStorage.getItem("host_columns")) {
+              this.columns = JSON.parse(localStorage.getItem("host_columns"))
+            }
+            this.data = data.items
+            this.paginationConfig.total = data.total
+          })
         }
       }, 10000)
     },
