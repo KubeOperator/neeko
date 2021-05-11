@@ -4,13 +4,13 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left"  :rules="rules" :model="form" label-width="90px">
-            <el-form-item :label="$t('backup_account.table.name')" prop="name" >
+          <el-form ref="form" v-loading="loading" label-position="left"  :rules="rules" :model="form" label-width="100px">
+            <el-form-item :label="$t('commons.table.name')" prop="name" >
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('backup_account.table.type')" required>
-              <el-select style="width: 100%" v-model="form.type" :placeholder="$t('backup_account.select_placeholder')">
+            <el-form-item :label="$t('commons.table.type')" required>
+              <el-select style="width: 100%" v-model="form.type" :placeholder="$t('commons.validate.select')">
                 <el-option
                   v-for="item in typeOptions"
                   :key="item.value"
@@ -39,7 +39,7 @@
               <el-input v-model="form.credentialVars['endpoint']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.bucket')" prop="bucket">
-              <el-select style="width: 100%" v-model="form.bucket" :placeholder="$t('backup_account.select_placeholder')">
+              <el-select style="width: 100%" v-model="form.bucket" :placeholder="$t('commons.validate.select')">
                 <el-option
                   v-for="item in buckets"
                   :key="item"

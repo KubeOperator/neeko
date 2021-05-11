@@ -4,7 +4,7 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" clearable></el-input>
             </el-form-item>
@@ -20,7 +20,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="$t('host.type')" required>
+            <el-form-item :label="$t('credential.type')" required>
               <el-radio-group v-model="credentialType" @change="updateCredentialType">
                 <el-radio label="exists">{{$t('host.exists_credential')}}</el-radio>
                 <el-radio label="new">{{$t('host.new_credential')}}</el-radio>
@@ -121,7 +121,7 @@ export default {
     },
     updateCredentialType() {
       this.form.credentialId = this.credentialType === "exists" ? this.form.credentialId : ""
-    },  
+    },
     getCredentials() {
       listCredentialAll().then((data) => {
         this.credentialList = data.items

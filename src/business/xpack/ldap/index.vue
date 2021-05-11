@@ -5,7 +5,7 @@
       <el-col :span="2"><br/></el-col>
       <el-col :span="15">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="130px">
+          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="150px">
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.address')" prop="vars.ldap_address">
               <el-input v-model="form.vars['ldap_address']"></el-input>
             </el-form-item>

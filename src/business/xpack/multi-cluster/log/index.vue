@@ -1,8 +1,18 @@
 <template>
   <layout-content :header="$t('multi_cluster.multi_cluster')" :back-to="{ name: 'MultiClusterRepositoriesList'}">
+    <sync-log-detail :visible="detailOpened" v-on:update:visible="detailOpened=$event" :log-id="logId"
+                     :name="name"></sync-log-detail>
+
     <complex-table :data="data" :columns="columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig">
-      <el-table-column :label="$t('multi_cluster.address')" min-width="100" prop="gitCommitId" fix/>
+
+      <el-table-column label="Commit Id" show-overflow-tooltip min-width="120" fix>
+        <template v-slot:default="{row}">
+          <el-link style="font-size: 12px" type="info" @click="showSyncDetail(row)">{{ row.gitCommitId }}</el-link>
+        </template>
+      </el-table-column>
+
+
       <el-table-column :label="$t('commons.table.status')" min-width="100">
         <template v-slot:default="{row}">
           <el-tag v-if="row.status.toLowerCase() === 'success'" type="success" size="small">
@@ -23,14 +33,17 @@
   import LayoutContent from "@/components/layout/LayoutContent";
   import ComplexTable from "@/components/complex-table";
   import {getMultiClusterSyncLogs, deleteMultiClusterRepository} from "@/api/xpack/multi-cluster"
+  import SyncLogDetail from "../dialog/SyncLogDetail";
 
 
   export default {
     name: "MultiClusterRepositoriesLogs",
     props: ['name'],
-    components: {ComplexTable, LayoutContent},
+    components: {SyncLogDetail, ComplexTable, LayoutContent},
     data() {
       return {
+        detailOpened: false,
+        logId: "",
         columns: [],
         buttons: [],
         searchConfig: {
@@ -57,7 +70,12 @@
               ],
               multiple: true
             },
-            {field: "created_at", label: this.$t('commons.table.create_time'), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss"},
+            {
+              field: "created_at",
+              label: this.$t('commons.table.create_time'),
+              component: "FuComplexDateTime",
+              valueFormat: "yyyy-MM-dd HH:mm:ss"
+            },
           ]
         },
         paginationConfig: {
@@ -71,6 +89,10 @@
     methods: {
       select(selection) {
         console.log(selection)
+      },
+      showSyncDetail(item) {
+        this.logId = item.id
+        this.detailOpened = true;
       },
       create() {
         this.$router.push({name: "MultiClusterRepositoryCreate"})

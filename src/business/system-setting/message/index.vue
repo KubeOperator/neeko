@@ -8,7 +8,7 @@
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="15">
-        <el-form ref="form" v-loading="loading" label-position="left" :model="wechat" label-width="80px">
+        <el-form ref="form" v-loading="loading" label-position="left" :model="wechat" label-width="120px">
           <el-form-item  style="width: 100%" label="corpid" required>
             <el-input v-model="wechat.vars['WORK_WEIXIN_CORP_ID']"></el-input>
           </el-form-item>
@@ -56,7 +56,7 @@
         <el-col :span="2"><br/></el-col>
         <el-col :span="16">
           <div class="grid-content bg-purple-light">
-            <el-form ref="form" label-position="left" v-loading="loading" :model="dingTalk" label-width="110px">
+            <el-form ref="form" label-position="left" v-loading="loading" :model="dingTalk" label-width="150px">
               <el-form-item  style="width: 100%" :label="$t('setting.table.message.webhookAddress')" required>
                 <el-input v-model="dingTalk.vars['DING_TALK_WEBHOOK']"></el-input>
               </el-form-item>
