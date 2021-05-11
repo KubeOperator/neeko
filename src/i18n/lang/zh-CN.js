@@ -57,7 +57,7 @@ const message = {
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      sync_success: "同步成功",
+      sync_success: "已开始同步，同步时间取决于IP数量，请稍后刷新页面",
       create_success: "创建成功",
       verify_success: "校验成功",
       import_success: "导入成功",
