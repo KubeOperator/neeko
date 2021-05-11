@@ -94,7 +94,7 @@
       </el-tab-pane>
 
       <el-tab-pane :label="$t('cluster.detail.backup.backup_log')" :name="$t('cluster.detail.backup.backup_log')">
-        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="logs">
+        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="logs" :loading="logLoading">
           <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix>
             <template v-slot:default="{row}">
               {{ $t("cluster.detail.backup." + row.type) }}
@@ -149,6 +149,7 @@ export default {
   data() {
     return {
       loading: false,
+      logLoading: false,
       submitLoading: false,
       clusterName: "",
       activeName: this.$t("cluster.detail.backup.backup_recover"),
@@ -187,8 +188,12 @@ export default {
           this.paginationConfig.total = data.total
         })
       } else {
+        this.logLoading = true
         getBackupLog(this.clusterName).then((data) => {
           this.logs = data
+          this.logLoading = false
+        }).finally(() => {
+          this.logLoading = false
         })
       }
     },

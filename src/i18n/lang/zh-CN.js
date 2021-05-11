@@ -697,7 +697,7 @@ const message = {
     vm_config: {
       name: "虚拟机配置",
       cpu: "CPU(核)",
-      memory: "内存(GB)",
+      memory: "内存(MB)",
       name_validate_msg: "支持英文和数字",
       cpu_invalid: "CPU 范围 1～1000",
       mem_invalid: "内存 范围 1～1000",
