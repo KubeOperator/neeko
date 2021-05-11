@@ -347,6 +347,9 @@ export default {
         this.search()
         this.$message({ type: "success", message: this.$t("cluster.detail.storage.start_provisioner_sync") })
         this.dialogSyncVisible = false
+        this.provisionerSelection = []
+      }).catch(() => {
+        this.provisionerSelection = []
       })
     },
     polling() {

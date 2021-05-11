@@ -378,9 +378,11 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.selects = []
           })
           .catch(() => {
             this.search()
+            this.selects = []
           })
       })
     },
@@ -430,11 +432,13 @@ export default {
           this.dialogCordonVisible = false
           this.submitLoading = false
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.selects = []
         })
         .catch(() => {
           this.submitLoading = false
           this.dialogCordonVisible = false
           this.search()
+          this.selects = []
         })
     },
     bacthDeletePod(datas, nodeName) {

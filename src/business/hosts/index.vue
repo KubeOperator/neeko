@@ -259,11 +259,16 @@ export default {
           hostStatus: item.status,
         })
       })
-      syncHosts(this.syncHostList).then(() => {
-        this.search()
-        this.$message({ type: "success", message: this.$t("host.start_host_sync") })
-        this.dialogSyncVisible = false
-      })
+      syncHosts(this.syncHostList)
+        .then(() => {
+          this.search()
+          this.$message({ type: "success", message: this.$t("host.start_host_sync") })
+          this.dialogSyncVisible = false
+          this.hostSelections = []
+        })
+        .catch(() => {
+          this.hostSelections = []
+        })
     },
     onUploadChange(file) {
       this.isUploadDisable = false
@@ -342,9 +347,11 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.hostSelections = []
           })
           .catch(() => {
             this.search()
+            this.hostSelections = []
           })
       })
     },
@@ -359,19 +366,24 @@ export default {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
-      }).then(() => {
-        const ps = []
-        for (const item of this.hostSelections) {
-          ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
-        }
-        Promise.all(ps).then(() => {
-          this.$message({
-            type: "success",
-            message: this.$t("commons.msg.op_success"),
-          })
-          this.search()
-        })
       })
+        .then(() => {
+          const ps = []
+          for (const item of this.hostSelections) {
+            ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
+          }
+          Promise.all(ps).then(() => {
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.op_success"),
+            })
+            this.search()
+            this.hostSelections = []
+          })
+        })
+        .catch(() => {
+          this.hostSelections = []
+        })
     },
     onGrant() {
       this.grantHostNames = []
@@ -398,9 +410,11 @@ export default {
           this.dialogGrantVisible = false
           this.search()
           this.grantLoading = true
+          this.hostSelections = []
         })
-        .finally(() => {
+        .catch(() => {
           this.grantLoading = true
+          this.hostSelections = []
         })
     },
     search(condition) {
@@ -415,7 +429,7 @@ export default {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
-        .finally(() => {
+        .catch(() => {
           this.loading = false
         })
     },
