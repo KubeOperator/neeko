@@ -3,8 +3,8 @@
     <el-col :span="2"><br/></el-col>
     <el-col :span="8">
       <div class="grid-content bg-purple-light">
-        <el-form ref="form" v-loading="loading" :model="form" label-width="100px">
-          <el-form-item  style="width: 100%" :label="$t('setting.ntpServer')" required>
+        <el-form ref="form" :rules="rules" v-loading="loading" :model="form" label-width="100px">
+          <el-form-item  style="width: 100%" :label="$t('setting.ntpServer')" prop="vars.ntp_server">
             <el-input v-model="form.vars.ntp_server"></el-input>
           </el-form-item>
           <div style="float: right">
@@ -21,6 +21,7 @@
 
 <script>
 import {getSetting,createSetting} from "@/api/system-setting";
+import Rule from "@/utils/rules";
 
 export default {
   name: "NTP",
@@ -31,12 +32,21 @@ export default {
           ntp_server: ''
         },
         tab: '',
-        loading: false
-      }
+      },
+      rules: {
+        vars: {
+          ntp_server: [Rule.RequiredRule,Rule.IpRule]
+        }
+      },
+      loading: false
     }
   },
   methods: {
     onSubmit() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          return false
+        }
       this.loading = true
       createSetting( {
         vars: this.form.vars,
@@ -51,6 +61,7 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    })
     }
   },
   created() {
@@ -58,6 +69,8 @@ export default {
     getSetting("SYSTEM").then( data => {
       this.loading = false
       this.form.vars.ntp_server = data.vars['ntp_server']
+    }).finally(() => {
+      this.loading = false
     })
   }
 }
