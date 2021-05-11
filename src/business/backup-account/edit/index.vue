@@ -50,7 +50,7 @@
                 <el-input v-model="form.credentialVars['username']"></el-input>
               </el-form-item>
               <el-form-item  :label="$t('backup_account.table.password')" required>
-                <el-input type="password" show-password v-model="form.credentialVars['password']"></el-input>
+                <el-input type="password" v-model="form.credentialVars['password']"></el-input>
               </el-form-item>
               <el-form-item :label="$t('backup_account.table.path')" required>
                 <el-input v-model="form.bucket"></el-input>

@@ -16,7 +16,7 @@
               <el-input v-model="form.vars['ldap_username']"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.password')" required>
-              <el-input :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars['ldap_password']" show-password></el-input>
+              <el-input :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars['ldap_password']"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterDN')" required>
               <el-input v-model="form.vars['ldap_dn']"></el-input>
