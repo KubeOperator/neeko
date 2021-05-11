@@ -800,7 +800,7 @@ const message = {
         filterDN: "用户过滤 DN",
         filterRule: "用户过滤规则",
         status: "状态",
-        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登陆名重复的也不会被同步!"
+        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登录名重复的也不会被同步!"
       },
       license: {
         title: "KubeOperator 许可证",
