@@ -84,6 +84,12 @@ a:hover {
   color:red;
 }
 
+.el-message__content {
+  padding: 0;
+  font-size: 14px;
+  line-height: 2;
+  word-break:break-all; 
+}
 
 .el-step__title.is-finish {
   color: #717379;
