@@ -26,24 +26,20 @@
             width="30%">
       <el-form ref="form" label-position="left" :model="form" label-width="100px">
         <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" required>
-          <el-input v-model="form.original"></el-input>
+          <el-input type="password" v-model="form.original"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%" :rules="rules.password" :label="$t('commons.personal.new_password')"
                       prop="password" required>
-          <el-input v-model="form.password"></el-input>
+          <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%" :rules="rules.password" :label="$t('commons.personal.confirm_password')"
+        <el-form-item style="width: 100%" :rules="rules.confirmPassword" :label="$t('commons.personal.confirm_password')"
                       prop="password" required>
-          <el-input v-model="confirmPassword"></el-input>
-          <el-alert v-if="!checkPassword() && form.password &&confirmPassword"
-                    :title="$t('commons.personal.confirm_password1_info')"
-                    type="error">
-          </el-alert>
+          <el-input type="password" v-model="confirmPassword"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-    <el-button type="primary" :disabled="!checkPassword() && form.password &&confirmPassword"
+    <el-button type="primary"
                @click="submit('form')">{{ $t("commons.button.submit") }}</el-button>
   </span>
     </el-dialog>
@@ -105,7 +101,10 @@ export default {
       },
       confirmPassword: "",
       rules: {
-        password: [Rule.PasswordRule],
+        password: [Rule.RequiredRule,Rule.PasswordRule],
+        confirmPassword: [Rule.RequiredRule,Rule.PasswordRule, {
+          validator: this.checkPassword, trigger: "blur"
+        }],
       }
     }
   },
@@ -141,9 +140,6 @@ export default {
     toGithubStar () {
       window.open("https://github.com/KubeOperator/KubeOperator", "_blank")
     },
-    checkPassword () {
-      return this.form.password === this.confirmPassword
-    },
     async getRole () {
       const { name } = await store.dispatch("user/getCurrentUser")
       this.form.name = name
@@ -169,7 +165,13 @@ export default {
           }, 1500)
         })
       })
-    }
+    },
+    checkPassword (rule, value, callback) {
+      if (this.form.password !== this.confirmPassword) {
+        return callback(new Error(this.$t("commons.personal.confirm_password1_info")))
+      }
+      callback()
+    },
   }
 }
 </script>
