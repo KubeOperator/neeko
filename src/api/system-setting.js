@@ -58,9 +58,9 @@ export function createMessageSetting(tabName,data) {
 
 // LDAP
 export function syncLDAP(data){
-  return post(`ldap/sync`,data)
+  return post(`/api/v1/ldap/sync`,data)
 }
 
 export function createLDAP(data) {
-  return post(`ldap/`,data)
+  return post(`/api/v1/ldap/`,data)
 }
