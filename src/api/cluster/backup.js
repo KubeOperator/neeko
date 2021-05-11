@@ -1,6 +1,7 @@
 import {del, get, post} from "@/plugins/request"
 
 const fileUrl = "/api/v1/clusters/backup/files"
+const logUrl = "/api/v1/clusters/log"
 const strategyUrl = "/api/v1/clusters/backup/strategy"
 const clusterUrl = "/api/v1/clusters/backupaccounts"
 
@@ -15,7 +16,7 @@ export function getStrategy (clusterName) {
 }
 
 export function getBackupLog (clusterName) {
-  return get(`/api/v1/clusters/log/${clusterName}`)
+  return get(`${logUrl}/${clusterName}`)
 }
 
 export function createStrategy (data) {

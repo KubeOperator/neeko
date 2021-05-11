@@ -48,7 +48,8 @@ const message = {
       error_msg: "Error",
       lock: "Enable/Disable",
       relation: "Associate",
-      cordon: "Disperse",
+      active: "Active",
+      cordon: "Cordon",
       uncordon: "Resume to disperse",
       log: "Log"
     },
@@ -436,13 +437,13 @@ const message = {
         grafana_password_help: "Inconsistent passwords",
       },
       istio: {
-        err_title: "Error Message",
-        cpu_limit: "CPU Limit (m)",
-        memory_limit: "Memory Limit (Mb)",
-        cpu_request: "CPU Reservation",
-        memory_request: "Memory Reservation (Mb)",
-        trace: "Tracking Sampling Ratio (%)",
-        gateways_type: "Gateway Service Type",
+        err_title: "Error message",
+        cpu_limit: "CPU limit (m)",
+        memory_limit: "Memory limit (Mb)",
+        cpu_request: "CPU request",
+        memory_request: "Memory request (Mb)",
+        trace: "Trace (%)",
+        gateways_type: "Gateway type",
         disable_istio: "Disable Istio",
         resave: "Resave",
         ensure_disable_istio: "Are you sure to disable cluster Istio?",
@@ -602,8 +603,8 @@ const message = {
   },
   system_log: {
     title: "SystemLog",
-    operation: "Operate",
-    operation_info: "Operation Content",
+    operation: "Operation",
+    operation_info: "Operation info",
     query_placeholder: "Search by name/operation/operation content"
   },
   automatic: {
