@@ -35,6 +35,7 @@ export default {
   methods: {
     setLanguage (lang) {
       localStorage.setItem("language", lang)
+      location.reload();
       this.$store.dispatch("user/setLanguage", lang).then(() => {
         // do something
       })

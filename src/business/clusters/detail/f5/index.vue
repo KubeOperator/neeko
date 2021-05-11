@@ -55,7 +55,7 @@ export default {
         user: [Rule.RequiredRule],
         password: [Rule.RequiredRule],
         partition: [Rule.RequiredRule],
-        publicIP: [Rule.RequiredRule],
+        publicIP: [Rule.IpRule],
       },
       loading: false,
       submitLoading: false,

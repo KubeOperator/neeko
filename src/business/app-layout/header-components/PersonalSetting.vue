@@ -26,15 +26,15 @@
             width="30%">
       <el-form ref="form" label-position="left" :model="form" label-width="100px">
         <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" required>
-          <el-input v-model="form.original" show-password></el-input>
+          <el-input v-model="form.original"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%" :rules="rules.password" :label="$t('commons.personal.new_password')"
                       prop="password" required>
-          <el-input v-model="form.password" show-password></el-input>
+          <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%" :rules="rules.password" :label="$t('commons.personal.confirm_password')"
                       prop="password" required>
-          <el-input v-model="confirmPassword" show-password></el-input>
+          <el-input v-model="confirmPassword"></el-input>
           <el-alert v-if="!checkPassword() && form.password &&confirmPassword"
                     :title="$t('commons.personal.confirm_password1_info')"
                     type="error">
