@@ -57,7 +57,7 @@ const message = {
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      sync_success: "已开始同步，同步时间取决于IP数量，请稍后刷新页面",
+      sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
       import_success: "导入成功",
@@ -569,7 +569,8 @@ const message = {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
       CLUSTER_REMOVE_WORKER: "节点删除",
-      CLUSTER_ADD_WORKER: "添加节点"
+      CLUSTER_ADD_WORKER: "添加节点",
+      CLUSTER_BACKUP: "集群备份"
     },
     detail: {
       basicInformation: "基本信息",

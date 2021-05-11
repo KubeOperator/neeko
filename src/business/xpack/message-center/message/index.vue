@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table :header="$t('message.message')" :selects.sync="selects" :fit="true"
+    <complex-table :header="$t('message.message')" :selects.sync="selects" :fit="true" :default-sort = "{prop: 'create_time', order: 'descending'}"
                    v-loading="loading" :data="data" :columns="columns" @search="search" :pagination-config="paginationConfig" >
       <template #header>
         <el-button-group>
@@ -37,7 +37,7 @@
           {{$t('message.'+row.readStatus)}}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable sort-by="createdAt" :label="$t('commons.table.create_time')" >
         <template v-slot:default="{ row }">
           {{ row.createdAt | datetimeFormat }}
         </template>

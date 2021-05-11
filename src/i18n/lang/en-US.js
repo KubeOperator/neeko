@@ -560,7 +560,8 @@ const message = {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",
       CLUSTER_REMOVE_WORKER: "Node Delete",
-      CLUSTER_ADD_WORKER: "Node Add"
+      CLUSTER_ADD_WORKER: "Node Add",
+      CLUSTER_BACKUP: "Cluster Backup"
     },
     detail: {
       basicInformation: "Information",
