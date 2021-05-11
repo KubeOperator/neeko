@@ -86,20 +86,22 @@ export default {
       })
     },
     searchWithLabel() {
-      LokiLabelValues(this.clusterName, this.searchruleForm.label).then((data) => {
-        if (data.data === undefined) {
-          this.searchruleForm.values = []
-          this.searchruleForm.value = ""
-        } else {
-          if (data.data.length > 0) {
-            this.searchruleForm.values = data.data
-            this.searchruleForm.value = this.searchruleForm.values[0]
-          } else {
+      if (this.searchruleForm.label) {
+        LokiLabelValues(this.clusterName, this.searchruleForm.label).then((data) => {
+          if (data.data === undefined) {
             this.searchruleForm.values = []
             this.searchruleForm.value = ""
+          } else {
+            if (data.data.length > 0) {
+              this.searchruleForm.values = data.data
+              this.searchruleForm.value = this.searchruleForm.values[0]
+            } else {
+              this.searchruleForm.values = []
+              this.searchruleForm.value = ""
+            }
           }
-        }
-      })
+        })
+      }
     },
     dataParser(data) {
       let logItem = {
