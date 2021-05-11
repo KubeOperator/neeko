@@ -21,7 +21,7 @@
           <svg v-if="row.readStatus === 'UNREAD'" class="icon svg-icon" aria-hidden="true" :style="{ color: '#0079b8' }">
             <use xlink:href="#iconweidu1"></use>
           </svg>
-          <span @click="onDetail(row)" :style="{'color':row.readStatus === 'UNREAD'?'#0079b8':'#969696'}" > {{$t('message.title.'+row.message.title)}}</span>
+          <span class="message-link" @click="onDetail(row)" :style="{'color':row.readStatus === 'UNREAD'?'#0079b8':'#969696'}" > {{$t('message.title.'+row.message.title)}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('message.type')" min-width="100" prop="message.type" fix />
@@ -223,5 +223,7 @@ export default {
 </script>
 
 <style scoped>
-
+.message-link {
+  cursor: pointer;
+}
 </style>
