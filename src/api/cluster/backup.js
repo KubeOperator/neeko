@@ -15,7 +15,7 @@ export function getStrategy (clusterName) {
 }
 
 export function getBackupLog (clusterName) {
-  return get(`clusters/log/${clusterName}`)
+  return get(`/api/v1/clusters/log/${clusterName}`)
 }
 
 export function createStrategy (data) {
