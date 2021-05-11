@@ -53,7 +53,7 @@ export default {
       rules: {
         url: [Rule.RequiredRule],
         user: [Rule.RequiredRule],
-        password: [Rule.PasswordRule],
+        password: [Rule.RequiredRule],
         partition: [Rule.RequiredRule],
         publicIP: [Rule.RequiredRule],
       },
