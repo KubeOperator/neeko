@@ -122,7 +122,7 @@ const message = {
       name: "Name",
       status: "Status",
       description: "Description",
-      create_time: "Creation Time",
+      create_time: "Created",
       type: "Type",
       username: "Username"
     },
@@ -694,7 +694,7 @@ const message = {
       disk: "Disk (GB)"
     },
     ip_pool: {
-      name: "IP pool",
+      name: "IP Pool",
       subnet: "Subnet",
       ip_usage: "Usage",
       gateway: "Gateway",
@@ -722,14 +722,14 @@ const message = {
     project: "Project",
     member: "Member Management",
     resource: "Resource Management",
-    CLUSTER_MANAGER: "Cluster manager",
-    PROJECT_MANAGER: "Project manager",
+    CLUSTER_MANAGER: "Cluster Manager",
+    PROJECT_MANAGER: "Project Manager",
     description: "Description",
-    add_project_manager: "Add project manager",
-    add_project_resource: "Add resource",
-    add_cluster_manager: "Add cluster manager",
+    add_project_manager: "Add Project Manager",
+    add_project_resource: "Add Resource",
+    add_cluster_manager: "Add Cluster Manager",
     key_words: "Please type in your name",
-    list: "Project list",
+    list: "Project List",
     header_description: "On the left is the project-cluster tree, on the right is personnel and resource management",
   },
   credential: {
@@ -769,7 +769,7 @@ const message = {
       registry: {
         protocol: "Protocol",
         hostname: "Address",
-        arch: "CPU architecture",
+        arch: "CPU Architecture",
         hostname_help: "The default is the IP of the server where KubeOperator is deployed. This IP will be used to access the nexus registry"
       },
       mail: {
@@ -785,8 +785,8 @@ const message = {
         port: "Port",
         username: "Username",
         password: "Password",
-        filterDN: "User filtering DN",
-        filterRule: "User filtering rules",
+        filterDN: "User Filtering DN",
+        filterRule: "User Filtering Rules",
         status: "Status",
         ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!"
       },
