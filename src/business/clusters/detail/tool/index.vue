@@ -123,9 +123,9 @@
             <div v-if="!isReplicasValid"><span class="input-error">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span>
             </div>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.tool.hip_memery')" prop="vars.elasticsearch_esJavaOpts_item" :rules="numberRules">
+          <el-form-item :label="$t('cluster.detail.tool.hip_memory')" prop="vars.elasticsearch_esJavaOpts_item" :rules="numberRules">
             <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['elasticsearch_esJavaOpts_item']" clearable></el-input-number>
-            <div><span class="input-help">{{$t('cluster.detail.tool.default_hip_memery')}}</span></div>
+            <div><span class="input-help">{{$t('cluster.detail.tool.default_hip_memory')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
             <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch_persistence_enabled']"></el-switch>
