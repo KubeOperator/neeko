@@ -21,13 +21,13 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" min-width="150">
+          <el-table-column :label="$t('commons.table.name')" min-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
           <el-table-column :label="$t('cluster.cluster')" >
             <template v-slot:default="{ row }">{{ row.clusterName }}</template>
           </el-table-column>
-          <el-table-column :label="$t('host.ip')">
+          <el-table-column :label="$t('host.ip')" min-width="100px">
             <template v-slot:default="{ row }">{{ row.ip }}</template>
           </el-table-column>
           <el-table-column :label="$t('automatic.vm_config.cpu')" min-width="50">
@@ -64,15 +64,15 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" mix-width="100">
+          <el-table-column :label="$t('commons.table.name')" mix-width="60">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
-          <el-table-column :label="$t('automatic.plan.deploy_template')" mix-width="100">
+          <el-table-column :label="$t('automatic.plan.deploy_template')"  mix-width="160">
             <template v-slot:default="{ row }">
                 {{ $t("automatic.plan." + row.deployTemplate) }}
             </template>
           </el-table-column>
-          <el-table-column :label="$t('commons.table.create_time')">
+          <el-table-column :label="$t('commons.table.create_time')" mix-width="60">
             <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
           </el-table-column>
         </complex-table>
@@ -100,10 +100,10 @@
           <el-table-column :label="$t('commons.table.name')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
-          <el-table-column :label="$t('backup_account.bucket')" mix-width="100">
+          <el-table-column :label="$t('backup_account.table.bucket')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.bucket }}</template>
           </el-table-column>
-          <el-table-column :label="$t('backup_account.type')" mix-width="100">
+          <el-table-column :label="$t('commons.table.type')"  mix-width="70">
             <template v-slot:default="{row}">
               <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
                 <use xlink:href="#iconoss"></use>
@@ -120,7 +120,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('backup_account.status')" mix-width="100">
+          <el-table-column :label="$t('commons.table.status')" mix-width="40">
             <template v-slot:default="{row}">
               <div v-if="row.status === 'VALID'">
                 <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -132,7 +132,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('commons.table.create_time')">
+          <el-table-column :label="$t('commons.table.create_time')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
           </el-table-column>
         </complex-table>
