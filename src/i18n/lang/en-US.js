@@ -280,6 +280,7 @@ const message = {
       recover: "restore",
     },
     condition: {
+      condition_loading: "Waiting for execution, please wait...",
       condition_detail: "Status details",
       EnsureInitTaskStart: "Scheduling tasks",
       EnsurePrepareBaseSystemConfig: "Prepare the system environment",

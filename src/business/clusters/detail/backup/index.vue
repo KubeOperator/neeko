@@ -113,18 +113,22 @@
           </el-table-column>
           <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
             <template v-slot:default="{row}">
-              <div v-if="row.status==='FAILED'" type="text">
-                <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-                <el-popover placement="top" :title="$t('cluster.detail.backup.detail')" width="200" trigger="click" :content="row.message">
-                  <el-button slot="reference" type="text" style="color: #2D61A2">{{ $t("commons.status.failed") }}</el-button>
+              <div v-if="row.status === 'FAILED'">
+                <el-popover placement="left-start" :title="$t('cluster.detail.backup.detail')"  width="200" trigger="click" :content="row.message">
+                  <div slot="reference">
+                    <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+                    <el-link type="info">{{ $t("commons.status.failed") }}</el-link>
+                  </div>
                 </el-popover>
               </div>
-              <el-button v-if="row.status === 'Running'" size="mini" round plain icon="el-icon-loading">
-                {{ $t("cluster.detail.backup." + row.status) }}
-              </el-button>
-              <el-button v-if="row.status === 'SUCCESS'" size="mini" round type="success">
-                {{ $t("cluster.detail.backup." + row.status) }}
-              </el-button>
+              <div v-if="row.status ==='RUNNING'">
+                <span class="iconfont iconduihao" style="color: #32B350"></span>
+                {{ $t("commons.status.running") }}
+              </div>
+              <div v-if="row.status ==='SUCCESS'">
+                <span class="iconfont iconduihao" style="color: #32B350"></span>
+                {{ $t("commons.status.success") }}
+              </div>
             </template>
           </el-table-column>
           <el-table-column :label="$t('cluster.detail.log.time')">
@@ -184,17 +188,66 @@ export default {
       if (this.activeName === this.$t("cluster.detail.backup.backup_recover")) {
         const { currentPage, pageSize } = this.paginationConfig
         listBackupByPage(this.clusterName, currentPage, pageSize).then((data) => {
-          this.data = data.items
-          this.paginationConfig.total = data.total
+          if (data) {
+            this.data = data.items
+            this.paginationConfig.total = data.total
+          }
         })
       } else {
         this.logLoading = true
-        getBackupLog(this.clusterName).then((data) => {
-          this.logs = data
-          this.logLoading = false
-        }).finally(() => {
-          this.logLoading = false
-        })
+        getBackupLog(this.clusterName)
+          .then(() => {
+            let kk = [
+              {
+                createdAt: "2021-05-11T18:50:03+08:00",
+                updatedAt: "2021-05-11T18:53:18+08:00",
+                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
+                type: "CLUSTER_BACKUP",
+                startTime: "2021-05-11T18:50:03+08:00",
+                endTime: "2021-05-11T18:53:18+08:00",
+                message: "",
+                status: "SUCCESS",
+              },
+              {
+                createdAt: "2021-05-11T16:29:29+08:00",
+                updatedAt: "2021-05-11T16:31:40+08:00",
+                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
+                type: "CLUSTER_RESTORE",
+                startTime: "2021-05-11T16:29:29+08:00",
+                endTime: "2021-05-11T16:31:40+08:00",
+                message: "",
+                status: "RUNNING",
+              },
+              {
+                createdAt: "2021-05-11T14:35:52+08:00",
+                updatedAt: "2021-05-11T14:40:02+08:00",
+                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
+                type: "CLUSTER_BACKUP",
+                startTime: "2021-05-11T14:35:52+08:00",
+                endTime: "2021-05-11T14:40:02+08:00",
+                message: "",
+                status: "SUCCESS",
+              },
+              {
+                createdAt: "2021-05-11T14:29:20+08:00",
+                updatedAt: "2021-05-11T14:33:31+08:00",
+                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
+                type: "CLUSTER_BACKUP",
+                startTime: "2021-05-11T14:29:20+08:00",
+                endTime: "2021-05-11T14:33:31+08:00",
+                message: "chuxian了歇一歇问题洒大地上集群我都去我们都块钱吗哦请问对你请问你都去哪我动情我带你去哦味道浓 请问地区那我带你去哦我呢的",
+                status: "FAILED",
+              },
+            ]
+
+            if (kk) {
+              this.logs = kk
+              this.logLoading = false
+            }
+          })
+          .catch(() => {
+            this.logLoading = false
+          })
       }
     },
     backupNow() {
@@ -207,8 +260,8 @@ export default {
             clusterBackupStrategyID: this.strategyForm.id,
             folder: "",
           }
-          startBackup(backupFile).then(
-            () => {
+          startBackup(backupFile)
+            .then(() => {
               this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
             })
             .catch(() => {
@@ -275,7 +328,7 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "info",
       }).then(() => {
-        startRestore({ name: row.name, clusterName: this.clusterName,}).then(() => {
+        startRestore({ name: row.name, clusterName: this.clusterName }).then(() => {
           this.$message({
             type: "success",
             message: this.$t("cluster.detail.backup.recover_success"),

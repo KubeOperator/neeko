@@ -285,6 +285,7 @@ const message = {
       recover: "恢复",
     },
     condition: {
+      condition_loading: "正在等待执行，请稍候...",
       condition_detail: "状态详情",
       EnsureInitTaskStart: "调度任务",
       EnsurePrepareBaseSystemConfig: "准备系统环境",

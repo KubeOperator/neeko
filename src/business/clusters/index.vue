@@ -65,7 +65,7 @@
     </complex-table>
 
     <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div :style="{height: dialogHeight}">
+      <div v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
           <div>
@@ -195,6 +195,7 @@ export default {
       activeName: 1,
       retryLoadding: false,
       keepPolling: true,
+      conditionLoading: false,
 
       // cluster delete
       isForce: false,
@@ -391,6 +392,11 @@ export default {
         if (this.keepPolling) {
           getClusterStatus(this.clusterName)
             .then((data) => {
+              if (data.conditions.length === 0) {
+                this.conditionLoading = true
+                return
+              }
+              this.conditionLoading = false
               this.activeName = this.log.conditions.length + 1
               if (this.log.phase !== "Running") {
                 this.log.conditions = data.conditions

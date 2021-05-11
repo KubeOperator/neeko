@@ -1,10 +1,11 @@
 <template>
   <div>
-    <complex-table :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
+    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info"/>
+    <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="provider === ''" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1 || provider === ''" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
         </el-button-group>
@@ -75,9 +76,6 @@
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item v-if="provider === ''">
-          <span>{{$t('cluster.detail.node.operator_help')}}</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
