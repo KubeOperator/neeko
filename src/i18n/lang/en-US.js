@@ -253,8 +253,8 @@ const message = {
       master_select_help: "(The number of Master nodes must be 1 or 3)",
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
-      step7: "Configuration preview",
-      base_setting: "Basic configuration"
+      step7: "Configuration Preview",
+      base_setting: "Basic Configuration"
     },
     upgrade: {
       current_version: "Current Version",
@@ -427,7 +427,7 @@ const message = {
         search_index_help: "For example: logstash",
         replicas: "Replicas",
         max_replicas_num: "The maximum number of copies is",
-        hip_memory: "Heap Memory (GB)",
+        hip_memory: "Heap Memory (MB)",
         default_hip_memory: "The default value is 1G",
         password: "Password",
         password_re: "Confirm Password",
@@ -687,7 +687,7 @@ const message = {
     vm_config: {
       name: "Virtual Machine Configuration",
       cpu: "CPU (core)",
-      memory: "RAM (GB)",
+      memory: "RAM (MB)",
       name_validate_msg: "Support English and numbers",
       cpu_invalid: "CPU range 1～1000",
       mem_invalid: "Memory range 1～1000",
@@ -813,8 +813,8 @@ const message = {
         dingTalkLimit: "DingTalk message frequency limit",
         wechatConcept: "Basic Concepts of Enterprise WeChat",
         wechatLimit: "Enterprise WeChat message frequency limit",
-        wechatSetting: "Enterprise WeChat settings",
-        dingTalkSetting: "DingTalk settings",
+        wechatSetting: "Enterprise WeChat Settings",
+        dingTalkSetting: "DingTalk Settings",
       }
     },
     option: {
