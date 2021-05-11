@@ -48,7 +48,8 @@ const message = {
       error_msg: "Error",
       lock: "Enable/Disable",
       relation: "Associate",
-      cordon: "Disperse",
+      active: "Active",
+      cordon: "Cordon",
       uncordon: "Resume to disperse",
       log: "Log"
     },
@@ -439,10 +440,10 @@ const message = {
         err_title: "Error message",
         cpu_limit: "CPU limit (m)",
         memory_limit: "Memory limit (Mb)",
-        cpu_request: "CPU reservation",
-        memory_request: "Memory reservation (Mb)",
-        trace: "Tracking sampling ratio (%)",
-        gateways_type: "Gateway service type",
+        cpu_request: "CPU request",
+        memory_request: "Memory request (Mb)",
+        trace: "Trace (%)",
+        gateways_type: "Gateway type",
         disable_istio: "Disable Istio",
         resave: "Resave",
         ensure_disable_istio: "Are you sure to disable cluster Istio?",
@@ -602,8 +603,8 @@ const message = {
   },
   system_log: {
     title: "SystemLog",
-    operation: "operate",
-    operation_info: "Operation content",
+    operation: "Operation",
+    operation_info: "Operation info",
     query_placeholder: "Search by name/operation/operation content"
   },
   automatic: {

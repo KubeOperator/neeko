@@ -146,9 +146,6 @@ export default {
           click: (row) => {
             this.onDelete(row, "pv", false)
           },
-          disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
-          },
         },
       ],
       buttons_class: [
@@ -157,9 +154,6 @@ export default {
           icon: "el-icon-delete",
           click: (row) => {
             this.onDelete(row, "class", false)
-          },
-          disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
           },
         },
       ],

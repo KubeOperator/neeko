@@ -204,7 +204,7 @@ export default {
           }
           startBackup(backupFile).then(
             () => {
-              this.$message({ type: "success", message: this.$t("commons.detail.backup.backup_start") })
+              this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
             })
             .catch(() => {
               this.submitLoading = false

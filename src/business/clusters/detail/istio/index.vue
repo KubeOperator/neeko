@@ -221,7 +221,7 @@ export default {
       enableIstio(this.clusterName, items)
         .then(() => {
           if (operation === "start") {
-            this.$message({ type: "success", message: this.$t("cluster.detail.istio.enable_istio") })
+            this.$message({ type: "success", message: this.$t("commons.msg.enable_success") })
           } else {
             this.$message({ type: "success", message: this.$t("commons.msg.re_enable_success") })
           }
@@ -244,7 +244,7 @@ export default {
       this.disAble(items, this.egressCfg)
       disableIstio(this.clusterName, items)
         .then(() => {
-          this.$message({ type: "success", message: this.$t("cluster.detail.istio.disable_istio") })
+          this.$message({ type: "success", message: this.$t("commons.msg.disable_success") })
           this.submitLoading = false
           this.dialogShutupVisible = false
           this.search()
