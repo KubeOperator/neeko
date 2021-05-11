@@ -57,7 +57,7 @@ export default {
       rules: {
         name: [Rule.CommonNameRule, Rule.RequiredRule],
         email: [Rule.EmailRule, Rule.RequiredRule],
-        password: [Rule.RequiredRule,Rule.RequiredRule],
+        password: [Rule.RequiredRule,Rule.PasswordRule],
         confirmPassword: [Rule.RequiredRule,Rule.PasswordRule, {
           validator: this.checkPassword, trigger: "blur"
         }],
