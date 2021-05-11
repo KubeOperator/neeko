@@ -25,7 +25,7 @@
               </el-select>
             </el-form-item>
             <div v-if="region.regionVars['provider'] === 'vSphere'">
-              <el-divider content-position="center">{{ $t("automatic.zone.compute") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
@@ -54,7 +54,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.datastore") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.datastore_type')"
                             prop="cloudVars.datastoreType">
                 <el-radio-group v-model="form.cloudVars.datastoreType">
@@ -76,7 +76,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.template") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.template") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
@@ -115,7 +115,7 @@
                   </el-select>
                 </el-form-item>
               </div>
-              <el-divider content-position="center">{{ $t("automatic.zone.network") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.network_adapter')" prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
                            filterable
@@ -145,7 +145,7 @@
               </el-form-item>
             </div>
             <div v-if="region.regionVars['provider'] === 'OpenStack'">
-              <el-divider content-position="center"> {{ $t("automatic.zone.compute") }}</el-divider>
+              <el-divider content-position="left"> {{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
@@ -160,7 +160,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.datastore") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.storageType')" prop="cloudVars.storageType">
                 <el-select v-model="form.cloudVars.storageType"
                            filterable
@@ -174,7 +174,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.template") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.template") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
@@ -213,7 +213,7 @@
                   </el-select>
                 </el-form-item>
               </div>
-              <el-divider content-position="center">{{ $t("automatic.zone.network") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.security_group')"
                             prop="cloudVars.securityGroup">
                 <el-select v-model="form.cloudVars.securityGroup"
@@ -300,7 +300,7 @@
               </el-form-item>
             </div>
             <div v-if="region.regionVars['provider'] === 'FusionCompute'">
-              <el-divider content-position="center">{{ $t("automatic.zone.compute") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
                            filterable
@@ -315,7 +315,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.datastore") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.datastore')" prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
@@ -330,7 +330,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-divider content-position="center">{{ $t("automatic.zone.template") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.template") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
@@ -388,7 +388,7 @@
                   </el-select>
                 </el-form-item>
               </div>
-              <el-divider content-position="center">{{ $t("automatic.zone.network") }}</el-divider>
+              <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.switch')" prop="cloudVars.switch">
                 <el-select v-model="form.cloudVars.switch"
                            filterable
