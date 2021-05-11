@@ -1,7 +1,7 @@
 import axios from "axios"
 import {$alert, $error} from "./message"
 import store from "@/store"
-import i18n from "@/i18n"
+import i18n, {getLanguage} from "@/i18n"
 
 const instance = axios.create({
   baseURL: "", // url = base url + request url
@@ -9,6 +9,17 @@ const instance = axios.create({
   timeout: 60000 // request timeout, default 1 min
 })
 
+
+instance.interceptors.request.use(
+  config => {
+    config.headers["lang"] = getLanguage()
+    return config
+  },
+  error => {
+    console.log(error) // for debug
+    return Promise.reject(error)
+  }
+)
 
 const checkAuth = response => {
   // 请根据实际需求修改
@@ -69,30 +80,30 @@ const promise = (request, loading = {}) => {
 }
 
 export const get = (url, data, loading) => {
-  return promise(request({url: url, method: "get", params: data}), loading)
+  return promise(request({ url: url, method: "get", params: data }), loading)
 }
 
 export const post = (url, data, loading) => {
-  return promise(request({url: url, method: "post", data}), loading)
+  return promise(request({ url: url, method: "post", data }), loading)
 }
 
 export const put = (url, data, loading) => {
-  return promise(request({url: url, method: "put", data}), loading)
+  return promise(request({ url: url, method: "put", data }), loading)
 }
 
 export const del = (url, loading) => {
-  return promise(request({url: url, method: "delete"}), loading)
+  return promise(request({ url: url, method: "delete" }), loading)
 }
 
 export const patch = (url, data, headers, loading) => {
   if (headers) {
-    return promise(request({url: url, headers: headers, method: "patch", data}), loading)
+    return promise(request({ url: url, headers: headers, method: "patch", data }), loading)
   }
-  return promise(request({url: url, method: "patch", data}), loading)
+  return promise(request({ url: url, method: "patch", data }), loading)
 }
 
 export default {
-  install(Vue) {
+  install (Vue) {
     Vue.prototype.$get = get
     Vue.prototype.$post = post
     Vue.prototype.$put = put

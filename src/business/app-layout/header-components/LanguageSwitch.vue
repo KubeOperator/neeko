@@ -1,7 +1,8 @@
 <template>
   <el-dropdown trigger="click" @command="handleCommand">
     <span class="el-dropdown-link">
-        <font-awesome-icon class="language-icon ko-color" style="color: #FA5D50;margin-right: 3px" :icon="['fas', 'globe']"/>
+        <font-awesome-icon class="language-icon ko-color" style="color: #FA5D50;margin-right: 3px"
+                           :icon="['fas', 'globe']"/>
         <span>{{ languageMap[language] }}</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
     </span>
@@ -18,35 +19,36 @@
 
 export default {
   name: "LanguageSwitch",
-  data() {
+  data () {
     return {
       languageMap: {
         "zh-CN": "中文(简体)",
         "en-US": "English",
       }
-    };
+    }
   },
   computed: {
-    language() {
+    language () {
       return this.$store.getters.language
     }
   },
   methods: {
-    setLanguage(lang) {
-      this.$store.dispatch('user/setLanguage', lang).then(() => {
+    setLanguage (lang) {
+      localStorage.setItem("language", lang)
+      this.$store.dispatch("user/setLanguage", lang).then(() => {
         // do something
       })
     },
-    handleCommand(command) {
+    handleCommand (command) {
       switch (command) {
-        case 'zh-CN':
-          this.setLanguage('zh-CN');
+        case "zh-CN":
+          this.setLanguage("zh-CN")
           break
-        case 'en-US':
-          this.setLanguage('en-US');
+        case "en-US":
+          this.setLanguage("en-US")
           break
         default:
-          this.setLanguage('zh-CN');
+          this.setLanguage("zh-CN")
           break
       }
     }
@@ -55,21 +57,22 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/styles/business/header-menu.scss";
-.header-menu {
-  .language-icon {
-    width: 24px;
-  }
-}
+  @import "~@/styles/business/header-menu.scss";
 
-.el-dropdown-link {
-  cursor: pointer;
-}
-
-.header-menu-popper {
-  .el-icon-check {
-    margin-left: 10px;
-    color: $--color-primary;
+  .header-menu {
+    .language-icon {
+      width: 24px;
+    }
   }
-}
+
+  .el-dropdown-link {
+    cursor: pointer;
+  }
+
+  .header-menu-popper {
+    .el-icon-check {
+      margin-left: 10px;
+      color: $--color-primary;
+    }
+  }
 </style>
