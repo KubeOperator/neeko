@@ -46,10 +46,12 @@
         this.value = []
         allClusters().then((data) => {
           data.items.forEach((v) => {
-            this.data.push({
-              label: v.name,
-              key: v.name
-            })
+            if (v.status === 'Running') {
+              this.data.push({
+                label: v.name,
+                key: v.name
+              })
+            }
           })
           listMultiClusterRepositoryRelations(this.name).then((data) => {
             data.items.forEach((v) => {
