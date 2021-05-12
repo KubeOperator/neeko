@@ -56,7 +56,7 @@ const message = {
       success: "{0}成功",
       op_success: "操作成功",
       save_success: "保存成功",
-      delete_success: "删除成功",
+      delete_success: "删除任务提交成功",
       sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
