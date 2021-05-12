@@ -264,7 +264,7 @@ export default {
       },
       currentCluster: {},
       hosts: [],
-      provider: "",
+      provider: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
     }

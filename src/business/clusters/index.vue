@@ -78,7 +78,7 @@
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.history") }}</el-button>
+        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
         <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>

@@ -91,6 +91,10 @@
                   <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
                   <span>{{ $t("commons.status.synchronizing") }}</span>
                 </div>
+                <div v-if="row.status === 'Creating'">
+                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                  <span>{{ $t("commons.status.creating") }}</span>
+                </div>
                 <div v-if="row.status === 'Waiting'">
                   <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
                   <span>{{ $t("commons.status.waiting") }}</span>
@@ -343,19 +347,21 @@ export default {
       this.dialogSyncVisible = true
     },
     submitSync() {
-      syncProvisioner(this.clusterName, this.provisionerSelection).then(() => {
-        this.search()
-        this.$message({ type: "success", message: this.$t("cluster.detail.storage.start_provisioner_sync") })
-        this.dialogSyncVisible = false
-        this.provisionerSelection = []
-      }).catch(() => {
-        this.provisionerSelection = []
-      })
+      syncProvisioner(this.clusterName, this.provisionerSelection)
+        .then(() => {
+          this.search()
+          this.$message({ type: "success", message: this.$t("cluster.detail.storage.start_provisioner_sync") })
+          this.dialogSyncVisible = false
+          this.provisionerSelection = []
+        })
+        .catch(() => {
+          this.provisionerSelection = []
+        })
     },
     polling() {
       this.timer = setInterval(() => {
         let flag = false
-        const needPolling = ["Initializing", "Terminating", "Synchronizing", "Waiting"]
+        const needPolling = ["Initializing", "Terminating", "Synchronizing", "Creating", "Waiting"]
         for (const item of this.provisionerDatas) {
           if (needPolling.indexOf(item.status) !== -1) {
             flag = true
