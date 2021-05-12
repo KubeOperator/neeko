@@ -142,6 +142,7 @@ const message = {
       synchronizing: "同步中",
       normal: "正常",
       failure: "异常",
+      lost: "失联",
       disable_scheduling: "禁用调度",
     },
     role: {
