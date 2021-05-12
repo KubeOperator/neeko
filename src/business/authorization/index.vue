@@ -73,12 +73,14 @@ export default {
     async getTree () {
       const { roles } = await store.dispatch("user/getCurrentUser")
       this.permission = roles[0]
+      console.log('获取role 1'+this.permission)
       this.getResources()
     },
     getResources() {
       this.loading = true
       getResourceTree().then(data => {
         this.loading = false
+        console.log('使用role 2'+this.permission)
         if (this.permission === "ADMIN") {
           this.resources[0].children = data
         } else {
