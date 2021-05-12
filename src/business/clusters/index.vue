@@ -359,25 +359,27 @@ export default {
       switch (this.log.prePhase) {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
-            this.search()
             this.retryLoadding = false
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
-            this.search()
+            this.retryLoadding = false
+          })
+          break
+        case "Terminating":
+          deleteCluster(this.clusterName, true).then(() => {
             this.retryLoadding = false
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
-            this.search()
             this.retryLoadding = false
+            this.dialogLogVisible = false
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
-            this.search()
             this.retryLoadding = false
           })
           break
