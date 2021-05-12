@@ -2,7 +2,7 @@
   <layout-content v-loading="loading" :header="$t('automatic.ip_pool.ip_list')" :back-to="{ name: 'IpPoolList' }">
     <complex-table
             :data="data"
-            :colums="columns"
+            local-key="ip_columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             :selects.sync="selects"
@@ -73,7 +73,6 @@ export default {
   props: ["name", "subnet"],
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {

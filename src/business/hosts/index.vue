@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" :columns="columns" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" local-key="host_columns" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -204,7 +204,6 @@ export default {
           },
         },
       ],
-      columns: [],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
@@ -288,7 +287,7 @@ export default {
       })
     },
     download() {
-      window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
+      window.open("/api/v1/hosts/template")
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true
@@ -422,9 +421,6 @@ export default {
       const { currentPage, pageSize } = this.paginationConfig
       searchHosts(currentPage, pageSize, condition)
         .then((data) => {
-          if (localStorage.getItem("host_columns")) {
-            this.columns = JSON.parse(localStorage.getItem("host_columns"))
-          }
           this.loading = false
           this.data = data.items
           this.paginationConfig.total = data.total
@@ -446,9 +442,6 @@ export default {
         if (flag) {
           const { currentPage, pageSize } = this.paginationConfig
           searchHosts(currentPage, pageSize).then((data) => {
-            if (localStorage.getItem("host_columns")) {
-              this.columns = JSON.parse(localStorage.getItem("host_columns"))
-            }
             this.data = data.items
             this.paginationConfig.total = data.total
           })
@@ -462,12 +455,6 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timer)
-    localStorage.setItem("host_columns", JSON.stringify(this.columns))
-  },
-  created: function () {
-    window.onbeforeunload = () => {
-      localStorage.setItem("host_columns", JSON.stringify(this.columns))
-    }
   },
 }
 </script>

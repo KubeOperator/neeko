@@ -1,8 +1,8 @@
 <template>
   <layout-content :header="$t('automatic.ip_pool.name')" v-loading="loading">
     <complex-table
+            local-key="ip_pool_columns"
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             @search="search"
@@ -53,7 +53,6 @@ export default {
   components: { LayoutContent, ComplexTable },
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.delete"), icon: "el-icon-delete",  click: (row) => {
