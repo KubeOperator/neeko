@@ -142,16 +142,16 @@
       :visible.sync="manifestVisible"
       width="40%">
       <span>{{$t('manifest.manifest_help')}}</span>
-      <br><br>
+      <br><br><br>
       <div style="line-height: 150%">
         <span style="font-weight: bolder">{{$t('manifest.see_documentation')}}:</span><br>
         <a style="color: #447DF7" href="https://kubeoperator.io/docs/user_manual/version/" target="_blank">https://kubeoperator.io/docs/user_manual/version/</a>
         <span slot="footer" class="dialog-footer">
       </span>
       </div>
-      <span slot="footer" class="dialog-footer">
-      <el-button  type="primary" @click="manifestVisible = false">{{$t('commons.button.ok')}}</el-button>
-      </span>
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--      <el-button  type="primary" @click="manifestVisible = false">{{$t('commons.button.ok')}}</el-button>-->
+<!--      </span>-->
     </el-dialog>
   </layout-content>
 </template>
