@@ -3,7 +3,7 @@
     <el-col :span="2"><br/></el-col>
     <el-col :span="8">
       <div class="grid-content bg-purple-light">
-        <el-form ref="form" :rules="rules" v-loading="loading" :model="form" label-width="100px">
+        <el-form ref="form"  v-loading="loading" :model="form" label-width="100px">
           <el-form-item  style="width: 100%" :label="$t('setting.ntpServer')" prop="vars.ntp_server">
             <el-input v-model="form.vars.ntp_server"></el-input>
           </el-form-item>
@@ -21,7 +21,6 @@
 
 <script>
 import {getSetting,createSetting} from "@/api/system-setting";
-import Rule from "@/utils/rules";
 
 export default {
   name: "NTP",
@@ -32,11 +31,6 @@ export default {
           ntp_server: ''
         },
         tab: '',
-      },
-      rules: {
-        vars: {
-          ntp_server: [Rule.RequiredRule,Rule.IpRule]
-        }
       },
       loading: false
     }
