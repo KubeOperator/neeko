@@ -16,7 +16,7 @@
           <el-form-item label="Partition" prop="partition">
             <el-input v-model="form.partition" placeholder="Partition Name" clearable></el-input>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.f5.big_ip_public')" prop="publicIP">
+          <el-form-item :label="$t('cluster.detail.f5.big_ip_public')" >
             <el-input v-model="form.publicIP" clearable></el-input>
           </el-form-item>
           <el-form-item style="float: right">
@@ -55,7 +55,6 @@ export default {
         user: [Rule.RequiredRule],
         password: [Rule.RequiredRule],
         partition: [Rule.RequiredRule],
-        publicIP: [Rule.IpRule],
       },
       loading: false,
       submitLoading: false,
