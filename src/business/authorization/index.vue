@@ -70,12 +70,12 @@ export default {
       this.type = data.type
       this.name = data.label
     },
-    async getRole () {
+    async getTree () {
       const { roles } = await store.dispatch("user/getCurrentUser")
       this.permission = roles[0]
+      this.getResources()
     },
-    getTree () {
-      this.getRole()
+    getResources() {
       this.loading = true
       getResourceTree().then(data => {
         this.loading = false

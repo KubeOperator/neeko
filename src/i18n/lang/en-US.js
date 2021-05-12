@@ -57,7 +57,7 @@ const message = {
       success: "{0} success",
       op_success: "Operate successfully",
       save_success: "Saved successfully",
-      delete_success: "Deleted successfully",
+      delete_success: "Deleted task has commit",
       sync_success: "Synchronized successfully",
       create_success: "Created successfully",
       verify_success: "Verify successfully",
@@ -691,7 +691,7 @@ const message = {
     vm_config: {
       name: "Virtual Machine Configuration",
       cpu: "CPU (core)",
-      memory: "RAM (MB)",
+      memory: "RAM (GB)",
       name_validate_msg: "Support English and numbers",
       cpu_invalid: "CPU range 1～1000",
       mem_invalid: "Memory range 1～1000",
