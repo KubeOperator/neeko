@@ -288,7 +288,7 @@ export default {
       })
     },
     download() {
-      window.open(process.env.VUE_APP_BASE_API + "/hosts/template")
+      window.open("/api/v1/hosts/template")
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true

@@ -6,11 +6,11 @@
           <el-button size="small" @click="onCreate()" v-permission="['ADMIN','PROJECT_MANAGER']">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" @click="onDelete()" v-permission="['ADMIN','PROJECT_MANAGER']">
-            {{ $t("commons.button.delete") }}
-          </el-button>
           <el-button size="small" @click="onImport()" v-permission="['ADMIN','PROJECT_MANAGER']">
             {{ $t("commons.button.import") }}
+          </el-button>
+          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" @click="onDelete()" v-permission="['ADMIN','PROJECT_MANAGER']">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>

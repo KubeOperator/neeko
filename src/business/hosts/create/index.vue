@@ -7,6 +7,7 @@
           <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" clearable></el-input>
+              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item label="IP" prop="ip">
               <el-input v-model="form.ip" clearable></el-input>
@@ -90,7 +91,7 @@ export default {
         },
       },
       rules: {
-        name: [Rule.RequiredRule],
+        name: [Rule.CommonNameRule],
         ip: [Rule.RequiredRule],
         port: [Rule.NumberRule],
         project: [Rule.RequiredRule],

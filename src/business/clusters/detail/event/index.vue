@@ -87,11 +87,19 @@ export default {
     getNpdExists() {
       listPod(this.clusterName).then((data) => {
         const pods = data.items
+        let isOn = false
         for (const pod of pods) {
           if (pod.metadata.generateName === "node-problem-detector-") {
-            this.isNPDon = true
-            break
+            isOn = true
+            if (pod.status.phase === "Terminating") {
+              this.isNPDon = false
+              isOn = false
+              break
+            }
           }
+        }
+        if (isOn) {
+          this.isNPDon = true
         }
       })
     },
@@ -103,7 +111,7 @@ export default {
         } else {
           this.$message({ type: "success", message: this.$t("cluster.detail.event.disable_npd_success") })
         }
-        this.search()
+        // this.search()
       })
     },
     changeNamespace() {
