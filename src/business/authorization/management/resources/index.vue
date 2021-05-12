@@ -5,7 +5,6 @@
         <complex-table
                 :key="key"
                 :data="data"
-                :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
                 :selects.sync="selects"
@@ -48,7 +47,6 @@
         <complex-table
                 :key="key"
                 :data="data"
-                :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
                 :selects.sync="selects"
@@ -81,7 +79,6 @@
         <complex-table
                 :key="key"
                 :data="data"
-                :colums="columns"
                 :pagination-config="paginationConfig"
                 v-loading="loading"
                 :selects.sync="selects"
@@ -196,7 +193,6 @@ export default {
   props: ["authObj"],
   data () {
     return {
-      columns: [],
       buttons: [],
       paginationConfig: {
         currentPage: 1,

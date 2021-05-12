@@ -8,7 +8,7 @@
                               :message="errorMessage"></repository-error-message>
 
 
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table :data="data" local-key="multi_cluster_columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
@@ -66,7 +66,6 @@
         repositoryErrorMessageOpened: false,
         currentRepositoryName: "",
         errorMessage: "123",
-        columns: [],
         buttons: [
           {
             label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
