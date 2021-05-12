@@ -2,7 +2,6 @@
   <el-row>
     <complex-table
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             v-loading="loading"
             :selects.sync="selects"
@@ -78,7 +77,6 @@ export default {
   props: ["authObj"],
   data () {
     return {
-      columns: [],
       buttons: [],
       paginationConfig: {
         currentPage: 1,

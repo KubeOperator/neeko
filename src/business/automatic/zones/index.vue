@@ -2,8 +2,8 @@
   <layout-content :header="$t('automatic.zone.name')" :description="$t('automatic.zone.description')"
                   v-loading="loading">
     <complex-table
+            local-key="zone_columns"
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             @search="search"
@@ -235,7 +235,6 @@ export default {
   data () {
     return {
       loading: false,
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"),

@@ -1,7 +1,7 @@
 <template>
 
   <layout-content :header="$t('user.user')">
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table :data="data" local-key="user_columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search" v-loading="loading"
                    :selects.sync="selects" :fit="true">
       <template #toolbar>
@@ -69,7 +69,6 @@ export default {
   components: { KoStatus, ComplexTable, LayoutContent },
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {

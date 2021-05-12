@@ -196,52 +196,9 @@ export default {
       } else {
         this.logLoading = true
         getBackupLog(this.clusterName)
-          .then(() => {
-            let kk = [
-              {
-                createdAt: "2021-05-11T18:50:03+08:00",
-                updatedAt: "2021-05-11T18:53:18+08:00",
-                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
-                type: "CLUSTER_BACKUP",
-                startTime: "2021-05-11T18:50:03+08:00",
-                endTime: "2021-05-11T18:53:18+08:00",
-                message: "",
-                status: "SUCCESS",
-              },
-              {
-                createdAt: "2021-05-11T16:29:29+08:00",
-                updatedAt: "2021-05-11T16:31:40+08:00",
-                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
-                type: "CLUSTER_RESTORE",
-                startTime: "2021-05-11T16:29:29+08:00",
-                endTime: "2021-05-11T16:31:40+08:00",
-                message: "",
-                status: "RUNNING",
-              },
-              {
-                createdAt: "2021-05-11T14:35:52+08:00",
-                updatedAt: "2021-05-11T14:40:02+08:00",
-                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
-                type: "CLUSTER_BACKUP",
-                startTime: "2021-05-11T14:35:52+08:00",
-                endTime: "2021-05-11T14:40:02+08:00",
-                message: "",
-                status: "SUCCESS",
-              },
-              {
-                createdAt: "2021-05-11T14:29:20+08:00",
-                updatedAt: "2021-05-11T14:33:31+08:00",
-                clusterId: "893189fc-665b-4e10-8c13-428e1a5507b4",
-                type: "CLUSTER_BACKUP",
-                startTime: "2021-05-11T14:29:20+08:00",
-                endTime: "2021-05-11T14:33:31+08:00",
-                message: "chuxian了歇一歇问题洒大地上集群我都去我们都块钱吗哦请问对你请问你都去哪我动情我带你去哦味道浓 请问地区那我带你去哦我呢的",
-                status: "FAILED",
-              },
-            ]
-
-            if (kk) {
-              this.logs = kk
+          .then((data) => {
+            if (data) {
+              this.logs = data
               this.logLoading = false
             }
           })

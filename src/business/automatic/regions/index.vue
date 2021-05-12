@@ -2,8 +2,8 @@
   <layout-content :header="$t('automatic.region.name')" :description="$t('automatic.region.description')"
                   v-loading="loading">
     <complex-table
+            local-key="region_columns"
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             @search="search"
@@ -147,7 +147,6 @@ export default {
   components: { ComplexTable, LayoutContent },
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"),

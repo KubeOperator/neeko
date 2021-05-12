@@ -57,7 +57,7 @@ const message = {
       success: "{0} success",
       op_success: "Operate successfully",
       save_success: "Saved successfully",
-      delete_success: "Deleted successfully",
+      delete_success: "Deleted task has commit",
       sync_success: "Synchronized successfully",
       create_success: "Created successfully",
       verify_success: "Verify successfully",

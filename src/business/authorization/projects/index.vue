@@ -4,7 +4,7 @@
     <el-tab-pane :label="$t('project.project')" name="project">
       <complex-table
               :data="data"
-              :colums="columns"
+              local-key="project_columns"
               :pagination-config="paginationConfig"
               :search-config="searchConfig"
               @search="search">
@@ -41,7 +41,6 @@ export default {
   components: { ComplexTable },
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"),
