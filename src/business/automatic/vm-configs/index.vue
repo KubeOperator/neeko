@@ -1,9 +1,9 @@
 <template>
   <layout-content :header="$t('automatic.vm_config.name')">
     <complex-table
+            local-key="vm_config_columns"
             v-loading="loading"
             :data="data"
-            :colums="columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             :selects.sync="selects"
@@ -54,7 +54,6 @@ export default {
   components: { ComplexTable, LayoutContent },
   data () {
     return {
-      columns: [],
       buttons: [
         {
           label: this.$t("commons.button.edit"),

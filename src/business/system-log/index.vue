@@ -1,6 +1,6 @@
 <template>
   <layout-content>
-    <complex-table :header="$t('system_log.title')" 
+    <complex-table local-key="system_log_columns" :header="$t('system_log.title')" 
       :data="data" :search-config="searchConfig" 
       :pagination-config="paginationConfig" 
       @input="search" @search="search">

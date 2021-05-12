@@ -31,12 +31,12 @@
                     <td style="width: 30%">{{ getVersion("etcd", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("etcd", newManifest.coreVars) }}</td>
                   </tr>
-                  <tr v-if="currentCluster.runtimeType=='docker'&& getVersion('docker', oldManifest.coreVars)!==getVersion('docker', newManifest.coreVars)">
+                  <tr v-if="currentCluster.spec.runtimeType=='docker'&& getVersion('docker', oldManifest.coreVars)!==getVersion('docker', newManifest.coreVars)">
                     <td style="width: 40%">Docker</td>
                     <td style="width: 30%">{{ getVersion("docker", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("docker", newManifest.coreVars) }}</td>
                   </tr>
-                  <tr v-if="currentCluster.runtimeType=='containerd'&& getVersion('containerd', oldManifest.coreVars)!==getVersion('containerd', newManifest.coreVars)">
+                  <tr v-if="currentCluster.spec.runtimeType=='containerd'&& getVersion('containerd', oldManifest.coreVars)!==getVersion('containerd', newManifest.coreVars)">
                     <td style="width: 40%">Containerd</td>
                     <td style="width: 30%">{{ getVersion("containerd", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("containerd", newManifest.coreVars) }}</td>

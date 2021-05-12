@@ -3,7 +3,7 @@
     <sync-log-detail :visible="detailOpened" v-on:update:visible="detailOpened=$event" :log-id="logId"
                      :name="name"></sync-log-detail>
 
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig"
+    <complex-table :data="data" local-key="multi_cluster_log_columns" :search-config="searchConfig"
                    :pagination-config="paginationConfig">
 
       <el-table-column label="Commit Id" show-overflow-tooltip min-width="120" fix>
@@ -44,7 +44,6 @@
       return {
         detailOpened: false,
         logId: "",
-        columns: [],
         buttons: [],
         searchConfig: {
           quickPlaceholder: this.$t("commons.search.quickSearch"),

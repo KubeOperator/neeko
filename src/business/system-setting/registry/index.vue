@@ -1,5 +1,5 @@
 <template>
-    <complex-table :data="data" :columns="columns" :search-config="searchConfig" :selects.sync="selects"
+    <complex-table local-key="registry_columns" :data="data" :search-config="searchConfig" :selects.sync="selects"
                    v-loading="loading" :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
@@ -31,7 +31,6 @@ export default {
   name: "Registry",
   data() {
     return{
-      columns: [],
       selects: [],
       formLabelWidth: '120px',
       buttons: [
