@@ -57,7 +57,7 @@ const message = {
       op_success: "操作成功",
       save_success: "保存成功",
       delete_success: "删除成功",
-      sync_success: "已开始同步，同步时间取决于IP数量，请稍后刷新页面",
+      sync_success: "同步成功",
       create_success: "创建成功",
       verify_success: "校验成功",
       import_success: "导入成功",
@@ -142,6 +142,7 @@ const message = {
       synchronizing: "同步中",
       normal: "正常",
       failure: "异常",
+      lost: "失联",
       disable_scheduling: "禁用调度",
     },
     role: {
@@ -285,6 +286,7 @@ const message = {
       recover: "恢复",
     },
     condition: {
+      condition_loading: "正在等待执行，请稍候...",
       condition_detail: "状态详情",
       EnsureInitTaskStart: "调度任务",
       EnsurePrepareBaseSystemConfig: "准备系统环境",
@@ -569,7 +571,8 @@ const message = {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
       CLUSTER_REMOVE_WORKER: "节点删除",
-      CLUSTER_ADD_WORKER: "添加节点"
+      CLUSTER_ADD_WORKER: "添加节点",
+      CLUSTER_BACKUP: "集群备份"
     },
     detail: {
       basicInformation: "基本信息",
@@ -799,7 +802,7 @@ const message = {
         filterDN: "用户过滤 DN",
         filterRule: "用户过滤规则",
         status: "状态",
-        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登陆名重复的也不会被同步!"
+        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登录名重复的也不会被同步!"
       },
       license: {
         title: "KubeOperator 许可证",

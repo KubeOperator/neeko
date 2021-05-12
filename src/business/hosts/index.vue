@@ -4,16 +4,16 @@
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button size="small" @click="onImport()">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
-            {{ $t("commons.button.delete") }}
-          </el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="onGrant()">
             {{ $t("commons.button.authorize") }}
           </el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="onRevoke()">
             {{ $t("commons.button.revoke_authorize") }}
+          </el-button>
+          <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
+          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
+            {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
       </template>
@@ -27,7 +27,7 @@
       <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
-      <el-table-column :label="$t('host.cpu')" width="100px" prop="cpuCore" />
+      <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
       <el-table-column :label="$t('host.os')" min-width="125px">
@@ -259,11 +259,16 @@ export default {
           hostStatus: item.status,
         })
       })
-      syncHosts(this.syncHostList).then(() => {
-        this.search()
-        this.$message({ type: "success", message: this.$t("host.start_host_sync") })
-        this.dialogSyncVisible = false
-      })
+      syncHosts(this.syncHostList)
+        .then(() => {
+          this.search()
+          this.$message({ type: "success", message: this.$t("host.start_host_sync") })
+          this.dialogSyncVisible = false
+          this.hostSelections = []
+        })
+        .catch(() => {
+          this.hostSelections = []
+        })
     },
     onUploadChange(file) {
       this.isUploadDisable = false
@@ -342,9 +347,11 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.hostSelections = []
           })
           .catch(() => {
             this.search()
+            this.hostSelections = []
           })
       })
     },
@@ -359,19 +366,24 @@ export default {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
-      }).then(() => {
-        const ps = []
-        for (const item of this.hostSelections) {
-          ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
-        }
-        Promise.all(ps).then(() => {
-          this.$message({
-            type: "success",
-            message: this.$t("commons.msg.op_success"),
-          })
-          this.search()
-        })
       })
+        .then(() => {
+          const ps = []
+          for (const item of this.hostSelections) {
+            ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
+          }
+          Promise.all(ps).then(() => {
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.op_success"),
+            })
+            this.search()
+            this.hostSelections = []
+          })
+        })
+        .catch(() => {
+          this.hostSelections = []
+        })
     },
     onGrant() {
       this.grantHostNames = []
@@ -398,9 +410,11 @@ export default {
           this.dialogGrantVisible = false
           this.search()
           this.grantLoading = true
+          this.hostSelections = []
         })
-        .finally(() => {
+        .catch(() => {
           this.grantLoading = true
+          this.hostSelections = []
         })
     },
     search(condition) {
@@ -415,7 +429,7 @@ export default {
           this.data = data.items
           this.paginationConfig.total = data.total
         })
-        .finally(() => {
+        .catch(() => {
           this.loading = false
         })
     },

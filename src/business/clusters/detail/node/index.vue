@@ -1,10 +1,11 @@
 <template>
   <div>
-    <complex-table :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
+    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info"/>
+    <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
-          <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="provider === '' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1 || provider === '' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
         </el-button-group>
@@ -33,6 +34,10 @@
           <div v-if="row.status === 'Failed'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
+          <div v-if="row.status === 'Lost'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            {{ $t("commons.status.lost") }}
           </div>
           <div v-if="row.status === 'Initializing'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
@@ -75,9 +80,6 @@
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item v-if="provider === ''">
-          <span>{{$t('cluster.detail.node.operator_help')}}</span>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,6 +212,8 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      loading: false,
+      submitLoading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -232,8 +236,6 @@ export default {
       errMsg: "",
       clusterName: "",
       selects: [],
-      loading: false,
-      submitLoading: false,
       data: [],
       createForm: {
         hosts: [],
@@ -299,6 +301,15 @@ export default {
         })
         this.paginationConfig.total = data.total
       })
+    },
+    buttonDisabled() {
+      const onPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+      for(const node of this.data) {
+        if (onPolling.indexOf(node.status) !== -1) {
+          return true
+        }
+      }
+      return false
     },
     create() {
       this.dialogCreateVisible = true
@@ -378,9 +389,11 @@ export default {
               type: "success",
               message: this.$t("commons.msg.delete_success"),
             })
+            this.selects = []
           })
           .catch(() => {
             this.search()
+            this.selects = []
           })
       })
     },
@@ -430,11 +443,13 @@ export default {
           this.dialogCordonVisible = false
           this.submitLoading = false
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.selects = []
         })
         .catch(() => {
           this.submitLoading = false
           this.dialogCordonVisible = false
           this.search()
+          this.selects = []
         })
     },
     bacthDeletePod(datas, nodeName) {

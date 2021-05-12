@@ -98,7 +98,7 @@ export default {
         components: [
           {
             field: "name",
-            label: this.$t("backup_account.table.name"),
+            label: this.$t("commons.table.name"),
             component: "FuComplexInput",
             defaultOperator: "eq"
           },
@@ -110,7 +110,7 @@ export default {
           },
           {
             field: "type",
-            label: this.$t("backup_account.table.type"),
+            label: this.$t("commons.table.type"),
             component: "FuComplexSelect",
             options: [
               { label: "OSS", value: "OSS" },

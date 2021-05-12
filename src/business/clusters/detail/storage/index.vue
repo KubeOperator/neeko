@@ -231,11 +231,11 @@ export default {
       this.errMsg = row.message
     },
     classPageChange(continueToken) {
-      this.classPage.continueToken = continueToken
+      this.classPage.continueToken = continueToken.token
       this.search()
     },
     pvPageChange(continueToken) {
-      this.pvPage.continueToken = continueToken
+      this.pvPage.continueToken = continueToken.token
       this.search()
     },
     handleClick() {
@@ -347,6 +347,9 @@ export default {
         this.search()
         this.$message({ type: "success", message: this.$t("cluster.detail.storage.start_provisioner_sync") })
         this.dialogSyncVisible = false
+        this.provisionerSelection = []
+      }).catch(() => {
+        this.provisionerSelection = []
       })
     },
     polling() {

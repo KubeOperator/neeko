@@ -23,7 +23,7 @@
         </template>
       </el-table-column>
     </complex-table>
-    <k8s-page @pageChange="pageChange" :nextToken="page.nextToken" />
+    <k8s-page @pageChange="pageChange" :currentPage="page.currentPage" :nextToken="page.nextToken" />
   </div>
 </template>
 
@@ -42,6 +42,7 @@ export default {
       loading: false,
       page: {
         continueToken: "",
+        currentPage: 1,
         nextToken: "",
       },
       clusterName: "",
@@ -68,7 +69,8 @@ export default {
       this.getNpdExists()
     },
     pageChange(continueToken) {
-      this.page.continueToken = continueToken
+      this.page.continueToken = continueToken.token
+      this.page.currentPage = continueToken.page
       this.search()
     },
     loadEvents(namespace) {
@@ -106,6 +108,8 @@ export default {
     },
     changeNamespace() {
       this.loading = true
+      this.page.currentPage = 1
+      this.page.continueToken = ""
       this.loadEvents(this.currentNamespace)
     },
   },
