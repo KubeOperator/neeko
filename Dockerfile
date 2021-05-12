@@ -3,7 +3,7 @@ WORKDIR /data
 
 
 RUN echo > /etc/apk/repositories && echo -e "https://dl-cdn.alpinelinux.org/alpine/latest-stable/main\nhttps://dl-cdn.alpinelinux.org/alpine/latest-stable/community" >> /etc/apk/repositories && apk update && apk upgrade
-RUN apk add python make gcc g++
+RUN apk add python2 make gcc g++
 
 COPY ./package.json /data/package.json
 COPY ./package-lock.json /data/package-lock.json
