@@ -4,8 +4,8 @@
     <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
-          <el-button size="small" :disabled="provider === ''" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1 || provider === ''" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="provider === '' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1 || provider === '' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
         </el-button-group>
@@ -34,6 +34,10 @@
           <div v-if="row.status === 'Failed'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
+          <div v-if="row.status === 'Lost'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            {{ $t("commons.status.lost") }}
           </div>
           <div v-if="row.status === 'Initializing'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
@@ -208,6 +212,8 @@ export default {
   components: { ComplexTable },
   data() {
     return {
+      loading: false,
+      submitLoading: false,
       buttons: [
         {
           label: this.$t("commons.button.delete"),
@@ -230,8 +236,6 @@ export default {
       errMsg: "",
       clusterName: "",
       selects: [],
-      loading: false,
-      submitLoading: false,
       data: [],
       createForm: {
         hosts: [],
@@ -297,6 +301,15 @@ export default {
         })
         this.paginationConfig.total = data.total
       })
+    },
+    buttonDisabled() {
+      const onPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+      for(const node of this.data) {
+        if (onPolling.indexOf(node.status) !== -1) {
+          return true
+        }
+      }
+      return false
     },
     create() {
       this.dialogCreateVisible = true

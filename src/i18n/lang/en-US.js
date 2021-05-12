@@ -143,6 +143,7 @@ const message = {
       synchronizing: "Synchronizing",
       normal: "Normal",
       failure: "Abnormal",
+      lost: "Losted",
       disable_scheduling: "Disable scheduling",
     },
     role: {
