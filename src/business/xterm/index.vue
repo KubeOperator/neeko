@@ -45,33 +45,39 @@ export default {
       this.timer = setInterval(() => {
         if (this.isRun) {
           if (logId !== undefined) {
-            getProvisionerLog(clusterName, logId).then(
-              (data) => {
+            getProvisionerLog(clusterName, logId)
+              .then((data) => {
                 this.term.clear()
                 const text = data.msg.replace(/\n/g, "\r\n")
                 this.term.write(text)
                 setTimeout(() => {
                   this.term.scrollToBottom()
                 }, 100)
-              },
-              (error) => {
-                this.term.write("no log to show" + error)
-              }
-            )
+              })
+              .catch((error) => {
+                if (error.toString() === "Error: Request failed with status code 400") {
+                  this.isRun = false
+                } else {
+                  this.term.write("no log to show" + error)
+                }
+              })
           } else {
-            getClusterLog(clusterName).then(
-              (data) => {
+            getClusterLog(clusterName)
+              .then((data) => {
                 this.term.clear()
                 const text = data.msg.replace(/\n/g, "\r\n")
                 this.term.write(text)
                 setTimeout(() => {
                   this.term.scrollToBottom()
                 }, 100)
-              },
-              (error) => {
-                this.term.write("no log to show" + error)
-              }
-            )
+              })
+              .catch((error) => {
+                if (error.toString() === "Error: Request failed with status code 400") {
+                  this.isRun = false
+                } else {
+                  this.term.write("no log to show" + error)
+                }
+              })
           }
         }
       }, 5000)

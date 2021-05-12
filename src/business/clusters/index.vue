@@ -414,6 +414,7 @@ export default {
             })
             .catch(() => {
               this.dialogLogVisible = false
+              clearInterval(this.timer2)
             })
         }
       }, 3000)
