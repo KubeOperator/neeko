@@ -691,7 +691,7 @@ const message = {
     vm_config: {
       name: "Virtual Machine Configuration",
       cpu: "CPU (core)",
-      memory: "RAM (MB)",
+      memory: "RAM (GB)",
       name_validate_msg: "Support English and numbers",
       cpu_invalid: "CPU range 1～1000",
       mem_invalid: "Memory range 1～1000",
