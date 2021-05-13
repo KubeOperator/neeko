@@ -563,7 +563,12 @@ const message = {
       CLUSTER_INSTALL: "Cluster installation",
       CLUSTER_REMOVE_WORKER: "Node Delete",
       CLUSTER_ADD_WORKER: "Node Add",
-      CLUSTER_BACKUP: "Cluster Backup"
+      CLUSTER_BACKUP: "Cluster Backup",
+      CLUSTER_UN_INSTALL: "Cluster unInstall",
+      CLUSTER_UPGRADE: "Cluster Upgrade",
+      CLUSTER_DELETE: "Cluster Delete",
+      CLUSTER_SCALE: "Cluster Scale",
+      CLUSTER_RESTORE: "Cluster Restore ",
     },
     detail: {
       basicInformation: "Information",
@@ -691,7 +696,7 @@ const message = {
     vm_config: {
       name: "Virtual Machine Configuration",
       cpu: "CPU (core)",
-      memory: "RAM (GB)",
+      memory: "RAM (MB)",
       name_validate_msg: "Support English and numbers",
       cpu_invalid: "CPU range 1～1000",
       mem_invalid: "Memory range 1～1000",
