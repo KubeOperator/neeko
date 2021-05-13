@@ -9,40 +9,40 @@
                 <div slot="header" class="clearfix">
                   <span>{{ $t("cluster.detail.backup.backup_strategy") }}</span>
                 </div>
-                <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.cron" clearable />
-                  <div><span class="input-help">1 - 300</span></div>
-                </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
-                  <el-input-number style="width:80%" :step="1" step-strictly :max="300" v-model.number="strategyForm.saveNum" clearable />
-                  <div><span class="input-help">1 - 300</span></div>
-                </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
-                  <el-select style="width:80%" size="small" allow-create filterable v-model="strategyForm.backupAccountName">
-                    <el-option v-for="b in backupAccounts" :key="b.name" :label="b.name" :value="b.name">
-                      {{ b.name }}({{ b.bucket }})
-                    </el-option>
-                  </el-select>
-                  <div><span class="input-help">{{ $t("cluster.detail.backup.backup_account_help") }}</span></div>
-                </el-form-item>
-                <el-form-item :label="$t('cluster.detail.backup.status')" prop="status">
-                  <el-select style="width:80%" size="small" v-model="strategyForm.status">
-                    <el-option :label="$t('commons.button.enable')" value="ENABLE">{{ $t("commons.button.enable") }}
-                    </el-option>
-                    <el-option :label="$t('commons.button.disable')" value="DISABLE">
-                      {{ $t("commons.button.disable") }}
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item>
-                  <div style="float: right">
+                <el-col :span="20">
+                  <el-form-item :label="$t('cluster.detail.backup.backup_interval')" prop="cron">
+                    <el-input-number style="width:100%" :step="1" step-strictly :max="300" v-model.number="strategyForm.cron" clearable />
+                    <div><span class="input-help">1 - 300</span></div>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
+                    <el-input-number style="width:100%" :step="1" step-strictly :max="300" v-model.number="strategyForm.saveNum" clearable />
+                    <div><span class="input-help">1 - 300</span></div>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
+                    <el-select style="width:100%" size="small" allow-create filterable v-model="strategyForm.backupAccountName">
+                      <el-option v-for="b in backupAccounts" :key="b.name" :label="b.name" :value="b.name">
+                        {{ b.name }}({{ b.bucket }})
+                      </el-option>
+                    </el-select>
+                    <div><span class="input-help">{{ $t("cluster.detail.backup.backup_account_help") }}</span></div>
+                  </el-form-item>
+                  <el-form-item :label="$t('cluster.detail.backup.status')" prop="status">
+                    <el-select style="width:100%" size="small" v-model="strategyForm.status">
+                      <el-option :label="$t('commons.button.enable')" value="ENABLE">{{ $t("commons.button.enable") }}
+                      </el-option>
+                      <el-option :label="$t('commons.button.disable')" value="DISABLE">
+                        {{ $t("commons.button.disable") }}
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item style="float: right">
                     <el-button :disabled="strategyForm.id == '' || submitLoading" @click="backupNow('strategyForm')">
                       {{ $t("cluster.detail.backup.backup_now") }}
                     </el-button>
                     <el-button type="primary" :disabled="submitLoading" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
                     </el-button>
-                  </div>
-                </el-form-item>
+                  </el-form-item>
+                </el-col>
               </el-card>
             </el-form>
           </el-col>
@@ -114,7 +114,7 @@
           <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
             <template v-slot:default="{row}">
               <div v-if="row.status === 'FAILED'">
-                <el-popover placement="left-start" :title="$t('cluster.detail.backup.detail')"  width="200" trigger="click" :content="row.message">
+                <el-popover placement="left-start" :title="$t('cluster.detail.backup.detail')" width="200" trigger="click" :content="row.message">
                   <div slot="reference">
                     <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
                     <el-link type="info">{{ $t("commons.status.failed") }}</el-link>

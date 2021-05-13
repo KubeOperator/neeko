@@ -3,7 +3,7 @@
     <el-alert v-if="provider === ''" :title="$t('cluster.detail.storage.operator_help')" type="info" />
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
-        <el-tab-pane :label="$t('cluster.detail.storage.pv')" :name="$t('cluster.detail.storage.pv')">
+        <el-tab-pane :label="$t('cluster.detail.storage.pv')" name="pv">
           <el-card>
             <template>
               <el-button-group>
@@ -29,7 +29,7 @@
             <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
           </el-card>
         </el-tab-pane>
-        <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
+        <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" name="storage_class">
           <el-card>
             <template>
               <el-button-group>
@@ -54,7 +54,7 @@
             <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
           </el-card>
         </el-tab-pane>
-        <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
+        <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" name="provisioner">
           <el-card>
             <template>
               <el-button-group>
@@ -198,13 +198,13 @@ export default {
       dialogSyncVisible: false,
       dialogErrorVisible: false,
       errMsg: "",
-      activeName: this.$t("cluster.detail.storage.pv"),
+      activeName: "pv",
     }
   },
   methods: {
     search() {
       this.loading = true
-      if (this.activeName === this.$t("cluster.detail.storage.pv")) {
+      if (this.activeName === "pv") {
         listPersistentVolumes(this.clusterName, this.pvPage.continueToken)
           .then((data) => {
             this.loading = false
@@ -214,7 +214,7 @@ export default {
           .catch(() => {
             this.loading = false
           })
-      } else if (this.activeName === this.$t("cluster.detail.storage.storage_class")) {
+      } else if (this.activeName === "storage_class") {
         listStorageClass(this.clusterName, this.classPage.continueToken, false)
           .then((data) => {
             this.loading = false
@@ -224,7 +224,7 @@ export default {
           .catch(() => {
             this.loading = false
           })
-      } else if (this.activeName === this.$t("cluster.detail.storage.provisioner")) {
+      } else if (this.activeName === "provisioner") {
         listProvisioner(this.clusterName)
           .then((data) => {
             this.loading = false
