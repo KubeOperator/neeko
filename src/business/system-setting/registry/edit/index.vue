@@ -6,7 +6,14 @@
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="80px">
             <el-form-item :label="$t('setting.table.registry.arch')" required>
-              <el-input v-model="form.architecture" disabled></el-input>
+              <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
+                <el-option
+                  v-for="item in architectureOptions"
+                  :key="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+<!--              <el-input v-model="form.architecture"></el-input>-->
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" required>
               <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
@@ -54,6 +61,11 @@ export default {
         protocol: '',
         id: '',
       },
+      architectureOptions: [{
+        value: 'x86_64',
+      }, {
+        value: 'aarch64',
+      }],
       rules: {
         hostname: [Rule.IpRule],
       },
@@ -72,7 +84,7 @@ export default {
           return false
         }
         this.loading = true
-        updateRegistry(this.arch, {
+        updateRegistry(this.form.architecture, {
           architecture: this.form.architecture,
           hostname: this.form.hostname,
           protocol: this.form.protocol,
@@ -95,10 +107,7 @@ export default {
   },
   created() {
     getRegistry(this.arch).then(data => {
-      this.form.architecture = data.architecture,
-      this.form.hostname = data.hostname,
-      this.form.protocol = data.protocol,
-      this.form.id = data.id
+      this.form = data
     })
   }
 }

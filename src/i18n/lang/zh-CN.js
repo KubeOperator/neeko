@@ -572,7 +572,12 @@ const message = {
       CLUSTER_INSTALL: "集群安装",
       CLUSTER_REMOVE_WORKER: "节点删除",
       CLUSTER_ADD_WORKER: "添加节点",
-      CLUSTER_BACKUP: "集群备份"
+      CLUSTER_BACKUP: "集群备份",
+      CLUSTER_UN_INSTALL: "集群卸载",
+      CLUSTER_UPGRADE: "集群升级",
+      CLUSTER_DELETE: "集群删除",
+      CLUSTER_SCALE: "集群伸缩",
+      CLUSTER_RESTORE: "集群恢复",
     },
     detail: {
       basicInformation: "基本信息",

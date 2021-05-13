@@ -15,7 +15,7 @@
             $t("commons.personal.about")
           }}
         </el-dropdown-item>
-        <el-dropdown-item class="iconfont icontuichudenglu" style="text-align: center" divided command="logout">
+        <el-dropdown-item class="iconfont icontuichudenglu" style="text-align: center" divided command="exit">
           {{ $t("commons.personal.exit_system") }}
         </el-dropdown-item>
       </div>
@@ -80,6 +80,7 @@
 <script>
 import {mapGetters} from "vuex"
 import {changePassword} from "@/api/personal-setting"
+import {logout} from "@/api/auth"
 import store from "@/store"
 import Rule from "@/utils/rules"
 
@@ -115,8 +116,8 @@ export default {
           this.getRole()
           this.dialogVisible = true
           break
-        case "logout":
-          this.logout()
+        case "exit":
+          this.exit()
           break
         default:
           this.aboutDialogVisible = true
@@ -132,8 +133,8 @@ export default {
     toTalk () {
       window.open("https://kubeoperator.io/#contact", "_blank")
     },
-    logout () {
-      this.$store.dispatch("user/logout").then(() => {
+    exit () {
+      logout().then(() => {
         location.reload()
       })
     },
@@ -159,9 +160,7 @@ export default {
             message: this.$t("commons.msg.save_success")
           })
           setTimeout(() => {
-            this.$store.dispatch("user/logout").then(() => {
-              location.reload()
-            })
+            this.exit()
           }, 1500)
         })
       })
