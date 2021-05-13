@@ -121,7 +121,7 @@
                   </div>
                 </el-popover>
               </div>
-              <div v-if="row.status ==='RUNNING'">
+              <div v-if="row.status ==='Running'">
                 <span class="iconfont iconduihao" style="color: #32B350"></span>
                 {{ $t("commons.status.running") }}
               </div>
