@@ -84,7 +84,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="provider === '' || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="provider === '' || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -192,7 +192,7 @@
       </el-row>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCordonVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="submitLoading" @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
+        <el-button type="primary" :disabled="submitLoading" @click="submitCordon(true)">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
   </div>

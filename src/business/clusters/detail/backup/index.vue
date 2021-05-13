@@ -39,7 +39,7 @@
                     <el-button :disabled="strategyForm.id == '' || submitLoading" @click="backupNow('strategyForm')">
                       {{ $t("cluster.detail.backup.backup_now") }}
                     </el-button>
-                    <el-button :disabled="submitLoading" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
+                    <el-button type="primary" :disabled="submitLoading" @click="onSubmit('strategyForm')">{{ $t("commons.button.submit") }}
                     </el-button>
                   </div>
                 </el-form-item>
@@ -63,7 +63,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-row type="flex" justify="center">
-                    <el-button :disabled="submitLoading" @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
+                    <el-button type="primary" :disabled="submitLoading" @click="onUploadFile()">{{ $t("commons.button.submit") }}</el-button>
                   </el-row>
                 </el-form-item>
               </el-form>

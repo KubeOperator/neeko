@@ -69,7 +69,7 @@
       </ul>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button type="primary" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -147,7 +147,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogGrantVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button v-loading="grantLoading" :disabled="!authorizedProject" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button type="primary" v-loading="grantLoading" :disabled="!authorizedProject" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -171,7 +171,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogImportVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button :disabled="isUploadDisable" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button type="primary" :disabled="isUploadDisable" @click="onUploadFile()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
   </layout-content>

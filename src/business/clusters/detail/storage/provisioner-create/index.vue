@@ -167,7 +167,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button :disabled="!createType || submitLoading" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
+                <el-button type="primary" :disabled="!createType || submitLoading" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
               </div>
             </el-form-item>
           </el-form>

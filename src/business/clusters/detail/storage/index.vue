@@ -1,116 +1,119 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
-      <el-tab-pane :label="$t('cluster.detail.storage.pv')" :name="$t('cluster.detail.storage.pv')">
-        <el-card>
-          <template>
-            <el-button-group>
-              <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="pvSelection.length < 1" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
-            </el-button-group>
-          </template>
-          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="pvSelection" :data="pvDatas">
-            <el-table-column type="selection" fix></el-table-column>
-            <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-            <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity.storage" fix />
-            <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
-            <el-table-column :label="$t('cluster.detail.storage.source')" min-width="100" prop="spec.storageClassName" fix />
-            <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix />
-            <el-table-column :label="$t('commons.table.create_time')">
-              <template v-slot:default="{row}">
-                {{ row.metadata.creationTimestamp | datetimeFormat }}
-              </template>
-            </el-table-column>
-            <fu-table-operations :buttons="buttons_pv" :label="$t('commons.table.action')" fix />
-          </complex-table>
+    <el-alert v-if="provider === ''" :title="$t('cluster.detail.storage.operator_help')" type="info" />
+    <div style="margin-top: 20px">
+      <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
+        <el-tab-pane :label="$t('cluster.detail.storage.pv')" :name="$t('cluster.detail.storage.pv')">
+          <el-card>
+            <template>
+              <el-button-group>
+                <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" :disabled="pvSelection.length < 1" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
+              </el-button-group>
+            </template>
+            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="pvSelection" :data="pvDatas">
+              <el-table-column type="selection" fix></el-table-column>
+              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
+              <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity.storage" fix />
+              <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
+              <el-table-column :label="$t('cluster.detail.storage.source')" min-width="100" prop="spec.storageClassName" fix />
+              <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix />
+              <el-table-column :label="$t('commons.table.create_time')">
+                <template v-slot:default="{row}">
+                  {{ row.metadata.creationTimestamp | datetimeFormat }}
+                </template>
+              </el-table-column>
+              <fu-table-operations :buttons="buttons_pv" :label="$t('commons.table.action')" fix />
+            </complex-table>
 
-          <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
-        <el-card>
-          <template>
-            <el-button-group>
-              <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="classSelection.length < 1" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
-            </el-button-group>
-          </template>
-          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="classSelection" :data="storageClassDatas">
-            <el-table-column type="selection" fix></el-table-column>
-            <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-            <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
-            <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
-            <el-table-column :label="$t('cluster.detail.storage.volume_binding_mode')" min-width="100" prop="volumeBindingMode" fix />
-            <el-table-column :label="$t('commons.table.create_time')">
-              <template v-slot:default="{row}">
-                {{ row.metadata.creationTimestamp | datetimeFormat }}
-              </template>
-            </el-table-column>
-            <fu-table-operations :buttons="buttons_class" :label="$t('commons.table.action')" fix />
-          </complex-table>
+            <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" :name="$t('cluster.detail.storage.storage_class')">
+          <el-card>
+            <template>
+              <el-button-group>
+                <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" :disabled="classSelection.length < 1" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
+              </el-button-group>
+            </template>
+            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="classSelection" :data="storageClassDatas">
+              <el-table-column type="selection" fix></el-table-column>
+              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
+              <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
+              <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
+              <el-table-column :label="$t('cluster.detail.storage.volume_binding_mode')" min-width="100" prop="volumeBindingMode" fix />
+              <el-table-column :label="$t('commons.table.create_time')">
+                <template v-slot:default="{row}">
+                  {{ row.metadata.creationTimestamp | datetimeFormat }}
+                </template>
+              </el-table-column>
+              <fu-table-operations :buttons="buttons_class" :label="$t('commons.table.action')" fix />
+            </complex-table>
 
-          <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
-        </el-card>
-      </el-tab-pane>
-      <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
-        <el-card>
-          <template>
-            <el-button-group>
-              <el-button size="small" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
-              <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
-              <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
-            </el-button-group>
-          </template>
-          <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" :data="provisionerDatas">
-            <el-table-column type="selection" fix></el-table-column>
-            <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
-            <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
-            <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-              <template v-slot:default="{row}">
-                <div v-if="row.status === 'Initializing'">
-                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                  <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.initializing") }}</el-link>
-                </div>
-                <div v-if="row.status === 'Terminating'">
-                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                  <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
-                </div>
-                <div v-if="row.status === 'Failed'">
-                  <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-                  <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
-                </div>
-                <div v-if="row.status == 'Running'">
-                  <span class="iconfont iconduihao" style="color: #32B350"></span>
-                  {{ $t("commons.status.running") }}
-                </div>
-                <div v-if="row.status == 'NotReady'">
-                  <span class="iconfont iconerror" style="color: #FA4147"></span>
-                  {{ $t("commons.status.not_ready") }}
-                </div>
-                <div v-if="row.status === 'Synchronizing'">
-                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                  <span>{{ $t("commons.status.synchronizing") }}</span>
-                </div>
-                <div v-if="row.status === 'Creating'">
-                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                  <span>{{ $t("commons.status.creating") }}</span>
-                </div>
-                <div v-if="row.status === 'Waiting'">
-                  <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                  <span>{{ $t("commons.status.waiting") }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column :label="$t('commons.table.create_time')">
-              <template v-slot:default="{row}">
-                {{ row.createdAt | datetimeFormat }}
-              </template>
-            </el-table-column>
-            <fu-table-operations :buttons="buttons_provisioner" :label="$t('commons.table.action')" fix />
-          </complex-table>
-        </el-card>
-      </el-tab-pane>
-    </el-tabs>
+            <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" :name="$t('cluster.detail.storage.provisioner')">
+          <el-card>
+            <template>
+              <el-button-group>
+                <el-button size="small" :disabled="provider === ''" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
+                <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
+              </el-button-group>
+            </template>
+            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" :data="provisionerDatas">
+              <el-table-column type="selection" fix></el-table-column>
+              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
+              <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
+              <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+                <template v-slot:default="{row}">
+                  <div v-if="row.status === 'Initializing'">
+                    <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                    <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.initializing") }}</el-link>
+                  </div>
+                  <div v-if="row.status === 'Terminating'">
+                    <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                    <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
+                  </div>
+                  <div v-if="row.status === 'Failed'">
+                    <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+                    <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+                  </div>
+                  <div v-if="row.status == 'Running'">
+                    <span class="iconfont iconduihao" style="color: #32B350"></span>
+                    {{ $t("commons.status.running") }}
+                  </div>
+                  <div v-if="row.status == 'NotReady'">
+                    <span class="iconfont iconerror" style="color: #FA4147"></span>
+                    {{ $t("commons.status.not_ready") }}
+                  </div>
+                  <div v-if="row.status === 'Synchronizing'">
+                    <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                    <span>{{ $t("commons.status.synchronizing") }}</span>
+                  </div>
+                  <div v-if="row.status === 'Creating'">
+                    <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                    <span>{{ $t("commons.status.creating") }}</span>
+                  </div>
+                  <div v-if="row.status === 'Waiting'">
+                    <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                    <span>{{ $t("commons.status.waiting") }}</span>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column :label="$t('commons.table.create_time')">
+                <template v-slot:default="{row}">
+                  {{ row.createdAt | datetimeFormat }}
+                </template>
+              </el-table-column>
+              <fu-table-operations :buttons="buttons_provisioner" :label="$t('commons.table.action')" fix />
+            </complex-table>
+          </el-card>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
       <span>{{$t('cluster.detail.storage.ensure_provisioner_sync')}}</span>
@@ -119,7 +122,7 @@
       </ul>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button @click="submitSync()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="submitSync()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -135,6 +138,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
+import { getClusterByName } from "@/api/cluster"
 import { openProvisionerLogger } from "@/api/cluster"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
@@ -181,6 +185,7 @@ export default {
         continueToken: "",
         nextToken: "",
       },
+      provider: null,
       loading: false,
       provisionerDatas: [],
       pvDatas: [],
@@ -229,6 +234,11 @@ export default {
             this.loading = false
           })
       }
+    },
+    getCluster() {
+      getClusterByName(this.clusterName).then((data) => {
+        this.provider = data.spec.provider
+      })
     },
     getErrorInfo(row) {
       this.dialogErrorVisible = true
@@ -381,6 +391,7 @@ export default {
     if (localStorage.getItem("storage_active_name")) {
       this.activeName = localStorage.getItem("storage_active_name")
     }
+    this.getCluster()
     this.search()
     this.polling()
   },

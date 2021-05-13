@@ -20,8 +20,8 @@
             <el-input v-model="form.publicIP" clearable></el-input>
           </el-form-item>
           <el-form-item style="float: right">
-            <el-button :disabled="submitLoading" @click="onSubmit()" v-if="form.id === ''">{{$t('commons.button.submit')}}</el-button>
-            <el-button :disabled="submitLoading" @click="onUpdate()" v-if="form.id !== ''">{{$t('commons.button.update')}}</el-button>
+            <el-button type="primary" :disabled="submitLoading" @click="onSubmit()" v-if="form.id === ''">{{$t('commons.button.submit')}}</el-button>
+            <el-button type="primary" :disabled="submitLoading" @click="onUpdate()" v-if="form.id !== ''">{{$t('commons.button.update')}}</el-button>
           </el-form-item>
         </el-form>
       </div>
