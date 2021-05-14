@@ -13,7 +13,6 @@
                   :value="item.value">
                 </el-option>
               </el-select>
-<!--              <el-input v-model="form.architecture"></el-input>-->
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" required>
               <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
@@ -52,7 +51,7 @@ export default {
     LayoutContent
   },
   name: "EditRegistry",
-  props: ['arch'],
+  props: ['id'],
   data() {
     return {
       form: {
@@ -106,7 +105,8 @@ export default {
     },
   },
   created() {
-    getRegistry(this.arch).then(data => {
+    console.log(this.id)
+    getRegistry(this.id).then(data => {
       this.form = data
     })
   }
