@@ -38,7 +38,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="namespace.length === 0 || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="namespace.length === 0 || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.create')" :back-to="{ name: 'HostList' }">
     <el-row>
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
@@ -55,7 +55,7 @@
             </span>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button type="primary" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
             </el-form-item>
           </el-form>
         </div>

@@ -235,7 +235,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button :disabled="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -250,7 +250,7 @@
       <span>{{$t('cluster.detail.tool.disable_show_msg')}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDisableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button @click="disable(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="disable(toolForm)">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -258,7 +258,7 @@
       <span>{{toolForm.name}}: {{toolForm.version}} ---> {{toolForm.higher_version}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpgradeVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button @click="upgrade(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="upgrade(toolForm)">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>

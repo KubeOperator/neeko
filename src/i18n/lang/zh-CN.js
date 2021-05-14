@@ -362,6 +362,7 @@ const message = {
         before_delete: "删除失败,该命名空间下已存在工具：",
       },
       storage: {
+        operator_help: "导入的集群暂不支持存储提供商添加",
         type: "类型",
         pv: "持久卷",
         pv_create: "添加持久卷",
