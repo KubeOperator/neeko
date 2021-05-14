@@ -62,9 +62,6 @@ export default {
         timeRange: [],
       },
       nodes: [],
-      selectNode: "",
-      searchBeginDate: Date,
-      searchEndDate: Date,
       cpuDateList: [],
       cpuValueList: [],
       memoryDateList: [],
@@ -86,7 +83,7 @@ export default {
         this.nodes = data.items.map(function (item) {
           return item.ip
         })
-        this.selectNode = this.nodes[0]
+        this.searchruleForm.node = this.searchruleForm.node ? this.searchruleForm.node : this.nodes[0]
 
         if (this.searchruleForm.timeRange.length === 0) {
           this.searchruleForm.timeRange[0] = new Date(new Date().setMinutes(new Date().getMinutes() - 30))
@@ -105,7 +102,7 @@ export default {
       this.cpuDateList = []
       this.cpuValueList = []
       let system = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.selectNode + ":9100", '"system"', start.toString(), end.toString()).then((data) => {
+        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"system"', start.toString(), end.toString()).then((data) => {
           if (data.data.result.length === 0) {
             return
           }
@@ -122,7 +119,7 @@ export default {
         })
       })
       let user = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.selectNode + ":9100", '"user"', start.toString(), end.toString()).then((data) => {
+        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"user"', start.toString(), end.toString()).then((data) => {
           if (data.data.result.length === 0) {
             return
           }
@@ -135,7 +132,7 @@ export default {
         })
       })
       let iowait = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.selectNode + ":9100", '"iowait"', start.toString(), end.toString()).then((data) => {
+        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"iowait"', start.toString(), end.toString()).then((data) => {
           if (data.data.result.length === 0) {
             return
           }
@@ -148,7 +145,7 @@ export default {
         })
       })
       let idle = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.selectNode + ":9100", '"idle"', start.toString(), end.toString()).then((data) => {
+        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"idle"', start.toString(), end.toString()).then((data) => {
           if (data.data.result.length === 0) {
             return
           }
@@ -161,7 +158,7 @@ export default {
         })
       })
       let irq = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.selectNode + ":9100", '~".*irq"', start.toString(), end.toString()).then((data) => {
+        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '~".*irq"', start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return Number(item[1]).toFixed(2)
@@ -184,7 +181,7 @@ export default {
       this.memoryDateList = []
       this.memoryValueList = []
       let total = new Promise((resolve) => {
-        QueryMemoryTotal(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryTotal(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           this.memoryDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
             return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
@@ -198,7 +195,7 @@ export default {
         })
       })
       let used = new Promise((resolve) => {
-        QueryMemoryUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -208,7 +205,7 @@ export default {
         })
       })
       let cache = new Promise((resolve) => {
-        QueryMemoryCacheBuffer(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryCacheBuffer(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -218,7 +215,7 @@ export default {
         })
       })
       let free = new Promise((resolve) => {
-        QueryMemoryFree(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemoryFree(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -228,7 +225,7 @@ export default {
         })
       })
       let swap = new Promise((resolve) => {
-        QueryMemorySWAPUsed(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryMemorySWAPUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
           itemDatas = data.data.result[0].values.map(function (item) {
             return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
@@ -250,7 +247,7 @@ export default {
     getDiskDatas(start, end) {
       this.diskDateList = []
       this.diskValueList = []
-      QueryDisk(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString())
+      QueryDisk(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString())
         .then((data) => {
           this.diskDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
@@ -273,7 +270,7 @@ export default {
       this.networkDateList = []
       this.networkValueList = []
       let recv = new Promise((resolve) => {
-        QueryNetworkRecv(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryNetworkRecv(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           this.networkDateList = data.data.result[0].values.map(function (item) {
             const timeNow = new Date(item[0] * 1000)
             return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
@@ -289,7 +286,7 @@ export default {
         })
       })
       let trans = new Promise((resolve) => {
-        QueryNetworkTrans(this.clusterName, this.selectNode + ":9100", start.toString(), end.toString()).then((data) => {
+        QueryNetworkTrans(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           for (const res of data.data.result) {
             let itemDatas = []
             itemDatas = res.values.map(function (item) {
