@@ -36,11 +36,11 @@ export default {
       buttons: [
         {
           label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
-            this.$router.push({name: "RegistryEdit", params: {arch: row.architecture}})
+            this.$router.push({name: "RegistryEdit", params: {id: row.id}})
           }
         }, {
           label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {
-            this.del(row.architecture)
+            this.del(row.id)
           }
         },
       ],
@@ -93,14 +93,14 @@ export default {
     create() {
       this.$router.push({name: "RegistryCreate"})
     },
-    del(arch) {
+    del(id) {
       this.$confirm(this.$t('commons.confirm_message.delete'), this.$t('commons.message_box.prompt'), {
         confirmButtonText: this.$t('commons.button.confirm'),
         cancelButtonText: this.$t('commons.button.cancel'),
         type: 'warning'
       }).then(() => {
-        if (arch) {
-          deleteRegistry(arch).then(() => {
+        if (id) {
+          deleteRegistry(id).then(() => {
             this.search()
             this.$message({
               type: 'success',

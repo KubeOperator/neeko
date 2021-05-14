@@ -36,12 +36,12 @@ export function searchRegistry(currentPage, pageSize, conditions) {
   return post(`${settingUrl}/registry/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }
 
-export function getRegistry(arch) {
-  return get(`${settingUrl}/registry/${arch}`)
+export function getRegistry(id) {
+  return get(`${settingUrl}/registry/${id}`)
 }
 
-export function deleteRegistry(arch) {
-  return del(`${settingUrl}/registry/${arch}`)
+export function deleteRegistry(id) {
+  return del(`${settingUrl}/registry/${id}`)
 }
 
 // Message
