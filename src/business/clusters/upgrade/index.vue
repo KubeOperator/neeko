@@ -1,5 +1,5 @@
 <template>
-  <layout-content>
+  <layout-content :header="$t('commons.button.upgrade')" :back-to="{ name: 'ClusterList' }">
     <el-row>
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
@@ -46,7 +46,7 @@
             </el-form-item>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button v-loading="loadding" @click="onSubmit">{{ $t("commons.button.ok") }}</el-button>
+              <el-button type="primary" v-loading="loadding" @click="onSubmit">{{ $t("commons.button.ok") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
