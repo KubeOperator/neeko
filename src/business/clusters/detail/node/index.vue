@@ -222,7 +222,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+            return row.status !== "Running" && row.status !== "Lost" && row.status !== "Failed" && row.status !== "NotReady"
           },
         },
       ],
