@@ -47,7 +47,7 @@
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
           </div>
-          <div v-if="row.status === 'Terminating' && row.provider==='plan' ">
+          <div v-if="row.status === 'Terminating' && row.provider!=='bareMetal' ">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <span>{{ $t("commons.status.terminating") }} </span>
           </div>
@@ -128,6 +128,7 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import { getClusterStatus, initCluster, upgradeCluster, openLogger, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
+import { listRegistryAll } from "@/api/system-setting"
 
 export default {
   name: "ClusterList",
@@ -241,7 +242,48 @@ export default {
       this.$router.push({ name: "ClusterUpgrade", params: { name: row.name } })
     },
     goForDetail(row) {
-      this.$router.push({ name: "ClusterOverview", params: { project: row.projectName, name: row.name } })
+      listRegistryAll().then((data) => {
+        let repoList = data.items === null ? [] : data.items
+        let isExit = false
+        let isAmdExit = false
+        let isArmExit = false
+        switch (row.spec.architectures) {
+          case "amd64":
+            for (const repo of repoList) {
+              if (repo.architecture === "x86_64") {
+                isExit = true
+                break
+              }
+            }
+            break
+          case "arm64":
+            for (const repo of repoList) {
+              if (repo.architecture === "aarch64") {
+                isExit = true
+                break
+              }
+            }
+            break
+          case "all":
+            for (const repo of repoList) {
+              if (repo.architecture === "x86_64") {
+                isAmdExit = true
+                continue
+              }
+              if (repo.architecture === "aarch64") {
+                isArmExit = true
+                continue
+              }
+            }
+            isExit = isAmdExit && isArmExit
+            break
+        }
+        if (isExit) {
+          this.$router.push({ name: "ClusterOverview", params: { project: row.projectName, name: row.name } })
+        } else {
+          this.$message({ type: "info", message: this.$t("cluster.creation.repo_err") })
+        }
+      })
     },
     selectChange() {
       let isOk = true

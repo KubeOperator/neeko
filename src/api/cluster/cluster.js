@@ -173,5 +173,5 @@ export function listEvents(clusterName, continueToken, namespace) {
 }
 
 export function getClusterToken(clusterName) {
-  return get(`api/v1/clusters/webkubectl/${clusterName}?l=zh-CN`)
+  return get(`/api/v1/clusters/webkubectl/${clusterName}?l=zh-CN`)
 }
