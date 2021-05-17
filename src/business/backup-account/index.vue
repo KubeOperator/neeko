@@ -12,13 +12,13 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" fix prop="name"/>
-      <el-table-column :label="$t('project.project')" v-if="isAdmin">
+      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name"/>
+      <el-table-column :label="$t('project.project')" show-overflow-tooltip v-if="isAdmin">
         <template v-slot:default="{row}">
           <span v-for="(zone,index) in row.projects" :key="index">{{ zone }},</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('backup_account.table.bucket')"  prop="bucket"/>
+      <el-table-column :label="$t('backup_account.table.bucket')" show-overflow-tooltip prop="bucket"/>
       <el-table-column :label="$t('commons.table.type')"  prop="credentialVars.type">
         <template v-slot:default="{row}">
           <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
