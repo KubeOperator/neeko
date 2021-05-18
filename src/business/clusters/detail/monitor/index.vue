@@ -13,24 +13,24 @@
     </el-form>
     <el-row>
       <el-col :span="12">
-        <el-card>
+        <el-card style="overflow: inherit">
           <div v-loading="loading_cpu" id="cpuChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card>
+        <el-card style="overflow: inherit">
           <div v-loading="loading_memory" id="memoryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-card>
+        <el-card style="overflow: inherit">
           <div v-loading="loading_disk" id="diskChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card>
+        <el-card style="overflow: inherit">
           <div v-loading="loading_network" id="networkChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
         </el-card>
       </el-col>
