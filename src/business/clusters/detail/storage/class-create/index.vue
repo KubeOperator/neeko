@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.provisioner_short')" required>
               <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name" clearable>
-                <el-option v-for="item of provisioners" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
+                <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
 

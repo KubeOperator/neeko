@@ -20,7 +20,7 @@
               <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="numberRules">
                 <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
+              <el-form-item label="Access Mode">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
                   <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
                   <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
@@ -29,7 +29,7 @@
               <el-form-item label="Host Path" prop="submitForm.spec.hostPath.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.hostPath.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
+              <el-form-item label="Node Selector" prop="selectorKey">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
@@ -42,7 +42,7 @@
                   </el-select>
                 </el-col>
               </el-form-item>
-              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue" :rules="requiredRules">
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue">
                 <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
               </el-form-item>
             </div>
@@ -54,7 +54,7 @@
               <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
                 <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
+              <el-form-item label="Access Mode" prop="accessMode">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
                   <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
                   <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
@@ -63,16 +63,16 @@
               <el-form-item label="Path" prop="submitForm.spec.local.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.local.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="StorageClass" prop="storageClassName" :rules="requiredRules">
+              <el-form-item label="StorageClass" prop="storageClassName">
                 <el-select style="width: 100%" size="small" v-model="form.storageClassName">
                   <option v-for="sc in storageClassList" :key="sc.metadata.name" [value]="sc.metadata.name">{{sc.metadata.name}}</option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
+              <el-form-item label="Node Selector" prop="selectorKey">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
-                <el-col :span="12" prop="metadata.name" :rules="requiredRules">
+                <el-col :span="12" prop="metadata.name">
                   <el-select style="width: 100%" size="small" v-model="form.selectorOperation">
                     <el-option value="In" label="In">In</el-option>
                     <el-option value="NotIn" label="NotIn">NotIn</el-option>

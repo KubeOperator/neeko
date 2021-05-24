@@ -401,7 +401,7 @@ export default {
   data() {
     return {
       form: {
-        projectName: "kubeoperator",
+        projectName: "",
         name: "",
         provider: "bareMetal",
         version: "",
@@ -517,6 +517,10 @@ export default {
     loadProject() {
       allProjects().then((data) => {
         this.projects = data.items
+        if (data.items !== null && data.items.length > 0) {
+          this.form.projectName = data.items[0].name
+          this.loadProjectResource()
+        }
       })
     },
     loadProjectResource() {
@@ -526,7 +530,7 @@ export default {
     loadHosts() {
       listProjectResourcesAll(this.form.projectName, "HOST").then((data) => {
         const list = []
-        if (data.items.length !== 0) {
+        if (data.items !== null) {
           data.items
             .filter((host) => {
               return host.status === "Running"
@@ -790,10 +794,8 @@ export default {
     },
   },
   created() {
-    this.loadHosts()
-    this.loadRegistry()
-    this.loadPlan()
     this.loadProject()
+    this.loadRegistry()
     this.loadVersion()
     this.onPart1Change()
   },
