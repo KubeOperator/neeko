@@ -195,7 +195,6 @@ export default {
       },
       activeName: 1,
       retryLoadding: false,
-      keepPolling: true,
       conditionLoading: false,
 
       // cluster delete
@@ -402,27 +401,32 @@ export default {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Upgrading"
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Initializing"
           })
           break
         case "Terminating":
           deleteCluster(this.clusterName, true).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Terminating"
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
             this.dialogLogVisible = false
+            this.log.phase = "Creating"
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Waiting"
           })
           break
       }
@@ -433,7 +437,7 @@ export default {
     },
     dialogPolling() {
       this.timer2 = setInterval(() => {
-        if (this.keepPolling) {
+        if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
           getClusterStatus(this.clusterName)
             .then((data) => {
               if (data.conditions.length === 0) {
@@ -442,11 +446,7 @@ export default {
               }
               this.conditionLoading = false
               this.activeName = this.log.conditions.length + 1
-              if (this.log.phase !== "Running") {
-                this.log.conditions = data.conditions
-              } else {
-                this.keepPolling = false
-              }
+              this.log.conditions = data.conditions
               if (this.log.phase !== data.phase) {
                 this.log.phase = data.phase
               }
