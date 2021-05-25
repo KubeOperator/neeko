@@ -2,12 +2,12 @@
   <div>
     <el-form :inline="true">
       <el-form-item :label="$t('cluster.detail.log.monitor_node')">
-        <el-select size="small" @change="search()" clearable allow-create filterable v-model="searchruleForm.node">
+        <el-select size="small" @change="search()" allow-create filterable v-model="searchruleForm.node">
           <el-option v-for="node in nodes" :key="node" :label="node" :value="node"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('commons.search.time')">
-        <el-date-picker :picker-options="pickerOptions" @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
+        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
         </el-date-picker>
       </el-form-item>
     </el-form>
@@ -50,9 +50,6 @@ export default {
   data() {
     return {
       startDate: Date.now(),
-      pickerOptions: {
-        disabledDate : time => time.getTime() < this.startDate,
-      },
       loading_cpu: false,
       loading_memory: false,
       loading_disk: false,
@@ -103,56 +100,52 @@ export default {
       this.cpuValueList = []
       let system = new Promise((resolve) => {
         QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"system"', start.toString(), end.toString()).then((data) => {
-          if (data.data.result.length === 0) {
-            return
-          }
-          this.cpuDateList = data.data.result[0].values.map(function (item) {
-            const timeNow = new Date(item[0] * 1000)
-            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-          })
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            this.cpuDateList = data.data.result[0].values.map(function (item) {
+              const timeNow = new Date(item[0] * 1000)
+              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            })
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.cpuValueList.push(this.addSeries(itemDatas, "Busy System"))
           resolve()
         })
       })
       let user = new Promise((resolve) => {
         QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"user"', start.toString(), end.toString()).then((data) => {
-          if (data.data.result.length === 0) {
-            return
-          }
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.cpuValueList.push(this.addSeries(itemDatas, "Busy User"))
           resolve()
         })
       })
       let iowait = new Promise((resolve) => {
         QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"iowait"', start.toString(), end.toString()).then((data) => {
-          if (data.data.result.length === 0) {
-            return
-          }
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.cpuValueList.push(this.addSeries(itemDatas, "Busy Iowait"))
           resolve()
         })
       })
       let idle = new Promise((resolve) => {
         QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"idle"', start.toString(), end.toString()).then((data) => {
-          if (data.data.result.length === 0) {
-            return
-          }
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.cpuValueList.push(this.addSeries(itemDatas, "Busy Idle"))
           resolve()
         })
@@ -160,9 +153,11 @@ export default {
       let irq = new Promise((resolve) => {
         QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '~".*irq"', start.toString(), end.toString()).then((data) => {
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.cpuValueList.push(this.addSeries(itemDatas, "Busy Irqs"))
           resolve()
         })
@@ -182,14 +177,16 @@ export default {
       this.memoryValueList = []
       let total = new Promise((resolve) => {
         QueryMemoryTotal(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          this.memoryDateList = data.data.result[0].values.map(function (item) {
-            const timeNow = new Date(item[0] * 1000)
-            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-          })
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            this.memoryDateList = data.data.result[0].values.map(function (item) {
+              const timeNow = new Date(item[0] * 1000)
+              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            })
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
+            })
+          }
           this.memoryValueList.push(this.addSeries(itemDatas, "RAM Total"))
           resolve()
         })
@@ -197,9 +194,11 @@ export default {
       let used = new Promise((resolve) => {
         QueryMemoryUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
+            })
+          }
           this.memoryValueList.push(this.addSeries(itemDatas, "RAM Used"))
           resolve()
         })
@@ -207,9 +206,11 @@ export default {
       let cache = new Promise((resolve) => {
         QueryMemoryCacheBuffer(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
+            })
+          }
           this.memoryValueList.push(this.addSeries(itemDatas, "RAM Cache + Buffer"))
           resolve()
         })
@@ -217,9 +218,11 @@ export default {
       let free = new Promise((resolve) => {
         QueryMemoryFree(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
+            })
+          }
           this.memoryValueList.push(this.addSeries(itemDatas, "RAM Free"))
           resolve()
         })
@@ -227,9 +230,11 @@ export default {
       let swap = new Promise((resolve) => {
         QueryMemorySWAPUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
+            })
+          }
           this.memoryValueList.push(this.addSeries(itemDatas, "SWAP Used"))
           resolve()
         })
@@ -249,14 +254,16 @@ export default {
       this.diskValueList = []
       QueryDisk(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString())
         .then((data) => {
-          this.diskDateList = data.data.result[0].values.map(function (item) {
-            const timeNow = new Date(item[0] * 1000)
-            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-          })
           let itemDatas = []
-          itemDatas = data.data.result[0].values.map(function (item) {
-            return Number(item[1]).toFixed(2)
-          })
+          if (data.data.result.length !== 0) {
+            this.diskDateList = data.data.result[0].values.map(function (item) {
+              const timeNow = new Date(item[0] * 1000)
+              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
+            })
+            itemDatas = data.data.result[0].values.map(function (item) {
+              return Number(item[1]).toFixed(2)
+            })
+          }
           this.diskValueList.push(this.addSeries(itemDatas, "Disk Space Used"))
           this.loading_disk = false
           this.initCharts("diskChart", "Disk Space Used Basic", this.diskDateList, this.diskValueList, "%")
@@ -271,16 +278,18 @@ export default {
       this.networkValueList = []
       let recv = new Promise((resolve) => {
         QueryNetworkRecv(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          this.networkDateList = data.data.result[0].values.map(function (item) {
-            const timeNow = new Date(item[0] * 1000)
-            return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-          })
-          for (const res of data.data.result) {
-            let itemDatas = []
-            itemDatas = res.values.map(function (item) {
-              return (Number(item[1]) / 1000).toFixed(0)
+          if (data.data.result.length !== 0) {
+            this.networkDateList = data.data.result[0].values.map(function (item) {
+              const timeNow = new Date(item[0] * 1000)
+              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
             })
-            this.networkValueList.push(this.addSeries(itemDatas, "Recv " + res.metric.device))
+            for (const res of data.data.result) {
+              let itemDatas = []
+              itemDatas = res.values.map(function (item) {
+                return (Number(item[1]) / 1000).toFixed(0)
+              })
+              this.networkValueList.push(this.addSeries(itemDatas, "Recv " + res.metric.device))
+            }
           }
           resolve()
         })

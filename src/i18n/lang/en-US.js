@@ -325,7 +325,7 @@ const message = {
         capacity_info: "Capacity Information",
         statistical_info: "Statistics",
         cpu: "CPU Usage",
-        memery: "Memory Usage",
+        memory: "Memory Usage",
         docker: "Container Group",
         connect: "Execute WebKubeCtl command line",
         download_kube_config: "Download the KubeConfig file",

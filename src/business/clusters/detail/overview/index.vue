@@ -54,7 +54,7 @@
                 <div align="center">
                   <el-progress :stroke-width="20" type="circle" :width="140" :percentage="memUsagePercent"></el-progress>
                   <br>
-                  <span style="font-size: 24px">{{$t('cluster.detail.overview.memery')}}</span>
+                  <span style="font-size: 24px">{{$t('cluster.detail.overview.memory')}}</span>
                 </div>
               </el-col>
               <el-col :span="8">
