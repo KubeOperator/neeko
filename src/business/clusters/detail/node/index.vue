@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info"/>
+    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info" />
     <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
@@ -222,7 +222,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Lost" && row.status !== "Failed" && row.status !== "NotReady"
+            return this.provider === '' || this.buttonDisabled(row)
           },
         },
       ],
@@ -302,14 +302,18 @@ export default {
         this.paginationConfig.total = data.total
       })
     },
-    buttonDisabled() {
+    buttonDisabled(row) {
       const onPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
-      for(const node of this.data) {
-        if (onPolling.indexOf(node.status) !== -1) {
-          return true
+      if (row) {
+        return onPolling.indexOf(row.status) !== -1
+      } else {
+        for (const node of this.selects) {
+          if (onPolling.indexOf(node.status) !== -1) {
+            return true
+          }
         }
+        return false
       }
-      return false
     },
     create() {
       this.dialogCreateVisible = true
@@ -526,7 +530,7 @@ export default {
         let flag = false
         const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
         for (const item of this.data) {
-          if (needPolling.indexOf(item.status) !== -1) {
+          if (needPolling.indexOf(item.status) !== -1 && this.selects === 0) {
             flag = true
             break
           }
