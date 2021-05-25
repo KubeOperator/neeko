@@ -6,7 +6,7 @@
         <div class="grid-content bg-purple-light">
           <el-form label-position='left' :model="form" ref="form" label-width="200px">
             <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="requiredRules">
-              <el-select style="width: 100%" @change="changePvType()" size="small" v-model="form.pvType">
+              <el-select style="width: 100%" @change="changePvType()" size="small" v-model="pvType">
                 <el-option value="Host Path" label="Host Path">Host Path</el-option>
                 <el-option value="Local Volume" label="Local Volume">Local Volume</el-option>
               </el-select>
@@ -42,7 +42,7 @@
                   </el-select>
                 </el-col>
               </el-form-item>
-              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue">
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="" prop="selectorValue">
                 <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
               </el-form-item>
             </div>
@@ -81,6 +81,9 @@
                   </el-select>
                 </el-col>
               </el-form-item>
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="" prop="selectorValue">
+                <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
+              </el-form-item>
             </div>
             <el-form-item>
               <div style="float: right">
@@ -107,6 +110,7 @@ export default {
     return {
       submitLoading: false,
       storageClassList: [],
+      pvType: "",
       form: {
         selectorOperation: "In",
         selectorValue: "",
@@ -162,6 +166,10 @@ export default {
       })
     },
     changePvType() {
+      if (this.$refs['form'] !== undefined) {
+        this.$refs['form'].resetFields()
+      }
+      this.form.pvType = this.pvType
       if (this.form.pvType === "Local Volume") {
         this.getClassList()
       }
