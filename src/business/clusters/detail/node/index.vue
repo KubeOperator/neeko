@@ -71,7 +71,7 @@
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
-      <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="80px">
+      <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="110px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
           <el-input-number style="width: 80%" v-model.number="createForm.increase" clearable />
         </el-form-item>
@@ -80,6 +80,9 @@
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item  :label="$t ('cluster.creation.support_gpu')">
+          <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -241,6 +244,7 @@ export default {
         hosts: [],
         nodes: [],
         increase: 1,
+        supportGpu: ""
       },
       deleteForm: {
         nodes: "",
@@ -321,6 +325,7 @@ export default {
               this.hosts.push(item)
             }
           })
+          console.log(this.hosts)
         })
       }
     },
