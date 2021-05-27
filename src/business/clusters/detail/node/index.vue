@@ -81,7 +81,7 @@
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item  :label="$t ('cluster.creation.support_gpu')">
+        <el-form-item v-if="supportGpu === 'disable'" :label="$t ('cluster.creation.support_gpu')">
           <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
@@ -246,6 +246,7 @@ export default {
         increase: 1,
         supportGpu: ""
       },
+      supportGpu: "",
       deleteForm: {
         nodes: "",
       },
@@ -329,7 +330,6 @@ export default {
               this.hosts.push(item)
             }
           })
-          console.log(this.hosts)
         })
       }
     },
@@ -528,6 +528,7 @@ export default {
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
         this.provider = this.currentCluster.spec.provider
+        this.supportGpu = this.currentCluster.spec.supportGpu
       })
     },
     polling() {
