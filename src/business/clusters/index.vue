@@ -47,7 +47,7 @@
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
           </div>
-          <div v-if="row.status === 'Terminating' && row.provider==='plan' ">
+          <div v-if="row.status === 'Terminating' && row.provider!=='bareMetal' ">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <span>{{ $t("commons.status.terminating") }} </span>
           </div>
@@ -128,6 +128,7 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import { getClusterStatus, initCluster, upgradeCluster, openLogger, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
+import { listRegistryAll } from "@/api/system-setting"
 
 export default {
   name: "ClusterList",
@@ -194,7 +195,6 @@ export default {
       },
       activeName: 1,
       retryLoadding: false,
-      keepPolling: true,
       conditionLoading: false,
 
       // cluster delete
@@ -241,7 +241,48 @@ export default {
       this.$router.push({ name: "ClusterUpgrade", params: { name: row.name } })
     },
     goForDetail(row) {
-      this.$router.push({ name: "ClusterOverview", params: { project: row.projectName, name: row.name } })
+      listRegistryAll().then((data) => {
+        let repoList = data.items === null ? [] : data.items
+        let isExit = false
+        let isAmdExit = false
+        let isArmExit = false
+        switch (row.spec.architectures) {
+          case "amd64":
+            for (const repo of repoList) {
+              if (repo.architecture === "x86_64") {
+                isExit = true
+                break
+              }
+            }
+            break
+          case "arm64":
+            for (const repo of repoList) {
+              if (repo.architecture === "aarch64") {
+                isExit = true
+                break
+              }
+            }
+            break
+          case "all":
+            for (const repo of repoList) {
+              if (repo.architecture === "x86_64") {
+                isAmdExit = true
+                continue
+              }
+              if (repo.architecture === "aarch64") {
+                isArmExit = true
+                continue
+              }
+            }
+            isExit = isAmdExit && isArmExit
+            break
+        }
+        if (isExit) {
+          this.$router.push({ name: "ClusterOverview", params: { project: row.projectName, name: row.name } })
+        } else {
+          this.$message({ type: "info", message: this.$t("cluster.creation.repo_err") })
+        }
+      })
     },
     selectChange() {
       let isOk = true
@@ -360,27 +401,32 @@ export default {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Upgrading"
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Initializing"
           })
           break
         case "Terminating":
           deleteCluster(this.clusterName, true).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Terminating"
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
             this.dialogLogVisible = false
+            this.log.phase = "Creating"
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
             this.retryLoadding = false
+            this.log.phase = "Waiting"
           })
           break
       }
@@ -391,7 +437,7 @@ export default {
     },
     dialogPolling() {
       this.timer2 = setInterval(() => {
-        if (this.keepPolling) {
+        if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
           getClusterStatus(this.clusterName)
             .then((data) => {
               if (data.conditions.length === 0) {
@@ -400,11 +446,7 @@ export default {
               }
               this.conditionLoading = false
               this.activeName = this.log.conditions.length + 1
-              if (this.log.phase !== "Running") {
-                this.log.conditions = data.conditions
-              } else {
-                this.keepPolling = false
-              }
+              this.log.conditions = data.conditions
               if (this.log.phase !== data.phase) {
                 this.log.phase = data.phase
               }

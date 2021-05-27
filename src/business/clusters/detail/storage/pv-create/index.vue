@@ -5,87 +5,138 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form label-position='left' :model="form" ref="form" label-width="200px">
-            <el-form-item :label="$t('cluster.detail.storage.type')" prop="pvType" :rules="requiredRules">
-              <el-select style="width: 100%" @change="changePvType()" size="small" v-model="form.pvType">
+            <el-form-item :label="$t('cluster.detail.storage.type')" :rules="requiredRules">
+              <el-select style="width: 100%" @change="changePvType()" size="small" v-model="pvType">
                 <el-option value="Host Path" label="Host Path">Host Path</el-option>
                 <el-option value="Local Volume" label="Local Volume">Local Volume</el-option>
+                <el-option value="NFS Share" label="NFS Share">NFS Share</el-option>
               </el-select>
             </el-form-item>
 
-            <div v-if="form.pvType === 'Host Path'">
+            <div v-if="pvType === 'Host Path'">
               <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="nameRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="numberRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.size')" prop="submitForm.spec.capacity.storage" :rules="numberRules">
                 <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.access_mode')" prop="accessMode">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
-                  <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
-                  <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
+                  <el-option value="ReadWriteOnce" :label="$t('cluster.detail.storage.pv_create.read_write_once')">{{$t('cluster.detail.storage.pv_create.read_write_once')}}</el-option>
+                  <el-option value="ReadWriteMany" :label="$t('cluster.detail.storage.pv_create.read_write_many')">{{$t('cluster.detail.storage.pv_create.read_write_many')}}</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Host Path" prop="submitForm.spec.hostPath.path" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.host_path')" prop="submitForm.spec.hostPath.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.hostPath.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.node_selector')" prop="selectorKey">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
                 <el-col :span="12">
                   <el-select style="width: 100%" size="small" v-model="form.selectorOperation">
-                    <el-option value="In" label="In">In</el-option>
-                    <el-option value="NotIn" label="NotIn">NotIn</el-option>
-                    <el-option value="Exists" label="Exists">Exists</el-option>
-                    <el-option value="DoesNotExist" label="DoesNotExist">DoesNotExist</el-option>
+                    <el-option value="Exists" :label="$t('cluster.detail.storage.pv_create.exists')">{{$t('cluster.detail.storage.pv_create.exists')}}</el-option>
+                    <el-option value="DoesNotExist" :label="$t('cluster.detail.storage.pv_create.does_not_exist')">{{$t('cluster.detail.storage.pv_create.does_not_exist')}}</el-option>
+                    <el-option value="In" :label="$t('cluster.detail.storage.pv_create.in')">{{$t('cluster.detail.storage.pv_create.in')}}</el-option>
+                    <el-option value="NotIn" :label="$t('cluster.detail.storage.pv_create.not_in')">{{$t('cluster.detail.storage.pv_create.not_in')}}</el-option>
                   </el-select>
                 </el-col>
               </el-form-item>
-              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="Node Selector" prop="selectorValue" :rules="requiredRules">
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="" prop="selectorValue">
                 <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
               </el-form-item>
             </div>
-            <div v-if="form.pvType === 'Local Volume'">
+
+            <div v-if="pvType === 'Local Volume'">
               <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
-              <el-form-item label="Size (Gib)" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.size')" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
                 <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
               </el-form-item>
-              <el-form-item label="Access Mode" prop="accessMode" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.access_mode')" prop="accessMode">
                 <el-select style="width: 100%" size="small" v-model="form.accessMode">
-                  <el-option value="ReadWriteOnce" label="ReadWriteOnce">ReadWriteOnce</el-option>
-                  <el-option value="ReadWriteMany" label="ReadWriteMany">ReadWriteMany</el-option>
+                  <el-option value="ReadWriteOnce" :label="$t('cluster.detail.storage.pv_create.read_write_once')">{{$t('cluster.detail.storage.pv_create.read_write_once')}}</el-option>
+                  <el-option value="ReadWriteMany" :label="$t('cluster.detail.storage.pv_create.read_write_many')">{{$t('cluster.detail.storage.pv_create.read_write_many')}}</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Path" prop="submitForm.spec.local.path" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.path')" prop="submitForm.spec.local.path" :rules="requiredRules">
                 <el-input v-model="form.submitForm.spec.local.path" clearable></el-input>
               </el-form-item>
-              <el-form-item label="StorageClass" prop="storageClassName" :rules="requiredRules">
-                <el-select style="width: 100%" size="small" v-model="form.storageClassName">
-                  <option v-for="sc in storageClassList" :key="sc.metadata.name" [value]="sc.metadata.name">{{sc.metadata.name}}</option>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.storage_class')" prop="submitForm.spec.storageClassName">
+                <el-select style="width: 100%" size="small" v-model="form.submitForm.spec.storageClassName">
+                  <el-option v-for="sc in storageClassList" :key="sc.metadata.name" :value="sc.metadata.name">{{sc.metadata.name}}</el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Node Selector" prop="selectorKey" :rules="requiredRules">
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.node_selector')" prop="selectorKey">
                 <el-col :span="12">
                   <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
                 </el-col>
-                <el-col :span="12" prop="metadata.name" :rules="requiredRules">
+                <el-col :span="12">
                   <el-select style="width: 100%" size="small" v-model="form.selectorOperation">
-                    <el-option value="In" label="In">In</el-option>
-                    <el-option value="NotIn" label="NotIn">NotIn</el-option>
-                    <el-option value="Exists" label="Exists">Exists</el-option>
-                    <el-option value="DoesNotExist" label="DoesNotExist">DoesNotExist</el-option>
+                    <el-option value="Exists" :label="$t('cluster.detail.storage.pv_create.exists')">{{$t('cluster.detail.storage.pv_create.exists')}}</el-option>
+                    <el-option value="DoesNotExist" :label="$t('cluster.detail.storage.pv_create.does_not_exist')">{{$t('cluster.detail.storage.pv_create.does_not_exist')}}</el-option>
+                    <el-option value="In" :label="$t('cluster.detail.storage.pv_create.in')">{{$t('cluster.detail.storage.pv_create.in')}}</el-option>
+                    <el-option value="NotIn" :label="$t('cluster.detail.storage.pv_create.not_in')">{{$t('cluster.detail.storage.pv_create.not_in')}}</el-option>
                   </el-select>
                 </el-col>
+              </el-form-item>
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="" prop="selectorValue">
+                <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
+              </el-form-item>
+            </div>
+
+            <div v-if="pvType === 'NFS Share'">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
+                <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
+                <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.size')" prop="submitForm.spec.capacity.storage" :rules="requiredRules">
+                <el-input-number v-model="form.submitForm.spec.capacity.storage"></el-input-number>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.access_mode')" prop="accessMode">
+                <el-select style="width: 100%" size="small" v-model="form.accessMode">
+                  <el-option value="ReadWriteOnce" :label="$t('cluster.detail.storage.pv_create.read_write_once')">{{$t('cluster.detail.storage.pv_create.read_write_once')}}</el-option>
+                  <el-option value="ReadWriteMany" :label="$t('cluster.detail.storage.pv_create.read_write_many')">{{$t('cluster.detail.storage.pv_create.read_write_many')}}</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.path')" prop="submitForm.spec.nfs.path" :rules="requiredRules">
+                <el-input v-model="form.submitForm.spec.nfs.path" clearable></el-input>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.server')" prop="submitForm.spec.nfs.server" :rules="requiredRules">
+                <el-input v-model="form.submitForm.spec.nfs.server" clearable></el-input>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.read_only')" prop="submitForm.spec.nfs.readOnly" :rules="requiredRules">
+                <el-switch v-model="form.submitForm.spec.nfs.readOnly" active-value=true inactive-value=false />
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.storage_class')" prop="submitForm.spec.storageClassName">
+                <el-select style="width: 100%" size="small" v-model="form.submitForm.spec.storageClassName">
+                  <el-option v-for="sc in storageClassList" :key="sc.metadata.name" :value="sc.metadata.name">{{sc.metadata.name}}</el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item :label="$t('cluster.detail.storage.pv_create.node_selector')" prop="selectorKey">
+                <el-col :span="12">
+                  <el-input v-model="form.selectorKey" placeholder="e.g. kubernetes.io/hostname" clearable></el-input>
+                </el-col>
+                <el-col :span="12" prop="metadata.name">
+                  <el-select style="width: 100%" size="small" v-model="form.selectorOperation">
+                    <el-option value="Exists" :label="$t('cluster.detail.storage.pv_create.exists')">{{$t('cluster.detail.storage.pv_create.exists')}}</el-option>
+                    <el-option value="DoesNotExist" :label="$t('cluster.detail.storage.pv_create.does_not_exist')">{{$t('cluster.detail.storage.pv_create.does_not_exist')}}</el-option>
+                    <el-option value="In" :label="$t('cluster.detail.storage.pv_create.in')">{{$t('cluster.detail.storage.pv_create.in')}}</el-option>
+                    <el-option value="NotIn" :label="$t('cluster.detail.storage.pv_create.not_in')">{{$t('cluster.detail.storage.pv_create.not_in')}}</el-option>
+                  </el-select>
+                </el-col>
+              </el-form-item>
+              <el-form-item v-if="form.selectorOperation === 'In' || form.selectorOperation === 'NotIn'" label="" prop="selectorValue">
+                <el-input v-model="form.selectorValue" placeholder="node1,node2" clearable></el-input>
               </el-form-item>
             </div>
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button type="primary" :disabled="!form.pvType || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" :disabled="!pvType || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -107,12 +158,11 @@ export default {
     return {
       submitLoading: false,
       storageClassList: [],
+      pvType: "",
       form: {
         selectorOperation: "In",
         selectorValue: "",
-        storageClassName: "",
         accessMode: "ReadWriteOnce",
-        pvType: "",
         selectorKey: "",
         submitForm: {
           apiVersion: "v1",
@@ -129,6 +179,11 @@ export default {
             storageClassName: "",
             local: {
               path: "",
+            },
+            nfs: {
+              path: "",
+              readOnly: "",
+              server: "",
             },
             nodeAffinity: {
               required: {
@@ -154,7 +209,7 @@ export default {
     }
   },
   methods: {
-    getClassList() {
+    loadClassList() {
       listStorageClass(this.clusterName, null, true).then((data) => {
         this.storageClassList = data.items.filter((sc) => {
           return sc.provisioner === "kubernetes.io/no-provisioner"
@@ -162,19 +217,31 @@ export default {
       })
     },
     changePvType() {
-      if (this.form.pvType === "Local Volume") {
-        this.getClassList()
+      if (this.$refs["form"] !== undefined) {
+        this.$refs["form"].resetFields()
       }
     },
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           this.submitLoading = true
-          if (this.form.pvType === "Local Volume") {
-            delete this.form.submitForm.spec["hostPath"]
-          } else {
-            delete this.form.submitForm.spec["form.storageClassName"]
-            delete this.form.submitForm.spec["local"]
+          switch (this.pvType) {
+            case "Local Volume":
+              delete this.form.submitForm.spec["hostPath"]
+              delete this.form.submitForm.spec["nfs"]
+              break
+            case "Host Path":
+              delete this.form.submitForm.spec["local"]
+              delete this.form.submitForm.spec["nfs"]
+              delete this.form.submitForm.spec["storageClassName"]
+              break
+            case "NFS Share":
+              delete this.form.submitForm.spec["hostPath"]
+              delete this.form.submitForm.spec["local"]
+              if (this.form.submitForm.spec.nfs.readOnly) {
+                delete this.form.submitForm.spec.nfs["readOnly"]
+              }
+              break
           }
           this.form.submitForm.spec.accessModes.push(this.form.accessMode)
           if (this.form.selectorOperation && this.form.selectorKey) {
@@ -217,6 +284,7 @@ export default {
   },
   created() {
     this.clusterName = this.$route.params.name
+    this.loadClassList()
   },
 }
 </script>
