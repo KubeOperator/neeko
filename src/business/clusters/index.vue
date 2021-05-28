@@ -9,6 +9,12 @@
           <el-button size="small" @click="onImport()" v-permission="['ADMIN','PROJECT_MANAGER']">
             {{ $t("commons.button.import") }}
           </el-button>
+          <el-button size="small" :disabled="clusterSelection.length !== 1 || isDeleteButtonDisable" @click="onUpgrade()" v-permission="['ADMIN','PROJECT_MANAGER']">
+            {{ $t("commons.button.upgrade") }}
+          </el-button>
+          <el-button size="small" :disabled="clusterSelection.length !== 1 || isDeleteButtonDisable" @click="onHealthCheck()" v-permission="['ADMIN','PROJECT_MANAGER']">
+            {{ $t("commons.button.check") }}
+          </el-button>
           <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" @click="onDelete()" v-permission="['ADMIN','PROJECT_MANAGER']">
             {{ $t("commons.button.delete") }}
           </el-button>
@@ -147,20 +153,20 @@ export default {
           },
         },
         {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
+          label: this.$t("commons.button.check"),
+          icon: "el-icon-data-line",
           click: (row) => {
-            this.onDelete(row)
+            this.onHealthCheck(row)
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status !== "Failed"
           },
         },
         {
-          label: this.$t("commons.button.check"),
-          icon: "el-icon-data-line",
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
           click: (row) => {
-            this.onHealthCheck(row)
+            this.onDelete(row)
           },
           disabled: (row) => {
             return row.status !== "Running" && row.status !== "Failed"
@@ -238,6 +244,9 @@ export default {
       this.$router.push({ name: "ClusterImport" })
     },
     onUpgrade(row) {
+      if (!row) {
+        row = this.clusterSelection[0]
+      }
       this.$router.push({ name: "ClusterUpgrade", params: { name: row.name } })
     },
     goForDetail(row) {
@@ -340,6 +349,9 @@ export default {
 
     // cluster health check
     onHealthCheck(row) {
+      if (!row) {
+        row = this.clusterSelection[0]
+      }
       this.currentCluster = row
       this.dialogCheckVisible = true
       this.checkLoading = true
