@@ -157,13 +157,13 @@
                     </el-select>
                     <div v-if="form.flannelBackend === 'host-gw'">
                       <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
                     </div>
                     <div v-if="form.flannelBackend === 'vxlan'">
                       <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
                     </div>
                   </el-form-item>
 
@@ -174,13 +174,13 @@
                     </el-select>
                     <div v-if="form.calicoIpv4PoolIpip === 'off'">
                       <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
                     </div>
                     <div v-if="form.calicoIpv4PoolIpip === 'Always'">
                       <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
                     </div>
                   </el-form-item>
 
@@ -608,6 +608,7 @@ export default {
       switch (this.parts[0]) {
         case "192":
           this.part2Options = ["168"]
+          this.parts[1] = this.part2Options[0]
           this.maskOptions = [].concat(["16", "17", "18", "19"])
           this.parts[4] = this.maskOptions[0]
           break
@@ -640,6 +641,7 @@ export default {
         this.part3Options = selects
         this.parts[2] = this.part3Options[0]
       }
+      console.log(this.parts[0])
       if (this.parts[0] === "10") {
         if (mask < 16) {
           const a = Math.pow(2, 32 - mask - 16)
@@ -654,7 +656,9 @@ export default {
           for (let i = 0; i < 256; i++) {
             select1.push(i)
           }
+          console.log(this.select1)
           this.part2Options = select1
+          console.log(this.part2Options)
           this.parts[1] = this.part2Options[0]
           const a = Math.pow(2, 32 - mask - 8)
           const selects = []
