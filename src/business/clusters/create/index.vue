@@ -641,7 +641,6 @@ export default {
         this.part3Options = selects
         this.parts[2] = this.part3Options[0]
       }
-      console.log(this.parts[0])
       if (this.parts[0] === "10") {
         if (mask < 16) {
           const a = Math.pow(2, 32 - mask - 16)
@@ -656,9 +655,7 @@ export default {
           for (let i = 0; i < 256; i++) {
             select1.push(i)
           }
-          console.log(this.select1)
           this.part2Options = select1
-          console.log(this.part2Options)
           this.parts[1] = this.part2Options[0]
           const a = Math.pow(2, 32 - mask - 8)
           const selects = []
