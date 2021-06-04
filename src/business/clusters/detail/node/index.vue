@@ -81,7 +81,7 @@
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="supportGpu === 'disable'" :label="$t ('cluster.creation.support_gpu')">
+        <el-form-item v-if="supportGpu === 'disable' && !gpuExist" :label="$t ('cluster.creation.support_gpu')">
           <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
@@ -204,6 +204,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 
+import { listNamespace } from "@/api/cluster/namespace"
 import { listNodesByPage, nodeCreate, nodeDelete, cordonNode, evictionNode } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
@@ -236,6 +237,7 @@ export default {
       },
       dialogCreateVisible: false,
       dialogErrorVisible: false,
+      gpuExist: false,
       errMsg: "",
       clusterName: "",
       selects: [],
@@ -272,6 +274,7 @@ export default {
       provider: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
+      namespaces: []
     }
   },
   methods: {
@@ -289,6 +292,19 @@ export default {
             }
           })
           this.paginationConfig.total = data.total
+        })
+        .catch(() => {
+          this.loading = false
+        })
+      listNamespace(this.clusterName)
+        .then((data) => {
+          for ( var names of data.items){
+            if (names.metadata.name === "gpu-operator-resources"){
+              this.gpuExist = true
+            }
+          }
+          this.namespaces = data.items
+          this.loading = false
         })
         .catch(() => {
           this.loading = false
@@ -490,6 +506,7 @@ export default {
           this.search()
         })
     },
+
     getInternalIp(item) {
       return item.ip ? item.ip : "N/a"
     },

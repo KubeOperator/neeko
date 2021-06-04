@@ -1,7 +1,7 @@
 <template>
   <div>
     <complex-table :header="$t('message.message')" :selects.sync="selects" :fit="true" :default-sort = "{prop: 'create_time', order: 'descending'}"
-                   v-loading="loading" :data="data" :columns="columns" @search="search" :pagination-config="paginationConfig" >
+                   v-loading="loading" :data="data" :columns="columns" @search="search" :pagination-config="paginationConfig" :search-config="searchConfig" >
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="selects.length < 1"  @click="markAsRead()">
@@ -107,27 +107,27 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
-          // { field: "type", label: this.$t('message.type'), component: "FuComplexInput", defaultOperator: "eq" },
-          // {
-          //   field: "level",
-          //   label: this.$t('message.level'),
-          //   component: "FuComplexSelect",
-          //   options: [
-          //     { label: "Warning", value: 'Warning' },
-          //     { label: "Info", value: 'Info' },
-          //   ],
-          //   multiple: true
-          // },
-          // {
-          //   field: "table.status",
-          //   label: this.$t('commons.table.status'),
-          //   component: "FuComplexSelect",
-          //   options: [
-          //     { label: this.$t("message.READ"), value: "READ" },
-          //     { label: this.$t("message.UNREAD"), value: "UNREAD" },
-          //   ],
-          //   multiple: true
-          // },
+          { field: "type", label: this.$t('message.type'), component: "FuComplexInput", defaultOperator: "eq" },
+          {
+            field: "level",
+            label: this.$t('message.level'),
+            component: "FuComplexSelect",
+            options: [
+              { label: "Warning", value: 'Warning' },
+              { label: "Info", value: 'Info' },
+            ],
+            multiple: true
+          },
+          {
+            field: "table.status",
+            label: this.$t('commons.table.status'),
+            component: "FuComplexSelect",
+            options: [
+              { label: this.$t("message.READ"), value: "READ" },
+              { label: this.$t("message.UNREAD"), value: "UNREAD" },
+            ],
+            multiple: true
+          },
           { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
         ]
       },
@@ -196,6 +196,7 @@ export default {
       searchMessages(currentPage, pageSize,condition).then((data) => {
         this.loading = false
         this.data = data.items
+        console.log(123,data)
         this.paginationConfig.total = data.total
       })
     },
