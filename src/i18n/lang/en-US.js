@@ -470,7 +470,7 @@ const message = {
         backup_interval: "Backup Interval (days)",
         retained_number: "Keep Copies",
         backup_account: "Backup Account",
-        backup_account_help: "The backup account needs to be authorized to the project first",
+        backup_account_help: "The backup account needs to be authorized to the cluster first",
         status: "Status",
         local_recover: "Local file recovery",
         backup_start: "Backup has started! Please check the log later",

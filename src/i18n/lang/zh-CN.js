@@ -480,7 +480,7 @@ const message = {
         backup_interval: "备份间隔(天)",
         retained_number: "保留份数",
         backup_account: "备份账号",
-        backup_account_help: "备份账号需要先授权到项目",
+        backup_account_help: "备份账号需要先授权到集群",
         status: "状态",
         local_recover: "本地文件恢复",
         backup_start: "已经开始备份！请稍后查看日志",
