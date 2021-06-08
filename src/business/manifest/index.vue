@@ -136,7 +136,7 @@
       </el-dialog>
     </el-scrollbar>
 
-    <el-dialog
+    <el-dialog class="ko-tips"
       :title="$t('commons.message_box.prompt')"
       :show-close="true"
       :visible.sync="manifestVisible"

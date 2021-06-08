@@ -1,4 +1,5 @@
 <template>
+  <div>
     <complex-table local-key="registry_columns" :data="data" :search-config="searchConfig" :selects.sync="selects"
                    v-loading="loading" :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
@@ -11,7 +12,11 @@
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('setting.table.registry.arch')" mix-width="80" fix prop="architecture"/>
       <el-table-column :label="$t('setting.table.registry.protocol')" mix-width="30" prop="protocol"/>
-      <el-table-column :label="$t('setting.table.registry.hostname')" min-width="100" prop="hostname"/>
+      <el-table-column :label="$t('setting.table.registry.hostname')" min-width="100" prop="hostname">
+        <template v-slot:default="{row}">
+          <el-link style="font-size: 12px" type="info" @click="goForNexus(row)">{{ row.hostname }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
         <template v-slot:default="{row}">
           {{ row.updatedAt | datetimeFormat }}
@@ -19,6 +24,36 @@
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
+
+    <el-dialog class="ko-tips"
+      :title="$t('commons.message_box.prompt')"
+      :show-close="true"
+      :visible.sync="tipsVisible"
+      width="40%">
+      <div>
+        <span style="line-height: 150%">{{$t('setting.tips')}}</span>
+      </div>
+      <div>
+        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.address')}}: </span>
+        <a style="color: #447DF7" :href="tips.address" target="_blank">{{tips.address}}</a>
+      </div>
+      <div>
+        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.username')}}: </span>
+        <span>{{tips.username}}</span>
+      </div>
+      <div>
+        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.password')}}: </span>
+        <span>{{tips.password}}</span>
+      </div>
+      <br>
+      <div style="line-height: 150%">
+        <span style="font-weight: bolder">{{$t('manifest.see_documentation')}}:</span><br>
+        <a style="color: #447DF7" href="https://kubeoperator.io/docs/user_manual/system_management/" target="_blank">https://kubeoperator.io/docs/user_manual/system_management/</a>
+        <span slot="footer" class="dialog-footer">
+      </span>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -76,6 +111,12 @@ export default {
         pageSize: 5,
         total: 0,
       },
+      tipsVisible: false,
+      tips: {
+        address: "",
+        username: "",
+        password: "",
+      },
       data: [],
       loading: false,
     }
@@ -122,6 +163,12 @@ export default {
         }
       })
     },
+    goForNexus(row) {
+      this.tips.address = row.protocol + "://" + row.hostname + ":8081"
+      this.tips.username = "admin"
+      this.tips.password = "admin123"
+      this.tipsVisible = true
+    }
   },
   created() {
     this.search()
@@ -130,5 +177,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

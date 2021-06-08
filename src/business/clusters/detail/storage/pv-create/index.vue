@@ -113,7 +113,7 @@
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.pv_create.storage_class')" prop="submitForm.spec.storageClassName">
                 <el-select style="width: 100%" size="small" v-model="form.submitForm.spec.storageClassName">
-                  <el-option v-for="sc in storageClassList" :key="sc.metadata.name" :value="sc.metadata.name">{{sc.metadata.name}}</el-option>
+                  <el-option v-for="sc in storageClassAllList" :key="sc.metadata.name" :value="sc.metadata.name">{{sc.metadata.name}}</el-option>
                 </el-select>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.pv_create.node_selector')" prop="selectorKey">
@@ -158,6 +158,7 @@ export default {
     return {
       submitLoading: false,
       storageClassList: [],
+      storageClassAllList: [],
       pvType: "",
       form: {
         selectorOperation: "In",
@@ -214,6 +215,7 @@ export default {
         this.storageClassList = data.items.filter((sc) => {
           return sc.provisioner === "kubernetes.io/no-provisioner"
         })
+        this.storageClassAllList = data.items
       })
     },
     changePvType() {

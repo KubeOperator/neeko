@@ -793,6 +793,10 @@ const message = {
   },
   setting: {
     registry: "仓库",
+    tips: "默认仓库为部署机Nexus，管理端口为8081",
+    address: "地址",
+    username: "账号",
+    password: "密码",
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",

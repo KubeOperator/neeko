@@ -782,6 +782,10 @@ const message = {
   },
   setting: {
     registry: "Registry",
+    tips: "The default repo is nexus, and the management port is 8081",
+    address: "Address",
+    username: "Username",
+    password: "Password",
     ntp: "NTP",
     email: "Email",
     license: "License",
