@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.region.name')" prop="region">
               <el-select v-model="form.region"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword
                          @change="changeRegion(form.region)">
                 <el-option
@@ -24,7 +24,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.plan.deploy_template')" prop="deployTemplate">
               <el-select v-model="form.deployTemplate"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword
                          @change="changeTemplate()">
                 <el-option :label="$t('automatic.plan.SINGLE')" value="SINGLE"></el-option>
@@ -33,7 +33,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.zone.name')" prop="zone" v-if="form.deployTemplate==='SINGLE'">
               <el-select v-model="form.zone"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword
                          key="zone">
                 <el-option
@@ -46,7 +46,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.zone.name')" prop="zones" v-if="form.deployTemplate==='MULTIPLE'">
               <el-select v-model="form.zones"
-                         filterable
+                         filterable style="width:100%"
                          multiple
                          reserve-keyword
                          key="zones">
@@ -61,7 +61,7 @@
             <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects">
               <el-select v-model="form.projects"
                          multiple
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in projects"
@@ -73,7 +73,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.plan.master_model')" prop="planVars.masterModel">
               <el-select v-model="form.planVars.masterModel"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in vmConfigs"
@@ -85,7 +85,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.plan.worker_model')" prop="planVars.workerModel">
               <el-select v-model="form.planVars.workerModel"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in vmConfigs"

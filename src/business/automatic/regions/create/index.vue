@@ -4,13 +4,13 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="230px" :model="form" :rules="rules" v-loading="loading" label-position="left">
+          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('automatic.cloud_provider')" prop="provider">
-              <el-select v-model="form.provider"
+              <el-select v-model="form.provider" style="width:100%"
                          filterable
                          reserve-keyword>
                 <el-option label="OpenStack" value="OpenStack"></el-option>
@@ -62,7 +62,7 @@
             </div>
             <el-form-item :label="$t('automatic.datacenter')" prop="datacenter">
               <el-select v-model="form.datacenter"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in cloudRegions"

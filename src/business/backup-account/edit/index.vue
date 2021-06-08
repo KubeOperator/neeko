@@ -60,7 +60,7 @@
             <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects" required>
               <el-select v-model="form.projects"
                          multiple
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                   v-for="(item,index) in projects"
