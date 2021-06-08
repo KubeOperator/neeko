@@ -313,7 +313,7 @@ export default {
           break
         case "pv":
           deletePersistentVolume(this.clusterName, row.metadata.name).then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
             this.search()
           })
           break

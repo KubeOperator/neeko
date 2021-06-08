@@ -10,7 +10,7 @@
       </template>
     </fu-search-bar>
 
-    <complex-table :data="data" :pagination-config="paginationConfig" @search="search">
+    <complex-table v-loading="loading" :data="data" :pagination-config="paginationConfig" @search="search">
       <el-table-column min-width="25%" :label="$t('cluster.detail.log.time')">
         <template v-slot:default="{row}">
           {{ row.timestamp | datetimeFormat }}
@@ -34,6 +34,7 @@ const CustomSearchComponent = {
   },
   data() {
     return {
+      loading: false,
       condition: "",
       operator: "like",
       operatorLabel: "包含",
@@ -157,6 +158,7 @@ export default {
     },
 
     getLogDatas(condition, queryArry) {
+      this.loading = true
       let queryIndex = ""
       this.getSearchDate(condition)
       const begindate = formatDate(this.searchBeginDate, "yyyy.MM.dd")
@@ -177,7 +179,9 @@ export default {
           item._source = JSON.stringify(item._source)
         }
         this.loading = false
-      })
+      }).catch(() => {
+          this.loading = false
+        })
     },
 
     getSearchDate(condition) {
