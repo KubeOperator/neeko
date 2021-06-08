@@ -12,7 +12,7 @@
             <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects">
               <el-select v-model="form.projects"
                          multiple
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in projects"
@@ -24,7 +24,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.plan.master_model')" prop="planVars.masterModel">
               <el-select v-model="form.planVars.masterModel"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in vmConfigs"
@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.plan.worker_model')" prop="planVars.workerModel">
               <el-select v-model="form.planVars.workerModel"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword>
                 <el-option
                         v-for="(item,index) in vmConfigs"

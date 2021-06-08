@@ -68,7 +68,7 @@
             <!-- SFTP Option end-->
             <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects" required>
               <el-select v-model="form.projects"
-                         multiple
+                         multiple style="width:100%"
                          filterable
                          reserve-keyword>
                 <el-option

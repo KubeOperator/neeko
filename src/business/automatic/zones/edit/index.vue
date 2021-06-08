@@ -19,7 +19,7 @@
               <el-form-item :label="$t('automatic.zone.old_datastores')" prop="oldDatastores">
                 <el-select v-model="oldDatastores"
                            multiple
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword
                            disabled>
                 </el-select>
@@ -27,7 +27,7 @@
               <el-form-item :label="$t('automatic.zone.new_datastores')" prop="chooseDatastores">
                 <el-select v-model="newDatastores"
                            multiple
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword>
                   <el-option
                           v-for="(item,index) in cloudDatastores"
@@ -39,7 +39,7 @@
               </el-form-item>
             </div>
             <el-form-item :label="$t('automatic.ip_pool.name')" prop="ipPoolName">
-              <el-select v-model="form.ipPoolName" filterable reserve-keyword @change="changeIpPool()">
+              <el-select v-model="form.ipPoolName" filterable style="width:100%" reserve-keyword @change="changeIpPool()">
                 <el-option
                         v-for="(item,index) in ipPools"
                         :key="index"

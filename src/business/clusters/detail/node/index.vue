@@ -553,7 +553,7 @@ export default {
         let flag = false
         const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
         for (const item of this.data) {
-          if (needPolling.indexOf(item.status) !== -1 && this.selects === 0) {
+          if (needPolling.indexOf(item.status) !== -1) {
             flag = true
             break
           }

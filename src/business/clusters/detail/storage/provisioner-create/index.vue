@@ -102,7 +102,7 @@
                 <el-input v-model="form.vars['vc_username']" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.vcenter_password')" prop="vars.vc_password" :rules="requiredRules">
-                <el-input v-model="form.vars['vc_password']" clearable></el-input>
+                <el-input v-model="form.vars['vc_password']" type="password" clearable></el-input>
               </el-form-item>
               <el-form-item label="Datacenter" prop="vars.datacenter" :rules="requiredRules">
                 <el-input v-model="form.vars['datacenter']" clearable></el-input>

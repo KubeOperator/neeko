@@ -631,6 +631,7 @@ export default {
       this.onMaskChange()
     },
     onMaskChange() {
+      this.part3Options = []
       const mask = Number(this.parts[4])
       if (this.parts[0] === "192" || this.parts[0] === "172") {
         const a = Math.pow(2, 32 - mask - 8)
