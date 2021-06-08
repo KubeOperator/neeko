@@ -82,7 +82,11 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
-          { field: "architecture", label: this.$t('setting.table.registry.arch'), component: "FuComplexInput", defaultOperator: "eq" },
+          {
+            field: "architecture",
+            label: this.$t('setting.table.registry.arch'),
+            component: "FuComplexInput",
+            defaultOperator: "eq" },
           {
             field: "protocol",
             label: this.$t('setting.table.registry.protocol'),
@@ -96,14 +100,9 @@ export default {
           {
             field: "hostname",
             label: this.$t('setting.table.registry.hostname'),
-            component: "FuComplexSelect",
-            options: [
-              { label: this.$t("commons.role.admin"), value: 1 },
-              { label: this.$t("commons.role.user"), value: 0 },
-            ],
-            multiple: true
+            component: "FuComplexInput",
+            defaultOperator: "eq",
           },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime" },
         ]
       },
       paginationConfig: {
