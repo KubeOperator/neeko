@@ -76,6 +76,9 @@ export default {
       this.loading_memory = true
       this.loading_disk = true
       this.loading_network = true
+      if(!this.searchruleForm.timeRange) {
+        this.searchruleForm.timeRange = []
+      }
       listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
           return item.ip
