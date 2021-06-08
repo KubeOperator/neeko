@@ -408,11 +408,11 @@ export default {
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
           this.dialogGrantVisible = false
           this.search()
-          this.grantLoading = true
+          this.grantLoading = false
           this.hostSelections = []
         })
         .catch(() => {
-          this.grantLoading = true
+          this.grantLoading = false
           this.hostSelections = []
         })
     },

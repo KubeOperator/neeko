@@ -64,7 +64,7 @@ export default {
           }
         })
         .catch(() => {
-          this.loading = true
+          this.loading = false
         })
       this.getNpdExists()
     },
