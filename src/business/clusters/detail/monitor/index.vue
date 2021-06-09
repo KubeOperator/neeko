@@ -76,15 +76,15 @@ export default {
       this.loading_memory = true
       this.loading_disk = true
       this.loading_network = true
-      if(!this.searchruleForm.timeRange) {
-        this.searchruleForm.timeRange = []
-      }
       listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
           return item.ip
         })
         this.searchruleForm.node = this.searchruleForm.node ? this.searchruleForm.node : this.nodes[0]
 
+        if (!this.searchruleForm.timeRange) {
+          this.searchruleForm.timeRange = []
+        }
         if (this.searchruleForm.timeRange.length === 0) {
           this.searchruleForm.timeRange[0] = new Date(new Date().setMinutes(new Date().getMinutes() - 30))
           this.searchruleForm.timeRange[1] = new Date()
