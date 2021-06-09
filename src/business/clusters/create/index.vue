@@ -276,6 +276,7 @@
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
                       <ul>{{$t ('cluster.creation.name')}}</ul>
+                      <ul>{{$t ('cluster.project')}}</ul>
                       <ul>{{$t ('cluster.creation.provider')}}</ul>
                       <ul>{{$t ('cluster.creation.version')}}</ul>
                       <ul>{{$t ('cluster.creation.arch')}}</ul>
@@ -283,6 +284,7 @@
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
+                      <ul>{{form.projectName}}</ul>
                       <ul v-if="form.provider === 'plan'">{{$t ('cluster.creation.provide_plan')}}</ul>
                       <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
@@ -298,12 +300,18 @@
                       <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
                       <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
+                      <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
+                      <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.clusterCidr}}</ul>
                       <ul>{{form.maxNodePodNum}}</ul>
                       <ul>{{form.maxClusterServiceNum}}</ul>
                       <ul>{{form.kubeProxyMode}}</ul>
+                      <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'disable'">{{$t ('commons.button.disable')}}</ul>
                     </el-col>
                   </el-row>
 
@@ -413,7 +421,7 @@ export default {
         kubeProxyMode: "iptables",
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
-        kubernetesAudit: "no",
+        kubernetesAudit: "disable",
         clusterCidr: "192.168.0.0/16",
 
         runtimeType: "docker",
