@@ -222,7 +222,7 @@
                   <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
                     <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
                       <el-option value="nginx">nginx</el-option>
-                      <el-option value="traefik">traefik</el-option>
+                      <el-option v-if="versionHigher206() || form.enableDnsCache === 'disable'" value="traefik">traefik</el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
@@ -691,6 +691,28 @@ export default {
       } else {
         this.form.flannelBackend = "vxlan"
       }
+    },
+    versionHigher206() {
+      const currentVersion = this.form.version
+      const currentVersions = currentVersion.split(".")
+      const version1 = currentVersions[0]
+      if (version1 !== "v1") {
+        return true
+      }
+      const version2 = currentVersions[1]
+      if (Number(version2) > 20) {
+        return true
+      } else if (Number(version2) < 20) {
+        return false
+      }
+      const versions = currentVersions[2].split("-ko")
+      const version3 = Number(versions[0])
+      if (Number(version3) >= 6) {
+        return true
+      } else if (Number(version3) < 6) {
+        return false
+      }
+      return false
     },
     onSubmit() {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
