@@ -477,7 +477,7 @@ export default {
     polling() {
       this.timer = setInterval(() => {
         let flag = false
-        const needPolling = ["Initializing", "Terminating", "Creating", "Waiting"]
+        const needPolling = ["Initializing", "Terminating", "Creating", "Waiting", "Upgrading"]
         for (const item of this.data) {
           if (needPolling.indexOf(item.status) !== -1) {
             flag = true
