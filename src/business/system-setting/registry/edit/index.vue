@@ -5,7 +5,7 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="80px">
-            <el-form-item :label="$t('setting.table.registry.arch')" required>
+            <el-form-item :label="$t('setting.table.registry.arch')" prop="architecture" required>
               <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option
                   v-for="item in architectureOptions"
@@ -14,7 +14,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.protocol')" required>
+            <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol" required>
               <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
                 <el-option
                   v-for="item in protocolOptions"
@@ -67,6 +67,8 @@ export default {
       }],
       rules: {
         hostname: [Rule.IpRule],
+        architecture: [Rule.RequiredRule],
+        protocol: [Rule.RequiredRule],
       },
       protocolOptions: [{
         value: 'http',
