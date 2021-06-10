@@ -222,7 +222,7 @@
                   <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
                     <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
                       <el-option value="nginx">nginx</el-option>
-                      <el-option value="traefik">traefik</el-option>
+                      <el-option v-if="versionHigher206() || form.enableDnsCache === 'disable'" value="traefik">traefik</el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
@@ -276,6 +276,7 @@
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
                       <ul>{{$t ('cluster.creation.name')}}</ul>
+                      <ul>{{$t ('cluster.project')}}</ul>
                       <ul>{{$t ('cluster.creation.provider')}}</ul>
                       <ul>{{$t ('cluster.creation.version')}}</ul>
                       <ul>{{$t ('cluster.creation.arch')}}</ul>
@@ -283,6 +284,7 @@
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
+                      <ul>{{form.projectName}}</ul>
                       <ul v-if="form.provider === 'plan'">{{$t ('cluster.creation.provide_plan')}}</ul>
                       <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
@@ -298,12 +300,18 @@
                       <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
                       <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
+                      <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
+                      <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.clusterCidr}}</ul>
                       <ul>{{form.maxNodePodNum}}</ul>
                       <ul>{{form.maxClusterServiceNum}}</ul>
                       <ul>{{form.kubeProxyMode}}</ul>
+                      <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'disable'">{{$t ('commons.button.disable')}}</ul>
                     </el-col>
                   </el-row>
 
@@ -413,7 +421,7 @@ export default {
         kubeProxyMode: "iptables",
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
-        kubernetesAudit: "no",
+        kubernetesAudit: "disable",
         clusterCidr: "192.168.0.0/16",
 
         runtimeType: "docker",
@@ -683,6 +691,28 @@ export default {
       } else {
         this.form.flannelBackend = "vxlan"
       }
+    },
+    versionHigher206() {
+      const currentVersion = this.form.version
+      const currentVersions = currentVersion.split(".")
+      const version1 = currentVersions[0]
+      if (version1 !== "v1") {
+        return true
+      }
+      const version2 = currentVersions[1]
+      if (Number(version2) > 20) {
+        return true
+      } else if (Number(version2) < 20) {
+        return false
+      }
+      const versions = currentVersions[2].split("-ko")
+      const version3 = Number(versions[0])
+      if (Number(version3) >= 6) {
+        return true
+      } else if (Number(version3) < 6) {
+        return false
+      }
+      return false
     },
     onSubmit() {
       if (this.form.ciliumTunnelMode === "flannelBackend") {

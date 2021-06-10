@@ -82,6 +82,9 @@ export default {
         })
         this.searchruleForm.node = this.searchruleForm.node ? this.searchruleForm.node : this.nodes[0]
 
+        if (!this.searchruleForm.timeRange) {
+          this.searchruleForm.timeRange = []
+        }
         if (this.searchruleForm.timeRange.length === 0) {
           this.searchruleForm.timeRange[0] = new Date(new Date().setMinutes(new Date().getMinutes() - 30))
           this.searchruleForm.timeRange[1] = new Date()
