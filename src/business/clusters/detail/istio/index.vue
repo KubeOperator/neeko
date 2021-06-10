@@ -95,7 +95,7 @@
           </div>
         </el-collapse-item>
       </el-collapse>
-      <div v-if="baseCfg.cluster_istio.status === 'Waiting'">
+      <div v-if="baseCfg.cluster_istio.status !== 'Running'">
         <el-button @click="onSubmit('start')" :disabled="submitLoading" size="mini">{{$t('commons.button.enable')}}</el-button>
       </div>
       <div v-if="baseCfg.cluster_istio.status === 'Running'">
