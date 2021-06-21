@@ -16,6 +16,7 @@
           <el-button size="small" @click="del()" v-permission="['ADMIN']" :disabled="selects.length===0">
             {{ $t("commons.button.delete") }}
           </el-button>
+          <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
@@ -156,6 +157,9 @@ export default {
     },
     create () {
       this.$router.push({ name: "PlanCreate" })
+    },
+    onGrant() {
+      this.$router.push({ name: "ProjectAuthorizationList" })
     },
     del (name) {
       this.$confirm(

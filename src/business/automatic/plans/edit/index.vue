@@ -9,19 +9,6 @@
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
-            <el-form-item :label="$t('automatic.plan.project_auth')" prop="projects">
-              <el-select v-model="form.projects"
-                         multiple
-                         filterable style="width:100%"
-                         reserve-keyword>
-                <el-option
-                        v-for="(item,index) in projects"
-                        :key="index"
-                        :label="item.name"
-                        :value="item.name">
-                </el-option>
-              </el-select>
-            </el-form-item>
             <el-form-item :label="$t('automatic.plan.master_model')" prop="planVars.masterModel">
               <el-select v-model="form.planVars.masterModel"
                          filterable style="width:100%"
@@ -87,7 +74,6 @@
 <script>
 import {getPlanBy, listVmConfigs, updatePlanBy} from "@/api/plan"
 import LayoutContent from "@/components/layout/LayoutContent"
-import {allProjects} from "@/api/projects"
 import Rule from "@/utils/rules"
 
 export default {
@@ -101,17 +87,14 @@ export default {
           masterModel: "",
           workerModel: ""
         },
-        projects: []
       },
       rules: {
-        projects: [Rule.RequiredRule],
         planVars: {
           masterModel: [Rule.RequiredRule],
           workerModel: [Rule.RequiredRule]
         }
       },
       loading: false,
-      projects: [],
       vmConfigs: []
     }
   },
@@ -144,9 +127,6 @@ export default {
       })
     }).finally(() => {
       this.loading = false
-    })
-    allProjects().then(res => {
-      this.projects = res.items
     })
   }
 }

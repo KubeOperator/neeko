@@ -16,8 +16,13 @@
               <el-input-number :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('host.project_auth')" prop="project">
-              <el-select style="width:100%" v-model="form.project" clearable filterable>
+              <el-select style="width:100%" v-model="form.project" @change="getClusters" clearable filterable>
                 <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('host.cluster_auth')" prop="cluster">
+              <el-select style="width:100%" v-model="form.cluster" clearable filterable>
+                <el-option v-for="clu in clusterList" :key="clu.id" :value="clu" :label="clu" />
               </el-select>
             </el-form-item>
 
@@ -69,6 +74,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { createHost } from "@/api/hosts"
 import { listCredentialAll } from "@/api/credentials"
 import { allProjects } from "@/api/projects"
+import { getClusterByProject } from "@/api/cluster"
 import Rule from "@/utils/rules"
 
 export default {
@@ -81,6 +87,8 @@ export default {
         name: "",
         ip: "",
         port: 22,
+        project: "",
+        cluster: "",
         credentialId: "",
         credential: {
           username: "",
@@ -105,6 +113,7 @@ export default {
       },
       credentialList: [],
       projectList: [],
+      clusterList: [],
     }
   },
   methods: {
@@ -132,6 +141,18 @@ export default {
       allProjects().then((data) => {
         this.projectList = data.items
       })
+    },
+    getClusters() {
+      this.clusterList = []
+      this.form.cluster = ""
+      if (this.form.project === "") {
+        return
+      }
+      if (this.form.project) {
+        getClusterByProject(this.form.project).then((data) => {
+          this.clusterList = data
+        })
+      }
     },
     onCancel() {
       this.$router.push({ name: "HostList" })

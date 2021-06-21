@@ -209,10 +209,9 @@ const message = {
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
       yum_repo: "Yum 仓库",
-      yum_repo_replace_help:
-        "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
-      yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
-      yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
+      yum_repo_replace_help: "此操作将对集群节点原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
+      yum_repo_coexist_help: "此操作将保持集群节点原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
+      yum_repo_no_help: "此操作将保持使用集群节点原始 yum repo 文件，不对集群节点的 yum repo 做任何操作",
 
       step2: "集群设置",
       container_network: "容器网络",
@@ -244,7 +243,7 @@ const message = {
       flannel_backend: "网络模式",
       cilium_help: "Cilium 官方建议 kernel(内核) 版本至少在 4.9.17 以上",
       cilium_overlay_help: "基于封装的虚拟网络，产生所有主机。目前 VXLAN 和 Geneve 已经完成，但可以启用 Linux 支持的所有封装格式。",
-      cilium_overlay_help_more: "此模式具有最小的基础设施和集成要求。它几乎适用于任何网络基础设施，因为唯一的要求是主机之间的IP连接，这通常已经给出。",
+      cilium_overlay_help_more: "此模式具有最小的基础设施和集成要求。它几乎适用于任何网络基础设施，唯一的要求是主机之间的IP连接。",
       cilium_native_help: "使用 Linux 主机的常规路由表。网络必须能够路由应用程序容器的IP地址，此模式适用于高级用户，需要了解底层网络基础结构。",
       cilium_native_help_more: "适用于（1. 原生 IPv6 网络、2. 与云网络路由器配合使用、3. 如果您已经在运行路由守护进程）",
       native_routing: "本地路由",
@@ -551,6 +550,7 @@ const message = {
     template_download: "模版下载",
     not_support_format: "不支持的文件格式",
     project_auth: "项目授权",
+    cluster_auth: "集群授权",
     new_credential: "新建凭据",
     type: "类型",
     credential_type: "凭据类型",
@@ -564,7 +564,6 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
-    authorize_project: "授权到项目",
     existing_authorized: "存在已授权主机",
     existing_unauthorized: "存在未授权主机",
     project: "项目"
@@ -770,7 +769,7 @@ const message = {
     add_cluster_manager: "添加集群管理员",
     key_words: "请输入姓名",
     list: "项目列表",
-    header_description: "左侧是项目-集群树，右侧是人员和资源管理",
+    header_description: "左侧是项目-集群树，右侧是成员和资源管理（主机、备份账号需要授权到目标集群才能进行扩容、备份等操作）",
   },
   credential: {
     name: "凭据名称",
