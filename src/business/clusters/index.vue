@@ -336,7 +336,7 @@ export default {
             this.search()
             this.$message({
               type: "success",
-              message: this.$t("commons.msg.delete_success"),
+              message: this.$t("commons.msg.op_success"),
             })
             this.dialogDeleteVisible = false
             this.deleteLoadding = false
