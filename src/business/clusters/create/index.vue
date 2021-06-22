@@ -166,11 +166,11 @@
 
                     <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
                       <el-switch v-model="multi_network" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
                     </el-form-item>
 
                     <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
                       <el-input v-model="form.networkInterface" clearable></el-input>
-                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
                     </el-form-item>
                   </div>
 
@@ -197,11 +197,11 @@
                         <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
                         <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
                       </el-select>
+                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
                     </el-form-item>
 
                     <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
                       <el-input v-model="form.networkInterface" clearable></el-input>
-                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
                     </el-form-item>
                     <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="networkCidr">
                       <el-input v-model="form.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>

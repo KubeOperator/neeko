@@ -238,7 +238,7 @@ const message = {
       network_name: "网卡",
       network_cidr: "网段",
       network_cidr_help: "多网段之间以逗号分隔",
-      network_interface_help: "多网卡环境需要指定使用的网卡名称，单网卡环境可不填",
+      network_interface_help: "多网卡环境需要指定集群节点使用的网卡名称或网段信息（单网卡环境可不设置）",
       network_type: "容器网络",
       flannel_backend: "网络模式",
       cilium_help: "Cilium 官方建议 kernel(内核) 版本至少在 4.9.17 以上",
