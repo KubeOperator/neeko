@@ -4,7 +4,7 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="100px">
+          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="160px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" clearable></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
@@ -22,8 +22,10 @@
             </el-form-item>
             <el-form-item :label="$t('host.cluster_auth')" prop="cluster">
               <el-select style="width:100%" v-model="form.cluster" clearable filterable>
-                <el-option v-for="clu in clusterList" :key="clu.id" :value="clu" :label="clu" />
+                <el-option v-for="(item,index) in clusterList" :key="index" :value="item" :label="item" />
               </el-select>
+              <div><span class="input-help">{{$t('host.cluster_auth_help')}}</span></div>
+
             </el-form-item>
 
             <el-form-item :label="$t('credential.type')" required>
@@ -150,7 +152,12 @@ export default {
       }
       if (this.form.project) {
         getClusterByProject(this.form.project).then((data) => {
-          this.clusterList = data
+          this.clusterList = []
+          for (const clu of data) {
+            if (clu.provider !== "plan") {
+              this.clusterList.push(clu.name)
+            }
+          }
         })
       }
     },

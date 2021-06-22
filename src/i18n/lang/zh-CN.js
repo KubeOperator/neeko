@@ -551,6 +551,7 @@ const message = {
     not_support_format: "不支持的文件格式",
     project_auth: "项目授权",
     cluster_auth: "集群授权",
+    cluster_auth_help: "新增主机只能授权到手动模式集群中使用",
     new_credential: "新建凭据",
     type: "类型",
     credential_type: "凭据类型",

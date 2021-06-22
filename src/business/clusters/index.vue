@@ -135,6 +135,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import { getClusterStatus, initCluster, upgradeCluster, openLogger, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
 import { listRegistryAll } from "@/api/system-setting"
+import { checkPermission } from "@/utils/permisstion"
 
 export default {
   name: "ClusterList",
@@ -173,6 +174,7 @@ export default {
           },
         },
       ],
+      isAdmin: checkPermission("ADMIN"),
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,

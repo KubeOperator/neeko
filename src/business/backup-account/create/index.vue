@@ -4,7 +4,7 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="100px">
+          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="160px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
@@ -185,7 +185,10 @@ export default {
       }
       let pros = this.form.projects.join(",")
       getClusterByProject(pros).then((data) => {
-        this.clusters = data
+        this.clusters = []
+        for (const clu of data) {
+          this.clusters.push(clu.name)
+        }
       })
     },
     getBuckets() {

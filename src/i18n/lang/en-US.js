@@ -543,6 +543,7 @@ const message = {
     not_support_format: "Unsupported file format",
     project_auth: "Project Authorization",
     cluster_auth: "Cluster Authorization",
+    cluster_auth_help: "Can only be authorized to bare metal mode cluster",
     new_credential: "New Credential",
     type: "Type",
     credential_type: "Credential Type",
