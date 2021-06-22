@@ -166,7 +166,7 @@
 
                     <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
                       <el-switch v-model="multi_network" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
+                      <div><span class="input-help">{{$t('cluster.creation.network_interface_fannel_help')}}</span></div>
                     </el-form-item>
 
                     <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
