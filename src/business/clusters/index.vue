@@ -28,7 +28,7 @@
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.project')" min-width="100" prop="projectName" fix />
+      <el-table-column :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix />
       <el-table-column :label="$t('cluster.version')" min-width="80" prop="spec.version" fix />
       <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
