@@ -451,7 +451,7 @@ export default {
     },
     dialogPolling() {
       this.timer2 = setInterval(() => {
-        if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
+        if ((this.log.phase !== "Running" && this.log.phase !== "Failed") && this.currentCluster.status !== "Failed" ) {
           getClusterStatus(this.clusterName)
             .then((data) => {
               if (data.conditions.length === 0) {
