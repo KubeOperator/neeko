@@ -798,6 +798,8 @@ const message = {
         protocol: "Protocol",
         hostname: "Address",
         arch: "CPU Architecture",
+        default_password: "Default Password",
+        registry_address: "Registry link",
         hostname_help: "The default is the IP of the server where KubeOperator is deployed. This IP will be used to access the nexus registry",
         repo_port_help: "Web access port of Nexus, also used in Yum/APT and wget download",
         repo_registry_port_help: "Use the Docker pull command to download the port used to download the image from the Nexus warehouse",

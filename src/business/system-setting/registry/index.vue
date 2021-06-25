@@ -30,21 +30,20 @@
       :show-close="true"
       :visible.sync="tipsVisible"
       width="40%">
-      <div>
-        <span style="line-height: 150%">{{$t('setting.tips')}}</span>
-      </div>
-      <div>
-        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.address')}}: </span>
-        <a style="color: #447DF7" :href="tips.address" target="_blank">{{tips.address}}</a>
-      </div>
-      <div>
-        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.username')}}: </span>
-        <span>{{tips.username}}</span>
-      </div>
-      <div>
-        <span style="font-weight: bolder; line-height: 150%">{{$t('setting.password')}}: </span>
-        <span>{{tips.password}}</span>
-      </div>
+
+      <el-table
+        :data="tipstableData"
+        style="width: 100%">
+        <el-table-column
+          prop="name"
+          :label="$t('commons.table.name')"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          :label="$t('commons.table.description')">
+        </el-table-column>
+      </el-table>
       <br>
       <div style="line-height: 150%">
         <span style="font-weight: bolder">{{$t('manifest.see_documentation')}}:</span><br>
@@ -115,9 +114,13 @@ export default {
         address: "",
         username: "",
         password: "",
+        repoPort: "",
+        registryPort: "",
+        registryHostedPort: "",
       },
       data: [],
       loading: false,
+      tipstableData: []
     }
   },
   methods: {
@@ -128,6 +131,7 @@ export default {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
+        console.log(data)
       })
     },
     create() {
@@ -163,10 +167,24 @@ export default {
       })
     },
     goForNexus(row) {
-      this.tips.address = row.protocol + "://" + row.hostname + ":8081"
-      this.tips.username = "admin"
-      this.tips.password = "admin123"
       this.tipsVisible = true
+      this.tipstableData = []
+      this.tipstableData.push({
+        name: this.$t('setting.table.registry.registry_address'),
+        address: row.protocol + "://" + row.hostname + ":" + row.repoPort
+      },{
+        name: this.$t('user.username'),
+        address: 'admin'
+      },{
+        name: this.$t('setting.table.registry.default_password'),
+          address: 'admin123'
+      },{
+        name: 'RegistryPort',
+          address: row.registryPort
+      },{
+        name: 'RegistryHostedPort',
+        address: row.registryHostedPort
+      })
     }
   },
   created() {

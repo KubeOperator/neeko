@@ -124,7 +124,7 @@ const message = {
       description: "描述",
       create_time: "创建时间",
       type: "类型",
-      username: "用户名"
+      username: "用户名",
     },
     status: {
       running: "运行中",
@@ -793,7 +793,7 @@ const message = {
   },
   setting: {
     registry: "仓库",
-    tips: "默认仓库为部署机Nexus，管理端口为8081",
+    tips: "默认仓库为部署机Nexus，管理端口为:",
     address: "地址",
     username: "账号",
     password: "密码",
@@ -809,6 +809,8 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
+        default_password: "默认密码",
+        registry_address: "仓库地址",
         hostname_help: "默认为部署 KubeOperator 的服务器 IP，将使用该 IP 来访问 nexus 仓库",
         repo_port_help: "Web 访问 Nexus 的端口，也应用于 Yum/APT 及 wget 下载",
         repo_registry_port_help: "使用 docker pull 命令从 Nexus 仓库下载镜像所使用的端口",
