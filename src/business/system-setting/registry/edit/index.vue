@@ -2,9 +2,9 @@
   <layout-content :header="$t('commons.button.edit')" :back-to="{ name: 'Registry'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
-      <el-col :span="10">
+      <el-col :span="12">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="80px">
+          <el-form ref="form" label-position="left" v-loading="loading"  :rules="rules" :model="form" label-width="140px">
             <el-form-item :label="$t('setting.table.registry.arch')" prop="architecture" required>
               <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option
@@ -15,7 +15,7 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol" required>
-              <el-select style="width: 100%" v-model="form.protocol" default-first-option="https" placeholder="请选择">
+              <el-select style="width: 100%" v-model="form.protocol"  placeholder="请选择">
                 <el-option
                   v-for="item in protocolOptions"
                   :key="item.value"
@@ -27,6 +27,31 @@
             <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname"  required>
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
+            <div class="registry-collapse">
+              <el-collapse accordion>
+                <el-collapse-item>
+                  <template slot="title">
+                    高级设置<i class="header-icon el-icon-info"></i>
+                  </template>
+                  <div>
+                    <el-form-item label="RepoPort" prop="repoPort" required>
+                      <el-input-number v-model="form.repoPort"  :min="0" :max="65535"></el-input-number>
+                      <div><span class="input-help">{{$t('setting.table.registry.repo_port_help')}}</span></div>
+                    </el-form-item>
+
+                    <el-form-item label="RegistryPort" prop="registryPort" required>
+                      <el-input-number v-model="form.registryPort"  :min="0" :max="65535"></el-input-number>
+                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_port_help')}}</span></div>
+                    </el-form-item>
+
+                    <el-form-item label="RegistryHostedPort" prop="registryHostedPort" required>
+                      <el-input-number v-model="form.registryHostedPort"  :min="0" :max="65535"></el-input-number>
+                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}口</span></div>
+                    </el-form-item>
+                  </div>
+                </el-collapse-item>
+              </el-collapse>
+            </div>
             <div style="float: right">
               <el-form-item>
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
@@ -59,6 +84,9 @@ export default {
         hostname: '',
         protocol: '',
         id: '',
+        repoPort: '',
+        registryPort: '',
+        registryHostedPort: '',
       },
       architectureOptions: [{
         value: 'x86_64',
@@ -89,7 +117,10 @@ export default {
           architecture: this.form.architecture,
           hostname: this.form.hostname,
           protocol: this.form.protocol,
-          id: this.form.id
+          id: this.form.id,
+          repoPort: this.form.repoPort,
+          registryPort: this.form.registryPort,
+          registryHostedPort: this.form.registryHostedPort,
         }).then(() => {
           this.loading = false
           this.$message({
@@ -107,7 +138,6 @@ export default {
     },
   },
   created() {
-    console.log(this.id)
     getRegistry(this.id).then(data => {
       this.form = data
     })

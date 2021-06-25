@@ -88,7 +88,7 @@ a:hover {
   padding: 0;
   font-size: 14px;
   line-height: 2;
-  word-break:break-all; 
+  word-break:break-all;
 }
 
 .el-step__title.is-finish {
@@ -183,8 +183,24 @@ a:hover {
 .el-dialog__headerbtn .el-dialog__close {
   color: #fa5d50;
 }
+
 .ko-status {
   .el-link--inner {
     font-size: 12px;
+  }
+}
+
+.registry-collapse {
+  .el-collapse {
+    border-top: revert !important;
+  }
+  .el-collapse-item__header {
+    border-bottom: revert !important;
+  }
+  .el-collapse-item__arrow {
+    margin: 0;
+  }
+  .el-collapse-item__wrap {
+    border-bottom: revert !important;
   }
 }

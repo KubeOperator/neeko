@@ -150,7 +150,7 @@ export default {
         } else {
           const ps = []
           for (const item of this.selects) {
-            ps.push(deleteRegistry(item.architecture))
+            ps.push(deleteRegistry(item.id))
           }
           Promise.all(ps).then(() => {
             this.search()
