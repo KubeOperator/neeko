@@ -211,9 +211,10 @@ const message = {
       repo_err: "Please complete the corresponding warehouse information in the system settings",
       yum_repo: "Yum warehouse",
       yum_repo_replace_help:
-        "This will make a backup of the original Yum repo file of the cluster node, and then generate and use only the Yum repo of the KubeOperator",
+        "This operation will back up the original yum repo file of the K8S node server, and then generate and use only the yum repo of KubeOperator",
       yum_repo_coexist_help: "This operation will keep the original yum repo file of the K8S node server unchanged, while generating and using kubeoperator's yum repo",
       yum_repo_no_help: "This operation will keep using the original yum repo file of the K8S node server, and will not do any operation on the yum repo of the K8S node server",
+
       step2: "Cluster Setup",
       container_network: "Container Network",
       cluster_cidr: "Cluster CIDR",
@@ -226,12 +227,13 @@ const message = {
       disable: "Disable",
       network_help: "CIDR cannot overlap with the target IP segment, otherwise it will cause initialization failure",
       max_node_num_show: "Under the current container network configuration, the cluster has at most {0} nodes",
+
       step3: "Runtime Settings",
       runtime_type: "Container Runtime",
       docker_storage_dir: "Docker Data Path",
       containe_storage_dir: "Container Data Path",
       subnet: "Container Subnet",
-      
+
       step4: "Container Network Settings",
       multi_network: "Multi Network",
       network_interface: "Interface",
@@ -255,9 +257,11 @@ const message = {
       flannel_backend_help_channel_base: "Based on the tunnel, it can work normally in any network environment;",
       flannel_backend_help_channel_advantage: "The advantage is that there are no special requirements for the physical network environment, as long as the host IP layer can be routed and communicated.",
       flannel_backend_help_channel_inferiority: "The disadvantage is that packaging and unpacking consumes CPU performance, and additional packaging leads to waste of bandwidth。",
+
       step5: "Component Settings",
       ingress_type: "ingress type",
       support_gpu: "Install GPU kit",
+
       step6_of_bare_metal: "Node Information",
       node_help: "The host needs to be authorized in the project-resource first",
       master_select_help: "(The number of Master nodes must be 1 or 3)",
@@ -807,7 +811,12 @@ const message = {
         protocol: "Protocol",
         hostname: "Address",
         arch: "CPU Architecture",
-        hostname_help: "The default is the IP of the server where KubeOperator is deployed. This IP will be used to access the nexus registry"
+        default_password: "Default Password",
+        registry_address: "Registry link",
+        hostname_help: "The default is the IP of the server where KubeOperator is deployed. This IP will be used to access the nexus registry",
+        repo_port_help: "Web access port of Nexus, also used in Yum/APT and wget download",
+        repo_registry_port_help: "Use the Docker pull command to download the port used to download the image from the Nexus warehouse",
+        repo_registry_hosted_port_help: "Use the Docker push command to upload the image to the port used by the Nexus warehouse",
       },
       mail: {
         smtp: "SMTP Address",

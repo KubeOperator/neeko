@@ -124,7 +124,7 @@ const message = {
       description: "描述",
       create_time: "创建时间",
       type: "类型",
-      username: "用户名"
+      username: "用户名",
     },
     status: {
       running: "运行中",
@@ -209,9 +209,9 @@ const message = {
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
       yum_repo: "Yum 仓库",
-      yum_repo_replace_help: "此操作将对集群节点原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
-      yum_repo_coexist_help: "此操作将保持集群节点原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
-      yum_repo_no_help: "此操作将保持使用集群节点原始 yum repo 文件，不对集群节点的 yum repo 做任何操作",
+      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
+      yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
+      yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
       step2: "集群设置",
       container_network: "容器网络",
@@ -255,6 +255,7 @@ const message = {
       flannel_backend_help_channel_base: "基于隧道，在任何网络环境下都可以正常工作;",
       flannel_backend_help_channel_advantage: "优势是对物理网络环境没有特殊要求，只要宿主机IP层可以路由互通即可。",
       flannel_backend_help_channel_inferiority: "劣势是封包和解包耗费CPU性能，且额外的封装导致带宽浪费。",
+
 
       step5: "组件设置",
       ingress_type: "ingress 类型",
@@ -566,6 +567,7 @@ const message = {
     cpu: "CPU(核)",
     size: "大小",
     gpu_info: "显卡信息",
+    authorize_project: "授权到项目",
     existing_authorized: "存在已授权主机",
     existing_unauthorized: "存在未授权主机",
     project: "项目"
@@ -800,7 +802,7 @@ const message = {
   },
   setting: {
     registry: "仓库",
-    tips: "默认仓库为部署机Nexus，管理端口为8081",
+    tips: "默认仓库为部署机Nexus，管理端口为:",
     address: "地址",
     username: "账号",
     password: "密码",
@@ -816,7 +818,12 @@ const message = {
         protocol: "协议",
         hostname: "地址",
         arch: "CPU架构",
-        hostname_help: "默认为部署 KubeOperator 的服务器 IP，将使用该 IP 来访问 nexus 仓库"
+        default_password: "默认密码",
+        registry_address: "仓库地址",
+        hostname_help: "默认为部署 KubeOperator 的服务器 IP，将使用该 IP 来访问 nexus 仓库",
+        repo_port_help: "Web 访问 Nexus 的端口，也应用于 Yum/APT 及 wget 下载",
+        repo_registry_port_help: "使用 docker pull 命令从 Nexus 仓库下载镜像所使用的端口",
+        repo_registry_hosted_port_help: "使用 docker push命令上传镜像到 Nexus 仓库所使用的端口",
       },
       mail: {
         smtp: "SMTP 地址",
