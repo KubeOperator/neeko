@@ -34,7 +34,7 @@
               <el-collapse accordion>
                 <el-collapse-item>
                   <template slot="title">
-                    高级设置<i class="header-icon el-icon-info"></i>
+                    {{$t('multi_cluster.senior_setting')}}<i class="header-icon el-icon-info"></i>
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort" required>
@@ -49,7 +49,7 @@
 
                     <el-form-item label="RegistryHostedPort" prop="registryHostedPort" required>
                       <el-input-number v-model="form.registryHostedPort"  :min="0" :max="65535"></el-input-number>
-                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}口</span></div>
+                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>
                   </div>
                 </el-collapse-item>

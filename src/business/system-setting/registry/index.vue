@@ -31,7 +31,7 @@
       :visible.sync="tipsVisible"
       width="40%">
 
-      <el-table
+      <complex-table
         :data="tipstableData"
         style="width: 100%">
         <el-table-column
@@ -40,10 +40,14 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="value"
           :label="$t('commons.table.description')">
+          <template v-slot:default="{row}" >
+              <el-link v-if="[row.value].toString().indexOf('http') != -1" style="font-size: 12px" type="info" @click="goToNexus(row.value)">{{ row.value }}</el-link>
+            <span v-else>{{ row.value }}</span>
+          </template>
         </el-table-column>
-      </el-table>
+      </complex-table>
       <br>
       <div style="line-height: 150%">
         <span style="font-weight: bolder">{{$t('manifest.see_documentation')}}:</span><br>
@@ -110,14 +114,6 @@ export default {
         total: 0,
       },
       tipsVisible: false,
-      tips: {
-        address: "",
-        username: "",
-        password: "",
-        repoPort: "",
-        registryPort: "",
-        registryHostedPort: "",
-      },
       data: [],
       loading: false,
       tipstableData: []
@@ -131,7 +127,6 @@ export default {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
-        console.log(data)
       })
     },
     create() {
@@ -171,20 +166,23 @@ export default {
       this.tipstableData = []
       this.tipstableData.push({
         name: this.$t('setting.table.registry.registry_address'),
-        address: row.protocol + "://" + row.hostname + ":" + row.repoPort
+        value: row.protocol + "://" + row.hostname + ":" + row.repoPort,
       },{
         name: this.$t('user.username'),
-        address: 'admin'
+        value: 'admin'
       },{
         name: this.$t('setting.table.registry.default_password'),
-          address: 'admin123'
+          value: 'admin123'
       },{
         name: 'RegistryPort',
-          address: row.registryPort
+          value: row.registryPort
       },{
         name: 'RegistryHostedPort',
-        address: row.registryHostedPort
+        value: row.registryHostedPort
       })
+    },
+    goToNexus(url) {
+      window.open(url, "_blank");
     }
   },
   created() {

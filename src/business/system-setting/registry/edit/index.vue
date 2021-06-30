@@ -31,7 +31,7 @@
               <el-collapse accordion>
                 <el-collapse-item>
                   <template slot="title">
-                    高级设置<i class="header-icon el-icon-info"></i>
+                    {{$t('multi_cluster.senior_setting')}}<i class="header-icon el-icon-info"></i>
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort" required>
@@ -46,7 +46,7 @@
 
                     <el-form-item label="RegistryHostedPort" prop="registryHostedPort" required>
                       <el-input-number v-model="form.registryHostedPort"  :min="0" :max="65535"></el-input-number>
-                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}口</span></div>
+                      <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>
                   </div>
                 </el-collapse-item>
@@ -110,6 +110,27 @@ export default {
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
+          return false
+        }
+        if (this.form.registryPort === this.form.repoPort){
+          this.$message({
+            type: 'error',
+            message: this.$t('setting.table.registry.registry_and_repo_err'),
+          });
+          return false
+        }
+        if (this.form.registryPort === this.form.registryHostedPort){
+          this.$message({
+            type: 'error',
+            message: this.$t('setting.table.registry.registry_and_registry_hosted_err'),
+          });
+          return false
+        }
+        if (this.form.repoPort === this.form.registryHostedPort){
+          this.$message({
+            type: 'error',
+            message: this.$t('setting.table.registry.repo_and_registry_hosted_err'),
+          });
           return false
         }
         this.loading = true

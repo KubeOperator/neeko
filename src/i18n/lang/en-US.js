@@ -817,6 +817,9 @@ const message = {
         repo_port_help: "Web access port of Nexus, also used in Yum/APT and wget download",
         repo_registry_port_help: "Use the Docker pull command to download the port used to download the image from the Nexus warehouse",
         repo_registry_hosted_port_help: "Use the Docker push command to upload the image to the port used by the Nexus warehouse",
+        registry_and_repo_err: "Repo and registryHosted warehouse port conflict, please modify and resubmit",
+        registry_and_registry_hosted_err: "Registry and registryHosted warehouse port conflicts, please modify and resubmit",
+        repo_and_registry_hosted_err: "Registry and Repo warehouse port conflicts, please modify and resubmit",
       },
       mail: {
         smtp: "SMTP Address",

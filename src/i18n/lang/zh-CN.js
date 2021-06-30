@@ -824,6 +824,9 @@ const message = {
         repo_port_help: "Web 访问 Nexus 的端口，也应用于 Yum/APT 及 wget 下载",
         repo_registry_port_help: "使用 docker pull 命令从 Nexus 仓库下载镜像所使用的端口",
         repo_registry_hosted_port_help: "使用 docker push命令上传镜像到 Nexus 仓库所使用的端口",
+        registry_and_repo_err: "Registry 和 Repo 仓库端口冲突，请修改后重新提交",
+        registry_and_registry_hosted_err: "Registry 和 RegistryHosted 仓库端口冲突，请修改后重新提交",
+        repo_and_registry_hosted_err: "Repo 和 RegistryHosted 仓库端口冲突，请修改后重新提交",
       },
       mail: {
         smtp: "SMTP 地址",
@@ -879,7 +882,7 @@ const message = {
     },
     helpInfo: {
       inputPassword: "请输入密码",
-      messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用"
+      messageInfo: "说明：由于每个企业的消息限制不同 所以KubeOperator没有做主动限制 请根据自身情况酌情使用",
     }
   },
   multi_cluster: {
