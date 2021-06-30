@@ -714,7 +714,7 @@ export default {
       if (this.form.flannelBackend === "Overlay") {
         this.form.ciliumTunnelMode = "vxlan"
       } else {
-        this.form.ciliumTunnelMode = "disabled"
+        this.form.ciliumTunnelMode = "disable"
       }
     },
     getDefaultFlannelBackend() {
@@ -723,6 +723,7 @@ export default {
         this.form.ciliumTunnelMode = "vxlan"
       } else {
         this.form.flannelBackend = "vxlan"
+        this.multi_network = "disable"
       }
     },
     versionHigher206() {
