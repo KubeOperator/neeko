@@ -101,7 +101,7 @@ export default {
         },
       },
       rules: {
-        name: [Rule.CommonNameRule],
+        name: [Rule.NameRule],
         ip: [Rule.RequiredRule],
         port: [Rule.NumberRule],
         project: [Rule.RequiredRule],

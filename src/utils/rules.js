@@ -28,6 +28,8 @@ const RequiredRule = { required: true, trigger: "blur", message: i18n.t("commons
 const NameRule = { validator: checkName, required: true, trigger: "blur" }
 const IpRule = { validator: checkIp, required: true, trigger: "blur" }
 const EmailRule = { type: "email", message: i18n.t("commons.validate.email") }
+
+// 中文、大小写英文、数字和-
 const NumberRule = {
   required: true,
   trigger: "blur",

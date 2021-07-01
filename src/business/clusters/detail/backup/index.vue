@@ -181,6 +181,7 @@ export default {
       backupAccounts: [],
       logs: [],
       selects: [],
+      timer: {},
     }
   },
   methods: {
@@ -320,6 +321,26 @@ export default {
           })
       })
     },
+    polling() {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(() => {
+        let flag = false
+        for (const item of this.logs) {
+          if (item.status === "Running") {
+            flag = true
+            break
+          }
+        }
+        if (flag) {
+          this.search()
+        }
+      }, 10000)
+    },
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
   created() {
     this.clusterName = this.$route.params.name
@@ -328,6 +349,7 @@ export default {
       this.backupAccounts = res
     })
     this.getBackupStrategy()
+    this.polling()
   },
 }
 </script>

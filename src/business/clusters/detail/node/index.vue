@@ -27,7 +27,11 @@
       <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
       <el-table-column class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
-          <div v-if="row.status.indexOf('Terminating') !== -1">
+          <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider !== 'bareMetal'">
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            {{ $t("commons.status.terminating") }}
+          </div>
+          <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider === 'bareMetal'">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
           </div>
@@ -205,7 +209,7 @@
 import ComplexTable from "@/components/complex-table"
 
 import { listNamespace } from "@/api/cluster/namespace"
-import { listNodesByPage, nodeCreate, nodeDelete, cordonNode, evictionNode } from "@/api/cluster/node"
+import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
 import { listPod } from "@/api/cluster/cluster"
@@ -226,7 +230,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return this.provider === '' || this.buttonDisabled(row)
+            return this.provider === "" || this.buttonDisabled(row)
           },
         },
       ],
@@ -246,7 +250,7 @@ export default {
         hosts: [],
         nodes: [],
         increase: 1,
-        supportGpu: ""
+        supportGpu: "",
       },
       supportGpu: "",
       deleteForm: {
@@ -274,7 +278,8 @@ export default {
       provider: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
-      namespaces: []
+      namespaces: [],
+      timer: {},
     }
   },
   methods: {
@@ -298,8 +303,8 @@ export default {
         })
       listNamespace(this.clusterName)
         .then((data) => {
-          for ( var names of data.items){
-            if (names.metadata.name === "gpu-operator-resources"){
+          for (var names of data.items) {
+            if (names.metadata.name === "gpu-operator-resources") {
               this.gpuExist = true
             }
           }
@@ -364,7 +369,8 @@ export default {
       this.$refs["createForm"].validate((valid) => {
         if (valid) {
           this.submitLoading = true
-          nodeCreate(this.clusterName, this.createForm)
+          this.createForm.operation = "create"
+          nodeBatchOperation(this.clusterName, this.createForm)
             .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.dialogCreateVisible = false
@@ -399,22 +405,16 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        const ps = []
-        if (row) {
-          ps.push(nodeDelete(this.clusterName, row.name))
-        } else {
-          for (const item of this.selects) {
-            ps.push(nodeDelete(this.clusterName, item.name))
-          }
+        const delForm = { operation: "delete", nodes: [] }
+        delForm.operation = "delete"
+        for (const node of this.selects) {
+          delForm.nodes.push(node.name)
         }
-        Promise.all(ps)
+        nodeBatchOperation(this.clusterName, delForm)
           .then(() => {
-            this.search()
-            this.$message({
-              type: "success",
-              message: this.$t("commons.msg.op_success"),
-            })
+            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
             this.selects = []
+            this.search()
           })
           .catch(() => {
             this.search()
@@ -512,7 +512,7 @@ export default {
     },
     getVersion(item) {
       let result = "N/A"
-      if (item.status === "Running") {
+      if (item.status.indexOf("Running") !== -1) {
         result = item.info.status.nodeInfo.kubeletVersion
       }
       return result
@@ -549,19 +549,23 @@ export default {
       })
     },
     polling() {
-      this.timer = setInterval(() => {
-        let flag = false
-        const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
-        for (const item of this.data) {
-          if (needPolling.indexOf(item.status) !== -1) {
-            flag = true
-            break
+      if (this.timer) {
+        clearInterval(this.timer)
+      } else {
+        this.timer = setInterval(() => {
+          let flag = false
+          const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+          for (const item of this.data) {
+            if (needPolling.indexOf(item.status) !== -1) {
+              flag = true
+              break
+            }
           }
-        }
-        if (flag) {
-          this.searchForPolling()
-        }
-      }, 10000)
+          if (flag) {
+            this.searchForPolling()
+          }
+        }, 10000)
+      }
     },
   },
   created() {

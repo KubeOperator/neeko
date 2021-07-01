@@ -83,6 +83,7 @@ export default {
       selects: [],
       data: [],
       ps: [],
+      timer: {},
     }
   },
   methods: {
@@ -184,21 +185,25 @@ export default {
       })
     },
     polling() {
-      this.timer = setInterval(() => {
-        let flag = false
-        const needPolling = ["Terminating"]
-        for (const item of this.data) {
-          if (needPolling.indexOf(item.status.phase) !== -1) {
-            flag = true
-            break
+      if (this.timer) {
+        clearInterval(this.timer)
+      } else {
+        this.timer = setInterval(() => {
+          let flag = false
+          const needPolling = ["Terminating"]
+          for (const item of this.data) {
+            if (needPolling.indexOf(item.status.phase) !== -1) {
+              flag = true
+              break
+            }
           }
-        }
-        if (flag) {
-          listNamespace(this.clusterName).then((data) => {
-            this.data = data.items
-          })
-        }
-      }, 10000)
+          if (flag) {
+            listNamespace(this.clusterName).then((data) => {
+              this.data = data.items
+            })
+          }
+        }, 10000)
+      }
     },
   },
   created() {

@@ -209,6 +209,7 @@ export default {
       },
       loading: false,
       isAdmin: checkPermission("ADMIN"),
+      timer: {},
     }
   },
   methods: {
@@ -345,23 +346,27 @@ export default {
         })
     },
     polling() {
-      this.timer = setInterval(() => {
-        let flag = false
-        const needPolling = ["Initializing", "Terminating", "Synchronizing", "Waiting", "Creating"]
-        for (const item of this.data) {
-          if (needPolling.indexOf(item.status) !== -1) {
-            flag = true
-            break
+      if (this.timer) {
+        clearInterval(this.timer)
+      } else {
+        this.timer = setInterval(() => {
+          let flag = false
+          const needPolling = ["Initializing", "Terminating", "Synchronizing", "Waiting", "Creating"]
+          for (const item of this.data) {
+            if (needPolling.indexOf(item.status) !== -1) {
+              flag = true
+              break
+            }
           }
-        }
-        if (flag) {
-          const { currentPage, pageSize } = this.paginationConfig
-          searchHosts(currentPage, pageSize).then((data) => {
-            this.data = data.items
-            this.paginationConfig.total = data.total
-          })
-        }
-      }, 10000)
+          if (flag) {
+            const { currentPage, pageSize } = this.paginationConfig
+            searchHosts(currentPage, pageSize).then((data) => {
+              this.data = data.items
+              this.paginationConfig.total = data.total
+            })
+          }
+        }, 10000)
+      }
     },
   },
   mounted() {

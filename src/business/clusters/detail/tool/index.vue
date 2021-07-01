@@ -314,6 +314,7 @@ export default {
       nodeNum: 0,
       storages: [],
       loadMenu: false,
+      timer: {},
     }
   },
   methods: {
@@ -472,26 +473,30 @@ export default {
       })
     },
     polling() {
-      this.timer = setInterval(() => {
-        let flag = false
-        const needPolling = ["Initializing", "Terminating", "Upgrading"]
-        for (const item of this.tools) {
-          if (needPolling.indexOf(item.status) !== -1) {
-            flag = true
-            break
+      if (this.timer) {
+        clearInterval(this.timer)
+      } else {
+        this.timer = setInterval(() => {
+          let flag = false
+          const needPolling = ["Initializing", "Terminating", "Upgrading"]
+          for (const item of this.tools) {
+            if (needPolling.indexOf(item.status) !== -1) {
+              flag = true
+              break
+            }
           }
-        }
-        if (flag) {
-          listTool(this.clusterName).then((data) => {
-            this.tools = data
-          })
-        } else {
-          if (this.loadMenu) {
-            window.location.reload()
+          if (flag) {
+            listTool(this.clusterName).then((data) => {
+              this.tools = data
+            })
+          } else {
+            if (this.loadMenu) {
+              window.location.reload()
+            }
+            this.loadMenu = false
           }
-          this.loadMenu = false
-        }
-      }, 10000)
+        }, 10000)
+      }
     },
     setDefaultVars(item) {
       switch (item.name) {
