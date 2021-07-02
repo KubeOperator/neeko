@@ -549,23 +549,19 @@ export default {
       })
     },
     polling() {
-      if (this.timer) {
-        clearInterval(this.timer)
-      } else {
-        this.timer = setInterval(() => {
-          let flag = false
-          const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
-          for (const item of this.data) {
-            if (needPolling.indexOf(item.status) !== -1) {
-              flag = true
-              break
-            }
+      this.timer = setInterval(() => {
+        let flag = false
+        const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+        for (const item of this.data) {
+          if (needPolling.indexOf(item.status) !== -1) {
+            flag = true
+            break
           }
-          if (flag) {
-            this.searchForPolling()
-          }
-        }, 10000)
-      }
+        }
+        if (flag) {
+          this.searchForPolling()
+        }
+      }, 10000)
     },
   },
   created() {

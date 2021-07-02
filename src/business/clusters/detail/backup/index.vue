@@ -322,9 +322,6 @@ export default {
       })
     },
     polling() {
-      if (this.timer) {
-        clearInterval(this.timer)
-      }
       this.timer = setInterval(() => {
         let flag = false
         for (const item of this.logs) {

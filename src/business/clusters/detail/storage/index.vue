@@ -370,25 +370,21 @@ export default {
         })
     },
     polling() {
-      if (this.timer) {
-        clearInterval(this.timer)
-      } else {
-        this.timer = setInterval(() => {
-          let flag = false
-          const needPolling = ["Initializing", "Terminating", "Synchronizing", "Creating", "Waiting"]
-          for (const item of this.provisionerDatas) {
-            if (needPolling.indexOf(item.status) !== -1) {
-              flag = true
-              break
-            }
+      this.timer = setInterval(() => {
+        let flag = false
+        const needPolling = ["Initializing", "Terminating", "Synchronizing", "Creating", "Waiting"]
+        for (const item of this.provisionerDatas) {
+          if (needPolling.indexOf(item.status) !== -1) {
+            flag = true
+            break
           }
-          if (flag) {
-            listProvisioner(this.clusterName).then((data) => {
-              this.provisionerDatas = data
-            })
-          }
-        }, 10000)
-      }
+        }
+        if (flag) {
+          listProvisioner(this.clusterName).then((data) => {
+            this.provisionerDatas = data
+          })
+        }
+      }, 10000)
     },
   },
   created() {

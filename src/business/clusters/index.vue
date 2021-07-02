@@ -452,54 +452,45 @@ export default {
       this.dialogLogVisible = false
     },
     dialogPolling() {
-      if (this.timer) {
-        clearInterval(this.timer2)
-      } else {
-        this.timer2 = setInterval(() => {
-          if (this.log.phase !== "Running" && this.log.phase !== "Failed" && this.currentCluster.status !== "Failed") {
-            getClusterStatus(this.clusterName)
-              .then((data) => {
-                if (data.conditions.length === 0) {
-                  this.conditionLoading = true
-                  return
-                }
-                this.conditionLoading = false
-                this.activeName = this.log.conditions.length + 1
-                this.log.conditions = data.conditions
-                if (this.log.phase !== data.phase) {
-                  this.log.phase = data.phase
-                }
-                if (this.log.prePhase !== data.prePhase) {
-                  this.log.prePhase = data.prePhase
-                }
-              })
-              .catch(() => {
-                this.dialogLogVisible = false
-                clearInterval(this.timer2)
-              })
-          }
-        }, 3000)
-      }
+      this.timer2 = setInterval(() => {
+        if (this.log.phase !== "Running" && this.log.phase !== "Failed" && this.currentCluster.status !== "Failed") {
+          getClusterStatus(this.clusterName)
+            .then((data) => {
+              if (data.conditions.length === 0) {
+                this.conditionLoading = true
+                return
+              }
+              this.conditionLoading = false
+              this.activeName = this.log.conditions.length + 1
+              this.log.conditions = data.conditions
+              if (this.log.phase !== data.phase) {
+                this.log.phase = data.phase
+              }
+              if (this.log.prePhase !== data.prePhase) {
+                this.log.prePhase = data.prePhase
+              }
+            })
+            .catch(() => {
+              this.dialogLogVisible = false
+              clearInterval(this.timer2)
+            })
+        }
+      }, 3000)
     },
-
     polling() {
-      if (this.timer) {
-        clearInterval(this.timer)
-      } else {
-        this.timer = setInterval(() => {
-          let flag = false
-          const needPolling = ["Initializing", "Terminating", "Creating", "Waiting", "Upgrading"]
-          for (const item of this.data) {
-            if (needPolling.indexOf(item.status) !== -1) {
-              flag = true
-              break
-            }
+      this.timer = setInterval(() => {
+        let flag = false
+        const needPolling = ["Initializing", "Terminating", "Creating", "Waiting", "Upgrading"]
+        for (const item of this.data) {
+          if (needPolling.indexOf(item.status) !== -1) {
+            flag = true
+            break
           }
-          if (flag) {
-            this.searchForPolling()
-          }
-        }, 10000)
-      }
+        }
+        if (flag) {
+          this.searchForPolling()
+        }
+      }, 10000)
     },
   },
   mounted() {
