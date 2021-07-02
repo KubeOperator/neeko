@@ -23,9 +23,6 @@
           <el-table-column :label="$t('commons.table.name')" min-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
-          <el-table-column :label="$t('cluster.cluster')" >
-            <template v-slot:default="{ row }">{{ row.clusterName }}</template>
-          </el-table-column>
           <el-table-column :label="$t('host.ip')" min-width="100px">
             <template v-slot:default="{ row }">{{ row.ip }}</template>
           </el-table-column>

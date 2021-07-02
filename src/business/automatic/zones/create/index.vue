@@ -12,7 +12,7 @@
             </el-form-item>
             <el-form-item :label="$t('automatic.region.name')" prop="regionName">
               <el-select v-model="form.regionName"
-                         filterable
+                         filterable style="width:100%"
                          reserve-keyword
                          size="medium"
                          @change="changeRegion(form.regionName)">
@@ -28,7 +28,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword
                            size="medium"
                            @change="changeCloudZone(form.cloudVars.cluster)">
@@ -43,7 +43,7 @@
               <el-form-item :label="$t('automatic.zone.resource_pool')"
                             prop="cloudVars.resourcePool">
                 <el-select v-model="form.cloudVars.resourcePool"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -65,7 +65,7 @@
               <el-form-item :label="$t('automatic.zone.datastore')" prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
                            multiple
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -89,7 +89,7 @@
               <div v-if="form.cloudVars['templateType']==='customize'">
                 <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
                   <el-select v-model="form.cloudVars.imageName"
-                             filterable
+                             filterable style="width:100%"
                              reserve-keyword
                              size="medium"
                              @change="changeTemplate(form.cloudVars.imageName)">
@@ -103,7 +103,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('credential.credential')" prop="credentialName">
                   <el-select v-model="form.credentialName"
-                             filterable
+                             filterable style="width:100%"
                              size="medium"
                              reserve-keyword>
                     <el-option
@@ -118,7 +118,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.network_adapter')" prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -131,7 +131,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.ip_pool.name')" prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            @change="changeIpPool()"
                            reserve-keyword>
@@ -148,7 +148,7 @@
               <el-divider content-position="left"> {{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword
                            size="medium"
                            @change="changeCloudZone(form.cloudVars.cluster)">
@@ -163,7 +163,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.storageType')" prop="cloudVars.storageType">
                 <el-select v-model="form.cloudVars.storageType"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -187,7 +187,7 @@
               <div v-if="form.cloudVars['templateType']==='customize'">
                 <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
                   <el-select v-model="form.cloudVars.imageName"
-                             filterable
+                             filterable style="width:100%"
                              reserve-keyword
                              size="medium"
                              @change="changeTemplate(form.cloudVars.imageName)">
@@ -201,7 +201,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('credential.credential')" prop="credentialName">
                   <el-select v-model="form.credentialName"
-                             filterable
+                             filterable style="width:100%"
                              size="medium"
                              reserve-keyword>
                     <el-option
@@ -217,7 +217,7 @@
               <el-form-item :label="$t('automatic.zone.security_group')"
                             prop="cloudVars.securityGroup">
                 <el-select v-model="form.cloudVars.securityGroup"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -230,7 +230,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.zone.network')" prop="cloudVars.network">
                 <el-select v-model="form.cloudVars.network"
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword
                            size="medium"
                            @change="changeNetwork(form.cloudVars.network)">
@@ -244,7 +244,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.zone.ip_type')" prop="cloudVars.ipType">
                 <el-select v-model="form.cloudVars.ipType"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -258,7 +258,7 @@
               <el-form-item :label="$t('automatic.zone.subnet')" prop="cloudVars.subnet"
                             v-if="form.cloudVars.ipType==='private'">
                 <el-select v-model="form.cloudVars.subnet"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -273,7 +273,7 @@
                             prop="cloudVars.floatingNetwork"
                             v-if="form.cloudVars.ipType==='floating'">
                 <el-select v-model="form.cloudVars.floatingNetwork"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -286,7 +286,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.ip_pool.name')" prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            @change="changeIpPool()"
                            reserve-keyword>
@@ -303,7 +303,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.compute") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.cluster')" prop="cloudVars.cluster">
                 <el-select v-model="form.cloudVars.cluster"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword
                            @change="changeCloudZone(form.cloudVars.cluster)">
@@ -318,7 +318,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.datastore')" prop="cloudVars.datastore">
                 <el-select v-model="form.cloudVars.datastore"
-                           multiple
+                           multiple style="width:100%"
                            size="medium"
                            filterable
                            reserve-keyword>
@@ -376,7 +376,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('credential.credential')" prop="credentialName">
                   <el-select v-model="form.credentialName"
-                             filterable
+                             filterable style="width:100%"
                              size="medium"
                              reserve-keyword>
                     <el-option
@@ -391,7 +391,7 @@
               <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.switch')" prop="cloudVars.switch">
                 <el-select v-model="form.cloudVars.switch"
-                           filterable
+                           filterable style="width:100%"
                            reserve-keyword
                            size="medium"
                            @change="changeSwitch(form.cloudVars.switch)">
@@ -405,7 +405,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.zone.portgroup')" prop="cloudVars.portgroup">
                 <el-select v-model="form.cloudVars.portgroup"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword>
                   <el-option
@@ -418,7 +418,7 @@
               </el-form-item>
               <el-form-item :label="$t('automatic.ip_pool.name')" prop="ipPoolName">
                 <el-select v-model="form.ipPoolName"
-                           filterable
+                           filterable style="width:100%"
                            size="medium"
                            reserve-keyword
                            @change="changeIpPool()">

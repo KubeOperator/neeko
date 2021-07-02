@@ -9,16 +9,16 @@
           <el-button size="small" @click="del()" v-permission="['ADMIN']" :disabled="selects.length===0">
             {{ $t("commons.button.delete") }}
           </el-button>
+          <el-button size="small" @click="onGrant()">
+            {{ $t("commons.button.authorize") }}
+          </el-button>
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" fix prop="name"/>
-      <el-table-column :label="$t('project.project')" v-if="isAdmin">
-        <template v-slot:default="{row}">
-          <span v-for="(zone,index) in row.projects" :key="index">{{ zone }},</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('backup_account.table.bucket')"  prop="bucket"/>
+      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name"/>
+      <el-table-column :label="$t('project.project')" show-overflow-tooltip v-if="isAdmin" prop="projects"/>
+      <el-table-column :label="$t('cluster.cluster')" show-overflow-tooltip v-if="isAdmin" prop="clusters"/>
+      <el-table-column :label="$t('backup_account.table.bucket')" show-overflow-tooltip prop="bucket"/>
       <el-table-column :label="$t('commons.table.type')"  prop="credentialVars.type">
         <template v-slot:default="{row}">
           <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
@@ -144,6 +144,9 @@ export default {
     },
     create () {
       this.$router.push({ name: "BackupAccountCreate" })
+    },
+    onGrant() {
+      this.$router.push({ name: "ProjectAuthorizationList" })
     },
     del (name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {

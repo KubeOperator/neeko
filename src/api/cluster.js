@@ -9,6 +9,10 @@ export function getClusterByName(clusterName) {
   return get(`${clusterUrl}/${clusterName}`)
 }
 
+export function getClusterByProject(projectNames) {
+  return get(`${clusterUrl}/name/${projectNames}`)
+}
+
 export function checkClusterNameExistence(clusterName) {
   return get(`${clusterUrl}/existence/${clusterName}`)
 }

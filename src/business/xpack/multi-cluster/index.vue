@@ -160,7 +160,7 @@
               this.search()
               this.$message({
                 type: 'success',
-                message: `${name}${this.$t('commons.msg.delete_success')}!`
+                message: `${name}${this.$t('commons.msg.op_success')}!`
               });
             })
           } else {
@@ -172,7 +172,7 @@
               this.search()
               this.$message({
                 type: 'success',
-                message: this.$t('commons.msg.delete_success'),
+                message: this.$t('commons.msg.op_success'),
               });
             })
           }

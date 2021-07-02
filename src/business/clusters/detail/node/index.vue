@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info"/>
+    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info" />
     <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
@@ -27,7 +27,11 @@
       <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
       <el-table-column class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
-          <div v-if="row.status.indexOf('Terminating') !== -1">
+          <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider !== 'bareMetal'">
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            {{ $t("commons.status.terminating") }}
+          </div>
+          <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider === 'bareMetal'">
             <i class="el-icon-loading" /> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.terminating") }} </el-link>
           </div>
@@ -71,7 +75,7 @@
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
-      <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="80px">
+      <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="110px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
           <el-input-number style="width: 80%" v-model.number="createForm.increase" clearable />
         </el-form-item>
@@ -80,6 +84,9 @@
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item v-if="supportGpu === 'disable' && !gpuExist" :label="$t ('cluster.creation.support_gpu')">
+          <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -201,7 +208,8 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 
-import { listNodesByPage, nodeCreate, nodeDelete, cordonNode, evictionNode } from "@/api/cluster/node"
+import { listNamespace } from "@/api/cluster/namespace"
+import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
 import { listPod } from "@/api/cluster/cluster"
@@ -222,7 +230,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
+            return this.provider === "" || this.buttonDisabled(row)
           },
         },
       ],
@@ -233,6 +241,7 @@ export default {
       },
       dialogCreateVisible: false,
       dialogErrorVisible: false,
+      gpuExist: false,
       errMsg: "",
       clusterName: "",
       selects: [],
@@ -241,7 +250,9 @@ export default {
         hosts: [],
         nodes: [],
         increase: 1,
+        supportGpu: "",
       },
+      supportGpu: "",
       deleteForm: {
         nodes: "",
       },
@@ -267,6 +278,8 @@ export default {
       provider: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
+      namespaces: [],
+      timer: {},
     }
   },
   methods: {
@@ -288,6 +301,19 @@ export default {
         .catch(() => {
           this.loading = false
         })
+      listNamespace(this.clusterName)
+        .then((data) => {
+          for (var names of data.items) {
+            if (names.metadata.name === "gpu-operator-resources") {
+              this.gpuExist = true
+            }
+          }
+          this.namespaces = data.items
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     searchForPolling() {
       const { currentPage, pageSize } = this.paginationConfig
@@ -302,14 +328,18 @@ export default {
         this.paginationConfig.total = data.total
       })
     },
-    buttonDisabled() {
+    buttonDisabled(row) {
       const onPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
-      for(const node of this.data) {
-        if (onPolling.indexOf(node.status) !== -1) {
-          return true
+      if (row) {
+        return onPolling.indexOf(row.status) !== -1
+      } else {
+        for (const node of this.selects) {
+          if (onPolling.indexOf(node.status) !== -1) {
+            return true
+          }
         }
+        return false
       }
-      return false
     },
     create() {
       this.dialogCreateVisible = true
@@ -339,7 +369,8 @@ export default {
       this.$refs["createForm"].validate((valid) => {
         if (valid) {
           this.submitLoading = true
-          nodeCreate(this.clusterName, this.createForm)
+          this.createForm.operation = "create"
+          nodeBatchOperation(this.clusterName, this.createForm)
             .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
               this.dialogCreateVisible = false
@@ -374,22 +405,16 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        const ps = []
-        if (row) {
-          ps.push(nodeDelete(this.clusterName, row.name))
-        } else {
-          for (const item of this.selects) {
-            ps.push(nodeDelete(this.clusterName, item.name))
-          }
+        const delForm = { operation: "delete", nodes: [] }
+        delForm.operation = "delete"
+        for (const node of this.selects) {
+          delForm.nodes.push(node.name)
         }
-        Promise.all(ps)
+        nodeBatchOperation(this.clusterName, delForm)
           .then(() => {
-            this.search()
-            this.$message({
-              type: "success",
-              message: this.$t("commons.msg.delete_success"),
-            })
+            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
             this.selects = []
+            this.search()
           })
           .catch(() => {
             this.search()
@@ -481,12 +506,13 @@ export default {
           this.search()
         })
     },
+
     getInternalIp(item) {
       return item.ip ? item.ip : "N/a"
     },
     getVersion(item) {
       let result = "N/A"
-      if (item.status === "Running") {
+      if (item.status.indexOf("Running") !== -1) {
         result = item.info.status.nodeInfo.kubeletVersion
       }
       return result
@@ -519,6 +545,7 @@ export default {
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
         this.provider = this.currentCluster.spec.provider
+        this.supportGpu = this.currentCluster.spec.supportGpu
       })
     },
     polling() {

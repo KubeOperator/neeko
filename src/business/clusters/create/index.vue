@@ -137,10 +137,6 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
-                    <el-input v-model="form.networkInterface" clearable></el-input>
-                    <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
-                  </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.network_type')" prop="networkType">
                     <el-select @change="getDefaultFlannelBackend" style="width: 100%" v-model="form.networkType" clearable>
                       <el-option value="flannel">flannel</el-option>
@@ -150,39 +146,68 @@
                     <div v-if="form.networkType==='cilium'"><span class="input-help-blod">{{$t('cluster.creation.cilium_help')}}</span></div>
                   </el-form-item>
 
-                  <el-form-item v-if="form.networkType === 'flannel'" :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
-                    <el-select style="width: 100%" v-model="form.flannelBackend" clearable>
-                      <el-option value="host-gw">host-gw</el-option>
-                      <el-option value="vxlan">vxlan</el-option>
-                    </el-select>
-                    <div v-if="form.flannelBackend === 'host-gw'">
-                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
-                    </div>
-                    <div v-if="form.flannelBackend === 'vxlan'">
-                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
-                    </div>
-                  </el-form-item>
+                  <div v-if="form.networkType === 'flannel'">
+                    <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
+                      <el-select style="width: 100%" v-model="form.flannelBackend" clearable>
+                        <el-option value="host-gw">host-gw</el-option>
+                        <el-option value="vxlan">vxlan</el-option>
+                      </el-select>
+                      <div v-if="form.flannelBackend === 'host-gw'">
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      </div>
+                      <div v-if="form.flannelBackend === 'vxlan'">
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                      </div>
+                    </el-form-item>
 
-                  <el-form-item v-if="form.networkType === 'calico'" :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
-                    <el-select style="width: 100%" v-model="form.calicoIpv4PoolIpip" clearable>
-                      <el-option value="off" label="bgp">bgp</el-option>
-                      <el-option value="Always" label="ipip">ipip</el-option>
-                    </el-select>
-                    <div v-if="form.calicoIpv4PoolIpip === 'off'">
-                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
-                    </div>
-                    <div v-if="form.calicoIpv4PoolIpip === 'Always'">
-                      <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                      <div><span style="margin-left: 10px" class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
-                    </div>
-                  </el-form-item>
+                    <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                      <el-switch v-model="multi_network" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      <div><span class="input-help">{{$t('cluster.creation.network_interface_fannel_help')}}</span></div>
+                    </el-form-item>
+
+                    <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
+                      <el-input v-model="form.networkInterface" clearable></el-input>
+                    </el-form-item>
+                  </div>
+
+                  <div v-if="form.networkType === 'calico'">
+                    <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
+                      <el-select style="width: 100%" v-model="form.calicoIpv4PoolIpip" clearable>
+                        <el-option value="off" label="bgp">bgp</el-option>
+                        <el-option value="Always" label="ipip">ipip</el-option>
+                      </el-select>
+                      <div v-if="form.calicoIpv4PoolIpip === 'off'">
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      </div>
+                      <div v-if="form.calicoIpv4PoolIpip === 'Always'">
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                      </div>
+                    </el-form-item>
+                    <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                      <el-select style="width: 100%" v-model="multi_network" clearable>
+                        <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
+                        <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
+                        <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
+                      </el-select>
+                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
+                    </el-form-item>
+
+                    <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
+                      <el-input v-model="form.networkInterface" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="networkCidr">
+                      <el-input v-model="form.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>
+                      <div><span class="input-help">{{$t('cluster.creation.network_cidr_help')}}</span></div>
+                    </el-form-item>
+                  </div>
 
                   <div v-if="form.networkType === 'cilium'">
                     <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
@@ -195,15 +220,16 @@
                       <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help')}}</span></div>
                       <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help_more')}}</span></div>
                     </el-form-item>
-                    <el-form-item v-if="form.flannelBackend === 'Overlay'" label="Tunnel Name" prop="ciliumTunnelMode">
+                    <el-form-item v-if="form.flannelBackend === 'Overlay'" :label="$t('cluster.creation.tunnel_name')" prop="ciliumTunnelMode">
                       <el-select style="width: 100%" v-model="form.ciliumTunnelMode" clearable>
                         <el-option value="vxlan" label="vxlan">vxlan</el-option>
                         <el-option value="geneve" label="geneve">geneve</el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item v-if="form.flannelBackend === 'Native Routing'" label="Native Routing" prop="ciliumNativeRoutingCidr">
+                    <el-form-item v-if="form.flannelBackend === 'Native Routing'" :label="$t('cluster.creation.native_routing')" prop="ciliumNativeRoutingCidr">
                       <el-input v-model="form.ciliumNativeRoutingCidr" clearable></el-input>
                     </el-form-item>
+
                   </div>
                 </el-card>
               </el-scrollbar>
@@ -222,7 +248,7 @@
                   <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
                     <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
                       <el-option value="nginx">nginx</el-option>
-                      <el-option value="traefik">traefik</el-option>
+                      <el-option v-if="versionHigher206() || form.enableDnsCache === 'disable'" value="traefik">traefik</el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
@@ -276,6 +302,7 @@
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
                       <ul>{{$t ('cluster.creation.name')}}</ul>
+                      <ul>{{$t ('cluster.project')}}</ul>
                       <ul>{{$t ('cluster.creation.provider')}}</ul>
                       <ul>{{$t ('cluster.creation.version')}}</ul>
                       <ul>{{$t ('cluster.creation.arch')}}</ul>
@@ -283,6 +310,7 @@
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
+                      <ul>{{form.projectName}}</ul>
                       <ul v-if="form.provider === 'plan'">{{$t ('cluster.creation.provide_plan')}}</ul>
                       <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
@@ -298,12 +326,18 @@
                       <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
                       <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
+                      <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
+                      <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.clusterCidr}}</ul>
                       <ul>{{form.maxNodePodNum}}</ul>
                       <ul>{{form.maxClusterServiceNum}}</ul>
                       <ul>{{form.kubeProxyMode}}</ul>
+                      <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.kubernetesAudit === 'disable'">{{$t ('commons.button.disable')}}</ul>
                     </el-col>
                   </el-row>
 
@@ -326,16 +360,21 @@
                   <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
-                      <ul>{{$t ('cluster.creation.network_interface')}}</ul>
                       <ul>{{$t ('cluster.creation.network_type')}}</ul>
                       <ul>{{$t ('cluster.creation.flannel_backend')}}</ul>
+                      <ul v-if="form.networkType === 'calico' && multi_network === 'name'">{{$t ('cluster.creation.network_interface')}}</ul>
+                      <ul v-if="form.networkType === 'calico' && multi_network === 'cidr'">{{$t ('cluster.creation.network_cidr')}}</ul>
+                      <ul v-if="form.networkType === 'flannel' && multi_network === 'enable'">{{$t ('cluster.creation.network_interface')}}</ul>
                     </el-col>
                     <el-col :span="6">
-                      <ul>{{form.networkInterface}}</ul>
                       <ul>{{form.networkType}}</ul>
                       <ul v-if="form.networkType !== 'calico'">{{form.flannelBackend}}</ul>
                       <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'off'">bgp</ul>
                       <ul v-if="form.networkType === 'calico' && form.calicoIpv4PoolIpip === 'Always'">ipip</ul>
+
+                      <ul v-if="form.networkType === 'calico' && multi_network === 'name'">{{form.networkInterface}}</ul>
+                      <ul v-if="form.networkType === 'calico' && multi_network === 'cidr'">{{form.networkCidr}}</ul>
+                      <ul v-if="form.networkType === 'flannel' && multi_network === 'enable'">{{form.networkInterface}}</ul>
                     </el-col>
                   </el-row>
 
@@ -401,7 +440,7 @@ export default {
   data() {
     return {
       form: {
-        projectName: "kubeoperator",
+        projectName: "",
         name: "",
         provider: "bareMetal",
         version: "",
@@ -413,7 +452,7 @@ export default {
         kubeProxyMode: "iptables",
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
-        kubernetesAudit: "no",
+        kubernetesAudit: "disable",
         clusterCidr: "192.168.0.0/16",
 
         runtimeType: "docker",
@@ -422,6 +461,7 @@ export default {
         dockerSubnet: "172.17.0.1/16",
 
         networkInterface: "",
+        networkCidr: "",
         networkType: "flannel",
         flannelBackend: "vxlan",
         calicoIpv4PoolIpip: "Always",
@@ -484,6 +524,7 @@ export default {
       serviceMaxNumOptions: [32, 64, 128, 256, 512, 1024, 2048, 4096],
       maskOptions: [],
       maxNodesNum: 255,
+      multi_network: "disable",
       masters: [],
       workers: [],
     }
@@ -517,6 +558,10 @@ export default {
     loadProject() {
       allProjects().then((data) => {
         this.projects = data.items
+        if (data.items !== null && data.items.length > 0) {
+          this.form.projectName = data.items[0].name
+          this.loadProjectResource()
+        }
       })
     },
     loadProjectResource() {
@@ -526,7 +571,7 @@ export default {
     loadHosts() {
       listProjectResourcesAll(this.form.projectName, "HOST").then((data) => {
         const list = []
-        if (data.items.length !== 0) {
+        if (data.items !== null) {
           data.items
             .filter((host) => {
               return host.status === "Running"
@@ -554,7 +599,7 @@ export default {
         this.form.version = data[0].name
       })
     },
-    beforeLeave(step, isNext ) {
+    beforeLeave(step, isNext) {
       if (!isNext) {
         return
       }
@@ -604,6 +649,7 @@ export default {
       switch (this.parts[0]) {
         case "192":
           this.part2Options = ["168"]
+          this.parts[1] = this.part2Options[0]
           this.maskOptions = [].concat(["16", "17", "18", "19"])
           this.parts[4] = this.maskOptions[0]
           break
@@ -626,6 +672,7 @@ export default {
       this.onMaskChange()
     },
     onMaskChange() {
+      this.part3Options = []
       const mask = Number(this.parts[4])
       if (this.parts[0] === "192" || this.parts[0] === "172") {
         const a = Math.pow(2, 32 - mask - 8)
@@ -667,7 +714,7 @@ export default {
       if (this.form.flannelBackend === "Overlay") {
         this.form.ciliumTunnelMode = "vxlan"
       } else {
-        this.form.ciliumTunnelMode = "disabled"
+        this.form.ciliumTunnelMode = "disable"
       }
     },
     getDefaultFlannelBackend() {
@@ -676,7 +723,30 @@ export default {
         this.form.ciliumTunnelMode = "vxlan"
       } else {
         this.form.flannelBackend = "vxlan"
+        this.multi_network = "disable"
       }
+    },
+    versionHigher206() {
+      const currentVersion = this.form.version
+      const currentVersions = currentVersion.split(".")
+      const version1 = currentVersions[0]
+      if (version1 !== "v1") {
+        return true
+      }
+      const version2 = currentVersions[1]
+      if (Number(version2) > 20) {
+        return true
+      } else if (Number(version2) < 20) {
+        return false
+      }
+      const versions = currentVersions[2].split("-ko")
+      const version3 = Number(versions[0])
+      if (Number(version3) >= 6) {
+        return true
+      } else if (Number(version3) < 6) {
+        return false
+      }
+      return false
     },
     onSubmit() {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
@@ -790,10 +860,8 @@ export default {
     },
   },
   created() {
-    this.loadHosts()
-    this.loadRegistry()
-    this.loadPlan()
     this.loadProject()
+    this.loadRegistry()
     this.loadVersion()
     this.onPart1Change()
   },

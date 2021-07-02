@@ -199,6 +199,7 @@ export default {
       dialogErrorVisible: false,
       errMsg: "",
       activeName: "pv",
+      timer: {},
     }
   },
   methods: {
@@ -294,7 +295,7 @@ export default {
               this.$message({ type: "error", message: this.$t("cluster.detail.storage.storage_class_exist") })
             } else {
               deleteProvisioner(this.clusterName, row).then(() => {
-                this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+                this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
                 this.search()
               })
             }
@@ -313,7 +314,7 @@ export default {
           break
         case "pv":
           deletePersistentVolume(this.clusterName, row.metadata.name).then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
             this.search()
           })
           break
@@ -346,7 +347,7 @@ export default {
     },
     deleteClass(deleteName) {
       deleteStorageClass(this.clusterName, deleteName).then(() => {
-        this.$message({ type: "success", message: this.$t("commons.msg.delete_success") })
+        this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
         this.search()
       })
     },

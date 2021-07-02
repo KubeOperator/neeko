@@ -2,7 +2,7 @@ import {get, post} from "@/plugins/request"
 
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
 const eventByNamespaceUrl = "api/v1/namespaces/{namespace}/events"
-const eventsUrl = "api/v1/clusters/events"
+const eventsUrl = "/api/v1/clusters/events"
 const limit = 10
 
 export function listEvents(clusterName, continueToken, namespace) {

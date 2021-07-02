@@ -122,7 +122,7 @@
                 </el-popover>
               </div>
               <div v-if="row.status ==='Running'">
-                <span class="iconfont iconduihao" style="color: #32B350"></span>
+                <i class="el-icon-loading" />
                 {{ $t("commons.status.running") }}
               </div>
               <div v-if="row.status ==='SUCCESS'">
@@ -181,6 +181,7 @@ export default {
       backupAccounts: [],
       logs: [],
       selects: [],
+      timer: {},
     }
   },
   methods: {
@@ -320,6 +321,23 @@ export default {
           })
       })
     },
+    polling() {
+      this.timer = setInterval(() => {
+        let flag = false
+        for (const item of this.logs) {
+          if (item.status === "Running") {
+            flag = true
+            break
+          }
+        }
+        if (flag) {
+          this.search()
+        }
+      }, 10000)
+    },
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
   created() {
     this.clusterName = this.$route.params.name
@@ -328,6 +346,7 @@ export default {
       this.backupAccounts = res
     })
     this.getBackupStrategy()
+    this.polling()
   },
 }
 </script>

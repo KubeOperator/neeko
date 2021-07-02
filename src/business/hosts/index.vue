@@ -5,12 +5,7 @@
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button size="small" @click="onImport()">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="onGrant()">
-            {{ $t("commons.button.authorize") }}
-          </el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="onRevoke()">
-            {{ $t("commons.button.revoke_authorize") }}
-          </el-button>
+          <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
           <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
@@ -137,20 +132,6 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('commons.button.authorize')" width="30%" :visible.sync="dialogGrantVisible">
-      <el-form label-position='left' label-width="100px">
-        <el-form-item :label="$t('host.authorize_project')">
-          <el-select style="width: 80%" v-model="authorizedProject" clearable>
-            <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogGrantVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" v-loading="grantLoading" :disabled="!authorizedProject" @click="submitGrant()">{{ $t("commons.button.ok") }}</el-button>
-      </div>
-    </el-dialog>
-
     <el-dialog :title="$t('commons.button.batch_import')" width="30%" :visible.sync="dialogImportVisible">
       <el-form>
         <el-button type="text" @click="download()">{{ $t("host.template_download") }}</el-button>
@@ -182,10 +163,8 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
-import { deleteProjectResource, createProjectResource } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
-import { allProjects } from "@/api/projects"
 
 export default {
   name: "HostList",
@@ -229,12 +208,8 @@ export default {
         ],
       },
       loading: false,
-      dialogGrantVisible: false,
-      projectList: [],
-      grantHostNames: [],
-      grantLoading: false,
-      authorizedProject: "kubeoperator",
       isAdmin: checkPermission("ADMIN"),
+      timer: {},
     }
   },
   methods: {
@@ -354,67 +329,8 @@ export default {
           })
       })
     },
-    onRevoke() {
-      for (const item of this.hostSelections) {
-        if (!item.projectName) {
-          this.$message({ type: "info", message: this.$t("host.existing_unauthorized") })
-          return
-        }
-      }
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
-        confirmButtonText: this.$t("commons.button.confirm"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      })
-        .then(() => {
-          const ps = []
-          for (const item of this.hostSelections) {
-            ps.push(deleteProjectResource(item.projectName, item.name, "HOST"))
-          }
-          Promise.all(ps).then(() => {
-            this.$message({
-              type: "success",
-              message: this.$t("commons.msg.op_success"),
-            })
-            this.search()
-            this.hostSelections = []
-          })
-        })
-        .catch(() => {
-          this.hostSelections = []
-        })
-    },
     onGrant() {
-      this.grantHostNames = []
-      for (const item of this.hostSelections) {
-        if (item.projectName) {
-          this.$message({ type: "info", message: this.$t("host.existing_authorized") })
-          return
-        }
-        this.grantHostNames.push(item.name)
-      }
-      allProjects().then((data) => {
-        this.projectList = data.items
-      })
-      this.dialogGrantVisible = true
-    },
-    submitGrant() {
-      this.grantLoading = true
-      createProjectResource(this.authorizedProject, {
-        resourceType: "HOST",
-        names: this.grantHostNames,
-      })
-        .then(() => {
-          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-          this.dialogGrantVisible = false
-          this.search()
-          this.grantLoading = true
-          this.hostSelections = []
-        })
-        .catch(() => {
-          this.grantLoading = true
-          this.hostSelections = []
-        })
+      this.$router.push({ name: "ProjectAuthorizationList" })
     },
     search(condition) {
       this.loading = true

@@ -4,7 +4,7 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="100px">
+          <el-form label-position='left' ref="form" :model="form" :rules="rules" label-width="160px">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" clearable></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
@@ -16,9 +16,16 @@
               <el-input-number :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
             <el-form-item :label="$t('host.project_auth')" prop="project">
-              <el-select style="width:100%" v-model="form.project" clearable filterable>
+              <el-select style="width:100%" v-model="form.project" @change="getClusters" clearable filterable>
                 <el-option v-for="pro in projectList" :key="pro.id" :value="pro.name" :label="pro.name" />
               </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('host.cluster_auth')" prop="cluster">
+              <el-select style="width:100%" v-model="form.cluster" clearable filterable>
+                <el-option v-for="(item,index) in clusterList" :key="index" :value="item" :label="item" />
+              </el-select>
+              <div><span class="input-help">{{$t('host.cluster_auth_help')}}</span></div>
+
             </el-form-item>
 
             <el-form-item :label="$t('credential.type')" required>
@@ -69,6 +76,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import { createHost } from "@/api/hosts"
 import { listCredentialAll } from "@/api/credentials"
 import { allProjects } from "@/api/projects"
+import { getClusterByProject } from "@/api/cluster"
 import Rule from "@/utils/rules"
 
 export default {
@@ -81,6 +89,8 @@ export default {
         name: "",
         ip: "",
         port: 22,
+        project: "",
+        cluster: "",
         credentialId: "",
         credential: {
           username: "",
@@ -91,7 +101,7 @@ export default {
         },
       },
       rules: {
-        name: [Rule.CommonNameRule],
+        name: [Rule.NameRule],
         ip: [Rule.RequiredRule],
         port: [Rule.NumberRule],
         project: [Rule.RequiredRule],
@@ -105,6 +115,7 @@ export default {
       },
       credentialList: [],
       projectList: [],
+      clusterList: [],
     }
   },
   methods: {
@@ -132,6 +143,23 @@ export default {
       allProjects().then((data) => {
         this.projectList = data.items
       })
+    },
+    getClusters() {
+      this.clusterList = []
+      this.form.cluster = ""
+      if (this.form.project === "") {
+        return
+      }
+      if (this.form.project) {
+        getClusterByProject(this.form.project).then((data) => {
+          this.clusterList = []
+          for (const clu of data) {
+            if (clu.provider !== "plan") {
+              this.clusterList.push(clu.name)
+            }
+          }
+        })
+      }
     },
     onCancel() {
       this.$router.push({ name: "HostList" })

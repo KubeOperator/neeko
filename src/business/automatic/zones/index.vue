@@ -228,6 +228,7 @@
 import ComplexTable from "@/components/complex-table"
 import {searchZone, deleteZoneBy} from "@/api/zone"
 import LayoutContent from "@/components/layout/LayoutContent"
+import { listRegistryAll } from "@/api/system-setting"
 
 export default {
   name: "ZoneList",
@@ -339,7 +340,21 @@ export default {
 
     },
     create () {
-      this.$router.push({ name: "ZoneCreate" })
+      listRegistryAll().then((data) => {
+        let repoList = data.items === null ? [] : data.items
+        let isExit = false
+        for (const repo of repoList) {
+          if (repo.architecture === "x86_64") {
+            isExit = true
+            break
+          }
+        }
+        if (isExit) {
+          this.$router.push({ name: "ZoneCreate" })
+        } else {
+          this.$message({ type: "info", message: this.$t("cluster.creation.repo_err") })
+        }
+      })
     },
     openDetailPage (row) {
       this.openDetail = true

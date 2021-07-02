@@ -1,4 +1,4 @@
-import {get, post, del, patch} from "@/plugins/request"
+import {get, post, patch} from "@/plugins/request"
 
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
 const limit = 10
@@ -7,6 +7,7 @@ const nodesUrl = "/api/v1/nodes"
 const evictionUrl = "api/v1/namespaces/{namespace}/pods/{pod}/eviction"
 const nodeStatsSummaryUrl = "apis/metrics.k8s.io/v1beta1/nodes"
 const baseUrl = "/api/v1/clusters/node/{clusterName}"
+const batchUrl = "/api/v1/clusters/node/batch/{clusterName}"
 
 export function listNodesUsage(clusterName, continueToken) {
   let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl)
@@ -42,13 +43,9 @@ export function listNodeInCluster(clusterName, continueToken) {
 }
 
 export function listNodesByPage(clusterName, pageNum, pageSize) {
-  return get(`/api/v1/clusters/node/${clusterName}?pageNum=${pageNum}&pageSize=${pageSize}`)
+  return get(baseUrl.replace("{clusterName}", clusterName) + `?pageNum=${pageNum}&pageSize=${pageSize}`)
 }
 
-export function nodeCreate(clusterName, data) {
-  return post(baseUrl.replace("{clusterName}", clusterName), data)
-}
-
-export function nodeDelete(clusterName, nodeName) {
-  return del(`/api/v1/clusters/node/${clusterName}/${nodeName}`)
+export function nodeBatchOperation(clusterName, data) {
+  return post(batchUrl.replace("{clusterName}", clusterName), data)
 }

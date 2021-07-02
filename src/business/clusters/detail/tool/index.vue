@@ -314,6 +314,7 @@ export default {
       nodeNum: 0,
       storages: [],
       loadMenu: false,
+      timer: {},
     }
   },
   methods: {

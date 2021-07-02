@@ -4,6 +4,7 @@
       <el-col :span="6">
         <el-tree
                 class="filter-tree"
+                :default-expand-all="true"
                 :data="resources"
                 :props="props"
                 node-key="id"
