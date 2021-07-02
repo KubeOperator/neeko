@@ -407,8 +407,12 @@ export default {
       }).then(() => {
         const delForm = { operation: "delete", nodes: [] }
         delForm.operation = "delete"
-        for (const node of this.selects) {
-          delForm.nodes.push(node.name)
+        if (row) {
+          delForm.nodes.push(row.name)
+        } else {
+          for (const node of this.selects) {
+            delForm.nodes.push(node.name)
+          }
         }
         nodeBatchOperation(this.clusterName, delForm)
           .then(() => {

@@ -143,7 +143,7 @@
                       <el-option value="calico">calico</el-option>
                       <el-option v-if="form.architectures === 'amd64'" value="cilium">cilium</el-option>
                     </el-select>
-                    <div v-if="form.networkType==='cilium'"><span class="input-help-blod">{{$t('cluster.creation.cilium_help')}}</span></div>
+                    <div v-if="form.networkType==='cilium'"><span class="input-help">{{$t('cluster.creation.cilium_help')}}</span></div>
                   </el-form-item>
 
                   <div v-if="form.networkType === 'flannel'">

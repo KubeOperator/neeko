@@ -220,6 +220,7 @@ export default {
           }
           startBackup(backupFile)
             .then(() => {
+              this.submitLoading = false
               this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
             })
             .catch(() => {
