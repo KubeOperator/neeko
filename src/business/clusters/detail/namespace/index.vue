@@ -31,14 +31,15 @@
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :close-on-click-modal="false" :visible.sync="dialogCreateVisible">
-      <el-form label-position='left' label-width="80px">
-        <el-form-item :label="$t('commons.table.name')">
-          <el-input style="width: 80%" v-model="namespace" clearable />
+      <el-form :model="form" ref="form" label-position='left' label-width="80px">
+        <el-form-item :label="$t('commons.table.name')" prop="metadata.name" :rules="nameRules">
+          <el-input style="width: 80%" v-model="form.metadata.name" clearable />
+          <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" :disabled="namespace.length === 0 || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="form.metadata.name.length === 0 || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -48,6 +49,7 @@
 import ComplexTable from "@/components/complex-table"
 import { listNamespace, createNamespace, deleteNamespace } from "@/api/cluster/namespace"
 import { listTool } from "@/api/cluster/tool"
+import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterNamespace",
@@ -75,8 +77,8 @@ export default {
           name: "",
         },
       },
+      nameRules: [Rule.CommonNameRule],
       nsSelection: [],
-      namespace: "",
       toolList: [],
       dialogCreateVisible: false,
       clusterName: "",
@@ -107,19 +109,25 @@ export default {
       })
     },
     submitCreate() {
-      this.submitLoading = true
-      this.form.metadata.name = this.namespace
-      createNamespace(this.clusterName, this.form)
-        .then(() => {
-          this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
-          this.dialogCreateVisible = false
-          this.search()
-          this.submitLoading = false
-        })
-        .catch(() => {
-          this.submitLoading = false
-          this.dialogCreateVisible = false
-        })
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          this.submitLoading = true
+          this.form.metadata.name = this.form.metadata.name
+          createNamespace(this.clusterName, this.form)
+            .then(() => {
+              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.dialogCreateVisible = false
+              this.search()
+              this.submitLoading = false
+            })
+            .catch(() => {
+              this.submitLoading = false
+              this.dialogCreateVisible = false
+            })
+        } else {
+          return false
+        }
+      })
     },
     isInSystemSpace(row) {
       const systemSpaces = ["default", "kube-public", "kube-operator", "kube-system", "istio-system", "kube-node-lease"]

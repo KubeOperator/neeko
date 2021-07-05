@@ -75,7 +75,7 @@ export default {
           name: this.form.name,
           password: this.form.password,
           email: this.form.email,
-          role: "user",
+          role: this.form.role,
         }).then(() => {
           this.$message({
             type: "success",
