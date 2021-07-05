@@ -5,7 +5,7 @@
         <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" :isLoading="loading" showCancel>
           <fu-step id="cluster-info" :title="$t('cluster.creation.step1')">
             <div class="example">
-              <el-scrollbar style="height:100%">
+              <el-scrollbar style="height:100%;overflow-x: hidden">
                 <el-card>
                   <el-row>
                     <el-col :span="20">
@@ -869,10 +869,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .example {
-  height: 500px;
+  height: 450px;
   margin: 1% 10%;
   ul {
     height: 20px;
+  }
+  /deep/ .el-scrollbar__wrap {
+    height: 100%;
+    overflow-x: hidden;
   }
 }
 </style>

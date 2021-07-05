@@ -96,7 +96,7 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <div style="height: 450px">
+      <div class="dialog">
         <el-scrollbar style="height:100%">
           <div style=" text-align: center;">
             <span>{{$t ('cluster.detail.node.base_infomation')}}</span>
@@ -581,5 +581,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.dialog {
+  height: 450px;
+  /deep/ .el-scrollbar__wrap {
+    height: 100%;
+    overflow-x: hidden;
+  }
+}
 </style>

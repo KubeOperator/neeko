@@ -39,7 +39,7 @@
     </complex-table>
 
     <el-dialog :title="$t('cluster.detail.security.cis_result')" width="70%" :visible.sync="dialogDetailVisible">
-      <div style="height: 450px">
+      <div class="dialog">
         <el-scrollbar style="height:100%">
           <div align="center">
             <el-progress :stroke-width="20" type="circle" :width="140" :percentage="passPercent"></el-progress>
@@ -175,5 +175,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.dialog {
+  height: 450px;
+  /deep/ .el-scrollbar__wrap {
+    height: 100%;
+    overflow-x: hidden;
+  }
+}
 </style>

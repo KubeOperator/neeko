@@ -71,7 +71,7 @@
     </complex-table>
 
     <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
+      <div class="dialog" v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
           <div>
@@ -504,5 +504,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.dialog{
+  /deep/ .el-scrollbar__wrap {
+    height: 100%;
+    overflow-x: hidden;
+  }
+}
 </style>
