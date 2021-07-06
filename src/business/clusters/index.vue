@@ -453,14 +453,12 @@ export default {
     },
     dialogPolling() {
       this.timer2 = setInterval(() => {
-        if (this.log.phase !== "Running" && this.log.phase !== "Failed" && this.currentCluster.status !== "Failed") {
+        if(this.log.conditions.length !== 0 || this.currentCluster.status === "Failed") {
+          this.conditionLoading = false
+        }
+        if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
           getClusterStatus(this.clusterName)
             .then((data) => {
-              if (data.conditions.length === 0) {
-                this.conditionLoading = true
-                return
-              }
-              this.conditionLoading = false
               this.activeName = this.log.conditions.length + 1
               this.log.conditions = data.conditions
               if (this.log.phase !== data.phase) {
