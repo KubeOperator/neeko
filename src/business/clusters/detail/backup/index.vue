@@ -20,7 +20,7 @@
                   <el-form-item :label="$t('cluster.detail.backup.retained_number')" prop="saveNum">
                     <el-input-number style="width:100%" :step="1" step-strictly :max="300"
                                      v-model.number="strategyForm.saveNum" clearable/>
-                    <div><span class="input-help">1 - 300</span></div>
+                    <div><span class="input-help">1 - 300 {{ $t("cluster.detail.backup.backup_help") }} </span></div>
                   </el-form-item>
                   <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
                     <el-select style="width:100%" size="small" allow-create filterable
