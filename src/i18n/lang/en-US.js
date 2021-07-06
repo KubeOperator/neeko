@@ -504,7 +504,8 @@ const message = {
         Running: "Running",
         restore_message: "Make sure to use this backup file to restore？",
         FAILED: "Failed",
-        detail: "Detail"
+        detail: "Detail",
+        backup_help: "If the number of retained copies is exceeded, the oldest backup file will be deleted"
       },
       security: {
         start_time: "Starting Time",
