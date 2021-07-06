@@ -112,7 +112,6 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           this.submitLoading = true
-          this.form.metadata.name = this.form.metadata.name
           createNamespace(this.clusterName, this.form)
             .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })

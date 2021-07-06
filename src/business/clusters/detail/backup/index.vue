@@ -261,7 +261,7 @@ export default {
           this.strategyForm.clusterName = this.clusterName
           createStrategy(this.strategyForm)
             .then(() => {
-              this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
               this.getBackupStrategy()
               this.submitLoading = false
             })
