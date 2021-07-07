@@ -459,7 +459,9 @@ export default {
       listNodeInCluster(this.clusterName).then((data) => {
         this.nodes = []
         data.items.forEach((item) => {
-          this.nodes.push(item.metadata.name)
+          if (item.spec["unschedulable"] === undefined) {
+            this.nodes.push(item.metadata.name)
+          }
         })
         this.nodeNum = this.nodes.length
       })
