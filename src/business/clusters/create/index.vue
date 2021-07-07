@@ -510,6 +510,7 @@ export default {
       archValid: true,
       nodes: "",
       plans: [],
+      allHosts: [],
       hosts: [],
       projects: [],
       repoList: [],
@@ -552,7 +553,6 @@ export default {
     loadRegistry() {
       listRegistryAll().then((data) => {
         this.repoList = data.items === null ? [] : data.items
-        this.changeArch("amd64")
       })
     },
     loadProject() {
@@ -570,19 +570,15 @@ export default {
     },
     loadHosts() {
       listProjectResourcesAll(this.form.projectName, "HOST").then((data) => {
-        const list = []
+        this.allHosts = []
         if (data.items !== null) {
-          data.items
-            .filter((host) => {
-              return host.status === "Running"
-            })
-            .forEach((h) => {
-              if (!h.clusterId) {
-                list.push(h.name)
-              }
-            })
+          for (const h of data.items) {
+            if (h.status === "Running" && !h.clusterId) {
+              this.allHosts.push({ name: h.name, architecture: h.architecture })
+            }
+          }
         }
-        this.hosts = list
+        this.changeArch(this.form.architectures)
       })
     },
     loadPlan() {
@@ -763,11 +759,17 @@ export default {
       this.maxNodesNum = Math.pow(2, 32 - Number(this.parts[4])) / this.form.maxNodePodNum - Math.ceil(this.form.maxClusterServiceNum / this.form.maxNodePodNum)
     },
     changeArch(type) {
+      this.hosts = []
       this.archValid = true
       let isAmdExit = false
       let isArmExit = false
       switch (type) {
         case "amd64":
+          for (const h of this.allHosts) {
+            if (h.architecture === "x86_64") {
+              this.hosts.push(h.name)
+            }
+          }
           for (const repo of this.repoList) {
             if (repo.architecture === "x86_64") {
               isAmdExit = true
@@ -777,6 +779,11 @@ export default {
           this.archValid = isAmdExit
           break
         case "arm64":
+          for (const h of this.allHosts) {
+            if (h.architecture === "aarch64") {
+              this.hosts.push(h.name)
+            }
+          }
           for (const repo of this.repoList) {
             if (repo.architecture === "aarch64") {
               isArmExit = true
@@ -786,6 +793,9 @@ export default {
           this.archValid = isArmExit
           break
         case "all":
+          for (const h of this.allHosts) {
+            this.hosts.push(h.name)
+          }
           for (const repo of this.repoList) {
             if (repo.architecture === "x86_64") {
               isAmdExit = true
@@ -861,8 +871,8 @@ export default {
   },
   created() {
     this.loadProject()
-    this.loadRegistry()
     this.loadVersion()
+    this.loadRegistry()
     this.onPart1Change()
   },
 }
