@@ -398,16 +398,6 @@ export default {
           return "el-icon-loading"
       }
     },
-    getCurrentCondition() {
-      if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
-        for (const item of this.log.conditions) {
-          if (this.log.status === "Unknown") {
-            return item
-          }
-        }
-      }
-      return null
-    },
     goForLogs() {
       openLogger(this.clusterName)
     },

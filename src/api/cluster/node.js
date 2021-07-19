@@ -7,7 +7,9 @@ const nodesUrl = "/api/v1/nodes"
 const evictionUrl = "api/v1/namespaces/{namespace}/pods/{pod}/eviction"
 const nodeStatsSummaryUrl = "apis/metrics.k8s.io/v1beta1/nodes"
 const baseUrl = "/api/v1/clusters/node/{clusterName}"
+const detailUrl = "/api/v1/clusters/node/detail/{clusterName}/{node}"
 const batchUrl = "/api/v1/clusters/node/batch/{clusterName}"
+const recreateUrl = "/api/v1/clusters/node/recreate/{clusterName}/{node}"
 
 export function listNodesUsage(clusterName, continueToken) {
   let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl)
@@ -47,4 +49,12 @@ export function listNodesByPage(clusterName, pageNum, pageSize) {
 
 export function nodeBatchOperation(clusterName, data) {
   return post(batchUrl.replace("{clusterName}", clusterName), data)
+}
+
+export function getNodeByName(clusterName, node) {
+  return get(detailUrl.replace("{clusterName}", clusterName).replace("{node}", node))
+}
+
+export function nodeReCreate(clusterName, node) {
+  return post(recreateUrl.replace("{clusterName}", clusterName).replace("{node}", node))
 }

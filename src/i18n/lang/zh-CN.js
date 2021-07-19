@@ -364,6 +364,8 @@ const message = {
         existing_actived: "存在已激活节点",
         is_master_node: "主节点禁止删除",
         drain_success: "节点强制驱逐成功",
+        node_expand: "集群扩容",
+        node_shrink: "集群缩容",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",

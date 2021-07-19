@@ -360,6 +360,8 @@ const message = {
         force_drain_help1: "delete permanently：",
         force_drain_help2: "1. Independent Pods and their data",
         force_drain_help3: "2. Pods configured with Empty Dir volume and their data",
+        node_expand: "Cluster expand",
+        node_shrink: "Cluster shrink",
       },
       namespace: {
         before_delete: "The deletion failed, the tool already exists in the namespace：",

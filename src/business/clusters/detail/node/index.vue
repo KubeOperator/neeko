@@ -37,7 +37,7 @@
           </div>
           <div v-if="row.status === 'Failed'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="getErrorInfo(row)">{{ $t("commons.status.failed") }}</el-link>
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.failed") }}</el-link>
           </div>
           <div v-if="row.status === 'Lost'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
@@ -85,7 +85,7 @@
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="supportGpu === 'disable' && !gpuExist" :label="$t ('cluster.creation.support_gpu')">
+        <el-form-item v-if="supportGpu === 'disable' && !gpuExist" prop="supportGpu" :label="$t ('cluster.creation.support_gpu')">
           <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
@@ -175,10 +175,23 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.tool.err_title')" width="50%" :visible.sync="dialogErrorVisible">
-      <div style="margin: 0 50px"><span style="line-height: 30px">{{ errMsg | errorFormat }}</span></div>
+    <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
+      <div class="dialog" style="height: 100px">
+        <el-scrollbar style="height:100%">
+          <div>
+            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
+              <el-step :title="log.name" :description="log.message | errorFormat ">
+                <i :class="log.icon" slot="icon"></i>
+              </el-step>
+            </el-steps>
+          </div>
+        </el-scrollbar>
+      </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
+        <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
+          {{ $t("commons.button.retry") }}
+        </el-button>
       </div>
     </el-dialog>
 
@@ -209,9 +222,10 @@
 import ComplexTable from "@/components/complex-table"
 
 import { listNamespace } from "@/api/cluster/namespace"
-import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode } from "@/api/cluster/node"
+import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
+import { getNodeByName } from "@/api/cluster/node"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
@@ -240,9 +254,7 @@ export default {
         total: 0,
       },
       dialogCreateVisible: false,
-      dialogErrorVisible: false,
       gpuExist: false,
-      errMsg: "",
       clusterName: "",
       selects: [],
       data: [],
@@ -273,6 +285,18 @@ export default {
         },
         spec: {},
       },
+      // cluster logs
+      activeName: 1,
+      dialogLogVisible: false,
+      log: {
+        name: "",
+        phase: "",
+        prePhase: "",
+        message: "",
+      },
+      retryLoadding: false,
+      currentNode: {},
+
       currentCluster: {},
       hosts: [],
       provider: null,
@@ -354,13 +378,6 @@ export default {
         })
       }
     },
-    getStatus(row) {
-      openLogger(this.clusterName, row.name)
-    },
-    getErrorInfo(row) {
-      this.dialogErrorVisible = true
-      this.errMsg = row.message
-    },
     getDetailInfo(row) {
       this.detaiInfo = row.info
       this.dialogDetailVisible = true
@@ -373,18 +390,23 @@ export default {
           nodeBatchOperation(this.clusterName, this.createForm)
             .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.resetForm("createForm")
               this.dialogCreateVisible = false
               this.search()
               this.submitLoading = false
             })
             .catch(() => {
               this.submitLoading = false
+              this.resetForm("createForm")
               this.dialogCreateVisible = false
             })
         } else {
           return false
         }
       })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     },
     onDelete(row) {
       if (row) {
@@ -552,6 +574,80 @@ export default {
         this.supportGpu = this.currentCluster.spec.supportGpu
       })
     },
+
+    // cluster logs
+    getStatus(row) {
+      this.currentNode = row
+      this.dialogLogVisible = true
+      this.dialogPolling()
+      getNodeByName(this.clusterName, this.currentNode.name).then((data) => {
+        this.log.icon = data.status === "Failed" ? "el-icon-close" : "el-icon-loading"
+        const status = (data.status === "Failed") ? data.pre_status : data.status
+        this.log.name = status === "Initializing" ? this.$t("cluster.detail.node.node_expand") : this.$t("cluster.detail.node.node_shrink")
+        this.log.phase = data.status
+        this.log.message = data.message
+      })
+    },
+    goForLogs() {
+      openLogger(this.clusterName)
+    },
+    onRetry() {
+      this.retryLoadding = true
+      switch (this.currentNode.pre_status) {
+        case "Initializing":
+          nodeReCreate(this.clusterName, this.currentNode.name).then(() => {
+            this.retryLoadding = false
+            this.log.phase = "Initializing"
+          })
+          break
+        case "Terminating":
+          const delForm = { operation: "delete", nodes: [] }
+          delForm.operation = "delete"
+          delForm.nodes.push(this.currentNode.name)
+          nodeBatchOperation(this.clusterName, delForm).then(() => {
+            this.retryLoadding = false
+            this.log.phase = "Terminating"
+          })
+          break
+      }
+      this.log.icon = "el-icon-loading"
+    },
+    closeDialogLog() {
+      clearInterval(this.timer2)
+      this.dialogLogVisible = false
+    },
+    dialogPolling() {
+      this.timer2 = setInterval(() => {
+        if (this.log.phase !== "Running" && this.log.phase !== "Failed" && this.log.phase !== "Failed") {
+          getNodeByName(this.clusterName, this.currentNode.name)
+            .then((data) => {
+              if (data.status !== this.log.phase) {
+                this.log.prePhase = this.log.phase
+                this.log.phase = data.status
+              }
+              this.log.status = data.status
+              this.log.message = data.message
+              switch (data.status) {
+                case "Running":
+                  this.log.icon = "el-icon-check"
+                  break
+                case "Failed":
+                case "NotReady":
+                  this.log.icon = "el-icon-close"
+                  break
+                default:
+                  this.log.icon = "el-icon-loading"
+                  break
+              }
+            })
+            .catch(() => {
+              this.dialogLogVisible = false
+              clearInterval(this.timer2)
+            })
+        }
+      }, 3000)
+    },
+
     polling() {
       this.timer = setInterval(() => {
         let flag = false
