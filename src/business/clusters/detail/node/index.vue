@@ -179,7 +179,7 @@
       <div class="dialog" style="height: 100px">
         <el-scrollbar style="height:100%">
           <div>
-            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
+            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="1">
               <el-step :title="log.name" :description="log.message | errorFormat ">
                 <i :class="log.icon" slot="icon"></i>
               </el-step>
@@ -222,10 +222,9 @@
 import ComplexTable from "@/components/complex-table"
 
 import { listNamespace } from "@/api/cluster/namespace"
-import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate } from "@/api/cluster/node"
+import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate, getNodeByName } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName, openLogger } from "@/api/cluster"
-import { getNodeByName } from "@/api/cluster/node"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
@@ -286,7 +285,6 @@ export default {
         spec: {},
       },
       // cluster logs
-      activeName: 1,
       dialogLogVisible: false,
       log: {
         name: "",
@@ -582,7 +580,7 @@ export default {
       this.dialogPolling()
       getNodeByName(this.clusterName, this.currentNode.name).then((data) => {
         this.log.icon = data.status === "Failed" ? "el-icon-close" : "el-icon-loading"
-        const status = (data.status === "Failed") ? data.pre_status : data.status
+        const status = data.status === "Failed" ? data.pre_status : data.status
         this.log.name = status === "Initializing" ? this.$t("cluster.detail.node.node_expand") : this.$t("cluster.detail.node.node_shrink")
         this.log.phase = data.status
         this.log.message = data.message
@@ -601,10 +599,7 @@ export default {
           })
           break
         case "Terminating":
-          const delForm = { operation: "delete", nodes: [] }
-          delForm.operation = "delete"
-          delForm.nodes.push(this.currentNode.name)
-          nodeBatchOperation(this.clusterName, delForm).then(() => {
+          nodeBatchOperation(this.clusterName, { operation: "delete", nodes: [this.currentNode.name] }).then(() => {
             this.retryLoadding = false
             this.log.phase = "Terminating"
           })
