@@ -77,13 +77,15 @@
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
       <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="110px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
-          <el-input-number style="width: 80%" v-model.number="createForm.increase" clearable />
+          <el-input-number :max="maxNodeNum" style="width: 80%" v-model.number="createForm.increase" clearable />
+          <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [currentCluster.spec.maxNodeNum - data.length])}}</span></div>
         </el-form-item>
 
         <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')">
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
+          <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [maxNodeNum])}}</span></div>
         </el-form-item>
         <el-form-item v-if="supportGpu === 'disable' && !gpuExist" prop="supportGpu" :label="$t ('cluster.creation.support_gpu')">
           <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
@@ -296,6 +298,7 @@ export default {
       currentNode: {},
 
       currentCluster: {},
+      maxNodeNum: 256,
       hosts: [],
       provider: null,
       dialogCordonVisible: false,
@@ -375,12 +378,17 @@ export default {
           })
         })
       }
+      this.maxNodeNum = this.currentCluster.spec.maxNodeNum - this.data.length
     },
     getDetailInfo(row) {
       this.detaiInfo = row.info
       this.dialogDetailVisible = true
     },
     submitCreate() {
+      if (this.createForm.nodes > this.maxNodeNum) {
+        this.$message({ type: "info", message: this.$t("cluster.detail.node.node_expand_help", [this.maxNodeNum]) })
+        return
+      }
       this.$refs["createForm"].validate((valid) => {
         if (valid) {
           this.submitLoading = true

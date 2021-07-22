@@ -59,53 +59,73 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.container_network')" prop="networkType">
-                    <el-select filterable @change="onPart1Change()" style="width: 15%" v-model="parts[0]" clearable>
-                      <el-option v-for="item of part1Options" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <span> . </span>
-                    <el-select filterable :disabled="part2Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="parts[1]" clearable>
-                      <el-option v-for="item of part2Options" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <span> . </span>
-                    <el-select filterable :disabled="part3Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="parts[2]" clearable>
-                      <el-option v-for="item of part3Options" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <span> . </span>
-                    <el-select filterable style="width: 15%" disabled v-model="parts[3]" clearable>
-                      <el-option value="0">0</el-option>
-                    </el-select>
-                    <span> / </span>
-                    <el-select filterable @change="onMaskChange()" style="width: 15%" v-model="parts[4]" clearable>
-                      <el-option v-for="item of maskOptions" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <div><span class="input-help">{{$t('cluster.creation.network_help')}}</span></div>
-                  </el-form-item>
-                  <el-form-item :label="$t('cluster.creation.max_node_pod_num')" prop="maxNodePodNum">
-                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxNodePodNum" clearable>
-                      <el-option v-for="item of podMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t('cluster.creation.max_cluster_service_num')" prop="maxClusterServiceNum">
-                    <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxClusterServiceNum" clearable>
-                      <el-option v-for="item of serviceMaxNumOptions" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
-                    <el-select style="width: 100%" v-model="form.kubeProxyMode" clearable>
-                      <el-option value="iptables" label="Iptables">Iptables</el-option>
-                      <el-option value="ipvs">ipvs</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
-                    <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                  </el-form-item>
-                  <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
-                    <el-switch v-model="form.kubernetesAudit" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                  </el-form-item>
-                  <el-form-item>
-                    <span style="color: green">{{$t ('cluster.creation.max_node_num_show', [maxNodesNum])}}</span>
-                  </el-form-item>
+                  <el-row>
+                    <el-col :span="20">
+                      <el-form-item :label="$t('cluster.creation.node_ip_num')" prop="maxNodePodNum">
+                        <el-select filterable style="width: 100%" @change="getNodeNum()" v-model.number="form.maxNodePodNum" clearable>
+                          <el-option v-for="item of podIPNumOptions" :key="item" :label="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item :label="$t ('cluster.creation.pod_cidr')" prop="kubePodSubnet">
+                        <el-select filterable @change="onPart1Change('pod')" style="width: 15%" v-model="podParts[0]" clearable>
+                          <el-option v-for="item of podPart1Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable :disabled="podPart2Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="podParts[1]" clearable>
+                          <el-option v-for="item of podPart2Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable :disabled="podPart3Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="podParts[2]" clearable>
+                          <el-option v-for="item of podPart3Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable style="width: 15%" disabled v-model="podParts[3]" clearable>
+                          <el-option value="0">0</el-option>
+                        </el-select>
+                        <span> / </span>
+                        <el-select filterable @change="onMaskChange('pod')" style="width: 15%" v-model="podParts[4]" clearable>
+                          <el-option v-for="item of podMaskOptions" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <div><span class="input-help">{{$t('cluster.creation.pod_cidr_help')}}</span></div>
+                        <div> <span style="color: green">{{$t ('cluster.creation.max_node_num_show', [form.maxNodeNum, form.maxNodePodNum] )}}</span></div>
+                      </el-form-item>
+
+                      <el-form-item :label="$t ('cluster.creation.service_cidr')" prop="kubeServiceSubnet">
+                        <el-select filterable @change="onPart1Change('service')" style="width: 15%" v-model="serviceParts[0]" clearable>
+                          <el-option v-for="item of servicePart1Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable :disabled="servicePart2Options.length < 2" style="width: 15%" v-model="serviceParts[1]" clearable>
+                          <el-option v-for="item of servicePart2Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable :disabled="servicePart3Options.length < 2" style="width: 15%" v-model="serviceParts[2]" clearable>
+                          <el-option v-for="item of servicePart3Options" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <span> . </span>
+                        <el-select filterable style="width: 15%" disabled v-model="serviceParts[3]" clearable>
+                          <el-option value="0">0</el-option>
+                        </el-select>
+                        <span> / </span>
+                        <el-select filterable @change="onMaskChange('service')" style="width: 15%" v-model="serviceParts[4]" clearable>
+                          <el-option v-for="item of serviceMaskOptions" :key="item" :value="item">{{item}}</el-option>
+                        </el-select>
+                        <div><span class="input-help">{{$t('cluster.creation.service_cidr_help')}}</span></div>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
+                        <el-select style="width: 100%" v-model="form.kubeProxyMode" clearable>
+                          <el-option value="iptables" label="Iptables">Iptables</el-option>
+                          <el-option value="ipvs">ipvs</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
+                        <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
+                        <el-switch v-model="form.kubernetesAudit" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -275,6 +295,9 @@
                     <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
                       <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
                     </el-select>
+                    <div v-if="isNodeNumExceed()">
+                      <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
+                    </div>
                   </el-form-item>
                 </el-card>
               </el-scrollbar>
@@ -288,7 +311,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                    <el-input-number v-model.number="form.workerAmount" clearable></el-input-number>
+                    <el-input-number :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
                   </el-form-item>
                 </el-card>
               </el-scrollbar>
@@ -322,17 +345,17 @@
                   <el-divider content-position="left">{{$t ('cluster.creation.step2')}}</el-divider>
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
-                      <ul>{{$t ('cluster.creation.cluster_cidr')}}</ul>
-                      <ul>{{$t ('cluster.creation.max_node_pod_num')}}</ul>
-                      <ul>{{$t ('cluster.creation.max_cluster_service_num')}}</ul>
+                      <ul>{{$t ('cluster.creation.node_ip_num')}}</ul>
+                      <ul>{{$t ('cluster.creation.pod_cidr')}}</ul>
+                      <ul>{{$t ('cluster.creation.service_cidr')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
                       <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
                       <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                     </el-col>
                     <el-col :span="6">
-                      <ul>{{form.clusterCidr}}</ul>
                       <ul>{{form.maxNodePodNum}}</ul>
-                      <ul>{{form.maxClusterServiceNum}}</ul>
+                      <ul>{{form.kubePodSubnet}}</ul>
+                      <ul>{{form.kubeServiceSubnet}}</ul>
                       <ul>{{form.kubeProxyMode}}</ul>
                       <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
@@ -447,13 +470,14 @@ export default {
         architectures: "amd64",
         yumOperate: "replace",
 
-        maxClusterServiceNum: 256,
         maxNodePodNum: 256,
+        maxNodeNum: 256,
         kubeProxyMode: "iptables",
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
         kubernetesAudit: "disable",
-        clusterCidr: "192.168.0.0/16",
+        kubePodSubnet: "10.10.0.0/16",
+        kubeServiceSubnet: "192.168.0.0/24",
 
         runtimeType: "docker",
         dockerStorageDir: "/var/lib/docker",
@@ -489,7 +513,7 @@ export default {
         yumOperate: [Rule.RequiredRule],
         runtimeType: [Rule.RequiredRule],
         maxNodePodNum: [Rule.RequiredRule],
-        maxClusterServiceNum: [Rule.RequiredRule],
+        kubeServiceSubnet: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
         enableDnsCache: [Rule.RequiredRule],
         kubernetesAudit: [Rule.RequiredRule],
@@ -517,14 +541,19 @@ export default {
       validateCluster: false,
       loading: false,
       helmVersions: ["v3", "v2"],
-      part1Options: ["192", "172", "10"],
-      part2Options: [],
-      part3Options: [],
-      parts: ["192", "168", "0", "0", "16"],
-      podMaxNumOptions: [32, 64, 128, 256],
-      serviceMaxNumOptions: [32, 64, 128, 256, 512, 1024, 2048, 4096],
-      maskOptions: [],
-      maxNodesNum: 255,
+
+      podPart1Options: ["192", "172", "10"],
+      podPart2Options: [],
+      podPart3Options: [],
+      podParts: ["10", "0", "0", "0", "14"],
+      servicePart1Options: ["192", "172", "10"],
+      servicePart2Options: [],
+      servicePart3Options: [],
+      podMaskOptions: [],
+      serviceParts: ["192", "168", "0", "0", "16"],
+      podIPNumOptions: [256, 128, 64, 32, 16],
+      serviceMaskOptions: [],
+
       multi_network: "disable",
       masters: [],
       workers: [],
@@ -541,6 +570,9 @@ export default {
               if (lenMaster !== 1 && lenMaster !== 3) {
                 return false
               }
+            }
+            if (this.isNodeNumExceed()) {
+              return false
             }
           }
           bool = true
@@ -640,71 +672,94 @@ export default {
         return false
       }
     },
-    onPart1Change() {
-      this.part2Options = []
-      switch (this.parts[0]) {
+    onPart1Change(type) {
+      let part = type === "pod" ? this.podParts : this.serviceParts
+      let part2Options = []
+      let maskOptions = []
+      switch (part[0]) {
         case "192":
-          this.part2Options = ["168"]
-          this.parts[1] = this.part2Options[0]
-          this.maskOptions = [].concat(["16", "17", "18", "19"])
-          this.parts[4] = this.maskOptions[0]
+          part2Options = ["168"]
+          part[1] = part2Options[0]
+          maskOptions = type === "pod" ? ["16", "17", "18", "19"] : ["16", "17", "18", "19", "20", "21", "22", "23", "24"]
+          part[4] = maskOptions[0]
           break
         case "172":
           for (let i = 16; i < 32; i++) {
             if (i !== 17) {
-              this.part2Options.push(i + "")
+              part2Options.push(i + "")
             }
           }
-          this.parts[1] = this.part2Options[0]
-          this.maskOptions = [].concat(["16", "17", "18", "19"])
-          this.parts[4] = this.maskOptions[0]
+          part[1] = part2Options[0]
+          maskOptions = type === "pod" ? ["16", "17", "18", "19"] : ["16", "17", "18", "19", "20", "21", "22", "23", "24"]
+          part[4] = maskOptions[0]
           break
         case "10":
-          this.parts[1] = this.part2Options[0]
-          this.maskOptions = [].concat(["14", "15", "16", "17", "18", "19"])
-          this.parts[4] = this.maskOptions[0]
+          part[1] = part2Options[0]
+          maskOptions = type === "pod" ? ["14", "15", "16", "17", "18", "19"] : ["14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
+          part[4] = maskOptions[0]
           break
       }
-      this.onMaskChange()
+      if (type === "pod") {
+        this.podParts = part
+        this.podMaskOptions = maskOptions
+        this.podPart2Options = part2Options
+      } else {
+        this.serviceParts = part
+        this.serviceMaskOptions = maskOptions
+        this.servicePart2Options = part2Options
+      }
+      this.onMaskChange(type)
     },
-    onMaskChange() {
-      this.part3Options = []
-      const mask = Number(this.parts[4])
-      if (this.parts[0] === "192" || this.parts[0] === "172") {
+    onMaskChange(type) {
+      let part = type === "pod" ? this.podParts : this.serviceParts
+      let part2Options = type === "pod" ? this.podPart2Options : this.servicePart2Options
+      let part3Options = []
+      const mask = Number(part[4])
+      if (part[0] === "192" || part[0] === "172") {
         const a = Math.pow(2, 32 - mask - 8)
         const selects = []
         for (let i = 0; i < 256; i += a) {
           selects.push(i)
         }
-        this.part3Options = selects
-        this.parts[2] = this.part3Options[0]
+        part3Options = selects
+        part[2] = part3Options[0]
       }
-      if (this.parts[0] === "10") {
+      if (part[0] === "10") {
         if (mask < 16) {
           const a = Math.pow(2, 32 - mask - 16)
           const selects = []
           for (let i = 0; i < 256; i += a) {
             selects.push(i)
           }
-          this.part2Options = selects
-          this.parts[1] = this.part2Options[0]
+          part2Options = selects
+          part[1] = part2Options[0]
         } else {
           const select1 = []
           for (let i = 0; i < 256; i++) {
             select1.push(i)
           }
-          this.part2Options = select1
-          this.parts[1] = this.part2Options[0]
+          part2Options = select1
+          part[1] = part2Options[0]
           const a = Math.pow(2, 32 - mask - 8)
           const selects = []
           for (let i = 0; i < 256; i += a) {
             selects.push(i)
           }
-          this.part3Options = selects
-          this.parts[2] = this.part3Options[0]
+          part3Options = selects
+          part[2] = part3Options[0]
         }
       }
-      this.getNodeNum()
+      if (type === "pod") {
+        this.podPart2Options = part2Options
+        this.podPart3Options = part3Options
+        this.podParts = part
+        this.getNodeNum()
+      } else {
+        this.servicePart2Options = part2Options
+        this.servicePart3Options = part3Options
+        this.serviceParts = part
+        this.form.kubeServiceSubnet = this.releaseCidr("service")
+      }
     },
     getDefaultTunnelMode() {
       if (this.form.flannelBackend === "Overlay") {
@@ -744,6 +799,9 @@ export default {
       }
       return false
     },
+    isNodeNumExceed() {
+      return this.form.workers.length + this.form.masters.length > this.form.maxNodeNum
+    },
     onSubmit() {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
         this.form.ciliumTunnelMode = "disable"
@@ -755,8 +813,8 @@ export default {
       })
     },
     getNodeNum() {
-      this.form.clusterCidr = this.releaseCidr()
-      this.maxNodesNum = Math.pow(2, 32 - Number(this.parts[4])) / this.form.maxNodePodNum - Math.ceil(this.form.maxClusterServiceNum / this.form.maxNodePodNum)
+      this.form.kubePodSubnet = this.releaseCidr("pod")
+      this.form.maxNodeNum = Math.pow(2, 32 - Number(this.podParts[4])) / this.form.maxNodePodNum
     },
     changeArch(type) {
       this.hosts = []
@@ -859,8 +917,12 @@ export default {
         this.form.nodes.push({ hostName: n, role: "worker" })
       })
     },
-    releaseCidr() {
-      return this.parts[0] + "." + this.parts[1] + "." + this.parts[2] + "." + this.parts[3] + "/" + this.parts[4]
+    releaseCidr(type) {
+      if (type === "pod") {
+        return this.podParts[0] + "." + this.podParts[1] + "." + this.podParts[2] + "." + this.podParts[3] + "/" + this.podParts[4]
+      } else {
+        return this.serviceParts[0] + "." + this.serviceParts[1] + "." + this.serviceParts[2] + "." + this.serviceParts[3] + "/" + this.serviceParts[4]
+      }
     },
     getHostName(hosts) {
       return hosts.join(",")
@@ -873,7 +935,8 @@ export default {
     this.loadProject()
     this.loadVersion()
     this.loadRegistry()
-    this.onPart1Change()
+    this.onPart1Change("pod")
+    this.onPart1Change("service")
   },
 }
 </script>

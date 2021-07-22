@@ -217,7 +217,11 @@ const message = {
 
       step2: "Cluster Setup",
       container_network: "Container Network",
-      cluster_cidr: "Cluster CIDR",
+      node_ip_num: "Max Pod IP",
+      pod_cidr: "Pod CIDR",
+      pod_cidr_help: "The network segment must be unique with node",
+      service_cidr: "Service CIDR",
+      service_cidr_help: "The value cannot be the same as node or Pod network segment CIDR",
       max_node_pod_num: "Maximum  of POD/nodes",
       max_cluster_service_num: "Maximum  of services/cluster",
       proxy_mode: "Proxy Mode",
@@ -265,6 +269,7 @@ const message = {
       step6_of_bare_metal: "Node Information",
       node_help: "The host needs to be authorized in the project-resource first",
       master_select_help: "(The number of Master nodes must be 1 or 3)",
+      node_number_help: "In the current configuration, a maximum of {0} nodes can be deployed",
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
       step7: "Configuration Preview",
@@ -362,6 +367,7 @@ const message = {
         force_drain_help3: "2. Pods configured with Empty Dir volume and their data",
         node_expand: "Cluster expand",
         node_shrink: "Cluster shrink",
+        node_expand_help: "In the current configuration, a maximum of {0} nodes can be added to a cluster",
       },
       namespace: {
         before_delete: "The deletion failed, the tool already exists in the namespace：",

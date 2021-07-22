@@ -214,8 +214,12 @@ const message = {
       yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
       step2: "集群设置",
-      container_network: "容器网络",
-      cluster_cidr: "集群 CIDR",
+      node_ip_num: "节点 IP 数量",
+      pod_cidr: "Pod 网络 CIDR",
+      pod_cidr_help: "不能与 node 节点网段重复",
+      max_node_num_show: "当前配置下，集群内最多可允许部署 {0} 台主机，每台主机最多容纳 {1} 个Pod",
+      service_cidr: "Service 网络 CIDR",
+      service_cidr_help: "不能与 node 节点网段或 pod 网段 cidr 重复",
       max_node_pod_num: "POD 数量上限/节点",
       max_cluster_service_num: "Service 数量上限/集群",
       proxy_mode: "proxy 模式",
@@ -224,7 +228,6 @@ const message = {
       enable: "启用",
       disable: "禁用",
       network_help: "CIDR不能与目标IP段重叠，否则会造成初始化失败",
-      max_node_num_show: "当前容器网络配置下，集群最多拥有 {0} 节点",
 
       step3: "运行时设置",
       runtime_type: "容器运行时",
@@ -264,6 +267,7 @@ const message = {
       step6_of_bare_metal: "节点信息",
       node_help: "主机需要先在项目-资源中授权",
       master_select_help: "（Master 节点的数量必须为1或者3）",
+      node_number_help: "当前配置下，集群内最多可允许部署 {0} 个节点",
       step6_of_plan: "部署计划",
       worker_num: "Worker 数量",
 
@@ -366,6 +370,7 @@ const message = {
         drain_success: "节点强制驱逐成功",
         node_expand: "集群扩容",
         node_shrink: "集群缩容",
+        node_expand_help: "当前配置下，集群内最多可扩容 {0} 个节点",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
