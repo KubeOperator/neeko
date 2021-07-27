@@ -299,6 +299,26 @@
                       <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
                     </div>
                   </el-form-item>
+                  <div v-if="isMultiMaster()">
+                    <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                      <el-radio-group v-model="form.lbMode">
+                        <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                        <el-radio label="external">VIP</el-radio>
+                      </el-radio-group>
+                      <div v-if="form.lbMode === 'internal'">
+                        <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                      </div>
+                      <div v-if="form.lbMode === 'external'">
+                        <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                      </div>
+                    </el-form-item>
+                    <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                      <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
+                      <el-input-number v-model.number="form.lbKubeApiserverPort" clearable></el-input-number>
+                    </el-form-item>
+                  </div>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -313,6 +333,26 @@
                   <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
                     <el-input-number :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
                   </el-form-item>
+                  <div v-if="isMultiMaster()">
+                    <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                      <el-radio-group v-model="form.lbMode">
+                        <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                        <el-radio label="external">VIP</el-radio>
+                      </el-radio-group>
+                      <div v-if="form.lbMode === 'internal'">
+                        <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                      </div>
+                      <div v-if="form.lbMode === 'external'">
+                        <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                      </div>
+                    </el-form-item>
+                    <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                      <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
+                      <el-input-number v-model="form.lbKubeApiserverPort" clearable></el-input-number>
+                    </el-form-item>
+                  </div>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -421,20 +461,32 @@
                     <el-col :span="6">
                       <ul>{{$t ('cluster.creation.step6_of_plan')}}</ul>
                       <ul>{{$t ('cluster.creation.worker_num')}}</ul>
+                      <ul>{{$t ('cluster.creation.cluster_high_availability')}}</ul>
+                      <ul v-if="isMultiMaster && form.lbMode === 'external'">VIP</ul>
+                      <ul v-if="isMultiMaster">{{$t('cluster.creation.port')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.plan}}</ul>
                       <ul>{{form.workerAmount}}</ul>
+                      <ul>{{form.lbMode}}</ul>
+                      <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
+                      <ul v-if="isMultiMaster">{{form.lbKubeApiserverPort}}</ul>
                     </el-col>
                   </el-row>
                   <el-row type="flex" justify="center" v-if="form.provider === 'bareMetal'">
                     <el-col :span="6">
                       <ul>Masters</ul>
                       <ul>Workers</ul>
+                      <ul>{{$t ('cluster.creation.cluster_high_availability')}}</ul>
+                      <ul v-if="isMultiMaster && form.lbMode === 'external'">VIP</ul>
+                      <ul>{{$t('cluster.creation.port')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{getHostName(form.masters)}}</ul>
                       <ul>{{getHostName(form.workers)}}</ul>
+                      <ul>{{form.lbMode}}</ul>
+                      <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
+                      <ul v-if="isMultiMaster">{{form.lbKubeApiserverPort}}</ul>
                     </el-col>
                   </el-row>
                   <br>
@@ -500,6 +552,9 @@ export default {
         masters: [],
         workers: [],
         nodes: [],
+        lbMode: "internal",
+        lbKubeApiserverIp: "",
+        lbKubeApiserverPort: "8443",
 
         plan: "",
         workerAmount: 1,
@@ -528,6 +583,9 @@ export default {
         workerAmount: [Rule.NumberRule],
         masters: [Rule.RequiredRule],
         workers: [Rule.RequiredRule],
+        lbMode: [Rule.RequiredRule],
+        lbKubeApiserverIp: [Rule.RequiredRule],
+        lbKubeApiserverPort: [Rule.NumberRule],
       },
       versions: ["1.18.16", "1.20.10"],
       nameValid: true,
@@ -806,6 +864,7 @@ export default {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
         this.form.ciliumTunnelMode = "disable"
       }
+      this.form.lbKubeApiserverPort = this.form.lbKubeApiserverPort.toString()
       delete this.form.masters
       delete this.form.workers
       createCluster(this.form).then(() => {
@@ -926,6 +985,20 @@ export default {
     },
     getHostName(hosts) {
       return hosts.join(",")
+    },
+    isMultiMaster() {
+      if (this.form.provider === "plan") {
+        if(this.form.plan === "") {
+          return false
+        }
+        for(const p of this.plans) {
+          if (p.name === this.form.plan) {
+            return p.deployTemplate !== "SINGLE"
+          }
+        }
+      } else {
+        return this.form.masters.length === 3
+      }
     },
     onCancel() {
       this.$router.push({ name: "ClusterList" })

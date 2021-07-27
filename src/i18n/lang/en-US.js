@@ -270,8 +270,15 @@ const message = {
       node_help: "The host needs to be authorized in the project-resource first",
       master_select_help: "(The number of Master nodes must be 1 or 3)",
       node_number_help: "In the current configuration, a maximum of {0} nodes can be deployed",
+      cluster_high_availability: "High Availability",
+      default: "Default",
+      default_help: "The worker node deploys Haproxy, and all worker node components use the locally deployed Haproxy to access the Apiserve。",
+      vip_help: "Haproxy + KeepAlive is deployed on the master node, and all worker components use VIP addresses to access the Apiserver.",
+      port: "Port",
+
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
+      
       step7: "Configuration Preview",
       base_setting: "Basic Configuration"
     },

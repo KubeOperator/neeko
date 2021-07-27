@@ -268,6 +268,12 @@ const message = {
       node_help: "主机需要先在项目-资源中授权",
       master_select_help: "（Master 节点的数量必须为1或者3）",
       node_number_help: "当前配置下，集群内最多可允许部署 {0} 个节点",
+      cluster_high_availability: "集群高可用",
+      default: "默认",
+      default_help: "worker 节点会部署 haproxy，所有 worker 节点组件均使用本地部署的 haproxy 访问 apiserver。",
+      vip_help: "master 节点会部署 haproxy + keepalive，所有 worker 节点组件均使用 vip 地址访问 apiserver。",
+      port: "端口",
+
       step6_of_plan: "部署计划",
       worker_num: "Worker 数量",
 
