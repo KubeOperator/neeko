@@ -316,7 +316,7 @@
                       <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                     </el-form-item>
                     <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
-                      <el-input-number v-model.number="form.lbKubeApiserverPort" clearable></el-input-number>
+                      <el-input-number @change="isPortAvailable()" v-model.number="form.lbKubeApiserverPort" clearable></el-input-number>
                     </el-form-item>
                   </div>
                 </el-card>
@@ -350,7 +350,7 @@
                       <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                     </el-form-item>
                     <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
-                      <el-input-number v-model="form.lbKubeApiserverPort" clearable></el-input-number>
+                      <el-input-number @change="isPortAvailable()" v-model="form.lbKubeApiserverPort" clearable></el-input-number>
                     </el-form-item>
                   </div>
                 </el-card>
@@ -999,6 +999,9 @@ export default {
       } else {
         return this.form.masters.length === 3
       }
+    },
+    isPortAvailable() {
+      this.form.lbKubeApiserverPort = this.form.lbKubeApiserverPort.toString() === "6443" ? "8443" : this.form.lbKubeApiserverPort
     },
     onCancel() {
       this.$router.push({ name: "ClusterList" })
