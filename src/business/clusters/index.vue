@@ -60,6 +60,10 @@
           <div v-if="row.status === 'Creating'">
             <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
           </div>
+          <div v-if="row.status === 'NotReady'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.not_ready") }}</el-link>
+          </div>
         </template>
       </el-table-column>
       <el-table-column width="150px" :label="$t('commons.table.create_time')">
@@ -109,7 +113,7 @@
       <div align="center" style="margin-top: 15px">
         <el-table v-loading="checkLoading" :data="checkData.hooks" v-if="!isRecover" border style="width: 90%">
           <el-table-column prop="name" :label="$t('commons.table.name')" />
-          <el-table-column prop="level" :label="$t('cluster.health_check.level')" />
+          <el-table-column prop="level" :label="$t('commons.table.status')" />
           <el-table-column prop="msg" :label="$t('cluster.health_check.message')" />
         </el-table>
       </div>
@@ -378,9 +382,23 @@ export default {
 
     // cluster logs
     getStatus(row) {
-      this.dialogHeight = row.status === "Terminating" ? "100px" : "400px"
-      this.currentCluster = row
+      this.dialogHeight = row.status === "Terminating" || row.status === "NotReady" ? "100px" : "400px"
       this.dialogLogVisible = true
+      if (row.status === "NotReady") {
+        this.log = {
+          phase: "",
+          message: "",
+          conditions: [
+            {
+              name: "CheckAPIStatus",
+              status: "False",
+              message: row.message,
+            },
+          ],
+        }
+        return
+      }
+      this.currentCluster = row
       this.clusterName = row.name
       this.dialogPolling()
       getClusterStatus(row.name).then((data) => {
@@ -443,7 +461,7 @@ export default {
     },
     dialogPolling() {
       this.timer2 = setInterval(() => {
-        if(this.log.conditions.length !== 0 || this.currentCluster.status === "Failed") {
+        if (this.log.conditions.length !== 0 || this.currentCluster.status === "Failed") {
           this.conditionLoading = false
         }
         if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
@@ -493,7 +511,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dialog{
+.dialog {
   /deep/ .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;

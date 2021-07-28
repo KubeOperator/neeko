@@ -328,6 +328,7 @@ const message = {
       EnsureUpdateCertificates: "Renew certificate",
       EnsureUpgradeTaskStart: "Scheduling tasks",
       DeleteCluster: "Delete cluster",
+      CheckAPIStatus: "Check API status",
     },
     detail: {
       tag: {

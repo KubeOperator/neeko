@@ -326,6 +326,7 @@ const message = {
       EnsureUpdateCertificates: "更新证书",
       EnsureUpgradeTaskStart: "调度任务",
       DeleteCluster: "删除集群",
+      CheckAPIStatus: "检测 API 状态",
     },
     detail: {
       tag: {
