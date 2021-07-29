@@ -315,8 +315,8 @@
                     <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
                       <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                     </el-form-item>
-                    <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
-                      <el-input-number @change="isPortAvailable()" v-model.number="form.lbKubeApiserverPort" clearable></el-input-number>
+                    <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiserverPort">
+                      <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiserverPort" clearable></el-input-number>
                     </el-form-item>
                   </div>
                 </el-card>
@@ -349,8 +349,8 @@
                     <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
                       <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                     </el-form-item>
-                    <el-form-item :label="$t('cluster.creation.port')" prop="lbKubeApiserverPort">
-                      <el-input-number @change="isPortAvailable()" v-model="form.lbKubeApiserverPort" clearable></el-input-number>
+                    <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiserverPort">
+                      <el-input-number @change="isPortAvailable()" v-model="form.kubeApiserverPort" clearable></el-input-number>
                     </el-form-item>
                   </div>
                 </el-card>
@@ -470,7 +470,7 @@
                       <ul>{{form.workerAmount}}</ul>
                       <ul>{{form.lbMode}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
-                      <ul v-if="isMultiMaster">{{form.lbKubeApiserverPort}}</ul>
+                      <ul v-if="isMultiMaster">{{form.kubeApiserverPort}}</ul>
                     </el-col>
                   </el-row>
                   <el-row type="flex" justify="center" v-if="form.provider === 'bareMetal'">
@@ -486,7 +486,7 @@
                       <ul>{{getHostName(form.workers)}}</ul>
                       <ul>{{form.lbMode}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
-                      <ul v-if="isMultiMaster">{{form.lbKubeApiserverPort}}</ul>
+                      <ul v-if="isMultiMaster">{{form.kubeApiserverPort}}</ul>
                     </el-col>
                   </el-row>
                   <br>
@@ -554,7 +554,7 @@ export default {
         nodes: [],
         lbMode: "internal",
         lbKubeApiserverIp: "",
-        lbKubeApiserverPort: "8443",
+        kubeApiserverPort: 8443,
 
         plan: "",
         workerAmount: 1,
@@ -585,7 +585,7 @@ export default {
         workers: [Rule.RequiredRule],
         lbMode: [Rule.RequiredRule],
         lbKubeApiserverIp: [Rule.RequiredRule],
-        lbKubeApiserverPort: [Rule.NumberRule],
+        kubeApiserverPort: [Rule.NumberRule],
       },
       versions: ["1.18.16", "1.20.10"],
       nameValid: true,
@@ -864,7 +864,6 @@ export default {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
         this.form.ciliumTunnelMode = "disable"
       }
-      this.form.lbKubeApiserverPort = this.form.lbKubeApiserverPort.toString()
       delete this.form.masters
       delete this.form.workers
       createCluster(this.form).then(() => {
@@ -1001,7 +1000,7 @@ export default {
       }
     },
     isPortAvailable() {
-      this.form.lbKubeApiserverPort = this.form.lbKubeApiserverPort.toString() === "6443" ? "8443" : this.form.lbKubeApiserverPort
+      this.form.kubeApiserverPort = this.form.kubeApiserverPort === 6443 ? 8443 : this.form.kubeApiserverPort
     },
     onCancel() {
       this.$router.push({ name: "ClusterList" })
