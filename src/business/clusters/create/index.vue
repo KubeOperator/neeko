@@ -584,7 +584,7 @@ export default {
         masters: [Rule.RequiredRule],
         workers: [Rule.RequiredRule],
         lbMode: [Rule.RequiredRule],
-        lbKubeApiserverIp: [Rule.RequiredRule],
+        lbKubeApiserverIp: [Rule.IpRule],
         kubeApiserverPort: [Rule.NumberRule],
       },
       versions: ["1.18.16", "1.20.10"],

@@ -102,7 +102,7 @@ export default {
       },
       rules: {
         name: [Rule.NameRule],
-        ip: [Rule.RequiredRule],
+        ip: [Rule.IpRule],
         port: [Rule.NumberRule],
         project: [Rule.RequiredRule],
         credentialId: [Rule.RequiredRule],
