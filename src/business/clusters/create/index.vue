@@ -86,8 +86,13 @@
                         <el-select filterable @change="onMaskChange('pod')" style="width: 15%" v-model="podParts[4]" clearable>
                           <el-option v-for="item of podMaskOptions" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
-                        <div><span class="input-help">{{$t('cluster.creation.pod_cidr_help')}}</span></div>
-                        <div> <span style="color: green">{{$t ('cluster.creation.max_node_num_show', [form.maxNodeNum, form.maxNodePodNum] )}}</span></div>
+                        <div>
+                          <span class="input-help" style="display:inline">{{$t('cluster.creation.pod_cidr_help1')}}</span>
+                          <span class="input-help" style="color: green;display:inline;font-weight: bold;">{{form.maxNodeNum}}</span>
+                          <span class="input-help" style="display:inline">{{$t('cluster.creation.pod_cidr_help2')}}</span>
+                          <span class="input-help" style="color: green;display:inline;font-weight: bold;">{{form.maxNodePodNum}}</span>
+                          <span class="input-help" style="display:inline">{{$t('cluster.creation.pod_cidr_help3')}}</span>
+                        </div>
                       </el-form-item>
 
                       <el-form-item :label="$t ('cluster.creation.service_cidr')" prop="kubeServiceSubnet">

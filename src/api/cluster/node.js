@@ -11,13 +11,8 @@ const detailUrl = "/api/v1/clusters/node/detail/{clusterName}/{node}"
 const batchUrl = "/api/v1/clusters/node/batch/{clusterName}"
 const recreateUrl = "/api/v1/clusters/node/recreate/{clusterName}/{node}"
 
-export function listNodesUsage(clusterName, continueToken) {
-  let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl)
-  url += "?limit=" + limit
-  if (continueToken !== undefined && continueToken !== null) {
-    url += "&continue=" + continueToken
-  }
-  return get(url)
+export function listNodesUsage(clusterName) {
+  return get(proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", nodeStatsSummaryUrl))
 }
 
 export function cordonNode(clusterName, nodeName, data) {

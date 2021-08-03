@@ -117,7 +117,7 @@
             <div><span class="input-help">{{$t('cluster.detail.tool.search_index_help')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.replicas')" prop="vars.elasticsearch_replicas" :rules="numberRules">
-            <el-input-number :step="1" step-strictly style="width: 80%" @blur="checkReplicas" v-model="toolForm.vars['elasticsearch_replicas']" clearable></el-input-number>
+            <el-input-number :min="0" :max="nodeNum" :step="1" step-strictly style="width: 80%" @blur="checkReplicas" v-model="toolForm.vars['elasticsearch_replicas']" clearable></el-input-number>
             <div v-if="isReplicasValid"><span class="input-help">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span>
             </div>
             <div v-if="!isReplicasValid"><span class="input-error">{{$t('cluster.detail.tool.max_replicas_num')}} : {{nodeNum}}</span>
@@ -504,6 +504,7 @@ export default {
             server_retention: 10,
             server_persistentVolume_enabled: false,
             server_persistentVolume_size: 10,
+            service_type: "NodePort",
             server_persistentVolume_storageClass: "",
           }
           break

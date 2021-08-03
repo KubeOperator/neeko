@@ -21,8 +21,8 @@ export function listClusters(page, size) {
   return get(`${clusterUrl}?pageNum=${page}&pageSize=${size}`)
 }
 
-export function searchClusters(page, size, condition) {
-  return post(`${clusterUrl}/search?pageNum=${page}&pageSize=${size}`, condition)
+export function searchClusters(page, size, condition, isPolling) {
+  return post(`${clusterUrl}/search?pageNum=${page}&pageSize=${size}&isPolling=${isPolling}`, condition)
 }
 
 export function createCluster(data) {

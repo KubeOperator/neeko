@@ -74,7 +74,7 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
-    <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
+    <el-dialog :before-close="closeDialogLog" @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
       <div class="dialog" v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
         <el-scrollbar style="height:100%">
           <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
@@ -164,7 +164,7 @@ export default {
             this.onHealthCheck(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed"
+            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
           },
         },
         {
@@ -174,7 +174,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return row.status !== "Running" && row.status !== "Failed"
+            return row.status !== "Running" && row.status !== "Failed" && row.status !== "NotReady"
           },
         },
       ],
@@ -232,7 +232,7 @@ export default {
     search(condition) {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      searchClusters(currentPage, pageSize, condition).then((data) => {
+      searchClusters(currentPage, pageSize, condition, false).then((data) => {
         this.loading = false
         this.data = data.items
         this.paginationConfig.total = data.total
@@ -240,7 +240,7 @@ export default {
     },
     searchForPolling(condition) {
       const { currentPage, pageSize } = this.paginationConfig
-      searchClusters(currentPage, pageSize, condition).then((data) => {
+      searchClusters(currentPage, pageSize, condition, true).then((data) => {
         this.data = data.items
         this.paginationConfig.total = data.total
       })
