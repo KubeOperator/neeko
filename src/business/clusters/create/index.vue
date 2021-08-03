@@ -118,12 +118,34 @@
                           <el-option value="ipvs">ipvs</el-option>
                         </el-select>
                       </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
-                        <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                      </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
-                        <el-switch v-model="form.kubernetesAudit" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                      </el-form-item>
+
+                      <div class="registry-collapse">
+                        <el-collapse accordion>
+                          <el-collapse-item>
+                            <template slot="title">
+                              {{$t('multi_cluster.senior_setting')}}
+                            </template>
+                            <div>
+                              <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
+                                <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                              </el-form-item>
+                              <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
+                                <el-switch v-model="form.kubernetesAudit" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                              </el-form-item>
+                              <el-form-item :label="'NodePort ' + $t ('cluster.creation.port_range')">
+                                <el-input-number :min="0" :max="65536" v-model.number="form.kubeServiceNodePortRange1"></el-input-number>
+                                <span style="margin-left: 10px">-</span>
+                                <el-input-number :min="0" :max="65536" style="margin-left: 10px" v-model.number="form.kubeServiceNodePortRange2"></el-input-number>
+                                <div><span v-if="form.kubeServiceNodePortRange1 > form.kubeServiceNodePortRange2" class="input-error">{{$t('cluster.creation.range_err')}}</span></div>
+                              </el-form-item>
+                              <el-form-item :label="'NodePort ' + $t ('cluster.creation.address')" prop="nodeportAddress">
+                                <el-input placeholder="192.168.10.0/24,192.168.60.0/24" v-model="form.nodeportAddress" clearable></el-input>
+                                <div><span class="input-help">{{$t('cluster.creation.address_help')}}</span></div>
+                              </el-form-item>
+                            </div>
+                          </el-collapse-item>
+                        </el-collapse>
+                      </div>
                     </el-col>
                   </el-row>
                 </el-card>
@@ -391,6 +413,8 @@
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
                       <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
                       <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
+                      <ul>NodePort {{$t ('cluster.creation.port_range')}}</ul>
+                      <ul>NodePort {{$t ('cluster.creation.address')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.maxNodePodNum}}</ul>
@@ -401,6 +425,8 @@
                       <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
                       <ul v-if="form.kubernetesAudit === 'enable'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.kubernetesAudit === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul>{{form.kubeServiceNodePortRange1}} - {{form.kubeServiceNodePortRange2}}</ul>
+                      <ul>{{form.nodeportAddress}}</ul>
                     </el-col>
                   </el-row>
 
@@ -525,6 +551,10 @@ export default {
         maxNodePodNum: 256,
         maxNodeNum: 256,
         kubeProxyMode: "iptables",
+        nodeportAddress: "",
+        kubeServiceNodePortRange: "",
+        kubeServiceNodePortRange1: 30000,
+        kubeServiceNodePortRange2: 32767,
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
         kubernetesAudit: "disable",
@@ -570,8 +600,8 @@ export default {
         maxNodePodNum: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
-        enableDnsCache: [Rule.RequiredRule],
-        kubernetesAudit: [Rule.RequiredRule],
+        kubeServiceNodePortRange1: [Rule.NumberRule],
+        kubeServiceNodePortRange2: [Rule.NumberRule],
         networkType: [Rule.RequiredRule],
         flannelBackend: [Rule.RequiredRule],
         calicoIpv4PoolIpip: [Rule.RequiredRule],
@@ -632,6 +662,9 @@ export default {
             if (this.isNodeNumExceed()) {
               return false
             }
+          }
+          if (this.form.kubeServiceNodePortRange1 > this.form.kubeServiceNodePortRange2) {
+            return false
           }
           bool = true
         } else {
@@ -864,8 +897,11 @@ export default {
       if (this.form.ciliumTunnelMode === "flannelBackend") {
         this.form.ciliumTunnelMode = "disable"
       }
+      this.form.kubeServiceNodePortRange = this.form.kubeServiceNodePortRange1 + "-" + this.form.kubeServiceNodePortRange2
       delete this.form.masters
       delete this.form.workers
+      delete this.form.kubeServiceNodePortRange1
+      delete this.form.kubeServiceNodePortRange2
       createCluster(this.form).then(() => {
         this.$router.push({ name: "ClusterList" })
       })
@@ -987,10 +1023,10 @@ export default {
     },
     isMultiMaster() {
       if (this.form.provider === "plan") {
-        if(this.form.plan === "") {
+        if (this.form.plan === "") {
           return false
         }
-        for(const p of this.plans) {
+        for (const p of this.plans) {
           if (p.name === this.form.plan) {
             return p.deployTemplate !== "SINGLE"
           }
