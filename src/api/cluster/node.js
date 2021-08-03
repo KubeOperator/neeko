@@ -1,7 +1,6 @@
 import {get, post, patch} from "@/plugins/request"
 
 const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
-const limit = 10
 
 const nodesUrl = "/api/v1/nodes"
 const evictionUrl = "api/v1/namespaces/{namespace}/pods/{pod}/eviction"
