@@ -38,7 +38,7 @@
           </el-card>
         </el-col>
         <el-col :span="12">
-          <el-card v-loading="loading_chart" style="height: 350px">
+          <el-card style="height: 350px">
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.capacity_info')}}</span>
             </div>
@@ -122,7 +122,6 @@ export default {
   name: "ClusterOverview",
   data() {
     return {
-      loading_chart: false,
       loading_xterm: false,
       clusterName: "",
       currentCluster: {
@@ -160,7 +159,6 @@ export default {
       window.open(`/api/v1/clusters/kubeconfig/${this.clusterName}`, "_blank")
     },
     search() {
-      this.loading_chart = true
       this.clusterName = this.$route.params.name
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
@@ -228,7 +226,6 @@ export default {
         this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
         this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
         this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)
-        this.loading_chart = false
       })
     },
   },
