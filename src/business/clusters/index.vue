@@ -112,16 +112,36 @@
     <el-dialog :title="$t('cluster.health_check.health_check')" width="50%" :visible.sync="dialogCheckVisible">
       <div align="center" style="margin-top: 15px">
         <el-table v-loading="checkLoading" :data="checkData.hooks" v-if="!isRecover" border style="width: 90%">
-          <el-table-column prop="name" :label="$t('commons.table.name')" />
-          <el-table-column prop="level" :label="$t('commons.table.status')" />
+          <el-table-column prop="name" :label="$t('commons.table.name')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.name) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="level" :label="$t('commons.table.status')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.level) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="msg" :label="$t('cluster.health_check.message')" />
         </el-table>
       </div>
       <div align="center" style="margin-top: 15px">
         <el-table v-loading="checkLoading" :data="recoverItems" v-if="isRecover" border style="width: 90%">
-          <el-table-column prop="hookName" :label="$t('commons.table.name')" />
-          <el-table-column prop="name" :label="$t('cluster.health_check.method')" />
-          <el-table-column prop="result" :label="$t('cluster.health_check.result')" />
+          <el-table-column prop="hookName" :label="$t('commons.table.name')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.hookName) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" :label="$t('cluster.health_check.method')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.name) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="result" :label="$t('cluster.health_check.result')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.result) }}
+            </template>
+          </el-table-column>
           <el-table-column prop="msg" :label="$t('cluster.health_check.message')" />
         </el-table>
       </div>
@@ -308,7 +328,7 @@ export default {
         return
       }
       for (const item of this.clusterSelection) {
-        if (item.status !== "Running" && item.status !== "Failed") {
+        if (item.status !== "Running" && item.status !== "Failed" && item.status !== "NotReady") {
           isOk = false
           break
         }
