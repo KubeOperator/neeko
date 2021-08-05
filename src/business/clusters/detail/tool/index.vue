@@ -504,7 +504,7 @@ export default {
             server_retention: 10,
             server_persistentVolume_enabled: false,
             server_persistentVolume_size: 10,
-            service_type: "NodePort",
+            server_service_type: "NodePort",
             server_persistentVolume_storageClass: "",
           }
           break

@@ -88,7 +88,7 @@
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
+        <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
         <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>
@@ -146,7 +146,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="checkData.level=='error'" @click="onRecover()">
+        <el-button size="small" v-if="checkData.level=='STATUS_ERROR'" @click="onRecover()">
           {{ $t("cluster.health_check.recover") }}
         </el-button>
       </div>
@@ -406,7 +406,7 @@ export default {
       this.dialogLogVisible = true
       if (row.status === "NotReady") {
         this.log = {
-          phase: "",
+          phase: "NotReady",
           message: "",
           conditions: [
             {

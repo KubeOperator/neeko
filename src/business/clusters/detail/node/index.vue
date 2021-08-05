@@ -190,8 +190,8 @@
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
+        <el-button size="small" v-if="log.pre_status !== 'Creating'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
+        <el-button size="small" v-if="log.phase === 'Failed' && log.pre_status !== 'Creating'" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
@@ -592,6 +592,7 @@ export default {
         this.log.name = status === "Initializing" ? this.$t("cluster.detail.node.node_expand") : this.$t("cluster.detail.node.node_shrink")
         this.log.phase = data.status
         this.log.message = data.message
+        this.log.prePhase = data.pre_status
       })
     },
     goForLogs() {
