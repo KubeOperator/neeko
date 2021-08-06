@@ -311,7 +311,7 @@ export default {
     search() {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
-      listNodesByPage(this.clusterName, currentPage, pageSize)
+      listNodesByPage(this.clusterName, currentPage, pageSize, false)
         .then((data) => {
           this.loading = false
           this.data = data.items
@@ -342,7 +342,7 @@ export default {
     },
     searchForPolling() {
       const { currentPage, pageSize } = this.paginationConfig
-      listNodesByPage(this.clusterName, currentPage, pageSize).then((data) => {
+      listNodesByPage(this.clusterName, currentPage, pageSize, true).then((data) => {
         this.data = data.items
         this.data.forEach((item) => {
           item.roles = this.getNodeRoles(item)

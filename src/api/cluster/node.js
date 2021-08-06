@@ -37,8 +37,8 @@ export function listNodeInCluster(clusterName, continueToken) {
   return get(url)
 }
 
-export function listNodesByPage(clusterName, pageNum, pageSize) {
-  return get(baseUrl.replace("{clusterName}", clusterName) + `?pageNum=${pageNum}&pageSize=${pageSize}`)
+export function listNodesByPage(clusterName, pageNum, pageSize, isPolling) {
+  return get(baseUrl.replace("{clusterName}", clusterName) + `?pageNum=${pageNum}&pageSize=${pageSize}&isPolling=${isPolling}`)
 }
 
 export function nodeBatchOperation(clusterName, data) {
