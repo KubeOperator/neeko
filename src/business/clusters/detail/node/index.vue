@@ -178,7 +178,7 @@
     </el-dialog>
 
     <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div class="dialog" style="height: 100px">
+      <div class="dialog" style="height: 200px">
         <el-scrollbar style="height:100%">
           <div>
             <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="1">
@@ -251,7 +251,7 @@ export default {
       ],
       paginationConfig: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         total: 0,
       },
       dialogCreateVisible: false,
