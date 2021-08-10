@@ -5,7 +5,7 @@
       <div class="grid-content bg-purple-light">
         <el-form :model="form" label-position="left" ref="form" :rules="rules" label-width="130px">
           <el-form-item :label="$t('cluster.detail.f5.big_ip_addr')" prop="url">
-            <el-input v-model="form.url" placeholder="https://172.16.10.100" clearable></el-input>
+            <el-input v-model="form.url" placeholder="172.16.10.100" clearable></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.f5.big_ip_user_name')" prop="user">
             <el-input v-model="form.user" placeholder="admin" clearable></el-input>
@@ -51,7 +51,7 @@ export default {
         status: "",
       },
       rules: {
-        url: [Rule.RequiredRule],
+        url: [Rule.RequiredRule,Rule.IpRule],
         user: [Rule.RequiredRule],
         password: [Rule.RequiredRule],
         partition: [Rule.RequiredRule],
