@@ -43,7 +43,7 @@ const BackupAccount = {
       }
     },
     {
-      path: "edit",
+      path: "edit/:name",
       component: () => import("@/business/backup-account/edit"),
       name: "BackupAccountEdit",
       props: true,

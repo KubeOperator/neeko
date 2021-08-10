@@ -72,12 +72,12 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listBuckets, updateBackupAccounts } from "@/api/backup-account"
+import { listBuckets, updateBackupAccounts, getBackupAccountByName } from "@/api/backup-account"
 export default {
   components: {
     LayoutContent,
   },
-  props: ["data"],
+  props: ["name"],
   name: "BackupAccountEdit",
   data() {
     return {
@@ -138,7 +138,12 @@ export default {
     },
   },
   created() {
-    this.form = this.data
+    getBackupAccountByName(this.name).then((data) => {
+      this.form.name = data.name
+      this.form.type = data.type
+      this.form.credentialVars = data.credentialVars
+      this.getBuckets()
+    })
   },
 }
 </script>

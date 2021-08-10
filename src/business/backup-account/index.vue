@@ -81,7 +81,7 @@ export default {
           icon: "el-icon-edit",
           disabled: !checkPermission("ADMIN"),
           click: (row) => {
-            this.$router.push({ name: "BackupAccountEdit", params: { data: row } })
+            this.$router.push({ name: "BackupAccountEdit", params: { name: row.name } })
           }
         }, {
           label: this.$t("commons.button.delete"),

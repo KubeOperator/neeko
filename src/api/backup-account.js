@@ -26,3 +26,7 @@ export function deleteBackupAccounts(name) {
 export function searchBackupAccounts(currentPage, pageSize, conditions) {
   return post(`${backupAccountUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }
+
+export function getBackupAccountByName(name) {
+  return get(`${backupAccountUrl}/${name}`)
+}

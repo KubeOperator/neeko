@@ -37,7 +37,7 @@ export default {
       buttons: [
         {
           label: this.$t('commons.button.edit'), icon: "el-icon-edit", click: (row) => {
-            this.$router.push({name: "CredentialEdit", params: {data: row}})
+            this.$router.push({name: "CredentialEdit", params: {name: row.name}})
           }
         }, {
           label: this.$t('commons.button.delete'), icon: "el-icon-delete",  click: (row) => {

@@ -273,6 +273,7 @@ export default {
               this.submitLoading = false
             })
             .catch(() => {
+              this.form.submitForm.spec.capacity["storage"] = this.form.submitForm.spec.capacity["storage"].replace("Gi", "")
               this.submitLoading = false
             })
         } else {

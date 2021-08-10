@@ -173,6 +173,17 @@ export default {
     return {
       buttons: [
         {
+          label: this.$t("commons.button.edit"),
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "HostEdit", params: { name: row.name } })
+          },
+          disabled: (row) => {
+            console.log(row.status !== "Running", (row.clusterName.length !== 0))
+            return (row.clusterName.length !== 0) || (row.status !== "Running" && row.status !== "Failed")
+          },
+        },
+        {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           click: (row) => {

@@ -1,4 +1,4 @@
-import {get, post, del} from "@/plugins/request"
+import {get, post, del, patch} from "@/plugins/request"
 
 const hostUrl = "/api/v1/hosts"
 
@@ -16,6 +16,14 @@ export function listHosts(currentPage, pageSize) {
 
 export function searchHosts(currentPage, pageSize,condition) {
   return post(`${hostUrl}/search?pageNum=${currentPage}&pageSize=${pageSize}`,condition)
+}
+
+export function getHostByName(name) {
+  return get(`${hostUrl}/${name}`)
+}
+
+export function updateHost(host) {
+  return patch(`${hostUrl}/`, host)
 }
 
 export function syncHosts(hosts) {

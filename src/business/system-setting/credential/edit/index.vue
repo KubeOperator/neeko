@@ -40,13 +40,13 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
-import {updateCredentials} from "@/api/credentials";
+import {updateCredentials, getCredentialByName} from "@/api/credentials";
 export default {
   components: {
     LayoutContent
   },
   name: "CredentialEdit",
-  props: ["data"],
+  props: ["name"],
   data() {
     return {
       form: {
@@ -86,10 +86,12 @@ export default {
     },
   },
   created() {
-      this.form.name = this.data.name,
-      this.form.username = this.data.username,
-      this.form.type = this.data.type,
-      this.form.id = this.data.id
+    getCredentialByName(this.name).then(data => {
+      this.form.name = data.name,
+      this.form.username = data.username,
+      this.form.type = data.type,
+      this.form.id = data.id
+    })
   }
 }
 </script>

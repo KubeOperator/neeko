@@ -30,3 +30,8 @@ export function deleteCredentials(name) {
 export function listAllCredentials() {
   return get(`${settingUrl}`)
 }
+
+export function getCredentialByName(name) {
+  return get(`${settingUrl}/${name}`)
+}
+

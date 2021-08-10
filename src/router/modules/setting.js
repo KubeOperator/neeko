@@ -107,7 +107,7 @@ const SystemSetting = {
       },
     },{
       name: "RegistryEdit",
-      path: "registry/edit/:arch",
+      path: "registry/edit/:id",
       props: true,
       hidden: true,
       component: () => import('@/business/system-setting/registry/edit'),
@@ -127,7 +127,7 @@ const SystemSetting = {
       },
     },{
       name: "CredentialEdit",
-      path: "credential/edit",
+      path: "credential/edit/:name",
       props: true,
       hidden: true,
       component: () => import('@/business/system-setting/credential/edit'),

@@ -25,6 +25,17 @@ const Host = {
         activeMenu: "/hosts/list",
         roles: ['ADMIN']
       },
+    },
+    {
+      path: "edit/:name",
+      props: true,
+      hidden: true,
+      name: "HostEdit",
+      component: () => import('@/business/hosts/edit'),
+      meta: {
+        activeMenu: "/hosts/list",
+        roles: ['ADMIN']
+      },
     }
   ]
 }
