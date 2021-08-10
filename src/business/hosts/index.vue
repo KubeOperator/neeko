@@ -22,10 +22,10 @@
       <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
-      <el-table-column :label="$t('host.cpu')" width="80px" prop="cpuCore" />
+      <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="125px">
+      <el-table-column :label="$t('host.os')" min-width="110px">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -42,8 +42,8 @@
           {{ row.os }} {{ row['osVersion'] }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" width="100px" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="100px">
+      <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
+      <el-table-column :label="$t('commons.table.status')" min-width="90px">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
@@ -179,7 +179,6 @@ export default {
             this.$router.push({ name: "HostEdit", params: { name: row.name } })
           },
           disabled: (row) => {
-            console.log(row.status !== "Running", (row.clusterName.length !== 0))
             return (row.clusterName.length !== 0) || (row.status !== "Running" && row.status !== "Failed")
           },
         },

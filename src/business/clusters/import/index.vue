@@ -13,6 +13,13 @@
                 <el-option v-for="item of projects" :key="item.name" :value="item.name">{{ item.name }}</el-option>
               </el-select>
             </el-form-item>
+            <el-form-item :label="$t('cluster.creation.arch')" prop="architectures">
+              <el-select style="width: 100%" v-model="form.architectures">
+                <el-option value="amd64" label="AMD64">AMD64</el-option>
+                <el-option value="arm64" label="ARM64">ARM64</el-option>
+                <el-option value="all" label="MIXED">MIXED</el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="apiServer" prop="apiServer">
               <el-input style="width: 100%" v-model="form.apiServer" :placeholder="$t('cluster.import.api_server_help')" clearable></el-input>
             </el-form-item>
@@ -52,12 +59,14 @@ export default {
         token: "",
         router: "",
         projectName: "kubeoperator",
+        architectures: "amd64",
       },
       rules: {
         name: [Rule.RequiredRule],
         apiServer: [Rule.RequiredRule],
         token: [Rule.RequiredRule],
         projectName: [Rule.RequiredRule],
+        architectures: [Rule.RequiredRule],
         router: [Rule.RequiredRule],
       },
     }
