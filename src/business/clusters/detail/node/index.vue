@@ -190,8 +190,8 @@
         </el-scrollbar>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="log.pre_status !== 'Creating'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed' && log.pre_status !== 'Creating'" :v-loading="retryLoadding" @click="onRetry()">
+        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
+        <el-button size="small" v-if="log.phase === 'Failed' && (log.pre_status !== 'Initializing' || log.pre_status !== 'Terminating')" :v-loading="retryLoadding" @click="onRetry()">
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
