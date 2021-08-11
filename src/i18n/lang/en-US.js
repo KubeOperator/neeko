@@ -80,7 +80,7 @@ const message = {
       number_limit: "Please enter the correct number",
       email: "E-mail format is incorrect",
       common_name_help: "Lowercase English, numbers and-",
-      name_help: "Chinese, uppercase and lowercase English, numbers and-",
+      name_help: "Chinese, uppercase and lowercase English, numbers, - and .",
       ip_range_error: "IP range error",
       subnet_error: "Subnet error",
     },

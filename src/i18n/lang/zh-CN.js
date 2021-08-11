@@ -79,7 +79,7 @@ const message = {
       number_limit: "请输入正确的数字",
       email: "邮箱格式不正确",
       common_name_help: "小写英文、数字和-",
-      name_help: "中文、大小写英文、数字和-",
+      name_help: "中文、大小写英文、数字、-和.",
       ip_range_error: "IP范围错误",
       subnet_error: "子网错误",
     },
