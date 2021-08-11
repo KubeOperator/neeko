@@ -13,6 +13,7 @@ const message = {
     },
     confirm_message: {
       delete: "此操作不可撤销, 是否继续?",
+      force_delete: "强制删除，将忽略脚本执行过程中的错误信息，强制删除数据",
       uncordon: "此操作将恢复节点为可调度状态, 是否继续?",
     },
     button: {

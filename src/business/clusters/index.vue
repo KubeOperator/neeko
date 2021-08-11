@@ -99,6 +99,7 @@
       <el-form label-width="120px">
         <el-form-item :label="$t('cluster.delete.is_force')">
           <el-switch v-model="isForce" />
+          <div><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
