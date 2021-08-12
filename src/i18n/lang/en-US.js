@@ -13,6 +13,7 @@ const message = {
     },
     confirm_message: {
       delete: "This operation cannot be undone, do you want to continue?",
+      force_delete: "The error information during script execution is ignored and data is forcibly deleted",
       uncordon: "This operation will restore the node to a schedulable state. Do you want to continue?",
     },
     button: {
