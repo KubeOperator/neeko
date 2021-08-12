@@ -5,9 +5,9 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" status-icon label-position="left">
-            <el-form-item :label="$t('automatic.ip_pool.subnet')">
-              <el-input disabled :placeholder="subnet" ></el-input>
-            </el-form-item>
+<!--            <el-form-item :label="$t('automatic.ip_pool.subnet')">-->
+<!--              <el-input disabled :placeholder="subnet" ></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item :label="$t('automatic.ip_pool.ip_start')" prop="ipStart">
               <el-input v-model="form.ipStart"  :placeholder="$t('automatic.ip_pool.ip_start_help')"></el-input>
             </el-form-item>
