@@ -67,25 +67,7 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item :label="$t ('cluster.creation.pod_cidr')" prop="kubePodSubnet">
-                        <el-select filterable @change="onPart1Change('pod')" style="width: 15%" v-model="podParts[0]" clearable>
-                          <el-option v-for="item of podPart1Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable :disabled="podPart2Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="podParts[1]" clearable>
-                          <el-option v-for="item of podPart2Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable :disabled="podPart3Options.length < 2" @change="getNodeNum()" style="width: 15%" v-model="podParts[2]" clearable>
-                          <el-option v-for="item of podPart3Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable style="width: 15%" disabled v-model="podParts[3]" clearable>
-                          <el-option value="0">0</el-option>
-                        </el-select>
-                        <span> / </span>
-                        <el-select filterable @change="onMaskChange('pod')" style="width: 15%" v-model="podParts[4]" clearable>
-                          <el-option v-for="item of podMaskOptions" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
+                        <ko-cidr @cidrChange="getCidr" :cidr="form.kubePodSubnet" cidrType="pod" />
                         <div>
                           <span class="input-help" style="display:inline">{{$t('cluster.creation.pod_cidr_help1')}}</span>
                           <span class="input-help" style="color: green;display:inline;font-weight: bold;">{{form.maxNodeNum}}</span>
@@ -94,27 +76,8 @@
                           <span class="input-help" style="display:inline">{{$t('cluster.creation.pod_cidr_help3')}}</span>
                         </div>
                       </el-form-item>
-
                       <el-form-item :label="$t ('cluster.creation.service_cidr')" prop="kubeServiceSubnet">
-                        <el-select filterable @change="onPart1Change('service')" style="width: 15%" v-model="serviceParts[0]" clearable>
-                          <el-option v-for="item of servicePart1Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable :disabled="servicePart2Options.length < 2" style="width: 15%" v-model="serviceParts[1]" clearable>
-                          <el-option v-for="item of servicePart2Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable :disabled="servicePart3Options.length < 2" style="width: 15%" v-model="serviceParts[2]" clearable>
-                          <el-option v-for="item of servicePart3Options" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
-                        <span> . </span>
-                        <el-select filterable style="width: 15%" disabled v-model="serviceParts[3]" clearable>
-                          <el-option value="0">0</el-option>
-                        </el-select>
-                        <span> / </span>
-                        <el-select filterable @change="onMaskChange('service')" style="width: 15%" v-model="serviceParts[4]" clearable>
-                          <el-option v-for="item of serviceMaskOptions" :key="item" :value="item">{{item}}</el-option>
-                        </el-select>
+                        <ko-cidr @cidrChange="getCidr" :cidr="form.kubeServiceSubnet" cidrType="service" />
                         <div><span class="input-help">{{$t('cluster.creation.service_cidr_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
@@ -538,11 +501,12 @@ import { listProjectResourcesAll } from "@/api/project-resource"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkClusterNameExistence, createCluster } from "@/api/cluster"
 import { allProjects } from "@/api/projects"
+import KoCidr from "@/components/ko-cidr"
 import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterCreate",
-  components: { LayoutContent },
+  components: { LayoutContent, KoCidr },
   data() {
     return {
       form: {
@@ -635,17 +599,7 @@ export default {
       loading: false,
       helmVersions: ["v3", "v2"],
 
-      podPart1Options: ["192", "172", "10"],
-      podPart2Options: [],
-      podPart3Options: [],
-      podParts: ["10", "0", "0", "0", "14"],
-      servicePart1Options: ["192", "172", "10"],
-      servicePart2Options: [],
-      servicePart3Options: [],
-      podMaskOptions: [],
-      serviceParts: ["192", "168", "0", "0", "16"],
       podIPNumOptions: [256, 128, 64, 32, 16],
-      serviceMaskOptions: [],
 
       multi_network: "disable",
       masters: [],
@@ -768,95 +722,6 @@ export default {
         return false
       }
     },
-    onPart1Change(type) {
-      let part = type === "pod" ? this.podParts : this.serviceParts
-      let part2Options = []
-      let maskOptions = []
-      switch (part[0]) {
-        case "192":
-          part2Options = ["168"]
-          part[1] = part2Options[0]
-          maskOptions = type === "pod" ? ["16", "17", "18", "19"] : ["16", "17", "18", "19", "20", "21", "22", "23", "24"]
-          part[4] = maskOptions[0]
-          break
-        case "172":
-          for (let i = 16; i < 32; i++) {
-            if (i !== 17) {
-              part2Options.push(i + "")
-            }
-          }
-          part[1] = part2Options[0]
-          maskOptions = type === "pod" ? ["16", "17", "18", "19"] : ["16", "17", "18", "19", "20", "21", "22", "23", "24"]
-          part[4] = maskOptions[0]
-          break
-        case "10":
-          part[1] = part2Options[0]
-          maskOptions = type === "pod" ? ["14", "15", "16", "17", "18", "19"] : ["14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"]
-          part[4] = maskOptions[0]
-          break
-      }
-      if (type === "pod") {
-        this.podParts = part
-        this.podMaskOptions = maskOptions
-        this.podPart2Options = part2Options
-      } else {
-        this.serviceParts = part
-        this.serviceMaskOptions = maskOptions
-        this.servicePart2Options = part2Options
-      }
-      this.onMaskChange(type)
-    },
-    onMaskChange(type) {
-      let part = type === "pod" ? this.podParts : this.serviceParts
-      let part2Options = type === "pod" ? this.podPart2Options : this.servicePart2Options
-      let part3Options = []
-      const mask = Number(part[4])
-      if (part[0] === "192" || part[0] === "172") {
-        const a = Math.pow(2, 32 - mask - 8)
-        const selects = []
-        for (let i = 0; i < 256; i += a) {
-          selects.push(i)
-        }
-        part3Options = selects
-        part[2] = part3Options[0]
-      }
-      if (part[0] === "10") {
-        if (mask < 16) {
-          const a = Math.pow(2, 32 - mask - 16)
-          const selects = []
-          for (let i = 0; i < 256; i += a) {
-            selects.push(i)
-          }
-          part2Options = selects
-          part[1] = part2Options[0]
-        } else {
-          const select1 = []
-          for (let i = 0; i < 256; i++) {
-            select1.push(i)
-          }
-          part2Options = select1
-          part[1] = part2Options[0]
-          const a = Math.pow(2, 32 - mask - 8)
-          const selects = []
-          for (let i = 0; i < 256; i += a) {
-            selects.push(i)
-          }
-          part3Options = selects
-          part[2] = part3Options[0]
-        }
-      }
-      if (type === "pod") {
-        this.podPart2Options = part2Options
-        this.podPart3Options = part3Options
-        this.podParts = part
-        this.getNodeNum()
-      } else {
-        this.servicePart2Options = part2Options
-        this.servicePart3Options = part3Options
-        this.serviceParts = part
-        this.form.kubeServiceSubnet = this.releaseCidr("service")
-      }
-    },
     getDefaultTunnelMode() {
       if (this.form.flannelBackend === "Overlay") {
         this.form.ciliumTunnelMode = "vxlan"
@@ -911,9 +776,14 @@ export default {
         this.$router.push({ name: "ClusterList" })
       })
     },
-    getNodeNum() {
-      this.form.kubePodSubnet = this.releaseCidr("pod")
-      this.form.maxNodeNum = Math.pow(2, 32 - Number(this.podParts[4])) / this.form.maxNodePodNum
+    getCidr(type, cidr) {
+      if (type === "pod") {
+        this.form.kubePodSubnet = cidr
+        let parts = cidr.split(/[.]|[/]/)
+        this.form.maxNodeNum = Math.pow(2, 32 - Number(parts[4])) / this.form.maxNodePodNum
+      } else {
+        this.form.kubeServiceSubnet = cidr
+      }
     },
     changeArch(type) {
       this.hosts = []
@@ -1016,13 +886,6 @@ export default {
         this.form.nodes.push({ hostName: n, role: "worker" })
       })
     },
-    releaseCidr(type) {
-      if (type === "pod") {
-        return this.podParts[0] + "." + this.podParts[1] + "." + this.podParts[2] + "." + this.podParts[3] + "/" + this.podParts[4]
-      } else {
-        return this.serviceParts[0] + "." + this.serviceParts[1] + "." + this.serviceParts[2] + "." + this.serviceParts[3] + "/" + this.serviceParts[4]
-      }
-    },
     getHostName(hosts) {
       return hosts.join(",")
     },
@@ -1051,8 +914,6 @@ export default {
     this.loadProject()
     this.loadVersion()
     this.loadRegistry()
-    this.onPart1Change("pod")
-    this.onPart1Change("service")
   },
 }
 </script>
