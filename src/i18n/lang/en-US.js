@@ -315,6 +315,7 @@ const message = {
       CHECK_K8S_TOKEN: "Check kubernetes token",
       CHECK_K8S_API: "Check kubernetes api connection",
       CHECK_K8S_NODE_STATUS: "Check kubernetes node status",
+      CHECK_KUBE_ROUTER: "Check the availability of cluster proxy IP addresses",
       STATUS_SUCCESS: "Successful",
       STATUS_WARNING: "Warning",
       STATUS_FAILED: "Failed",
@@ -322,6 +323,7 @@ const message = {
       NO_METHODS: "No methods",
       GET_K8S_TOKEN_ANGIN:  "Get cluster token again",
       UPDATE_CLUSTER_NODE_STATUS: "Update cluster node status",
+      UPDATE_KUBE_ROUTER: "Update the cluster agent IP address",
     },
     condition: {
       condition_loading: "Waiting for execution, please wait...",

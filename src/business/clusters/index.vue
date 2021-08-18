@@ -385,7 +385,6 @@ export default {
       this.dialogCheckVisible = true
       this.checkLoading = true
       this.isRecover = false
-      this.recoverItems = []
       healthCheck(this.currentCluster.name).then((data) => {
         this.checkData = data
         this.checkLoading = false
@@ -394,8 +393,8 @@ export default {
     onRecover() {
       this.checkLoading = true
       this.isRecover = true
-      this.checkData = { hooks: [], level: "" }
-      clusterRecover(this.currentCluster.name).then((data) => {
+      clusterRecover(this.currentCluster.name, this.checkData).then((data) => {
+        this.checkData = { hooks: [], level: "" }
         this.recoverItems = data
         this.checkLoading = false
       })

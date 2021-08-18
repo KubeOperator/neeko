@@ -311,6 +311,7 @@ const message = {
       CHECK_K8S_TOKEN: "检测集群 Token 是否匹配",
       CHECK_K8S_API: "检测集群 API 是否已就绪",
       CHECK_K8S_NODE_STATUS: "检测集群节点是否同步",
+      CHECK_KUBE_ROUTER: "检测集群代理 IP 可用性",
       STATUS_SUCCESS: "成功",
       STATUS_WARNING: "警告",
       STATUS_FAILED: "失败",
@@ -318,6 +319,7 @@ const message = {
       NO_METHODS: "需要手动解决",
       GET_K8S_TOKEN_ANGIN:  "重新获取集群 Token",
       UPDATE_CLUSTER_NODE_STATUS: "更新集群节点数目",
+      UPDATE_KUBE_ROUTER: "更新集群代理 IP",
     },
     condition: {
       condition_loading: "正在等待执行，请稍候...",
