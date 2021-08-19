@@ -110,7 +110,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.health_check.health_check')" width="50%" :visible.sync="dialogCheckVisible">
+    <el-dialog :title="$t('cluster.health_check.health_check')" width="50%" :visible.sync="dialogCheckVisible" :close-on-click-modal="false">
       <div align="center" style="margin-top: 15px">
         <el-table v-loading="checkLoading" :data="checkData.hooks" v-if="!isRecover" border style="width: 90%">
           <el-table-column prop="name" :label="$t('commons.table.name')">

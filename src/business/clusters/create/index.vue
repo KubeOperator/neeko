@@ -62,28 +62,28 @@
                   <el-row>
                     <el-col :span="20">
                       <el-form-item :label="$t('cluster.creation.node_ip_num')" prop="maxNodePodNum">
-                        <el-select filterable style="width: 100%" @change="getCidr('pod')" v-model.number="form.maxNodePodNum" clearable>
+                        <el-select filterable style="width: 100%" @change="getCidr('pod')" v-model.number="form.maxNodePodNum">
                           <el-option v-for="item of podIPNumOptions" :key="item" :label="item" :value="item">{{item}}</el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item :label="$t ('cluster.creation.pod_cidr')" prop="kubePodSubnet">
-                        <el-select filterable @change="onPart1Change('pod')" style="width: 15%" v-model="podParts[0]" clearable>
+                        <el-select filterable @change="onPart1Change('pod')" style="width: 15%" v-model="podParts[0]">
                           <el-option v-for="item of podPart1Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable :disabled="podPart2Options.length < 2" @change="getCidr('pod')" style="width: 15%" v-model="podParts[1]" clearable>
+                        <el-select filterable :disabled="podPart2Options.length < 2" @change="getCidr('pod')" style="width: 15%" v-model="podParts[1]">
                           <el-option v-for="item of podPart2Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable :disabled="podPart3Options.length < 2" @change="getCidr('pod')" style="width: 15%" v-model="podParts[2]" clearable>
+                        <el-select filterable :disabled="podPart3Options.length < 2" @change="getCidr('pod')" style="width: 15%" v-model="podParts[2]">
                           <el-option v-for="item of podPart3Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable style="width: 15%" disabled v-model="podParts[3]" clearable>
+                        <el-select filterable style="width: 15%" disabled v-model="podParts[3]">
                           <el-option value="0">0</el-option>
                         </el-select>
                         <span> / </span>
-                        <el-select filterable @change="onMaskChange('pod')" style="width: 15%" v-model="podParts[4]" clearable>
+                        <el-select filterable @change="onMaskChange('pod')" style="width: 15%" v-model="podParts[4]">
                           <el-option v-for="item of podMaskOptions" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <div>
@@ -95,29 +95,29 @@
                         </div>
                       </el-form-item>
                       <el-form-item :label="$t ('cluster.creation.service_cidr')" prop="kubeServiceSubnet">
-                        <el-select filterable @change="onPart1Change('service')" style="width: 15%" v-model="serviceParts[0]" clearable>
+                        <el-select filterable @change="onPart1Change('service')" style="width: 15%" v-model="serviceParts[0]">
                           <el-option v-for="item of servicePart1Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable :disabled="servicePart2Options.length < 2" @change="getCidr('service')" style="width: 15%" v-model="serviceParts[1]" clearable>
+                        <el-select filterable :disabled="servicePart2Options.length < 2" @change="getCidr('service')" style="width: 15%" v-model="serviceParts[1]">
                           <el-option v-for="item of servicePart2Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable :disabled="servicePart3Options.length < 2" @change="getCidr('service')" style="width: 15%" v-model="serviceParts[2]" clearable>
+                        <el-select filterable :disabled="servicePart3Options.length < 2" @change="getCidr('service')" style="width: 15%" v-model="serviceParts[2]">
                           <el-option v-for="item of servicePart3Options" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <span> . </span>
-                        <el-select filterable style="width: 15%" disabled v-model="serviceParts[3]" clearable>
+                        <el-select filterable style="width: 15%" disabled v-model="serviceParts[3]">
                           <el-option value="0">0</el-option>
                         </el-select>
                         <span> / </span>
-                        <el-select filterable @change="onMaskChange('service')" style="width: 15%" v-model="serviceParts[4]" clearable>
+                        <el-select filterable @change="onMaskChange('service')" style="width: 15%" v-model="serviceParts[4]">
                           <el-option v-for="item of serviceMaskOptions" :key="item" :value="item">{{item}}</el-option>
                         </el-select>
                         <div><span class="input-help">{{$t('cluster.creation.service_cidr_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="kubeProxyMode">
-                        <el-select style="width: 100%" v-model="form.kubeProxyMode" clearable>
+                        <el-select style="width: 100%" v-model="form.kubeProxyMode">
                           <el-option value="iptables" label="Iptables">Iptables</el-option>
                           <el-option value="ipvs">ipvs</el-option>
                         </el-select>
