@@ -242,6 +242,7 @@
     <el-dialog :title="$t('cluster.detail.tool.err_title')" width="50%" :visible.sync="dialogErrorVisible">
       <div style="margin: 0 50px"><span style="line-height: 30px">{{ conditions | errorFormat }}</span></div>
       <div slot="footer" class="dialog-footer">
+        <el-button :disabled="submitLoading" @click="disable(toolForm, 'Failed')">{{$t('commons.button.disable')}}</el-button>
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -250,7 +251,7 @@
       <span>{{$t('cluster.detail.tool.disable_show_msg')}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDisableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="disable(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="submitLoading" @click="disable(toolForm, 'Running')">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -417,6 +418,7 @@ export default {
       this.isReplicasValid = this.toolForm.vars["elasticsearch_replicas"] <= this.nodeNum
     },
     onErrorShow(item) {
+      this.toolForm = item
       this.conditions = item.message
       this.dialogErrorVisible = true
     },
@@ -424,12 +426,24 @@ export default {
       this.toolForm = item
       this.dialogDisableVisible = true
     },
-    disable(item) {
-      this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
-      disableTool(this.clusterName, item).then(() => {
-        this.dialogDisableVisible = false
-        this.search()
-      })
+    disable(item, status) {
+      if (status === "Running") {
+        this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
+        disableTool(this.clusterName, item).then(() => {
+          this.dialogDisableVisible = false
+          this.search()
+        })
+      } else {
+        this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
+        this.submitLoading = true
+        disableTool(this.clusterName, item).then(() => {
+          this.submitLoading = false
+          this.dialogErrorVisible = false
+          this.search()
+        }).catch(() => {
+          this.submitLoading = false
+        })
+      }
     },
     onUpgrade(item) {
       this.toolForm = item
