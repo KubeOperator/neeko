@@ -128,14 +128,14 @@
       </div>
       <div align="center" style="margin-top: 15px">
         <el-table v-loading="checkLoading" :data="recoverItems" v-if="isRecover" border style="width: 90%">
-          <el-table-column prop="hookName" :label="$t('commons.table.name')">
-            <template v-slot:default="{row}">
-              {{ $t('cluster.health_check.' + row.hookName) }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="name" :label="$t('cluster.health_check.method')">
+          <el-table-column prop="name" :label="$t('commons.table.name')">
             <template v-slot:default="{row}">
               {{ $t('cluster.health_check.' + row.name) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="method" :label="$t('cluster.health_check.method')">
+            <template v-slot:default="{row}">
+              {{ $t('cluster.health_check.' + row.method) }}
             </template>
           </el-table-column>
           <el-table-column prop="result" :label="$t('cluster.health_check.result')">
@@ -378,6 +378,7 @@ export default {
 
     // cluster health check
     onHealthCheck(row) {
+      this.checkData = {}
       if (!row) {
         row = this.clusterSelection[0]
       }
@@ -391,6 +392,7 @@ export default {
       })
     },
     onRecover() {
+      this.recoverItems = []
       this.checkLoading = true
       this.isRecover = true
       clusterRecover(this.currentCluster.name, this.checkData).then((data) => {
