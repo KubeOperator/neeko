@@ -569,6 +569,7 @@ const message = {
         reliability: "可靠性",
         resources: "资源",
         security: "安全",
+        efficiency: "效率"
       },
     },
   },

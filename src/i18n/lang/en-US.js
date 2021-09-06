@@ -286,7 +286,7 @@ const message = {
 
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
-      
+
       step7: "Configuration Preview",
       base_setting: "Basic Configuration"
     },
@@ -568,6 +568,7 @@ const message = {
         reliability: "Reliability",
         resources: "Resources",
         security: "Security",
+        efficiency: "Efficiency"
       },
     },
   },
