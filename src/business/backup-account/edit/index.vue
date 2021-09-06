@@ -139,8 +139,10 @@ export default {
   },
   created() {
     getBackupAccountByName(this.name).then((data) => {
+      this.form.id = data.id
       this.form.name = data.name
       this.form.type = data.type
+      this.form.bucket = data.bucket
       this.form.credentialVars = data.credentialVars
       this.getBuckets()
     })

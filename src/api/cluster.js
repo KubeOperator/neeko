@@ -33,8 +33,8 @@ export function healthCheck(clusterName) {
   return get(`${clusterUrl}/health/${clusterName}`)
 }
 
-export function clusterRecover(clusterName) {
-  return post(`${clusterUrl}/recover/${clusterName}`, {})
+export function clusterRecover(clusterName, data) {
+  return post(`${clusterUrl}/recover/${clusterName}`, data)
 }
 
 export function deleteCluster(clusterName, force) {
