@@ -750,7 +750,8 @@ const message = {
       nfs_password: "NFS Server Password",
       old_datastores: "Selected Datastore",
       new_datastores: "New Datastore",
-      initializing: "Initializing"
+      initializing: "Initializing",
+      port: "port"
     },
     plan: {
       name: "Plan",

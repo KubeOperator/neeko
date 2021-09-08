@@ -114,6 +114,9 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                  <el-input v-model="form.cloudVars.port" type="number"></el-input>
+                </el-form-item>
               </div>
               <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.network_adapter')" prop="cloudVars.network">
@@ -211,6 +214,9 @@
                             :value="item.name">
                     </el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                  <el-input v-model="form.cloudVars.port" type="number"></el-input>
                 </el-form-item>
               </div>
               <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
@@ -387,6 +393,9 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                  <el-input v-model="form.cloudVars.port" type="number"></el-input>
+                </el-form-item>
               </div>
               <el-divider content-position="left">{{ $t("automatic.zone.network") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.switch')" prop="cloudVars.switch">
@@ -560,7 +569,8 @@ export default {
           nfsAddress: [Rule.RequiredRule],
           nfsPort: [Rule.RequiredRule],
           nfsUsername: [Rule.RequiredRule],
-          nfsPassword: [Rule.RequiredRule]
+          nfsPassword: [Rule.RequiredRule],
+          port: [Rule.RequiredRule],
         },
         credentialName: [Rule.RequiredRule],
         ipPoolName: [Rule.RequiredRule],
