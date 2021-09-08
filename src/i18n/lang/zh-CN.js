@@ -570,6 +570,7 @@ const message = {
         reliability: "可靠性",
         resources: "资源",
         security: "安全",
+        efficiency: "效率"
       },
     },
   },
@@ -747,7 +748,8 @@ const message = {
       nfs_password: "NFS服务器密码",
       old_datastores: "已选存储",
       new_datastores: "新增存储",
-      initializing: "初始化中"
+      initializing: "初始化中",
+      port: "端口"
     },
     plan: {
       name: "部署计划",

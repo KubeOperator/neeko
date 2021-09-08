@@ -281,7 +281,7 @@ const message = {
 
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
-      
+
       step7: "Configuration Preview",
       base_setting: "Basic Configuration"
     },
@@ -568,6 +568,7 @@ const message = {
         reliability: "Reliability",
         resources: "Resources",
         security: "Security",
+        efficiency: "Efficiency"
       },
     },
   },
@@ -744,7 +745,8 @@ const message = {
       nfs_password: "NFS Server Password",
       old_datastores: "Selected Datastore",
       new_datastores: "New Datastore",
-      initializing: "Initializing"
+      initializing: "Initializing",
+      port: "port"
     },
     plan: {
       name: "Plan",
