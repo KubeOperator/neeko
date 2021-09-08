@@ -209,10 +209,6 @@ const message = {
       version: "版本",
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
-      yum_repo: "Yum 仓库",
-      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
-      yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
-      yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
       step2: "集群设置",
       node_ip_num: "节点 IP 数量",
