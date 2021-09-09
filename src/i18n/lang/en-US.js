@@ -210,11 +210,6 @@ const message = {
       version: "Version",
       arch: "Architecture",
       repo_err: "Please complete the corresponding warehouse information in the system settings",
-      yum_repo: "Yum warehouse",
-      yum_repo_replace_help:
-        "This operation will back up the original yum repo file of the K8S node server, and then generate and use only the yum repo of KubeOperator",
-      yum_repo_coexist_help: "This operation will keep the original yum repo file of the K8S node server unchanged, while generating and using kubeoperator's yum repo",
-      yum_repo_no_help: "This operation will keep using the original yum repo file of the K8S node server, and will not do any operation on the yum repo of the K8S node server",
 
       step2: "Cluster Setup",
       container_network: "Container Network",
