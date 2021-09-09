@@ -30,10 +30,10 @@
           <span>{{item.namespace}}</span>
         </div>
         <el-collapse v-for="re in item.results" :key="re.name">
-          <el-collapse-item :title="re.kind + ':' + re.name" :name="re.name">
+          <el-collapse-item :title="re.kind + ':' + re.name" :name="re.name" v-if="re.podResults && re.podResults.length > 0">
             <el-row>
               <el-col :span="12">
-                <span style="font-size: 24px">Pod Sec</span>
+                <span style="font-size: 24px">Pod Spec</span>
               </el-col>
               <el-col :span="12">
                 <ul class="list-unstyled">
