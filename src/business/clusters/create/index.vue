@@ -38,6 +38,16 @@
                         </el-select>
                         <div v-if="!archValid"><span class="input-error">{{$t('cluster.creation.repo_err')}}</span></div>
                       </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.yum_repo')" prop="yumOperate">
+                        <el-select style="width: 100%" v-model="form.yumOperate" clearable>
+                          <el-option value="replace">replace</el-option>
+                          <el-option value="coexist">coexist</el-option>
+                          <el-option value="no">no</el-option>
+                        </el-select>
+                        <div v-if="form.yumOperate === 'replace'"><span class="input-help">{{$t('cluster.creation.yum_repo_replace_help')}}</span></div>
+                        <div v-if="form.yumOperate === 'coexist'"><span class="input-help">{{$t('cluster.creation.yum_repo_coexist_help')}}</span></div>
+                        <div v-if="form.yumOperate === 'no'"><span class="input-help">{{$t('cluster.creation.yum_repo_no_help')}}</span></div>
+                      </el-form-item>
                     </el-col>
                     <el-col :span="4"><br /></el-col>
                   </el-row>
@@ -385,6 +395,7 @@
                       <ul>{{$t ('cluster.creation.provider')}}</ul>
                       <ul>{{$t ('cluster.creation.version')}}</ul>
                       <ul>{{$t ('cluster.creation.arch')}}</ul>
+                      <ul>{{$t ('cluster.creation.yum_repo')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.name}}</ul>
@@ -393,6 +404,7 @@
                       <ul v-if="form.provider === 'bareMetal'">{{$t ('cluster.creation.provide_bare_metal')}}</ul>
                       <ul>{{form.version}}</ul>
                       <ul>{{form.architectures}}</ul>
+                      <ul>{{form.yumOperate}}</ul>
                     </el-col>
                   </el-row>
 
@@ -538,6 +550,7 @@ export default {
         provider: "bareMetal",
         version: "",
         architectures: "amd64",
+        yumOperate: "replace",
 
         maxNodePodNum: 256,
         maxNodeNum: 256,
@@ -586,6 +599,7 @@ export default {
         projectName: [Rule.RequiredRule],
         provider: [Rule.RequiredRule],
         architectures: [Rule.RequiredRule],
+        yumOperate: [Rule.RequiredRule],
         runtimeType: [Rule.RequiredRule],
         maxNodePodNum: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
