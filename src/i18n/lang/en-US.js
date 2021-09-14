@@ -746,7 +746,8 @@ const message = {
       old_datastores: "Selected Datastore",
       new_datastores: "New Datastore",
       initializing: "Initializing",
-      port: "port"
+      port: "port",
+      resource_type: "Resource Type",
     },
     plan: {
       name: "Plan",

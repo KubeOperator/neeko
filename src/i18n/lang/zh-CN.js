@@ -749,7 +749,9 @@ const message = {
       old_datastores: "已选存储",
       new_datastores: "新增存储",
       initializing: "初始化中",
-      port: "端口"
+      port: "端口",
+      resource_type: "资源类型",
+      host: "主机"
     },
     plan: {
       name: "部署计划",

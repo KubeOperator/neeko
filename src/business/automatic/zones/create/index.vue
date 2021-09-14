@@ -8,7 +8,7 @@
                    label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
-              <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
+              <div><span class="input-help">{{ $t("commons.validate.name_help") }}</span></div>
             </el-form-item>
             <el-form-item :label="$t('automatic.region.name')" prop="regionName">
               <el-select v-model="form.regionName"
@@ -40,20 +40,48 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item :label="$t('automatic.zone.resource_pool')"
-                            prop="cloudVars.resourcePool">
-                <el-select v-model="form.cloudVars.resourcePool"
-                           filterable style="width:100%"
-                           size="medium"
-                           reserve-keyword>
-                  <el-option
-                          v-for="(item,index) in cloudZone.resourcePools"
-                          :key="index"
-                          :label="item"
-                          :value="item">
-                  </el-option>
-                </el-select>
+
+              <el-form-item :label="$t('automatic.zone.resource_type')"
+                            prop="cloudVars.templateType">
+                <el-radio-group v-model="form.cloudVars.resourceType"
+                                @change="changeResourceType(form.cloudVars.resourceType)">
+                  <el-radio label="resourcePool">{{ $t("automatic.zone.resource_pool") }}</el-radio>
+                  <el-radio label="host">{{ $t("automatic.zone.host") }}</el-radio>
+                </el-radio-group>
               </el-form-item>
+              <div v-if="form.cloudVars.resourceType === 'resourcePool'">
+                <el-form-item :label="$t('automatic.zone.resource_pool')"
+                              prop="cloudVars.resourcePool">
+                  <el-select v-model="form.cloudVars.resourcePool"
+                             filterable style="width:100%"
+                             size="medium"
+                             reserve-keyword>
+                    <el-option
+                            v-for="(item,index) in cloudZone.resourcePools"
+                            :key="index"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div v-if="form.cloudVars.resourceType === 'host'">
+                <el-form-item :label="$t('automatic.zone.host')"
+                              prop="cloudVars.host" >
+                  <el-select v-model="form.cloudVars.hostSystem"
+                             filterable style="width:100%"
+                             size="medium"
+                             reserve-keyword
+                             @change="changeResourceType('host',form.cloudVars.hostSystem)">
+                    <el-option
+                            v-for="(item,index) in cloudZone.hosts"
+                            :key="index"
+                            :label="item.name"
+                            :value="item.name">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
               <el-divider content-position="left">{{ $t("automatic.zone.datastore") }}</el-divider>
               <el-form-item :label="$t('automatic.zone.datastore_type')"
                             prop="cloudVars.datastoreType">
@@ -71,8 +99,8 @@
                   <el-option
                           v-for="(item,index) in cloudDatastores"
                           :key="index"
-                          :label="item.name"
-                          :value="item.name">
+                          :label="item"
+                          :value="item">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -123,9 +151,10 @@
                 <el-select v-model="form.cloudVars.network"
                            filterable style="width:100%"
                            size="medium"
-                           reserve-keyword>
+                           reserve-keyword
+                          @change="$forceUpdate()">
                   <el-option
-                          v-for="(item,index) in cloudZone.networks"
+                          v-for="(item,index) in networks"
                           :key="index"
                           :label="item"
                           :value="item">
@@ -502,6 +531,7 @@ export default {
         cloudVars: {
           datastoreType: "value",
           templateType: "default",
+          resourceType: "resourcePool",
           cluster: "",
           imageName: "",
           storageType: "",
@@ -541,15 +571,17 @@ export default {
         floatingNetworkList: [],
         switchs: [],
         portgroups: [],
-        templates: []
+        templates: [],
+        hosts: []
       },
+      networks: [],
       cloudTemplates: [],
       credentials: [],
       ipPools: [],
       subnetList: [],
       portgroups: [],
       rules: {
-        name: [Rule.LengthRule,Rule.NameRule],
+        name: [Rule.LengthRule, Rule.NameRule],
         regionName: [Rule.RequiredRule],
         cloudVars: {
           cluster: [Rule.RequiredRule],
@@ -571,6 +603,7 @@ export default {
           nfsUsername: [Rule.RequiredRule],
           nfsPassword: [Rule.RequiredRule],
           port: [Rule.RequiredRule],
+          hostSystem: [Rule.RequiredRule],
         },
         credentialName: [Rule.RequiredRule],
         ipPoolName: [Rule.RequiredRule],
@@ -603,13 +636,22 @@ export default {
         }
       })
       this.cloudZoneRequest.cloudVars["cluster"] = cluster
-      this.form.cloudVars.resourcePool =  ""
-      this.form.cloudVars.datastore =  []
-      this.loading = true
-      listDatastores(this.cloudZoneRequest).then(res => {
-        this.cloudDatastores = res
-        this.loading = false
-      })
+      this.form.cloudVars.resourcePool = ""
+      this.form.cloudVars.hostSystem = ""
+      this.form.cloudVars.datastore = []
+      this.cloudDatastores = []
+      if (this.region.regionVars["provider"] !== "vSphere") {
+        this.loading = true
+        listDatastores(this.cloudZoneRequest).then(res => {
+          this.cloudDatastores = res
+          this.loading = false
+        })
+      }else {
+        if (this.form.cloudVars.resourceType === 'resourcePool') {
+          this.cloudDatastores = this.cloudZone.datastores
+          this.networks = this.cloudZone.networks
+        }
+      }
     },
     changeTemplateType (type) {
       if (type !== "customize") {
@@ -620,6 +662,26 @@ export default {
         this.cloudTemplates = res.result
         this.loading = false
       })
+    },
+    changeResourceType (type) {
+      this.form.cloudVars.datastore = []
+      this.form.cloudVars.network = ""
+      this.cloudDatastores = []
+      if (type === "resourcePool") {
+        this.networks = this.cloudZone.networks
+        this.cloudDatastores = this.cloudZone.datastores
+        this.form.cloudVars.hostSystem = ""
+      } else {
+        this.form.cloudVars.resourcePool = ""
+        for (let i = 0; i < this.cloudZone.hosts.length; i++) {
+          const h = this.cloudZone.hosts[i]
+          if (h.value === this.form.cloudVars.hostSystem) {
+            this.networks = h.networks
+            this.cloudDatastores = h.datastores
+            break
+          }
+        }
+      }
     },
     changeTemplate (imageName) {
       this.cloudTemplates.forEach(template => {
