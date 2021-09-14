@@ -72,7 +72,7 @@
                              filterable style="width:100%"
                              size="medium"
                              reserve-keyword
-                             @change="changeResourceType('host',form.cloudVars.hostSystem)">
+                             @change="changeResourceType('host')">
                     <el-option
                             v-for="(item,index) in cloudZone.hosts"
                             :key="index"
@@ -675,7 +675,7 @@ export default {
         this.form.cloudVars.resourcePool = ""
         for (let i = 0; i < this.cloudZone.hosts.length; i++) {
           const h = this.cloudZone.hosts[i]
-          if (h.value === this.form.cloudVars.hostSystem) {
+          if (h.name === this.form.cloudVars.hostSystem) {
             this.networks = h.networks
             this.cloudDatastores = h.datastores
             break
