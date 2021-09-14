@@ -67,7 +67,7 @@
               </div>
               <div v-if="form.cloudVars.resourceType === 'host'">
                 <el-form-item :label="$t('automatic.zone.host')"
-                              prop="cloudVars.host">
+                              prop="cloudVars.hostSystem">
                   <el-select v-model="form.cloudVars.hostSystem"
                              filterable style="width:100%"
                              size="medium"
@@ -151,8 +151,7 @@
                 <el-select v-model="form.cloudVars.network"
                            filterable style="width:100%"
                            size="medium"
-                           reserve-keyword
-                           @change="$forceUpdate()">
+                           reserve-keyword>
                   <el-option
                           v-for="(item,index) in networks"
                           :key="index"
@@ -665,7 +664,7 @@ export default {
     },
     changeResourceType (type) {
       this.form.cloudVars.datastore = []
-      this.form.cloudVars.network = ""
+      // this.form.cloudVars.network = ""
       this.cloudDatastores = []
       if (type === "resourcePool") {
         this.networks = this.cloudZone.networks
