@@ -293,12 +293,22 @@ const message = {
     },
     import: {
       import_cluster: "集群导入",
+      is_ko_cluster: "是否为 KO 集群",
+      load_ko_cluster_info: "获取 KO 集群信息",
+      ko_cluster_info: "KO 集群信息",
+      batch_edit_port: "批量修改端口",
+      batch_edit_credential: "批量修改凭据",
+      other_info: "其他信息",
       api_server_help: "例如: https://172.16.10.100:8443",
       router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
+      import_help: "单击可启用编辑，",
+      import_help2: "详细操作可参照官方文档",
     },
     delete: {
       delete_cluster: "集群删除",
       is_force: "是否强制",
+      is_uninstall: "是否卸载",
+      sure_uninstall: "为导入的 KO集群，是否卸载？",
     },
     health_check: {
       health_check: "健康检查",

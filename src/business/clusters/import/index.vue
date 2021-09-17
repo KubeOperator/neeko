@@ -29,9 +29,24 @@
             <el-form-item label="token" prop="token">
               <el-input type="textarea" :autosize="{ minRows: 2}" style="width: 100%" v-model="form.token" clearable></el-input>
             </el-form-item>
+            <el-form-item :label="$t('cluster.import.is_ko_cluster')" prop="isKoCluster">
+              <el-switch v-model="form.isKoCluster" />
+            </el-form-item>
+            <div v-if="form.isKoCluster">
+              <el-dialog :visible.sync="dialogKoImportVisible" width="70%" :close-on-click-modal="false">
+                <div slot="title">
+                  <span style="font-size: 18px">{{ $t("cluster.import.ko_cluster_info") }}</span>
+                  <br><br>
+                  <span style="float: left;margin-top: 5px">{{ $t("cluster.import.import_help") }}</span>
+                  <el-link style="float: left;margin-top: 5px" type="primary" target="_blank" href="https://kubeoperator.io/docs/quick_start/cluster_import">{{ $t("cluster.import.import_help2") }}</el-link>
+                </div>
+                <ko-import :clusterImportInfo="form" />
+              </el-dialog>
+            </div>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button type="primary" v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button v-if="!form.isKoCluster" type="primary" v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button v-if="form.isKoCluster" type="primary" v-loading="loadding" @click="onLoadInfo">{{ $t("cluster.import.load_ko_cluster_info") }}</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -44,22 +59,26 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { allProjects } from "@/api/projects"
 import { importCluster } from "@/api/cluster"
+import KoImport from "./ko-import.vue"
 import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterImport",
-  components: { LayoutContent },
+  components: { LayoutContent, KoImport },
   data() {
     return {
       loadding: false,
       projects: [],
+      hostDatas: [],
+      dialogKoImportVisible: false,
       form: {
         name: "",
         apiServer: "",
         token: "",
         router: "",
-        projectName: "kubeoperator",
+        projectName: "",
         architectures: "amd64",
+        isKoCluster: false,
       },
       rules: {
         name: [Rule.RequiredRule],
@@ -92,6 +111,15 @@ export default {
     getProjects() {
       allProjects().then((data) => {
         this.projects = data.items
+      })
+    },
+    onLoadInfo() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          this.dialogKoImportVisible = true
+        } else {
+          return false
+        }
       })
     },
     onCancel() {

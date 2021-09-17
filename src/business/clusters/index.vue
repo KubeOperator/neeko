@@ -97,6 +97,10 @@
 
     <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
       <el-form label-width="120px">
+        <el-form-item v-if="isKoExternalShow" :label="$t('cluster.delete.is_uninstall')">
+          <el-switch v-model="isUninstall" />
+          <div><span class="input-help">{{KoExternalNames}} {{$t('cluster.delete.sure_uninstall')}}</span></div>
+        </el-form-item>
         <el-form-item :label="$t('cluster.delete.is_force')">
           <el-switch v-model="isForce" />
           <div><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
@@ -232,7 +236,10 @@ export default {
 
       // cluster delete
       isForce: false,
+      isUninstall: true,
       deleteLoadding: false,
+      KoExternalNames: "",
+      isKoExternalShow: false,
       dialogDeleteVisible: false,
       isDeleteButtonDisable: false,
       deleteName: "",
@@ -338,9 +345,27 @@ export default {
     },
     onDelete(row) {
       this.isForce = false
+      this.isUninstall = true
       this.dialogDeleteVisible = true
       if (row) {
         this.deleteName = row.name
+        if (row.source === "ko-external") {
+          this.isKoExternalShow = true
+          this.KoExternalNames = row.name
+        }
+      } else {
+        this.KoExternalNames = ""
+        let isKoExternalClusterExist = false
+        for (const item of this.clusterSelection) {
+          if (item.source === "ko-external") {
+            isKoExternalClusterExist = true
+            this.KoExternalNames += item.name + ","
+          }
+        }
+        if (isKoExternalClusterExist) {
+          this.isKoExternalShow = isKoExternalClusterExist
+          this.KoExternalNames = this.KoExternalNames.substring(0, this.KoExternalNames.length - 1)
+        }
       }
     },
     submitDelete() {
@@ -352,10 +377,10 @@ export default {
       }).then(() => {
         const ps = []
         if (this.deleteName) {
-          ps.push(deleteCluster(this.deleteName, this.isForce))
+          ps.push(deleteCluster(this.deleteName, this.isForce, this.isUninstall))
         } else {
           for (const item of this.clusterSelection) {
-            ps.push(deleteCluster(item.name, this.isForce))
+            ps.push(deleteCluster(item.name, this.isForce, this.isUninstall))
           }
         }
         Promise.all(ps)
@@ -457,7 +482,7 @@ export default {
           })
           break
         case "Terminating":
-          deleteCluster(this.clusterName, true).then(() => {
+          deleteCluster(this.clusterName, true, this.isUninstall).then(() => {
             this.retryLoadding = false
             this.log.phase = "Terminating"
           })

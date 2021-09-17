@@ -297,12 +297,22 @@ const message = {
     },
     import: {
       import_cluster: "Cluster Import",
+      is_ko_cluster: "Is KO cluster",
+      load_ko_cluster_info: "Load KO cluster Infomation",
+      ko_cluster_info: "KO cluster Infomation",
       api_server_help: "For example: https://172.16.10.100:8443",
       router_help: "The IP address of any node with kube-proxy installed and accessible",
+      batch_edit_port: "Batch modify ports",
+      batch_edit_credential: "Batch modify credentials",
+      other_info: "Other information",
+      import_help: "Click to enable editing",
+      import_help2: "For details, please refer to the official documentation",
     },
     delete: {
       delete_cluster: "Cluster Delete",
       is_force: "Is it mandatory",
+      is_uninstall: "Is uninstall",
+      sure_uninstall: "is an imported KO cluster. Determine whether to uninstall it?",
     },
     health_check: {
       health_check: "health examination",
