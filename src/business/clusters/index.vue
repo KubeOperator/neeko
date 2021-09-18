@@ -97,14 +97,13 @@
 
     <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
       <el-form label-width="120px">
-        <el-form-item v-if="isKoExternalShow" :label="$t('cluster.delete.is_uninstall')">
-          <el-switch v-model="isUninstall" />
-          <div><span class="input-help">{{KoExternalNames}} {{$t('cluster.delete.sure_uninstall')}}</span></div>
-        </el-form-item>
-        <el-form-item :label="$t('cluster.delete.is_force')">
-          <el-switch v-model="isForce" />
-          <div><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
-        </el-form-item>
+        <div v-if="isKoExternalShow">
+          <el-checkbox v-model="isUninstall">{{$t('cluster.delete.is_uninstall')}}</el-checkbox>
+          <div style="margin-top: 5px; margin-bottom: 20px"><span class="input-help">{{KoExternalNames}} {{$t('cluster.delete.sure_uninstall')}}</span></div>
+        </div>
+
+        <el-checkbox v-model="isForce">{{$t('cluster.delete.is_force')}}</el-checkbox>
+        <div style="margin-top: 5px"><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
@@ -347,6 +346,7 @@ export default {
       this.isForce = false
       this.isUninstall = true
       this.dialogDeleteVisible = true
+      this.isKoExternalShow = false
       if (row) {
         this.deleteName = row.name
         if (row.source === "ko-external") {
