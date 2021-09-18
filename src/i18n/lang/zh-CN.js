@@ -857,6 +857,7 @@ const message = {
     address: "地址",
     username: "账号",
     password: "密码",
+    password_help: "nuxus 仓库 admin 用户登陆密码，默认为 admin123",
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",

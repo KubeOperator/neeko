@@ -853,6 +853,7 @@ const message = {
     address: "Address",
     username: "Username",
     password: "Password",
+    password_help: "Nuxus warehouse admin login password. The default value is admin123",
     ntp: "NTP",
     email: "Email",
     license: "License",

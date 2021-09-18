@@ -51,6 +51,11 @@
                       <el-input-number v-model="form.registryHostedPort"  :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>
+                    
+                    <el-form-item :label="$t('setting.password')" prop="nexusPassword" required>
+                      <el-input v-model="form.nexusPassword" type="password"></el-input>
+                      <div><span class="input-help">{{$t('setting.password_help')}}</span></div>
+                    </el-form-item>
                   </div>
                 </el-collapse-item>
               </el-collapse>
@@ -90,6 +95,7 @@ export default {
         repoPort: '',
         registryPort: '',
         registryHostedPort: '',
+        nexusPassword: "admin123",
       },
       rules: {
         hostname: [Rule.IpRule],
@@ -125,6 +131,7 @@ export default {
           repoPort: this.form.repoPort,
           registryPort: this.form.registryPort,
           registryHostedPort: this.form.registryHostedPort,
+          nexusPassword: this.form.nexusPassword,
         }).then(() => {
           this.loading = false
           this.$message({
