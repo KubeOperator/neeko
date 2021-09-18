@@ -388,7 +388,7 @@ const message = {
       },
       node: {
         increment: "增量",
-        operator_help: "导入的集群暂不支持扩缩容",
+        operator_help: "导入的外部集群暂不支持扩缩容",
         host: "主机",
         node_detail: "节点详情",
         base_infomation: "基础信息",

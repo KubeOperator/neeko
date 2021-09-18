@@ -392,7 +392,7 @@ const message = {
       },
       node: {
         increment: "Increment",
-        operator_help: "The imported cluster does not currently support scaling",
+        operator_help: "The external import cluster does not support import",
         host: "Host",
         node_detail: "Node details",
         base_infomation: "Basic information",
