@@ -334,7 +334,7 @@ const message = {
       STATUS_RECOVERD: "Recoverd",
       STATUS_SOLVED_MANUALLY: "To be solved",
       CHECK_SSH_CONNECTION: "Checking the SSH service and network status of the host (Manually)",
-      CHECK_API_CONNECTION: "Check whether cluster services and cluster networks are available (manually)",
+      CHECK_API_CONNECTION: "Update the cluster agent IP address",
       GET_K8S_TOKEN_ANGIN:  "Get cluster token again",
       UPDATE_CLUSTER_NODE_STATUS: "Forcibly delete a node from the node list to uninstall related cluster services (manually)",
       UPDATE_KUBE_ROUTER: "Update the cluster agent IP address",
