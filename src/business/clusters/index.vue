@@ -235,7 +235,7 @@ export default {
 
       // cluster delete
       isForce: false,
-      isUninstall: true,
+      isUninstall: false,
       deleteLoadding: false,
       KoExternalNames: "",
       isKoExternalShow: false,
@@ -344,7 +344,7 @@ export default {
     },
     onDelete(row) {
       this.isForce = false
-      this.isUninstall = true
+      this.isUninstall = false
       this.dialogDeleteVisible = true
       this.isKoExternalShow = false
       if (row) {

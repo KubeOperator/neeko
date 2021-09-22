@@ -307,6 +307,7 @@ const message = {
       other_info: "Other information",
       import_help: "Click to enable editing",
       import_help2: "For details, please refer to the official documentation",
+      import_name: "The imported cluster name is the original KO cluster name: ",
     },
     delete: {
       delete_cluster: "Cluster Delete",

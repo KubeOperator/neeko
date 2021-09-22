@@ -33,15 +33,7 @@
               <el-switch v-model="form.isKoCluster" />
             </el-form-item>
             <div v-if="form.isKoCluster">
-              <el-dialog :visible.sync="dialogKoImportVisible" width="70%" :close-on-click-modal="false">
-                <div slot="title">
-                  <span style="font-size: 18px">{{ $t("cluster.import.ko_cluster_info") }}</span>
-                  <br><br>
-                  <span style="float: left;margin-top: 5px">{{ $t("cluster.import.import_help") }}</span>
-                  <el-link style="float: left;margin-top: 5px" type="primary" target="_blank" href="https://kubeoperator.io/docs/quick_start/cluster_import">{{ $t("cluster.import.import_help2") }}</el-link>
-                </div>
-                <ko-import :clusterImportInfo="form" />
-              </el-dialog>
+              <ko-import :clusterImportInfo="form" :visible="dialogKoImportVisible" />
             </div>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>

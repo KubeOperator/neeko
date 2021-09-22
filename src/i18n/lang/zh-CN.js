@@ -303,6 +303,7 @@ const message = {
       router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
       import_help: "单击可启用编辑，",
       import_help2: "详细操作可参照官方文档",
+      import_name: "导入集群名称为原 KO 集群名称：",
     },
     delete: {
       delete_cluster: "集群删除",
