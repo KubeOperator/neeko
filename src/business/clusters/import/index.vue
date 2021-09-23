@@ -32,8 +32,8 @@
             <el-form-item :label="$t('cluster.import.is_ko_cluster')" prop="isKoCluster">
               <el-switch v-model="form.isKoCluster" />
             </el-form-item>
-            <div v-if="form.isKoCluster">
-              <ko-import :clusterImportInfo="form" :visible="dialogKoImportVisible" />
+            <div v-if="dialogKoImportVisible">
+              <ko-import :clusterImportInfo="form" @changeVisble="changeVisble" :visible="dialogKoImportVisible" />
             </div>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
@@ -99,6 +99,9 @@ export default {
           return false
         }
       })
+    },
+    changeVisble(val) {
+      this.dialogKoImportVisible = val
     },
     getProjects() {
       allProjects().then((data) => {

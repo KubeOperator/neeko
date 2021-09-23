@@ -1,10 +1,10 @@
 <template>
   <div v-loading="loading">
-    <el-dialog :visible.sync="visible" width="70%" :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogKoImportVisible" :before-close="onCancel" width="70%" :close-on-click-modal="false">
       <div slot="title">
         <div>
           <span style="font-size: 18px">{{ $t("cluster.import.ko_cluster_info") }}</span>
-          <span>     ({{ $t("cluster.import.import_name") }}{{ form.clusterInfo.name }}) </span>
+          <span> ({{ $t("cluster.import.import_name") }}{{ form.clusterInfo.name }}) </span>
         </div>
         <br><br>
         <span style="float: left;margin-top: 5px">{{ $t("cluster.import.import_help") }}</span>
@@ -106,11 +106,11 @@
                       <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="clusterInfo.kubernetesAudit">
                         <fu-select-rw-switch v-model="form.clusterInfo.kubernetesAudit">
                           <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubernetesAudit === 'enable'">{{$t('cluster.creation.enable')}}</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubernetesAudit === 'disable'">{{$t('cluster.creation.disable')}}</el-tag>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubernetesAudit === 'yes'">{{$t('cluster.creation.enable')}}</el-tag>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubernetesAudit === 'no'">{{$t('cluster.creation.disable')}}</el-tag>
                           </template>
-                          <el-option key="enable" :label="$t('cluster.creation.enable')" value="enable" />
-                          <el-option key="disable" :label="$t('cluster.creation.disable')" value="disable" />
+                          <el-option key="enable" :label="$t('cluster.creation.enable')" value="yes" />
+                          <el-option key="disable" :label="$t('cluster.creation.disable')" value="no" />
                         </fu-select-rw-switch>
                       </el-form-item>
                     </el-col>
@@ -212,8 +212,8 @@
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
                         <el-select style="width: 100%" v-model="multi_network" clearable>
-                          <el-option value="enable">{{$t('cluster.creation.enable')}}</el-option>
-                          <el-option value="disable">{{$t('cluster.creation.disable')}}</el-option>
+                          <el-option value="enable" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
+                          <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -275,6 +275,38 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
+                  <div v-if="duoMaster">
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="clusterInfo.lbMode">
+                          <fu-select-rw-switch v-model="form.clusterInfo.lbMode">
+                            <template #read>
+                              <el-tag disable-transitions v-if="form.clusterInfo.lbMode === 'internal'">{{$t('cluster.creation.default')}}</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.lbMode === 'external'">VIP</el-tag>
+                            </template>
+                            <el-option key="internal" :label="$t('cluster.creation.default')" value="internal" />
+                            <el-option key="external" label="VIP" value="external" />
+                          </fu-select-rw-switch>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20" v-if="form.clusterInfo.lbMode === 'external'">
+                      <el-col :span="12">
+                        <el-form-item label="VIP" prop="clusterInfo.lbKubeApiserverIp">
+                          <fu-read-write-switch :data="form.clusterInfo.lbKubeApiserverIp" v-model="editAble.lbKubeApiserverIp">
+                            <el-input v-model="form.clusterInfo.lbKubeApiserverIp" @blur="editAble.lbKubeApiserverIp = false" />
+                          </fu-read-write-switch>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                          <fu-read-write-switch :data="form.clusterInfo.kubeApiServerPort" v-model="editAble.kubeApiServerPort">
+                            <el-input v-model="form.clusterInfo.kubeApiServerPort" @blur="editAble.kubeApiServerPort = false" />
+                          </fu-read-write-switch>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -302,12 +334,14 @@ export default {
   data() {
     return {
       loading: false,
+      dialogKoImportVisible: false,
       credentialList: [],
       selections: [],
       credentialIDShow: false,
       credentialID: "",
       port: 22,
       portShow: false,
+      duoMaster: false,
       form: {
         name: "",
         apiServer: "",
@@ -327,7 +361,7 @@ export default {
           kubeServiceNodePortRange: "",
           enableDnsCache: "",
           dnsCacheVersion: "1.17.0",
-          kubernetesAudit: "disable",
+          kubernetesAudit: "",
           kubePodSubnet: "",
           kubeServiceSubnet: "",
 
@@ -384,6 +418,8 @@ export default {
 
         runtimeType: false,
         networkType: false,
+        kubeApiServerPort: false,
+        lbKubeApiserverIp: false,
       },
       multi_network: "",
     }
@@ -406,6 +442,11 @@ export default {
       if (step.index === 0) {
         for (const node of this.form.clusterInfo.nodes) {
           if (node.credentialID === "" || node.credentialID === "") {
+            this.$message({ type: "info", message: this.$t("cluster.import.credential_rules") })
+            return false
+          }
+          if (node.port === "" || node.port === "") {
+            this.$message({ type: "info", message: this.$t("cluster.import.port_rules") })
             return false
           }
         }
@@ -423,7 +464,7 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          this.loadding = true
+          this.loading = true
           for (const node of this.form.clusterInfo.nodes) {
             node.port = Number(node.port)
           }
@@ -435,11 +476,11 @@ export default {
           this.form.clusterInfo.dnsCacheVersion = "1.17.0"
           importCluster(this.form)
             .then(() => {
-              this.loadding = false
+              this.loading = false
               this.$router.push({ name: "ClusterList" })
             })
             .catch(() => {
-              this.loadding = false
+              this.loading = false
             })
         } else {
           return false
@@ -466,26 +507,38 @@ export default {
         token: this.clusterImportInfo.token,
         architectures: this.clusterImportInfo.architectures,
       }
-      getClusterInfo(data).then((res) => {
-        this.form.clusterInfo = res
-        this.form.clusterInfo.kubernetesAudit = "disable"
-        this.loading = false
-      })
+      getClusterInfo(data)
+        .then((res) => {
+          this.form.clusterInfo = res
+          let i = 0 
+          for(const node of this.form.clusterInfo.nodes) {
+            if (node.role === "master") {
+              i++
+            }
+          }
+          this.duoMaster = i > 1
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     onCancel() {
-      this.$router.push({ name: "ClusterList" })
+      this.dialogKoImportVisible = false
+      this.$emit("changeVisble", this.dialogKoImportVisible)
     },
   },
   created() {
     this.loadClusterInfo()
     this.getCredentials()
+    this.dialogKoImportVisible = true
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .example {
-  height: 300px;
+  height: 350px;
   margin: 1% 10%;
   ul {
     height: 20px;

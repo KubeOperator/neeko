@@ -53,8 +53,7 @@
                     </el-form-item>
                     
                     <el-form-item :label="$t('setting.password')" prop="nexusPassword" required>
-                      <el-input v-model="form.nexusPassword" type="password"></el-input>
-                      <div><span class="input-help">{{$t('setting.password_help')}}</span></div>
+                      <el-input v-model="form.nexusPassword" :placeholder="$t('setting.password_help')" type="password"></el-input>
                     </el-form-item>
                   </div>
                 </el-collapse-item>
@@ -102,6 +101,7 @@ export default {
         repoPort: [Rule.RequiredRule],
         registryPort: [Rule.RequiredRule],
         registryHostedPort: [Rule.RequiredRule],
+        nexusPassword: [Rule.RequiredRule],
       },
       architectureOptions: [{
         value: 'x86_64',
