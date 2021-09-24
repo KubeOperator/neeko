@@ -164,7 +164,7 @@
           </div>
         </div>
 
-         <div v-if="toolForm.name === 'kubepi'">
+        <div v-if="toolForm.name === 'kubepi'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
             <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
           </el-form-item>
@@ -464,13 +464,15 @@ export default {
       } else {
         this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
         this.submitLoading = true
-        disableTool(this.clusterName, item).then(() => {
-          this.submitLoading = false
-          this.dialogErrorVisible = false
-          this.search()
-        }).catch(() => {
-          this.submitLoading = false
-        })
+        disableTool(this.clusterName, item)
+          .then(() => {
+            this.submitLoading = false
+            this.dialogErrorVisible = false
+            this.search()
+          })
+          .catch(() => {
+            this.submitLoading = false
+          })
       }
     },
     onUpgrade(item) {
@@ -528,7 +530,15 @@ export default {
         }
         if (flag) {
           listTool(this.clusterName).then((data) => {
+            const currentLanguage = this.$store.getters.language || "zh-CN"
             this.tools = data
+            for (const to of this.tools) {
+              if (currentLanguage == "en-US") {
+                to.describe = to.describe.split("|")[1]
+              } else {
+                to.describe = to.describe.split("|")[0]
+              }
+            }
           })
         } else {
           if (this.loadMenu) {

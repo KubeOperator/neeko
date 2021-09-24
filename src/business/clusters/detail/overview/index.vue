@@ -106,7 +106,7 @@
         <el-button v-if="currentCluster.source==='local'" icon="el-icon-document" @click="downloadKubeConfig()" style="float: right; margin-right: 10px">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
       </div>
       <div v-if="opened">
-        <iframe style="width: 100%;height: 512px;" :src="url"></iframe>
+        <iframe ref="iframe" style="width: 100%;height: 512px;" :src="url"></iframe>
       </div>
     </el-card>
   </div>
@@ -176,7 +176,8 @@ export default {
       })
     },
     newWindow() {
-      this.opened = true
+      this.$refs.iframe.style.display="none";
+      this.opened = false
       getClusterToken(this.clusterName).then((data) => {
         this.url = `/webkubectl/terminal/?token=${data.token}`
         window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
