@@ -140,142 +140,147 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-row :gutter="20">
-                    <el-col :span="12">
-                      <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="clusterInfo.runtimeType">
-                        <fu-select-rw-switch v-model="form.clusterInfo.runtimeType">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.runtimeType === 'docker'">docker</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.runtimeType === 'containerd'">containerd</el-tag>
-                          </template>
-                          <el-option key="docker" label="docker" value="docker" />
-                          <el-option key="containerd" label="containerd" value="containerd" />
-                        </fu-select-rw-switch>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="clusterInfo.dockerStorageDir">
-                        <el-input v-model="form.clusterInfo.dockerStorageDir" placeholder="/var/lib/docker" />
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="clusterInfo.containerdStorageDir">
-                        <el-input v-model="form.clusterInfo.containerdStorageDir" placeholder="/var/lib/containerd" />
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="clusterInfo.dockerSubnet">
-                        <el-input v-model="form.clusterInfo.dockerSubnet" placeholder="172.17.0.1/16" />
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
+                  <div class="blockBorder">
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="clusterInfo.runtimeType">
+                          <fu-select-rw-switch v-model="form.clusterInfo.runtimeType">
+                            <template #read>
+                              <el-tag disable-transitions v-if="form.clusterInfo.runtimeType === 'docker'">docker</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.runtimeType === 'containerd'">containerd</el-tag>
+                            </template>
+                            <el-option key="docker" label="docker" value="docker" />
+                            <el-option key="containerd" label="containerd" value="containerd" />
+                          </fu-select-rw-switch>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="clusterInfo.dockerStorageDir">
+                          <el-input v-model="form.clusterInfo.dockerStorageDir" placeholder="/var/lib/docker" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="clusterInfo.containerdStorageDir">
+                          <el-input v-model="form.clusterInfo.containerdStorageDir" placeholder="/var/lib/containerd" />
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="clusterInfo.dockerSubnet">
+                          <el-input v-model="form.clusterInfo.dockerSubnet" placeholder="172.17.0.1/16" />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>
 
-                  <el-row :gutter="20">
-                    <el-col :span="12">
-                      <el-form-item :label="$t ('cluster.creation.network_type')" prop="clusterInfo.networkType">
-                        <fu-select-rw-switch v-model="form.clusterInfo.networkType">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'flannel'">flannel</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'calico'">calico</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'cilium'">cilium</el-tag>
-                          </template>
-                          <el-option key="flannel" label="flannel" value="flannel" />
-                          <el-option key="calico" label="calico" value="calico" />
-                          <el-option v-if="form.clusterInfo.architectures === 'amd64'" key="cilium" label="cilium" value="cilium" />
-                        </fu-select-rw-switch>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.networkType === 'flannel'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.flannelBackend">
-                        <el-select style="width: 100%" v-model="form.clusterInfo.flannelBackend" clearable>
-                          <el-option key="host-gw" label="host-gw" value="host-gw" />
-                          <el-option key="vxlan" label="vxlan" value="vxlan" />
-                        </el-select>
-                      </el-form-item>
-                      <el-form-item v-if="form.clusterInfo.networkType === 'calico'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.calicoIpv4PoolIpip">
-                        <el-select style="width: 100%" v-model="form.clusterInfo.calicoIpv4PoolIpip" clearable>
-                          <el-option value="off" label="bgp">bgp</el-option>
-                          <el-option value="Always" label="ipip">ipip</el-option>
-                        </el-select>
-                      </el-form-item>
-                      <el-form-item v-if="form.clusterInfo.networkType === 'cilium'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.flannelBackend">
-                        <el-select style="width: 100%" v-model="form.clusterInfo.flannelBackend" clearable>
-                          <el-option value="Overlay">Overlay</el-option>
-                          <el-option value="Native Routing">Native Routing</el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'flannel'">
-                    <el-col :span="12">
-                      <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
-                        <el-select style="width: 100%" v-model="multi_network" clearable>
-                          <el-option value="enable" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
-                          <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="clusterInfo.networkInterface">
-                        <el-input v-model="form.clusterInfo.networkInterface" clearable></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
+                  <div class="blockBorder">
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item :label="$t ('cluster.creation.network_type')" prop="clusterInfo.networkType">
+                          <fu-select-rw-switch v-model="form.clusterInfo.networkType">
+                            <template #read>
+                              <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'flannel'">flannel</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'calico'">calico</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.networkType === 'cilium'">cilium</el-tag>
+                            </template>
+                            <el-option key="flannel" label="flannel" value="flannel" />
+                            <el-option key="calico" label="calico" value="calico" />
+                            <el-option v-if="form.clusterInfo.architectures === 'amd64'" key="cilium" label="cilium" value="cilium" />
+                          </fu-select-rw-switch>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.networkType === 'flannel'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.flannelBackend">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.flannelBackend" clearable>
+                            <el-option key="host-gw" label="host-gw" value="host-gw" />
+                            <el-option key="vxlan" label="vxlan" value="vxlan" />
+                          </el-select>
+                        </el-form-item>
+                        <el-form-item v-if="form.clusterInfo.networkType === 'calico'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.calicoIpv4PoolIpip">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.calicoIpv4PoolIpip" clearable>
+                            <el-option value="off" label="bgp">bgp</el-option>
+                            <el-option value="Always" label="ipip">ipip</el-option>
+                          </el-select>
+                        </el-form-item>
+                        <el-form-item v-if="form.clusterInfo.networkType === 'cilium'" :label="$t('cluster.creation.flannel_backend')" prop="clusterInfo.flannelBackend">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.flannelBackend" clearable>
+                            <el-option value="Overlay">Overlay</el-option>
+                            <el-option value="Native Routing">Native Routing</el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'flannel'">
+                      <el-col :span="12">
+                        <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                          <el-select style="width: 100%" v-model="multi_network" clearable>
+                            <el-option value="enable" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
+                            <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="clusterInfo.networkInterface">
+                          <el-input v-model="form.clusterInfo.networkInterface" clearable></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
 
-                  <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'calico'">
-                    <el-col :span="12">
-                      <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
-                        <el-select style="width: 100%" v-model="multi_network" clearable>
-                          <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
-                          <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
-                          <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="clusterInfo.networkInterface">
-                        <el-input v-model="form.clusterInfo.networkInterface" clearable></el-input>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="clusterInfo.networkCidr">
-                        <el-input v-model="form.clusterInfo.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'cilium'">
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.flannelBackend === 'Overlay'" :label="$t('cluster.creation.tunnel_name')" prop="clusterInfo.ciliumTunnelMode">
-                        <el-select style="width: 100%" v-model="form.clusterInfo.ciliumTunnelMode" clearable>
-                          <el-option value="vxlan" label="vxlan">vxlan</el-option>
-                          <el-option value="geneve" label="geneve">geneve</el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item v-if="form.clusterInfo.flannelBackend === 'Native Routing'" :label="$t('cluster.creation.native_routing')" prop="clusterInfo.ciliumNativeRoutingCidr">
-                        <el-input v-model="form.clusterInfo.ciliumNativeRoutingCidr" placeholder="10.244.0.0/18" clearable></el-input>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20">
-                    <el-col :span="12">
-                      <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="clusterInfo.ingressControllerType">
-                        <fu-select-rw-switch v-model="form.clusterInfo.ingressControllerType">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'nginx'">nginx</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'traefik'">traefik</el-tag>
-                          </template>
-                          <el-option key="nginx" label="nginx" value="nginx" />
-                          <el-option key="traefik" v-if="form.clusterInfo.enableDnsCache === 'disable'" label="traefik" value="traefik" />
-                        </fu-select-rw-switch>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <div v-if="duoMaster">
+                    <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'calico'">
+                      <el-col :span="12">
+                        <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                          <el-select style="width: 100%" v-model="multi_network" clearable>
+                            <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
+                            <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
+                            <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="clusterInfo.networkInterface">
+                          <el-input v-model="form.clusterInfo.networkInterface" clearable></el-input>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="clusterInfo.networkCidr">
+                          <el-input v-model="form.clusterInfo.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20" v-if="form.clusterInfo.networkType === 'cilium'">
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.flannelBackend === 'Overlay'" :label="$t('cluster.creation.tunnel_name')" prop="clusterInfo.ciliumTunnelMode">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.ciliumTunnelMode" clearable>
+                            <el-option value="vxlan" label="vxlan">vxlan</el-option>
+                            <el-option value="geneve" label="geneve">geneve</el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.flannelBackend === 'Native Routing'" :label="$t('cluster.creation.native_routing')" prop="clusterInfo.ciliumNativeRoutingCidr">
+                          <el-input v-model="form.clusterInfo.ciliumNativeRoutingCidr" placeholder="10.244.0.0/18" clearable></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="blockBorder">
+                    <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="clusterInfo.ingressControllerType">
+                          <fu-select-rw-switch v-model="form.clusterInfo.ingressControllerType">
+                            <template #read>
+                              <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'nginx'">nginx</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'traefik'">traefik</el-tag>
+                            </template>
+                            <el-option key="nginx" label="nginx" value="nginx" />
+                            <el-option key="traefik" v-if="form.clusterInfo.enableDnsCache === 'disable'" label="traefik" value="traefik" />
+                          </fu-select-rw-switch>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div v-if="duoMaster" class="blockBorder">
                     <el-row :gutter="20">
                       <el-col :span="12">
                         <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="clusterInfo.lbMode">
@@ -510,8 +515,8 @@ export default {
       getClusterInfo(data)
         .then((res) => {
           this.form.clusterInfo = res
-          let i = 0 
-          for(const node of this.form.clusterInfo.nodes) {
+          let i = 0
+          for (const node of this.form.clusterInfo.nodes) {
             if (node.role === "master") {
               i++
             }
@@ -547,5 +552,9 @@ export default {
     height: 100%;
     overflow-x: hidden;
   }
+}
+.blockBorder {
+  margin-top: 10px;
+  border-bottom: 1px dashed #f77971;
 }
 </style>

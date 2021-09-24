@@ -9,7 +9,8 @@
                 <img style="width: 60px; height: 60px" :src="require('@/assets/images/tools/'+ tool.logo)">
               </el-col>
               <el-col :span="16">
-                <span>{{tool.name}} - {{tool.version}}</span>
+                <div><span>{{tool.name}} - {{tool.version}}</span></div>
+                <div style="margin-top: 30px"><span>{{tool.describe}}</span></div>
               </el-col>
             </el-row>
             <el-divider></el-divider>
@@ -157,6 +158,27 @@
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tag.node')">
               <el-select style="width: 80%" filterable v-model="toolForm.vars['loki_nodeSelector_kubernetes\\_io/hostname']" clearable>
+                <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </div>
+
+         <div v-if="toolForm.name === 'kubepi'">
+          <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
+          </el-form-item>
+          <div v-if="toolForm.vars['persistence_enabled']">
+            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="requiredRules">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClassName']" clearable>
+                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
+              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input-number>
+            </el-form-item>
+            <el-form-item :label="$t('cluster.detail.tag.node')">
+              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
                 <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
               </el-select>
             </el-form-item>
@@ -327,6 +349,7 @@ export default {
       })
       listTool(this.clusterName)
         .then((data) => {
+          const currentLanguage = this.$store.getters.language || "zh-CN"
           this.loading = false
           this.tools = data
           const needLoad = ["Initializing", "Terminating", "Upgrading"]
@@ -335,6 +358,11 @@ export default {
               if (needLoad.indexOf(to.status) !== -1) {
                 this.loadMenu = true
               }
+            }
+            if (currentLanguage == "en-US") {
+              to.describe = to.describe.split("|")[1]
+            } else {
+              to.describe = to.describe.split("|")[0]
             }
           }
         })
@@ -578,9 +606,12 @@ export default {
             global_storageClass: "",
           }
           break
-        case "dashboard":
+        case "kubepi":
           item.vars = {
             namespace: "kube-operator",
+            persistence_enabled: false,
+            persistence_size: 10,
+            persistence_storageClassName: "",
           }
           break
       }
