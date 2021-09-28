@@ -21,7 +21,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button type="primary" @click="onSubmit">{{$t('commons.button.create')}}</el-button>
+                <el-button type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.create')}}</el-button>
               </el-form-item>
             </div>
           </el-form>

@@ -96,17 +96,17 @@
         </el-collapse-item>
       </el-collapse>
       <div v-if="baseCfg.cluster_istio.status !== 'Running'">
-        <el-button @click="onSubmit('start')" :disabled="submitLoading" size="mini">{{$t('commons.button.enable')}}</el-button>
+        <el-button @click="onSubmit('start')" v-preventReClick :disabled="submitLoading" size="mini">{{$t('commons.button.enable')}}</el-button>
       </div>
       <div v-if="baseCfg.cluster_istio.status === 'Running'">
-        <el-button @click="onSubmit('restart')" :disabled="submitLoading" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
-        <el-button @click="onDisable()" size="mini">{{$t('commons.button.disable')}}</el-button>
+        <el-button @click="onSubmit('restart')" v-preventReClick :disabled="submitLoading" size="mini">{{$t('cluster.detail.istio.resave')}}</el-button>
+        <el-button @click="onDisable()" v-preventReClick size="mini">{{$t('commons.button.disable')}}</el-button>
       </div>
       <el-dialog :title="$t('cluster.detail.istio.disable_istio')" width="30%" :visible.sync="dialogShutupVisible">
         <span>{{$t('cluster.detail.istio.ensure_disable_istio')}}</span>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogShutupVisible = false">{{$t('commons.button.cancel')}}</el-button>
-          <el-button :disabled="submitLoading" @click="submitDisable()">{{$t('commons.button.ok')}}</el-button>
+          <el-button :disabled="submitLoading" @click="submitDisable()" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
         </div>
       </el-dialog>
     </div>

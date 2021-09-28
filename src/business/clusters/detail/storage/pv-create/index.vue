@@ -136,7 +136,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button type="primary" :disabled="!pvType || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" :disabled="!pvType || submitLoading" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>

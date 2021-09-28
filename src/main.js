@@ -44,6 +44,18 @@ Vue.use(plugins);
 Vue.use(directives);
 Vue.use(filters);
 
+Vue.directive("preventReClick", {
+  inserted(el, binding) {
+    el.addEventListener("click", () => {
+      el.style.pointerEvents = "none"
+      if (!el.disabled) {
+        setTimeout(() => {
+          el.style.pointerEvents = "auto"
+        }, binding.value || 1000)
+      }
+    })
+  }
+})
 
 new Vue({
   el: '#app',

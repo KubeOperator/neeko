@@ -89,7 +89,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
+        <el-button size="small" v-if="log.phase === 'Failed'" @click="onRetry()" v-preventReClick>
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
@@ -107,7 +107,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" :v-loading="deleteLoadding" @click="submitDelete()">
+        <el-button size="small" @click="submitDelete()" v-preventReClick>
           {{ $t("commons.button.submit") }}
         </el-button>
       </div>
@@ -150,7 +150,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="checkData.level=='STATUS_ERROR'" @click="onRecover()">
+        <el-button size="small" v-if="checkData.level=='STATUS_ERROR'" @click="onRecover()" v-preventReClick>
           {{ $t("cluster.health_check.recover") }}
         </el-button>
       </div>
@@ -230,13 +230,11 @@ export default {
         conditions: [],
       },
       activeName: 1,
-      retryLoadding: false,
       conditionLoading: false,
 
       // cluster delete
       isForce: false,
       isUninstall: false,
-      deleteLoadding: false,
       KoExternalNames: "",
       isKoExternalShow: false,
       dialogDeleteVisible: false,
@@ -369,7 +367,6 @@ export default {
       }
     },
     submitDelete() {
-      this.deleteLoadding = true
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -391,12 +388,10 @@ export default {
               message: this.$t("commons.msg.op_success"),
             })
             this.dialogDeleteVisible = false
-            this.deleteLoadding = false
           })
           .catch(() => {
             this.search()
             this.dialogDeleteVisible = false
-            this.deleteLoadding = false
           })
       })
     },
@@ -467,36 +462,30 @@ export default {
       openLogger(this.clusterName)
     },
     onRetry() {
-      this.retryLoadding = true
       switch (this.log.prePhase) {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Upgrading"
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Initializing"
           })
           break
         case "Terminating":
           deleteCluster(this.clusterName, true, this.isUninstall).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Terminating"
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.dialogLogVisible = false
             this.log.phase = "Creating"
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Waiting"
           })
           break

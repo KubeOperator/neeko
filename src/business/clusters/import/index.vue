@@ -37,7 +37,7 @@
             </div>
             <el-form-item style="float: right">
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-              <el-button v-if="!form.isKoCluster" type="primary" v-loading="loadding" @click="onSubmit">{{ $t("commons.button.create") }}</el-button>
+              <el-button v-if="!form.isKoCluster" type="primary" v-loading="loadding" @click="onSubmit" v-preventReClick>{{ $t("commons.button.create") }}</el-button>
               <el-button v-if="form.isKoCluster" type="primary" v-loading="loadding" @click="onLoadInfo">{{ $t("cluster.import.load_ko_cluster_info") }}</el-button>
             </el-form-item>
           </el-form>
