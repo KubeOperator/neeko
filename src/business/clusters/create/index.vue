@@ -512,8 +512,12 @@
                       <ul>{{$t('cluster.creation.port')}}</ul>
                     </el-col>
                     <el-col :span="6">
-                      <ul>{{getHostName(form.masters)}}</ul>
-                      <ul>{{getHostName(form.workers)}}</ul>
+                      <el-tooltip :content="getHostName(form.masters)" placement="top">
+                        <ul>{{getHostName(form.masters).length > 30 ? getHostName(form.masters).substring(0, 30) + '...' : getHostName(form.masters)}}</ul>
+                      </el-tooltip>
+                      <el-tooltip :content="getHostName(form.workers)" placement="top">
+                        <ul>{{getHostName(form.workers).length > 30 ? getHostName(form.workers).substring(0, 30) + '...' : getHostName(form.workers)}}</ul>
+                      </el-tooltip>
                       <ul>{{form.lbMode}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
                       <ul v-if="isMultiMaster">{{form.kubeApiServerPort}}</ul>
@@ -660,6 +664,7 @@ export default {
             const lenMaster = this.form.masters.length
             if (lenMaster !== 0) {
               if (lenMaster !== 1 && lenMaster !== 3) {
+                this.$message({ type: "info", message: this.$t("cluster.creation.master_select_help") })
                 return false
               }
             }
