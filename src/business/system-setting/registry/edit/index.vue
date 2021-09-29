@@ -31,7 +31,7 @@
               <el-collapse accordion>
                 <el-collapse-item>
                   <template slot="title">
-                    {{$t('multi_cluster.senior_setting')}}<i class="header-icon el-icon-info"></i>
+                    {{$t('multi_cluster.senior_setting')}}
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort" required>
@@ -49,7 +49,7 @@
                       <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>
 
-                    <el-form-item :label="$t('setting.password')" prop="nexusPassword" required>
+                    <el-form-item :label="$t('setting.password')" prop="nexusPassword">
                       <el-input v-model="form.nexusPassword" :placeholder="$t('setting.password_help')" type="password"></el-input>
                     </el-form-item>
                   </div>
@@ -102,6 +102,7 @@ export default {
         hostname: [Rule.IpRule],
         architecture: [Rule.RequiredRule],
         protocol: [Rule.RequiredRule],
+        nexusPassword: [Rule.RequiredRule],
       },
       protocolOptions: [{
         value: 'http',
@@ -167,6 +168,7 @@ export default {
   created() {
     getRegistry(this.id).then(data => {
       this.form = data
+      this.form.nexusPassword = ""
     })
   }
 }
