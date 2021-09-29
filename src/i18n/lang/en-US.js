@@ -286,6 +286,7 @@ const message = {
 
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
+      master_schedule_type: "Master schedule",
 
       step7: "Configuration Preview",
       base_setting: "Basic Configuration"

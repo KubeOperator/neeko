@@ -367,33 +367,27 @@ export default {
       }
     },
     submitDelete() {
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
-        confirmButtonText: this.$t("commons.button.confirm"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      }).then(() => {
-        const ps = []
-        if (this.deleteName) {
-          ps.push(deleteCluster(this.deleteName, this.isForce, this.isUninstall))
-        } else {
-          for (const item of this.clusterSelection) {
-            ps.push(deleteCluster(item.name, this.isForce, this.isUninstall))
-          }
+      const ps = []
+      if (this.deleteName) {
+        ps.push(deleteCluster(this.deleteName, this.isForce, this.isUninstall))
+      } else {
+        for (const item of this.clusterSelection) {
+          ps.push(deleteCluster(item.name, this.isForce, this.isUninstall))
         }
-        Promise.all(ps)
-          .then(() => {
-            this.search()
-            this.$message({
-              type: "success",
-              message: this.$t("commons.msg.op_success"),
-            })
-            this.dialogDeleteVisible = false
+      }
+      Promise.all(ps)
+        .then(() => {
+          this.search()
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.op_success"),
           })
-          .catch(() => {
-            this.search()
-            this.dialogDeleteVisible = false
-          })
-      })
+          this.dialogDeleteVisible = false
+        })
+        .catch(() => {
+          this.search()
+          this.dialogDeleteVisible = false
+        })
     },
 
     // cluster health check

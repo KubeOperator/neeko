@@ -458,34 +458,28 @@ export default {
         }
       }
       this.deleteLoadding = true
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
-        confirmButtonText: this.$t("commons.button.confirm"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      }).then(() => {
-        const delForm = { operation: "delete", isForce: this.isForce, nodes: [] }
-        if (this.deleteRow) {
-          delForm.nodes.push(this.deleteRow.name)
-        } else {
-          for (const node of this.selects) {
-            delForm.nodes.push(node.name)
-          }
+      const delForm = { operation: "delete", isForce: this.isForce, nodes: [] }
+      if (this.deleteRow) {
+        delForm.nodes.push(this.deleteRow.name)
+      } else {
+        for (const node of this.selects) {
+          delForm.nodes.push(node.name)
         }
-        nodeBatchOperation(this.clusterName, delForm)
-          .then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-            this.selects = []
-            this.search()
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
-          })
-          .catch(() => {
-            this.search()
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
-            this.selects = []
-          })
-      })
+      }
+      nodeBatchOperation(this.clusterName, delForm)
+        .then(() => {
+          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.selects = []
+          this.search()
+          this.dialogDeleteVisible = false
+          this.deleteLoadding = false
+        })
+        .catch(() => {
+          this.search()
+          this.dialogDeleteVisible = false
+          this.deleteLoadding = false
+          this.selects = []
+        })
     },
     onCordon(operation) {
       if (operation === "cordon") {

@@ -282,6 +282,7 @@ const message = {
 
       step6_of_plan: "部署计划",
       worker_num: "Worker 数量",
+      master_schedule_type: "Master 调度",
 
       step7: "配置预览",
       base_setting: "基本配置"

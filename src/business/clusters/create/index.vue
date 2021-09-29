@@ -305,79 +305,80 @@
             </div>
           </fu-step>
           <fu-step id="node-setting-bare" :title="$t('cluster.creation.step6_of_bare_metal')">
-            <div class="example" v-if="form.provider === 'bareMetal'">
+            <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item>
-                    <span>{{$t ('cluster.creation.node_help')}}</span>
+                  <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType" required>
+                    <el-switch v-model="form.masterScheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                   </el-form-item>
-                  <el-form-item label="Masters" prop="masters">
-                    <el-select multiple filterable style="width: 100%" @change="toggle('master')" v-model="form.masters" clearable>
-                      <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
-                  </el-form-item>
-                  <el-form-item label="Workers" prop="workers">
-                    <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
-                      <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
-                    </el-select>
-                    <div v-if="isNodeNumExceed()">
-                      <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
+                  <div v-if="form.provider === 'bareMetal'">
+                    <el-form-item>
+                      <span>{{$t ('cluster.creation.node_help')}}</span>
+                    </el-form-item>
+                    <el-form-item label="Masters" prop="masters">
+                      <el-select multiple filterable style="width: 100%" @change="toggle('master')" v-model="form.masters" clearable>
+                        <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
+                      </el-select>
+                      <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
+                    </el-form-item>
+                    <el-form-item label="Workers" prop="workers">
+                      <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
+                        <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
+                      </el-select>
+                      <div v-if="isNodeNumExceed()">
+                        <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
+                      </div>
+                    </el-form-item>
+                    <div v-if="isMultiMaster()">
+                      <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                        <el-radio-group v-model="form.lbMode">
+                          <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                          <el-radio label="external">VIP</el-radio>
+                        </el-radio-group>
+                        <div v-if="form.lbMode === 'internal'">
+                          <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                        </div>
+                        <div v-if="form.lbMode === 'external'">
+                          <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                        </div>
+                      </el-form-item>
+                      <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                        <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                        <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiServerPort" clearable></el-input-number>
+                      </el-form-item>
                     </div>
-                  </el-form-item>
-                  <div v-if="isMultiMaster()">
-                    <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
-                      <el-radio-group v-model="form.lbMode">
-                        <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
-                        <el-radio label="external">VIP</el-radio>
-                      </el-radio-group>
-                      <div v-if="form.lbMode === 'internal'">
-                        <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
-                      </div>
-                      <div v-if="form.lbMode === 'external'">
-                        <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
-                      </div>
-                    </el-form-item>
-                    <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
-                      <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
-                    </el-form-item>
-                    <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                      <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiServerPort" clearable></el-input-number>
-                    </el-form-item>
                   </div>
-                </el-card>
-              </el-scrollbar>
-            </div>
-            <div class="example" v-if="form.provider === 'plan'">
-              <el-scrollbar style="height:100%">
-                <el-card>
-                  <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="plan">
-                    <el-select filterable style="width: 100%" v-model="form.plan" clearable>
-                      <el-option v-for="item of plans" :key="item.name" :value="item.name">{{item.name}}</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                    <el-input-number :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
-                  </el-form-item>
-                  <div v-if="isMultiMaster()">
-                    <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
-                      <el-radio-group v-model="form.lbMode">
-                        <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
-                        <el-radio label="external">VIP</el-radio>
-                      </el-radio-group>
-                      <div v-if="form.lbMode === 'internal'">
-                        <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
-                      </div>
-                      <div v-if="form.lbMode === 'external'">
-                        <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
-                      </div>
+                  <div v-if="form.provider === 'plan'">
+                    <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="plan">
+                      <el-select filterable style="width: 100%" v-model="form.plan" clearable>
+                        <el-option v-for="item of plans" :key="item.name" :value="item.name">{{item.name}}</el-option>
+                      </el-select>
                     </el-form-item>
-                    <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
-                      <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                    <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
+                      <el-input-number :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
                     </el-form-item>
-                    <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                      <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
-                    </el-form-item>
+                    <div v-if="isMultiMaster()">
+                      <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                        <el-radio-group v-model="form.lbMode">
+                          <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                          <el-radio label="external">VIP</el-radio>
+                        </el-radio-group>
+                        <div v-if="form.lbMode === 'internal'">
+                          <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                        </div>
+                        <div v-if="form.lbMode === 'external'">
+                          <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                        </div>
+                      </el-form-item>
+                      <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                        <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                        <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
+                      </el-form-item>
+                    </div>
                   </div>
                 </el-card>
               </el-scrollbar>
@@ -587,6 +588,7 @@ export default {
         supportGpu: "disable",
         ingressControllerType: "nginx",
 
+        masterScheduleType: "enable",
         masters: [],
         workers: [],
         nodes: [],
