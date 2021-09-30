@@ -26,7 +26,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname">
               <el-input placeholder="172.16.10.100" v-model="form.hostname"></el-input>
               <div><span class="input-help">{{$t('setting.table.registry.hostname_help')}}</span></div>
             </el-form-item>
@@ -34,7 +34,7 @@
               <el-collapse accordion>
                 <el-collapse-item>
                   <template slot="title">
-                    {{$t('multi_cluster.senior_setting')}}<i class="header-icon el-icon-info"></i>
+                    {{$t('multi_cluster.senior_setting')}}
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort" required>
@@ -51,6 +51,10 @@
                       <el-input-number v-model="form.registryHostedPort"  :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>
+                    
+                    <el-form-item :label="$t('setting.password')" prop="nexusPassword">
+                      <el-input v-model="form.nexusPassword" :placeholder="$t('setting.password_help')" type="password"></el-input>
+                    </el-form-item>
                   </div>
                 </el-collapse-item>
               </el-collapse>
@@ -58,7 +62,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button type="primary" :disabled="validateCommit" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" :disabled="validateCommit" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
             </div>
           </el-form>
@@ -90,12 +94,14 @@ export default {
         repoPort: '',
         registryPort: '',
         registryHostedPort: '',
+        nexusPassword: "",
       },
       rules: {
         hostname: [Rule.IpRule],
         repoPort: [Rule.RequiredRule],
         registryPort: [Rule.RequiredRule],
         registryHostedPort: [Rule.RequiredRule],
+        nexusPassword: [Rule.RequiredRule],
       },
       architectureOptions: [{
         value: 'x86_64',
@@ -125,6 +131,7 @@ export default {
           repoPort: this.form.repoPort,
           registryPort: this.form.registryPort,
           registryHostedPort: this.form.registryHostedPort,
+          nexusPassword: this.form.nexusPassword,
         }).then(() => {
           this.loading = false
           this.$message({

@@ -76,7 +76,7 @@
               <div style="float: right">
                 <el-button  @click="onCheckParams()">{{ $t("automatic.region.get_datacenter") }}</el-button>
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-                <el-button type="primary" @click="onSubmit('form')">{{ $t("commons.button.submit") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')" v-preventReClick>{{ $t("commons.button.submit") }}</el-button>
               </div>
             </el-form-item>
           </el-form>

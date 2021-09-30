@@ -45,7 +45,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button @click="sync" :disabled="!btnSlect">{{$t('commons.button.sync')}}</el-button>
-                <el-button type="primary" @click="onSubmit" >{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
             </div>
 

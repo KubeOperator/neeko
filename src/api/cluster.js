@@ -37,8 +37,8 @@ export function clusterRecover(clusterName, data) {
   return post(`${clusterUrl}/recover/${clusterName}`, data)
 }
 
-export function deleteCluster(clusterName, force) {
-  return del(`${clusterUrl}/${clusterName}?force=${force}`)
+export function deleteCluster(clusterName, force, uninstall) {
+  return del(`${clusterUrl}/${clusterName}?force=${force}&uninstall=${uninstall}`)
 }
 
 export function importCluster(data) {
@@ -87,4 +87,8 @@ export function openProvisionerLogger(clusterName, logId) {
 
 export function getSecret(clusterName) {
   return get(`${clusterUrl}/secret/${clusterName}`)
+}
+
+export function getClusterInfo(data) {
+  return post(clusterUrl + "/load", data)
 }

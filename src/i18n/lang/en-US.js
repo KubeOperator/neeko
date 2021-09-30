@@ -243,7 +243,7 @@ const message = {
       step3: "Runtime Settings",
       runtime_type: "Container Runtime",
       docker_storage_dir: "Docker Data Path",
-      containe_storage_dir: "Container Data Path",
+      containe_storage_dir: "Containerd Data Path",
       subnet: "Container Subnet",
 
       step4: "Container Network Settings",
@@ -276,7 +276,7 @@ const message = {
 
       step6_of_bare_metal: "Node Information",
       node_help: "The host needs to be authorized in the project-resource first",
-      master_select_help: "(The number of Master nodes must be 1 or 3)",
+      master_select_help: "The number of Master nodes must be 1 or 3",
       node_number_help: "In the current configuration, a maximum of {0} nodes can be deployed",
       cluster_high_availability: "High Availability",
       default: "Default",
@@ -286,6 +286,7 @@ const message = {
 
       step6_of_plan: "Plan",
       worker_num: "Number of Workers",
+      master_schedule_type: "Master schedule",
 
       step7: "Configuration Preview",
       base_setting: "Basic Configuration"
@@ -297,12 +298,25 @@ const message = {
     },
     import: {
       import_cluster: "Cluster Import",
+      credential_rules: "Please complete the host credential information!",
+      port_rules: "Please complete the host port information!",
+      is_ko_cluster: "Is KO cluster",
+      load_ko_cluster_info: "Load KO cluster Infomation",
+      ko_cluster_info: "KO cluster Infomation",
       api_server_help: "For example: https://172.16.10.100:8443",
       router_help: "The IP address of any node with kube-proxy installed and accessible",
+      batch_edit_port: "Batch modify ports",
+      batch_edit_credential: "Batch modify credentials",
+      other_info: "Other information",
+      import_help: "Click to enable editing",
+      import_help2: "For details, please refer to the official documentation",
+      import_name: "The imported cluster name is the original KO cluster name: ",
     },
     delete: {
       delete_cluster: "Cluster Delete",
       is_force: "Is it mandatory",
+      is_uninstall: "Is uninstall",
+      sure_uninstall: "is an imported KO cluster. Determine whether to uninstall it?",
     },
     health_check: {
       health_check: "health examination",
@@ -316,17 +330,19 @@ const message = {
       CHECK_K8S_API: "Check kubernetes api connection",
       CHECK_K8S_NODE_STATUS: "Check kubernetes node status",
       CHECK_KUBE_ROUTER: "Check the availability of cluster proxy IP addresses",
+
       STATUS_SUCCESS: "Successful",
       STATUS_WARNING: "Warning",
       STATUS_FAILED: "Failed",
       STATUS_ERROR: "Error",
       STATUS_RECOVERD: "Recoverd",
       STATUS_SOLVED_MANUALLY: "To be solved",
-      CHECK_SSH_CONNECTION: "Checking the SSH service and network status of the host (Manually)",
-      CHECK_API_CONNECTION: "Check whether cluster services and cluster networks are available (manually)",
-      GET_K8S_TOKEN_ANGIN:  "Get cluster token again",
-      UPDATE_CLUSTER_NODE_STATUS: "Forcibly delete a node from the node list to uninstall related cluster services (manually)",
-      UPDATE_KUBE_ROUTER: "Update the cluster agent IP address",
+
+      RECOVER_SYNC_NODE_STATUS: "Forcibly delete a node from the node list to uninstall related cluster services (manually)",
+      RECOVER_SYNC_ROUTER_IP: "Update the cluster agent IP address",
+      RECOVER_SYNC_TOKEN:  "Get cluster token again",
+      RECOVER_HOST_CONN: "Checking the SSH service and network status of the host (manually)",
+      RECOVER_API_CONN: "Check whether cluster services and cluster networks are available (manually)",
     },
     condition: {
       condition_loading: "Waiting for execution, please wait...",
@@ -382,7 +398,7 @@ const message = {
       },
       node: {
         increment: "Increment",
-        operator_help: "The imported cluster does not currently support scaling",
+        operator_help: "The external import cluster does not support import",
         host: "Host",
         node_detail: "Node details",
         base_infomation: "Basic information",
@@ -580,7 +596,7 @@ const message = {
   host: {
     detail: "Detail",
     host: "Host",
-    memory: "Memory(MB)",
+    memory: "Memory(GB)",
     os: "Operating System",
     architecture: "Architecture",
     port: "Port",
@@ -843,6 +859,7 @@ const message = {
     address: "Address",
     username: "Username",
     password: "Password",
+    password_help: "Admin login password. The default value is admin123",
     ntp: "NTP",
     email: "Email",
     license: "License",

@@ -59,11 +59,11 @@
             <template>
               <el-button-group>
                 <el-button size="small" :disabled="provider === ''" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
-                <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
-                <el-button size="small" :disabled="provisionerSelection.length < 1" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
+                <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
+                <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
             </template>
-            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" :data="provisionerDatas">
+            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
               <el-table-column type="selection" fix></el-table-column>
               <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
               <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
@@ -187,6 +187,7 @@ export default {
       },
       provider: null,
       loading: false,
+      isDeleteButtonDisable: true,
       provisionerDatas: [],
       pvDatas: [],
       storageClassDatas: [],
@@ -265,6 +266,20 @@ export default {
     },
     provisionerCreate() {
       this.$router.push({ name: "ClusterStorageProvionerCreate" })
+    },
+    selectChange() {
+      let isOk = true
+      if (this.provisionerSelection.length === 0) {
+        this.isDeleteButtonDisable = true
+        return
+      }
+      for (const item of this.provisionerSelection) {
+        if (item.status !== "Running" && item.status !== "Failed" && item.status !== "NotReady") {
+          isOk = false
+          break
+        }
+      }
+      this.isDeleteButtonDisable = !isOk
     },
     onDelete(row, type, isBatchDelete) {
       if (isBatchDelete) {

@@ -93,7 +93,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" :disabled="provider === '' || submitLoading" @click="submitCreate()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" :disabled="provider === '' || submitLoading" @click="submitCreate()" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -199,10 +199,8 @@
 
     <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
       <el-form label-width="120px">
-        <el-form-item :label="$t('cluster.delete.is_force')">
-          <el-switch v-model="isForce" />
-          <div><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
-        </el-form-item>
+        <el-checkbox v-model="isForce">{{$t('cluster.delete.is_force')}}</el-checkbox>
+        <div style="margin-top: 5px"><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
@@ -460,34 +458,28 @@ export default {
         }
       }
       this.deleteLoadding = true
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
-        confirmButtonText: this.$t("commons.button.confirm"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      }).then(() => {
-        const delForm = { operation: "delete", isForce: this.isForce, nodes: [] }
-        if (this.deleteRow) {
-          delForm.nodes.push(this.deleteRow.name)
-        } else {
-          for (const node of this.selects) {
-            delForm.nodes.push(node.name)
-          }
+      const delForm = { operation: "delete", isForce: this.isForce, nodes: [] }
+      if (this.deleteRow) {
+        delForm.nodes.push(this.deleteRow.name)
+      } else {
+        for (const node of this.selects) {
+          delForm.nodes.push(node.name)
         }
-        nodeBatchOperation(this.clusterName, delForm)
-          .then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-            this.selects = []
-            this.search()
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
-          })
-          .catch(() => {
-            this.search()
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
-            this.selects = []
-          })
-      })
+      }
+      nodeBatchOperation(this.clusterName, delForm)
+        .then(() => {
+          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.selects = []
+          this.search()
+          this.dialogDeleteVisible = false
+          this.deleteLoadding = false
+        })
+        .catch(() => {
+          this.search()
+          this.dialogDeleteVisible = false
+          this.deleteLoadding = false
+          this.selects = []
+        })
     },
     onCordon(operation) {
       if (operation === "cordon") {

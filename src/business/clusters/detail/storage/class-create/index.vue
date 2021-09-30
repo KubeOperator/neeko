@@ -14,6 +14,11 @@
                 <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
+            <el-form-item :label="$t('cluster.detail.storage.reclaim_policy')" prop="reclaimPolicy" :rules="requiredRules">
+              <el-select style="width: 100%" size="small" v-model="form.reclaimPolicy" clearable>
+                <el-option v-for="item of reclaimPolicyList" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+            </el-form-item>
 
             <div v-if="createType === 'nfs'">
               <el-form-item :label="$t('cluster.detail.storage.provisioner_name')" required>
@@ -156,7 +161,7 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button type="primary" :disabled="!(createType && form.metadata.name) || submitLoading" @click="onSubmit">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" :disabled="!(createType && form.metadata.name) || submitLoading" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -181,6 +186,7 @@ export default {
       createType: "",
       createName: "",
       provisioner: {},
+      reclaimPolicyList: ["Retain", "Delete"],
       form: {
         apiVersion: "storage.k8s.io/v1",
         kind: "StorageClass",
@@ -191,6 +197,7 @@ export default {
         parameters: {
           storagePolicyType: "",
         },
+        reclaimPolicy: "Delete",
       },
       nameRules: [Rule.CommonNameRule],
       requiredRules: [Rule.RequiredRule],

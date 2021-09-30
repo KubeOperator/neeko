@@ -1,13 +1,13 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" local-key="host_columns" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
           <el-button size="small" @click="onImport()">{{ $t("commons.button.batch_import") }}</el-button>
           <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
-          <el-button :disabled="hostSelections.length<1" size="small" @click="onDelete()">
+          <el-button :disabled="isDeleteButtonDisable" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
+          <el-button :disabled="isDeleteButtonDisable" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -22,6 +22,7 @@
       <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column label="IP" min-width="120px" prop="ip" />
+      <el-table-column :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
       <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
@@ -208,6 +209,7 @@ export default {
       dialogSyncVisible: false,
       dialogImportVisible: false,
       isUploadDisable: true,
+      isDeleteButtonDisable: true,
       file: {},
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
@@ -309,6 +311,20 @@ export default {
           this.dialogImportVisible = false
         }
       )
+    },
+    selectChange() {
+      let isOk = true
+      if (this.hostSelections.length === 0) {
+        this.isDeleteButtonDisable = true
+        return
+      }
+      for (const item of this.hostSelections) {
+        if (item.status !== "Running" && item.status !== "Failed") {
+          isOk = false
+          break
+        }
+      }
+      this.isDeleteButtonDisable = !isOk
     },
     onDelete(name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {

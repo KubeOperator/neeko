@@ -89,7 +89,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed'" :v-loading="retryLoadding" @click="onRetry()">
+        <el-button size="small" v-if="log.phase === 'Failed'" @click="onRetry()" v-preventReClick>
           {{ $t("commons.button.retry") }}
         </el-button>
       </div>
@@ -97,14 +97,17 @@
 
     <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
       <el-form label-width="120px">
-        <el-form-item :label="$t('cluster.delete.is_force')">
-          <el-switch v-model="isForce" />
-          <div><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
-        </el-form-item>
+        <div v-if="isKoExternalShow">
+          <el-checkbox v-model="isUninstall">{{$t('cluster.delete.is_uninstall')}}</el-checkbox>
+          <div style="margin-top: 5px; margin-bottom: 20px"><span class="input-help">{{KoExternalNames}} {{$t('cluster.delete.sure_uninstall')}}</span></div>
+        </div>
+
+        <el-checkbox v-model="isForce">{{$t('cluster.delete.is_force')}}</el-checkbox>
+        <div style="margin-top: 5px"><span class="input-help">{{$t('commons.confirm_message.force_delete')}}</span></div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" :v-loading="deleteLoadding" @click="submitDelete()">
+        <el-button size="small" @click="submitDelete()" v-preventReClick>
           {{ $t("commons.button.submit") }}
         </el-button>
       </div>
@@ -147,7 +150,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="checkData.level=='STATUS_ERROR'" @click="onRecover()">
+        <el-button size="small" v-if="checkData.level=='STATUS_ERROR'" @click="onRecover()" v-preventReClick>
           {{ $t("cluster.health_check.recover") }}
         </el-button>
       </div>
@@ -227,12 +230,13 @@ export default {
         conditions: [],
       },
       activeName: 1,
-      retryLoadding: false,
       conditionLoading: false,
 
       // cluster delete
       isForce: false,
-      deleteLoadding: false,
+      isUninstall: false,
+      KoExternalNames: "",
+      isKoExternalShow: false,
       dialogDeleteVisible: false,
       isDeleteButtonDisable: false,
       deleteName: "",
@@ -338,42 +342,52 @@ export default {
     },
     onDelete(row) {
       this.isForce = false
+      this.isUninstall = false
       this.dialogDeleteVisible = true
+      this.isKoExternalShow = false
       if (row) {
         this.deleteName = row.name
+        if (row.source === "ko-external") {
+          this.isKoExternalShow = true
+          this.KoExternalNames = row.name
+        }
+      } else {
+        this.KoExternalNames = ""
+        let isKoExternalClusterExist = false
+        for (const item of this.clusterSelection) {
+          if (item.source === "ko-external") {
+            isKoExternalClusterExist = true
+            this.KoExternalNames += item.name + ","
+          }
+        }
+        if (isKoExternalClusterExist) {
+          this.isKoExternalShow = isKoExternalClusterExist
+          this.KoExternalNames = this.KoExternalNames.substring(0, this.KoExternalNames.length - 1)
+        }
       }
     },
     submitDelete() {
-      this.deleteLoadding = true
-      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
-        confirmButtonText: this.$t("commons.button.confirm"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      }).then(() => {
-        const ps = []
-        if (this.deleteName) {
-          ps.push(deleteCluster(this.deleteName, this.isForce))
-        } else {
-          for (const item of this.clusterSelection) {
-            ps.push(deleteCluster(item.name, this.isForce))
-          }
+      const ps = []
+      if (this.deleteName) {
+        ps.push(deleteCluster(this.deleteName, this.isForce, this.isUninstall))
+      } else {
+        for (const item of this.clusterSelection) {
+          ps.push(deleteCluster(item.name, this.isForce, this.isUninstall))
         }
-        Promise.all(ps)
-          .then(() => {
-            this.search()
-            this.$message({
-              type: "success",
-              message: this.$t("commons.msg.op_success"),
-            })
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
+      }
+      Promise.all(ps)
+        .then(() => {
+          this.search()
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.op_success"),
           })
-          .catch(() => {
-            this.search()
-            this.dialogDeleteVisible = false
-            this.deleteLoadding = false
-          })
-      })
+          this.dialogDeleteVisible = false
+        })
+        .catch(() => {
+          this.search()
+          this.dialogDeleteVisible = false
+        })
     },
 
     // cluster health check
@@ -442,36 +456,30 @@ export default {
       openLogger(this.clusterName)
     },
     onRetry() {
-      this.retryLoadding = true
       switch (this.log.prePhase) {
         case "Upgrading":
           upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Upgrading"
           })
           break
         case "Initializing":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Initializing"
           })
           break
         case "Terminating":
-          deleteCluster(this.clusterName, true).then(() => {
-            this.retryLoadding = false
+          deleteCluster(this.clusterName, true, this.isUninstall).then(() => {
             this.log.phase = "Terminating"
           })
           break
         case "Creating":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.dialogLogVisible = false
             this.log.phase = "Creating"
           })
           break
         case "Waiting":
           initCluster(this.clusterName).then(() => {
-            this.retryLoadding = false
             this.log.phase = "Waiting"
           })
           break

@@ -238,7 +238,7 @@ const message = {
       step3: "运行时设置",
       runtime_type: "容器运行时",
       docker_storage_dir: "Docker 数据路径",
-      containe_storage_dir: "Container 数据路径",
+      containe_storage_dir: "Containerd 数据路径",
       subnet: "Container 子网",
 
       step4: "容器网络设置",
@@ -272,7 +272,7 @@ const message = {
 
       step6_of_bare_metal: "节点信息",
       node_help: "主机需要先在项目-资源中授权",
-      master_select_help: "（Master 节点的数量必须为1或者3）",
+      master_select_help: "Master 节点的数量必须为1或者3",
       node_number_help: "当前配置下，集群内最多可允许部署 {0} 个节点",
       cluster_high_availability: "集群高可用",
       default: "默认",
@@ -282,6 +282,7 @@ const message = {
 
       step6_of_plan: "部署计划",
       worker_num: "Worker 数量",
+      master_schedule_type: "Master 调度",
 
       step7: "配置预览",
       base_setting: "基本配置"
@@ -293,12 +294,25 @@ const message = {
     },
     import: {
       import_cluster: "集群导入",
+      credential_rules: "请完善主机凭据信息！",
+      port_rules: "请完善主机端口信息！",
+      is_ko_cluster: "是否为 KO 集群",
+      load_ko_cluster_info: "获取 KO 集群信息",
+      ko_cluster_info: "KO 集群信息",
+      batch_edit_port: "批量修改端口",
+      batch_edit_credential: "批量修改凭据",
+      other_info: "其他信息",
       api_server_help: "例如: https://172.16.10.100:8443",
       router_help: "装有 kube-proxy 的任意节点的且可以被访问到的 IP 地址",
+      import_help: "单击可启用编辑，",
+      import_help2: "详细操作可参照官方文档",
+      import_name: "导入集群名称为原 KO 集群名称：",
     },
     delete: {
       delete_cluster: "集群删除",
       is_force: "是否强制",
+      is_uninstall: "是否卸载",
+      sure_uninstall: "为导入的 KO集群，是否卸载？",
     },
     health_check: {
       health_check: "健康检查",
@@ -312,17 +326,19 @@ const message = {
       CHECK_K8S_API: "检测集群 API 是否已就绪",
       CHECK_K8S_NODE_STATUS: "检测集群节点是否同步",
       CHECK_KUBE_ROUTER: "检测集群代理 IP 可用性",
+
       STATUS_SUCCESS: "成功",
       STATUS_WARNING: "警告",
       STATUS_FAILED: "失败",
       STATUS_ERROR: "错误",
       STATUS_RECOVERD: "已恢复",
       STATUS_SOLVED_MANUALLY: "待解决",
-      CHECK_SSH_CONNECTION: "检查节点主机 SSH 服务、主机网络状况(需手动)",
-      CHECK_API_CONNECTION: "检查集群服务是否可用、集群网络是否可用(需手动)",
-      GET_K8S_TOKEN_ANGIN:  "重新获取集群 Token",
-      UPDATE_CLUSTER_NODE_STATUS: "节点列表中，强制删除节点以卸载相关集群服务(需手动)",
-      UPDATE_KUBE_ROUTER: "更新集群代理 IP",
+
+      RECOVER_SYNC_NODE_STATUS: "节点列表中，强制删除节点以卸载相关集群服务(需手动)",
+      RECOVER_SYNC_ROUTER_IP: "更新集群代理 IP",
+      RECOVER_SYNC_TOKEN: "重新获取集群 Token",
+      RECOVER_HOST_CONN: "检查节点主机 SSH 服务、主机网络状况(需手动)",
+      RECOVER_API_CONN: "检查集群服务是否可用、集群网络是否可用(需手动)",
     },
     condition: {
       condition_loading: "正在等待执行，请稍候...",
@@ -378,7 +394,7 @@ const message = {
       },
       node: {
         increment: "增量",
-        operator_help: "导入的集群暂不支持扩缩容",
+        operator_help: "导入的外部集群暂不支持扩缩容",
         host: "主机",
         node_detail: "节点详情",
         base_infomation: "基础信息",
@@ -581,7 +597,7 @@ const message = {
   host: {
     detail: "详情",
     host: "主机",
-    memory: "内存(MB)",
+    memory: "内存(GB)",
     os: "操作系统",
     architecture: "架构",
     port: "端口",
@@ -847,6 +863,7 @@ const message = {
     address: "地址",
     username: "账号",
     password: "密码",
+    password_help: "admin 用户默认密码为 admin123",
     ntp: "NTP",
     email: "邮箱",
     license: "许可证",

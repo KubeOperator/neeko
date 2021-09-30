@@ -59,7 +59,7 @@
       <template #footer>
     <span class="dialog-footer">
       <el-button @click="cancel">{{ $t("commons.button.cancel") }}</el-button>
-      <el-button type="primary" @click="submit">{{ $t("commons.button.submit") }}</el-button>
+      <el-button type="primary" @click="submit" v-preventReClick>{{ $t("commons.button.submit") }}</el-button>
     </span>
       </template>
     </el-dialog>

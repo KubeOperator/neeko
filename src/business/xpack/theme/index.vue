@@ -28,7 +28,7 @@
                 </div>
               </el-upload>
               <div style="position: absolute;right: 0px;margin-top: 20px">
-                <el-button type="primary" @click="onSubmit()">{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" @click="onSubmit()" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
