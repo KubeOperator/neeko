@@ -142,7 +142,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port">
                   <el-input v-model="form.cloudVars.port" type="number"></el-input>
                 </el-form-item>
               </div>
@@ -243,7 +243,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port">
                   <el-input v-model="form.cloudVars.port" type="number"></el-input>
                 </el-form-item>
               </div>
@@ -421,7 +421,7 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port" required>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port">
                   <el-input v-model="form.cloudVars.port" type="number"></el-input>
                 </el-form-item>
               </div>
@@ -545,7 +545,8 @@ export default {
           nfsFolder: "",
           nfsUsername: "",
           nfsPassword: "",
-          resourcePool: ""
+          resourcePool: "",
+          port: 22
         },
         credentialName: "",
         ipPoolName: ""
