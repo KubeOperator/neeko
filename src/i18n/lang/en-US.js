@@ -596,7 +596,7 @@ const message = {
   host: {
     detail: "Detail",
     host: "Host",
-    memory: "Memory(GB)",
+    memory: "Memory(MB)",
     os: "Operating System",
     architecture: "Architecture",
     port: "Port",

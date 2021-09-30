@@ -597,7 +597,7 @@ const message = {
   host: {
     detail: "详情",
     host: "主机",
-    memory: "内存(GB)",
+    memory: "内存(MB)",
     os: "操作系统",
     architecture: "架构",
     port: "端口",
