@@ -33,7 +33,7 @@
                     <el-table-column prop="role" label="Role" />
                     <el-table-column prop="port" :label="$t('cluster.creation.port')" min-width="70px">
                       <template v-slot:default="{row}">
-                        <el-input v-model="row.port" clearable />
+                        <el-input-number :max="65535" :min="0" v-model.number="row.port" clearable />
                       </template>
                     </el-table-column>
                     <el-table-column prop="credentialID" :label="$t('host.credential_name')" min-width="120px">
@@ -395,6 +395,9 @@ export default {
       rules: {
         clusterInfo: {
           runtimeType: [Rule.RequiredRule],
+          dockerStorageDir: [Rule.RequiredRule],
+          containerdStorageDir: [Rule.RequiredRule],
+          dockerSubnet: [Rule.RequiredRule],
           maxNodePodNum: [Rule.RequiredRule],
           kubeServiceSubnet: [Rule.RequiredRule],
           kubeProxyMode: [Rule.RequiredRule],
@@ -446,11 +449,11 @@ export default {
       }
       if (step.index === 0) {
         for (const node of this.form.clusterInfo.nodes) {
-          if (node.credentialID === "" || node.credentialID === "") {
+          if (node.credentialID === null || node.credentialID === "") {
             this.$message({ type: "info", message: this.$t("cluster.import.credential_rules") })
             return false
           }
-          if (node.port === "" || node.port === "") {
+          if (node.port === undefined) {
             this.$message({ type: "info", message: this.$t("cluster.import.port_rules") })
             return false
           }

@@ -308,7 +308,7 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType" required>
+                  <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType">
                     <el-switch v-model="form.masterScheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                   </el-form-item>
                   <div v-if="form.provider === 'bareMetal'">
@@ -607,7 +607,11 @@ export default {
         architectures: [Rule.RequiredRule],
         yumOperate: [Rule.RequiredRule],
         runtimeType: [Rule.RequiredRule],
+        dockerStorageDir: [Rule.RequiredRule],
+        containerdStorageDir: [Rule.RequiredRule],
+        dockerSubnet: [Rule.RequiredRule],
         maxNodePodNum: [Rule.RequiredRule],
+        kubePodSubnet: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
         kubeServiceNodePortRange1: [Rule.NumberRule],
@@ -618,7 +622,6 @@ export default {
         ciliumTunnelMode: [Rule.RequiredRule],
         helmVersion: [Rule.RequiredRule],
         ingressControllerType: [Rule.RequiredRule],
-        supportGpu: [Rule.RequiredRule],
         plan: [Rule.RequiredRule],
         workerAmount: [Rule.NumberRule],
         masters: [Rule.RequiredRule],
