@@ -29,9 +29,9 @@
                     <el-table-column type="selection" fix></el-table-column>
                     <el-table-column prop="name" :label="$t('commons.table.name')" />
                     <el-table-column prop="ip" label="ip" />
-                    <el-table-column prop="architecture" :label="$t('cluster.creation.arch')" />
-                    <el-table-column prop="role" label="Role" />
-                    <el-table-column prop="port" :label="$t('cluster.creation.port')" min-width="70px">
+                    <el-table-column prop="architecture" min-width="45px" :label="$t('cluster.creation.arch')" />
+                    <el-table-column prop="role" min-width="45px" label="Role" />
+                    <el-table-column prop="port" :label="$t('cluster.creation.port')" min-width="100px">
                       <template v-slot:default="{row}">
                         <el-input-number :max="65535" :min="0" v-model.number="row.port" clearable />
                       </template>
@@ -547,7 +547,7 @@ export default {
 <style lang="scss" scoped>
 .example {
   height: 350px;
-  margin: 1% 10%;
+  margin: 1% 3%;
   ul {
     height: 20px;
   }

@@ -27,11 +27,13 @@
               <el-input style="width: 100%" v-model="form.router" :placeholder="$t('cluster.import.router_help')" clearable></el-input>
             </el-form-item>
             <el-form-item label="token" prop="token">
-              <el-input type="textarea" :autosize="{ minRows: 2}" style="width: 100%" v-model="form.token" clearable></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2,maxRows: 5}" style="width: 100%" v-model="form.token" clearable></el-input>
             </el-form-item>
-            <el-form-item :label="$t('cluster.import.is_ko_cluster')" prop="isKoCluster">
-              <el-switch v-model="form.isKoCluster" />
-            </el-form-item>
+            <div>
+              <el-form-item prop="isKoCluster">
+                <el-checkbox v-model="form.isKoCluster">{{$t('cluster.import.is_ko_cluster')}}</el-checkbox>
+              </el-form-item>
+            </div>
             <div v-if="dialogKoImportVisible">
               <ko-import :clusterImportInfo="form" @changeVisble="changeVisble" :visible="dialogKoImportVisible" />
             </div>
