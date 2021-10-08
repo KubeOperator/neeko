@@ -119,7 +119,7 @@
               field: "created_at",
               label: this.$t('commons.table.create_time'),
               component: "FuComplexDateTime",
-              valueFormat: "yyyy-MM-dd"
+              valueFormat: "yyyy-MM-dd HH:mm:ss"
             },
           ]
         },
