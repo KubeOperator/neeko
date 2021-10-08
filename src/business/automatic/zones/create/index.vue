@@ -546,7 +546,7 @@ export default {
           nfsUsername: "",
           nfsPassword: "",
           resourcePool: "",
-          port: 22
+          port: "22"
         },
         credentialName: "",
         ipPoolName: ""
