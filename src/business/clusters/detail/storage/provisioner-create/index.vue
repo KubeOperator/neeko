@@ -10,9 +10,9 @@
                 <el-option value="nfs" label="nfs">nfs</el-option>
                 <el-option value="external-ceph" label="external-ceph">external-ceph</el-option>
                 <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
-                <el-option value="cinder" label="cinder">cinder</el-option>
-                <el-option value="vsphere" label="vsphere">vsphere</el-option>
                 <el-option value="glusterfs" label="glusterfs">glusterfs</el-option>
+                <el-option value="vsphere" label="vsphere">vsphere</el-option>
+                <el-option value="cinder" label="cinder">cinder</el-option>
                 <el-option value="oceanstor" label="oceanstor">oceanstor</el-option>
               </el-select>
             </el-form-item>
