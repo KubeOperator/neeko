@@ -65,9 +65,13 @@
               <td>{{ $t("automatic.region.name") }}</td>
               <td>{{ item.regionName}}</td>
             </tr>
-            <tr>
+            <tr v-if="item.cloudVars.resourceType!=='host'">
               <td>{{ $t("automatic.zone.resource_pool") }}</td>
               <td>{{ item.cloudVars.resourcePool }}</td>
+            </tr>
+            <tr v-if="item.cloudVars.resourceType==='host'">
+              <td>{{ $t("automatic.zone.host") }}</td>
+              <td>{{ item.cloudVars.hostSystem }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.zone.cluster") }}</td>
