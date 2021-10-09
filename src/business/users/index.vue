@@ -12,7 +12,7 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="120">
+      <el-table-column sortable :label="$t('commons.table.name')" prop="name" mix-width="120">
         <template v-slot:default="{row}">
           <el-row>
             <el-col :span="18">
@@ -21,7 +21,7 @@
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('user.email')" min-width="120">
+      <el-table-column sortable :label="$t('user.email')" prop="email" min-width="120">
         <template v-slot:default="{row}">
           <el-row>
             <el-col>
@@ -46,7 +46,7 @@
           <span size="small">{{ $t(`commons.role.${row.role}`) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" min-width="100">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt" min-width="100">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

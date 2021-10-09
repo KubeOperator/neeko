@@ -22,15 +22,15 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix>
+      <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status === 'Running'" type="info" @click="goForDetail(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix />
-      <el-table-column :label="$t('cluster.version')" min-width="80" prop="spec.version" fix />
-      <el-table-column :label="$t('cluster.node_size')" min-width="50" prop="nodeSize" />
+      <el-table-column sortable :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix />
+      <el-table-column sortable :label="$t('cluster.version')" min-width="80" prop="spec.version" fix />
+      <el-table-column sortable :label="$t('cluster.node_size')" min-width="60" prop="nodeSize" />
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status ==='Running'">
@@ -66,7 +66,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="150px" :label="$t('commons.table.create_time')">
+      <el-table-column width="150px" sortable :label="$t('commons.table.create_time')" prop="createdAt">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

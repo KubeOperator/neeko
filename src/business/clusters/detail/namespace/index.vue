@@ -9,8 +9,8 @@
       </template>
 
       <el-table-column type="selection" :selectable="isInSystemSpace" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
+      <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
+      <el-table-column sortable  :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status.phase !=='Terminating'">
             <span></span>{{row.status.phase}}
@@ -21,7 +21,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="metadata.creationTimestamp">
         <template v-slot:default="{row}">
           {{ row.metadata.creationTimestamp | datetimeFormat }}
         </template>

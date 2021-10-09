@@ -21,7 +21,7 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('automatic.ip_pool.address')" mix-width="100">
+      <el-table-column sortable :label="$t('automatic.ip_pool.address')" prop="address" mix-width="100">
         <template v-slot:default="{ row }">{{ row.address }}</template>
       </el-table-column>
       <el-table-column :label="$t('automatic.ip_pool.gateway')" mix-width="100">
@@ -33,7 +33,7 @@
       <el-table-column :label="$t('automatic.ip_pool.dns2')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.dns2 }}</template>
       </el-table-column>
-      <el-table-column :label="$t('automatic.ip_pool.status')" mix-width="100">
+      <el-table-column sortable :label="$t('automatic.ip_pool.status')" prop="status" mix-width="100">
         <template v-slot:default="{ row }">
           <div v-if="row.status ==='IP_AVAILABLE'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -53,7 +53,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
