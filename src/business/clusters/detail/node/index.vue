@@ -12,7 +12,7 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
+      <el-table-column sortable :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
@@ -25,7 +25,7 @@
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
       <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
-      <el-table-column class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
+      <el-table-column sortable class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider !== 'bareMetal'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
@@ -65,7 +65,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

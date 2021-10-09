@@ -13,16 +13,16 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip min-width="120" fix>
+      <el-table-column sortable :label="$t('commons.table.name')" prop="name" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status === 'Running'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status !== 'Running'">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
-      <el-table-column :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
-      <el-table-column label="IP" min-width="120px" prop="ip" />
-      <el-table-column :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
+      <el-table-column sortable :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
+      <el-table-column sortable :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
+      <el-table-column sortable label="IP" min-width="120px" prop="ip" />
+      <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
       <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
@@ -49,7 +49,7 @@
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" :show="false" width="150px">
+      <el-table-column sortable  :label="$t('commons.table.create_time')" prop="createdAt" :show="false" width="150px">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

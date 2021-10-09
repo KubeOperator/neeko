@@ -131,8 +131,10 @@ export default {
   },
   created() {
     getSetting('EMAIL').then( data => {
-      this.form.vars = data.vars,
-      this.form.tab = data.tab
+      if (data.tab !== "") {
+        this.form.tab = data.tab
+        this.form.vars = data.vars
+      }
     })
   }
 }
