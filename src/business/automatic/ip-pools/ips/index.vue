@@ -108,7 +108,7 @@ export default {
             ],
             multiple: true
           },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDate", valueFormat: "yyyy-MM-dd" },
         ]
       },
       paginationConfig: {
