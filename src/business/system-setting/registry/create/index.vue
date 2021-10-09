@@ -94,7 +94,7 @@ export default {
         repoPort: '',
         registryPort: '',
         registryHostedPort: '',
-        nexusPassword: "",
+        nexusPassword: "admin123",
       },
       rules: {
         hostname: [Rule.IpRule],

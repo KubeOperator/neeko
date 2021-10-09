@@ -96,7 +96,8 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
-      <el-form label-width="120px">
+      <div v-if="hasOnlyExternal" style="margin-top: 5px;"><span class="input-help">{{$t('commons.confirm_message.delete')}}</span></div>
+      <el-form v-else label-width="120px">
         <div v-if="isKoExternalShow">
           <el-checkbox v-model="isUninstall">{{$t('cluster.delete.is_uninstall')}}</el-checkbox>
           <div style="margin-top: 5px; margin-bottom: 20px"><span class="input-help">{{KoExternalNames}} {{$t('cluster.delete.sure_uninstall')}}</span></div>
@@ -236,6 +237,7 @@ export default {
       isForce: false,
       isUninstall: false,
       KoExternalNames: "",
+      hasOnlyExternal: true,
       isKoExternalShow: false,
       dialogDeleteVisible: false,
       isDeleteButtonDisable: false,
@@ -345,11 +347,15 @@ export default {
       this.isUninstall = false
       this.dialogDeleteVisible = true
       this.isKoExternalShow = false
+      this.hasOnlyExternal = true
       if (row) {
         this.deleteName = row.name
         if (row.source === "ko-external") {
           this.isKoExternalShow = true
           this.KoExternalNames = row.name
+        }
+        if (row.source !== "external") {
+          this.hasOnlyExternal = false
         }
       } else {
         this.KoExternalNames = ""
@@ -358,6 +364,9 @@ export default {
           if (item.source === "ko-external") {
             isKoExternalClusterExist = true
             this.KoExternalNames += item.name + ","
+          }
+          if (item.source !== "external") {
+            this.hasOnlyExternal = false
           }
         }
         if (isKoExternalClusterExist) {
