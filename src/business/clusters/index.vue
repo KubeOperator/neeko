@@ -247,7 +247,7 @@ export default {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDate", valueFormat: "yyyy-MM-dd" },
         ],
       },
       loading: false,

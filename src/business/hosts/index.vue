@@ -216,7 +216,7 @@ export default {
         components: [
           { field: "name", label: this.$t("commons.table.name"), component: "FuComplexInput", defaultOperator: "eq" },
           { field: "ip", label: this.$t("host.ip"), component: "FuComplexInput", defaultOperator: "eq" },
-          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDateTime", valueFormat: "yyyy-MM-dd HH:mm:ss" },
+          { field: "created_at", label: this.$t("commons.table.create_time"), component: "FuComplexDate", valueFormat: "yyyy-MM-dd" },
         ],
       },
       loading: false,
