@@ -371,11 +371,15 @@ export default {
         })
     },
     openFrame(item) {
-      getSecret(this.clusterName).then((data) => {
-        localStorage.setItem("kubeapps_auth_token_oidc", "false")
-        localStorage.setItem("kubeapps_auth_token", data.kubernetesToken)
-        window.open("" + item.url.replace("{cluster_name}", this.clusterName), "_blank")
-      })
+      if (item.proxyType === "nodeport") {
+        window.open("http://" + this.currentCluster.spec.kubeRouter + ":" + item.proxyPort, "_blank")
+      } else {
+        getSecret(this.clusterName).then((data) => {
+          localStorage.setItem("kubeapps_auth_token_oidc", "false")
+          localStorage.setItem("kubeapps_auth_token", data.kubernetesToken)
+          window.open("" + item.url.replace("{cluster_name}", this.clusterName), "_blank")
+        })
+      }
     },
     onEnable(item) {
       this.conditions = ""
