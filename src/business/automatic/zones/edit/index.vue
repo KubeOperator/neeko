@@ -4,7 +4,8 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading" label-position="left">
+          <el-form ref="form" label-width="200px" :model="form" :rules="rules" v-loading="loading"
+                   label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
@@ -37,9 +38,42 @@
                   </el-option>
                 </el-select>
               </el-form-item>
+              <div v-if="form.provider === 'vSphere' && form.cloudVars['templateType']==='customize'">
+                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
+                  <el-select v-model="form.cloudVars.imageName"
+                             filterable style="width:100%"
+                             reserve-keyword
+                             size="medium"
+                             @change="changeTemplate(form.cloudVars.imageName)">
+                    <el-option
+                            v-for="(item,index) in cloudTemplates"
+                            :key="index"
+                            :label="item.imageName"
+                            :value="item.imageName">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('credential.credential')" prop="credentialName">
+                  <el-select v-model="form.credentialName"
+                             filterable style="width:100%"
+                             size="medium"
+                             reserve-keyword>
+                    <el-option
+                            v-for="(item,index) in credentials"
+                            :key="index"
+                            :label="item.name"
+                            :value="item.name">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('automatic.zone.port')" prop="cloudVars.port">
+                  <el-input v-model="form.cloudVars.port" type="number"></el-input>
+                </el-form-item>
+              </div>
             </div>
             <el-form-item :label="$t('automatic.ip_pool.name')" prop="ipPoolName">
-              <el-select v-model="form.ipPoolName" filterable style="width:100%" reserve-keyword @change="changeIpPool()">
+              <el-select v-model="form.ipPoolName" filterable style="width:100%" reserve-keyword
+                         @change="changeIpPool()">
                 <el-option
                         v-for="(item,index) in ipPools"
                         :key="index"
@@ -51,7 +85,10 @@
             <el-form-item>
               <div style="float: right">
                 <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
-                <el-button type="primary" @click="onSubmit('form')" v-preventReClick>{{ $t("commons.button.submit") }}</el-button>
+                <el-button type="primary" @click="onSubmit('form')" v-preventReClick>{{
+                    $t("commons.button.submit")
+                  }}
+                </el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -92,8 +129,9 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {getZone, listDatastores,updateZone} from "@/api/zone"
+import {getZone, listDatastores, listTemplates, updateZone} from "@/api/zone"
 import {listAllIpPools} from "@/api/ip-pool"
+import {listAllCredentials} from "@/api/credentials"
 
 export default {
   name: "ZoneEdit",
@@ -110,8 +148,7 @@ export default {
         },
         provider: ""
       },
-      rules: {
-      },
+      rules: {},
       loading: false,
       ipPools: [],
       cloudDatastores: [],
@@ -124,7 +161,9 @@ export default {
       currentPool: {
         ips: [],
         ipUsed: 0
-      }
+      },
+      cloudTemplates: [],
+      credentials: []
     }
   },
   methods: {
@@ -139,17 +178,24 @@ export default {
         }
       }
     },
-    onSubmit(formName) {
+    changeTemplate (imageName) {
+      this.cloudTemplates.forEach(template => {
+        if (template.imageName === imageName) {
+          this.form.cloudVars["imageDisks"] = template.imageDisks
+        }
+      })
+    },
+    onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (!valid) {
           return false
         }
-        if (this.form.provider === 'vSphere' || this.form.provider === 'FusionCompute') {
-          if (this.form.cloudVars['datastore'] instanceof Array) {
-            this.form.cloudVars['datastore'] = this.form.cloudVars['datastore'].concat(this.newDatastores);
-          } else if (this.form.cloudVars['datastore'].length > 0) {
-            this.newDatastores.push(this.form.cloudVars['datastore']);
-            this.form.cloudVars['datastore'] = this.newDatastores;
+        if (this.form.provider === "vSphere" || this.form.provider === "FusionCompute") {
+          if (this.form.cloudVars["datastore"] instanceof Array) {
+            this.form.cloudVars["datastore"] = this.form.cloudVars["datastore"].concat(this.newDatastores)
+          } else if (this.form.cloudVars["datastore"].length > 0) {
+            this.newDatastores.push(this.form.cloudVars["datastore"])
+            this.form.cloudVars["datastore"] = this.newDatastores
           }
         }
         this.loading = true
@@ -202,6 +248,15 @@ export default {
             }
           }
         })
+
+        if (this.form.cloudVars["templateType"] === "customize") {
+          listTemplates(this.cloudZoneRequest).then(res => {
+            this.cloudTemplates = res.result
+          })
+          listAllCredentials().then(data => {
+            this.credentials = data.items
+          })
+        }
       }
       this.loading = false
     })
