@@ -89,30 +89,38 @@
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.imageName }}</td>
             </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.port") }}</td>
+              <td>{{ item.cloudVars.port }}</td>
+            </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("credential.credential") }}</td>
+              <td>{{ item.credentialName }}</td>
+            </tr>
             <tr>
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
-              <td>{{ item.ipPool.subnet }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
-              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
-              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
-            </tr>
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
+<!--              <td>{{ item.ipPool.subnet }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
+<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
+<!--            </tr>-->
           </table>
           <table style="width: 90%" class="myTable"  v-if="item.provider==='FusionCompute'">
             <tr>
@@ -139,30 +147,39 @@
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.template }}</td>
             </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.port") }}</td>
+              <td>{{ item.cloudVars.port }}</td>
+            </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("credential.credential") }}</td>
+              <td>{{ item.credentialName }}</td>
+            </tr>
             <tr>
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
-              <td>{{ item.ipPool.subnet }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
-              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
-              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
-            </tr>
+
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
+<!--              <td>{{ item.ipPool.subnet }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
+<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
+<!--            </tr>-->
 
           </table>
           <table style="width: 90%" class="myTable"  v-if="item.provider==='OpenStack'">
@@ -194,30 +211,38 @@
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.template }}</td>
             </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("automatic.zone.port") }}</td>
+              <td>{{ item.cloudVars.port }}</td>
+            </tr>
+            <tr v-if="item.cloudVars.templateType === 'customize'">
+              <td>{{ $t("credential.credential") }}</td>
+              <td>{{ item.credentialName }}</td>
+            </tr>
             <tr>
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.subnet") }}</td>
-              <td>{{ item.ipPool.subnet }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>
-              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.gateway") }}</td>
-              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns1") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t("automatic.ip_pool.dns2") }}</td>
-              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>
-            </tr>
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
+<!--              <td>{{ item.ipPool.subnet }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
+<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
+<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
+<!--            </tr>-->
           </table>
         </div>
       </div>
