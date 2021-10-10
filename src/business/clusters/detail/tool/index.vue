@@ -10,7 +10,7 @@
               </el-col>
               <el-col :span="16">
                 <div><span>{{tool.name}} - {{tool.version}}</span></div>
-                <div style="margin-top: 30px"><span>{{tool.describe}}</span></div>
+                <div style="margin-top: 30px"><span>{{tool.describeInfo}}</span></div>
               </el-col>
             </el-row>
             <el-divider></el-divider>
@@ -360,9 +360,9 @@ export default {
               }
             }
             if (currentLanguage == "en-US") {
-              to.describe = to.describe.split("|")[1]
+              to.describeInfo = to.describe.split("|")[1]
             } else {
-              to.describe = to.describe.split("|")[0]
+              to.describeInfo = to.describe.split("|")[0]
             }
           }
         })
@@ -538,9 +538,9 @@ export default {
             this.tools = data
             for (const to of this.tools) {
               if (currentLanguage == "en-US") {
-                to.describe = to.describe.split("|")[1]
+                to.describeInfo = to.describe.split("|")[1]
               } else {
-                to.describe = to.describe.split("|")[0]
+                to.describeInfo = to.describe.split("|")[0]
               }
             }
           })
