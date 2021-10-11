@@ -859,6 +859,7 @@ const message = {
     address: "Address",
     username: "Username",
     password: "Password",
+    change_nexus_password: "Change Nexus password",
     password_help: "Admin login password. The default value is admin123",
     ntp: "NTP",
     email: "Email",

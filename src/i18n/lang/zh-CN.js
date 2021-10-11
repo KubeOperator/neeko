@@ -863,6 +863,7 @@ const message = {
     address: "地址",
     username: "账号",
     password: "密码",
+    change_nexus_password: "修改 Nexus 密码",
     password_help: "admin 用户默认密码为 admin123",
     ntp: "NTP",
     email: "邮箱",
