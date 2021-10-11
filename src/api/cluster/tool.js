@@ -17,3 +17,7 @@ export function disableTool(clusterName, data) {
 export function upgradeTool(clusterName, data) {
   return post(`${toolUrl}/upgrade/${clusterName}`, data)
 }
+
+export function getNodePort(clusterName, namespace, toolName, toolVersion) {
+  return get(`${toolUrl}/port/${clusterName}/${namespace}/${toolName}/${toolVersion}`)
+}

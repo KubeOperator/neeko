@@ -288,7 +288,7 @@
 </template>
 
 <script>
-import { listTool, enableTool, disableTool, upgradeTool } from "@/api/cluster/tool"
+import { listTool, enableTool, disableTool, upgradeTool, getNodePort } from "@/api/cluster/tool"
 import { listNodeInCluster } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { listStorageClass } from "@/api/cluster/storage"
@@ -372,7 +372,9 @@ export default {
     },
     openFrame(item) {
       if (item.proxyType === "nodeport") {
-        window.open("http://" + this.currentCluster.spec.kubeRouter + ":" + item.proxyPort, "_blank")
+        getNodePort(this.clusterName, item.vars["namespace"], item.name, item.version).then((data) => {
+          window.open("http://" + this.currentCluster.spec.kubeRouter + ":" + data.nodePort, "_blank")
+        })
       } else {
         getSecret(this.clusterName).then((data) => {
           localStorage.setItem("kubeapps_auth_token_oidc", "false")
