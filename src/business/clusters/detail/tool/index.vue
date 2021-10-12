@@ -1,6 +1,14 @@
 <template>
   <div>
     <el-row>
+      <el-tooltip placement="top-start">
+        <div slot="content">
+          {{$t('cluster.detail.tool.sync_tool_help1')}}<br />
+          <li>{{$t('cluster.detail.tool.sync_tool_help2')}}</li>
+          <li>{{$t('cluster.detail.tool.sync_tool_help3')}}</li>
+        </div>
+        <el-button style="margin-left:10px" icon="el-icon-refresh-left" @click="syncToolStatus">{{$t('cluster.detail.tool.sync_tool')}}</el-button>
+      </el-tooltip>
       <div v-loading="loading" v-for="tool in tools" :key="tool.name">
         <el-col :span="6">
           <el-card style="margin-left:10px; margin-top:10px; height: 180px" class="box-card">
@@ -288,7 +296,7 @@
 </template>
 
 <script>
-import { listTool, enableTool, disableTool, upgradeTool, getNodePort } from "@/api/cluster/tool"
+import { listTool, enableTool, disableTool, upgradeTool, getNodePort, syncTool } from "@/api/cluster/tool"
 import { listNodeInCluster } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { listStorageClass } from "@/api/cluster/storage"
@@ -523,6 +531,17 @@ export default {
           this.storages.push(item.metadata.name)
         })
       })
+    },
+    syncToolStatus() {
+      this.loading = true
+      syncTool(this.clusterName)
+        .then((data) => {
+          this.tools = data
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     polling() {
       this.timer = setInterval(() => {

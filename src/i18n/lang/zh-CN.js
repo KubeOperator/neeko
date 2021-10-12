@@ -500,6 +500,10 @@ const message = {
         match_info_quick: "按 匹配内容 查询",
       },
       tool: {
+        sync_tool: "同步",
+        sync_tool_help1: "同步将进行以下两步操作",
+        sync_tool_help2: "同步集群工具状态",
+        sync_tool_help3: "同步 chart 仓库",
         enable_title: "启用工具",
         disable_title: "禁用工具",
         info_title: "提示信息",
@@ -649,6 +653,7 @@ const message = {
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
+      CLUSTER_IMPORT: "集群导入",
       CLUSTER_REMOVE_WORKER: "节点删除",
       CLUSTER_ADD_WORKER: "添加节点",
       CLUSTER_BACKUP: "集群备份",

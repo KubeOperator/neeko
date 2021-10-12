@@ -499,6 +499,10 @@ const message = {
         match_info_quick: "Search by matching content",
       },
       tool: {
+        sync_tool: "Sync",
+        sync_tool_help1: "Synchronization takes place in two steps",
+        sync_tool_help2: "Synchronize cluster tool status",
+        sync_tool_help3: "Sync chart warehouse",
         enable_title: "Enable Tool",
         disable_title: "Disable Tools",
         info_title: "Prompt Information",
@@ -647,6 +651,7 @@ const message = {
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",
+      CLUSTER_IMPORT: "Cluster import",
       CLUSTER_REMOVE_WORKER: "Node Delete",
       CLUSTER_ADD_WORKER: "Node Add",
       CLUSTER_BACKUP: "Cluster Backup",

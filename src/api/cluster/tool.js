@@ -21,3 +21,7 @@ export function upgradeTool(clusterName, data) {
 export function getNodePort(clusterName, namespace, toolName, toolVersion) {
   return get(`${toolUrl}/port/${clusterName}/${namespace}/${toolName}/${toolVersion}`)
 }
+
+export function syncTool(clusterName, data) {
+  return post(`${toolUrl}/sync/${clusterName}`, data)
+}
