@@ -536,7 +536,15 @@ export default {
       this.loading = true
       syncTool(this.clusterName)
         .then((data) => {
+          const currentLanguage = this.$store.getters.language || "zh-CN"
           this.tools = data
+          for (const to of this.tools) {
+            if (currentLanguage == "en-US") {
+              to.describeInfo = to.describe.split("|")[1]
+            } else {
+              to.describeInfo = to.describe.split("|")[0]
+            }
+          }
           this.loading = false
         })
         .catch(() => {
