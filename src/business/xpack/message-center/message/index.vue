@@ -107,7 +107,16 @@ export default {
       searchConfig: {
         quickPlaceholder: this.$t("commons.search.quickSearch"),
         components: [
-          { field: "type", label: this.$t('message.type'), component: "FuComplexInput", defaultOperator: "eq" },
+          { 
+            field: "type",
+            label: this.$t('message.type'),
+            component: "FuComplexSelect",
+            options: [
+              { label: "CLUSTER", value: "CLUSTER" },
+              { label: "SYSTEM", value: "SYSTEM" },
+            ],
+            multiple: true
+          },
           {
             field: "level",
             label: this.$t('message.level'),
@@ -119,7 +128,7 @@ export default {
             multiple: true
           },
           {
-            field: "table.status",
+            field: "read_status",
             label: this.$t('commons.table.status'),
             component: "FuComplexSelect",
             options: [
