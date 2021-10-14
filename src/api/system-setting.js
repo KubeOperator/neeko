@@ -32,6 +32,10 @@ export function updateRegistry(arch, data) {
   return patch(`${settingUrl}/registry/${arch}`,data)
 }
 
+export function changePassword(data) {
+  return post(`${settingUrl}/registry/change/password`,data)
+}
+
 export function searchRegistry(currentPage, pageSize, conditions) {
   return post(`${settingUrl}/registry/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }

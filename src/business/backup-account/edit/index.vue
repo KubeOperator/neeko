@@ -87,6 +87,8 @@ export default {
         type: "",
         bucket: "",
         credentialVars: {},
+        projects: "",
+        clusters: "",
       },
       buckets: [],
       loading: false,
@@ -144,6 +146,8 @@ export default {
       this.form.type = data.type
       this.form.bucket = data.bucket
       this.form.credentialVars = data.credentialVars
+      this.form.clusters = data.clusters
+      this.form.projects = data.projects
       this.getBuckets()
     })
   },
