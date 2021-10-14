@@ -108,7 +108,7 @@ export default {
         if (start[i] > end[i]) {
           return false
         }
-        if (i === 3 && (end[i] - start[i]) < 1) {
+        if (i === 3 && (end[i] - start[i]) < 0) {
           return false
         }
       }
