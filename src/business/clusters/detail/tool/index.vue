@@ -7,7 +7,8 @@
           <li>{{$t('cluster.detail.tool.sync_tool_help2')}}</li>
           <li>{{$t('cluster.detail.tool.sync_tool_help3')}}</li>
         </div>
-        <el-button style="margin-left:10px" icon="el-icon-refresh-left" @click="syncToolStatus">{{$t('cluster.detail.tool.sync_tool')}}</el-button>
+        <el-button v-if="!syncStatus" style="margin-left:10px" icon="el-icon-refresh-left" @click="syncToolStatus">{{$t('cluster.detail.tool.sync_tool')}}</el-button>
+        <el-button v-if="syncStatus" style="margin-left:10px" icon="el-icon-loading" disabled>{{$t('commons.status.synchronizing')}}...</el-button>
       </el-tooltip>
       <div v-loading="loading" v-for="tool in tools" :key="tool.name">
         <el-col :span="6">
@@ -345,6 +346,7 @@ export default {
       nodeNum: 0,
       storages: [],
       loadMenu: false,
+      syncStatus: false,
       timer: {},
     }
   },
@@ -533,7 +535,7 @@ export default {
       })
     },
     syncToolStatus() {
-      this.loading = true
+      this.syncStatus = true
       syncTool(this.clusterName)
         .then((data) => {
           const currentLanguage = this.$store.getters.language || "zh-CN"
@@ -545,10 +547,11 @@ export default {
               to.describeInfo = to.describe.split("|")[0]
             }
           }
-          this.loading = false
+          this.syncStatus = false
+          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
         })
         .catch(() => {
-          this.loading = false
+          this.syncStatus = false
         })
     },
     polling() {
