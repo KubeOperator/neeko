@@ -266,14 +266,14 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEnableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" :disabled="submitLoading" @click="enable()">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="enable()" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.tool.err_title')" width="50%" :visible.sync="dialogErrorVisible">
       <div style="margin: 0 50px"><span style="line-height: 30px">{{ conditions | errorFormat }}</span></div>
       <div slot="footer" class="dialog-footer">
-        <el-button :disabled="submitLoading" @click="disable(toolForm, 'Failed')">{{$t('commons.button.disable')}}</el-button>
+        <el-button v-if="toolForm.status == 'Failed'" @click="disable(toolForm, 'Failed')" v-preventReClick>{{$t('commons.button.disable')}}</el-button>
         <el-button @click="dialogErrorVisible = false">{{$t('commons.button.cancel')}}</el-button>
       </div>
     </el-dialog>
@@ -282,7 +282,7 @@
       <span>{{$t('cluster.detail.tool.disable_show_msg')}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogDisableVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" :disabled="submitLoading" @click="disable(toolForm, 'Running')">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="disable(toolForm, 'Running')">{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
 
@@ -290,7 +290,7 @@
       <span>{{toolForm.name}}: {{toolForm.version}} ---> {{toolForm.higher_version}}</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogUpgradeVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="upgrade(toolForm)">{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="upgrade(toolForm)" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -323,7 +323,6 @@ export default {
       dialogDisableVisible: false,
       dialogUpgradeVisible: false,
       conditions: "",
-      submitLoading: false,
       isPasswordValid: true,
       isReplicasValid: true,
       toolForm: {
@@ -423,12 +422,12 @@ export default {
           }
           break
       }
+      this.toolForm = item
       if (this.conditions === "") {
         this.listNamespaces()
         this.listNodes()
         this.listStorages()
         this.setDefaultVars(item)
-        this.toolForm = item
         this.isPasswordValid = true
         this.isReplicasValid = true
         this.dialogEnableVisible = true
@@ -440,15 +439,12 @@ export default {
       this.$refs["toolForm"].validate((valid) => {
         if (valid && this.isPasswordValid && this.isReplicasValid) {
           this.loadMenu = this.toolForm.name === "logging" || this.toolForm.name === "loki" || this.toolForm.name === "prometheus"
-          this.submitLoading = true
           changeUnderLineToPoint(this.toolForm.vars)
           enableTool(this.clusterName, this.toolForm).then(() => {
             this.dialogEnableVisible = false
             this.search()
-            this.submitLoading = false
           })
         } else {
-          this.submitLoading = false
           return false
         }
       })
@@ -479,16 +475,10 @@ export default {
         })
       } else {
         this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
-        this.submitLoading = true
-        disableTool(this.clusterName, item)
-          .then(() => {
-            this.submitLoading = false
-            this.dialogErrorVisible = false
-            this.search()
-          })
-          .catch(() => {
-            this.submitLoading = false
-          })
+        disableTool(this.clusterName, item).then(() => {
+          this.dialogErrorVisible = false
+          this.search()
+        })
       }
     },
     onUpgrade(item) {
@@ -496,16 +486,10 @@ export default {
       this.dialogUpgradeVisible = true
     },
     upgrade(item) {
-      this.submitLoading = true
-      upgradeTool(this.clusterName, item)
-        .then(() => {
-          this.dialogUpgradeVisible = false
-          this.search()
-          this.submitLoading = false
-        })
-        .catch(() => {
-          this.submitLoading = false
-        })
+      upgradeTool(this.clusterName, item).then(() => {
+        this.dialogUpgradeVisible = false
+        this.search()
+      })
     },
     listNamespaces() {
       listNamespace(this.clusterName).then((data) => {
