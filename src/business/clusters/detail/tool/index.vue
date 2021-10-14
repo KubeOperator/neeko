@@ -533,6 +533,7 @@ export default {
           }
           this.syncStatus = false
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          window.location.reload()
         })
         .catch(() => {
           this.syncStatus = false
