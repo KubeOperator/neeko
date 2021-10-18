@@ -119,7 +119,7 @@
                     <el-col :span="12">
                       <el-form-item :label="'NodePort ' + $t ('cluster.creation.port_range')" prop="clusterInfo.kubeServiceNodePortRange">
                         <fu-read-write-switch :data="form.clusterInfo.kubeServiceNodePortRange" v-model="editAble.kubeServiceNodePortRange">
-                          <el-input v-model="form.kubeServiceNodePortRange" @blur="editAble.kubeServiceNodePortRange = false" />
+                          <el-input v-model="form.clusterInfo.kubeServiceNodePortRange" @blur="editAble.kubeServiceNodePortRange = false" />
                         </fu-read-write-switch>
                       </el-form-item>
                     </el-col>
@@ -306,7 +306,7 @@
                       <el-col :span="12">
                         <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
                           <fu-read-write-switch :data="form.clusterInfo.kubeApiServerPort" v-model="editAble.kubeApiServerPort">
-                            <el-input v-model="form.clusterInfo.kubeApiServerPort" @blur="editAble.kubeApiServerPort = false" />
+                            <el-input v-model.number="form.clusterInfo.kubeApiServerPort" @blur="editAble.kubeApiServerPort = false" />
                           </fu-read-write-switch>
                         </el-form-item>
                       </el-col>
@@ -395,14 +395,13 @@ export default {
       rules: {
         clusterInfo: {
           runtimeType: [Rule.RequiredRule],
+          kubeApiServerPort: [Rule.NumberRule],
           dockerStorageDir: [Rule.RequiredRule],
           containerdStorageDir: [Rule.RequiredRule],
           dockerSubnet: [Rule.RequiredRule],
           maxNodePodNum: [Rule.RequiredRule],
           kubeServiceSubnet: [Rule.RequiredRule],
           kubeProxyMode: [Rule.RequiredRule],
-          kubeServiceNodePortRange1: [Rule.NumberRule],
-          kubeServiceNodePortRange2: [Rule.NumberRule],
           networkType: [Rule.RequiredRule],
           flannelBackend: [Rule.RequiredRule],
           calicoIpv4PoolIpip: [Rule.RequiredRule],
@@ -416,8 +415,6 @@ export default {
         kubeProxyMode: false,
         nodeportAddress: false,
         kubeServiceNodePortRange: false,
-        kubeServiceNodePortRange1: false,
-        kubeServiceNodePortRange2: false,
         enableDnsCache: false,
         dnsCacheVersion: false,
         kubernetesAudit: false,
@@ -476,6 +473,7 @@ export default {
           for (const node of this.form.clusterInfo.nodes) {
             node.port = Number(node.port)
           }
+          this.form.clusterInfo.kubeApiServerPort = Number(this.form.clusterInfo.kubeApiServerPort)
           this.form.clusterInfo.kubeMaxPods = Number(this.form.clusterInfo.kubeMaxPods)
           this.form.clusterInfo.maxNodeNum = Number(this.form.clusterInfo.maxNodeNum)
           this.form.clusterInfo.maxNodePodNum = Number(this.form.clusterInfo.maxNodePodNum)
