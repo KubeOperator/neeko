@@ -295,7 +295,7 @@ export default {
       localRestore(formData)
         .then(() => {
           this.submitLoading = false
-          this.$message({ type: "success", message: this.$t("cluster.detail.backup.backup_start") })
+          this.$message({ type: "success", message: this.$t("cluster.detail.backup.recover_start") })
         })
         .catch(() => {
           this.submitLoading = false
