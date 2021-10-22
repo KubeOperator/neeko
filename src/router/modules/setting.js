@@ -7,7 +7,7 @@ const SystemSetting = {
   props: true,
   meta: {
     title: "route.system_setting",
-    icon: 'el-icon-setting',
+    icon: 'iconfont iconxitongshezhi',
     roles: ["ADMIN"]
   },
   children: [

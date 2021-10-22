@@ -539,7 +539,10 @@ export default {
     bacthDeletePod(datas, nodeName) {
       const ps = []
       for (const pod of datas) {
-        if (pod.spec.nodeName === nodeName && pod.metadata.ownerReferences.kind !== "daemonset") {
+        if (pod.spec.nodeName === nodeName) {
+          if (pod.metadata.ownerReferences && pod.metadata.ownerReferences[0].kind === "DaemonSet") {
+            return
+          }
           const rmPod = {
             apiVersion: "policy/v1beta1",
             kind: "Eviction",

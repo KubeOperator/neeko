@@ -67,7 +67,7 @@
       </div>
     </el-row>
 
-    <el-dialog :title="$t('cluster.detail.tool.enable_title')" width="30%" :visible.sync="dialogEnableVisible">
+    <el-dialog :title="$t('cluster.detail.tool.enable_title')" width="30%" :close-on-click-modal="false" :visible.sync="dialogEnableVisible">
       <el-form label-position='left' :model="toolForm" ref="toolForm" label-width="160px">
 
         <el-form-item :label="$t('cluster.detail.tag.namespace')" prop="vars.namespace" :rules="requiredRules">

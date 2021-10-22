@@ -7,7 +7,7 @@ const SystemLog = {
   name: 'SystemLog',
   meta: {
     title: "route.system_log",
-    icon: 'el-icon-notebook-2',
+    icon: 'iconfont iconxitongrizhi',
     roles: ['ADMIN', "PROJECT_MANAGER","CLUSTER_MANAGER"]
   },
   children: [

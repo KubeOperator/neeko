@@ -6,6 +6,104 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "8634405",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "8634406",
+      "name": "系统设置",
+      "font_class": "xitongshezhi",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "9923110",
+      "name": "系统日志",
+      "font_class": "xitongrizhi",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "14560260",
+      "name": "网络",
+      "font_class": "network",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
+      "icon_id": "16160912",
+      "name": "拼图",
+      "font_class": "custom",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "7688232",
+      "name": "盾牌",
+      "font_class": "accesscontrol",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "15602347",
+      "name": "car dashboard",
+      "font_class": "dashboard",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "11507809",
+      "name": "k8s-namespace",
+      "font_class": "namesapce",
+      "unicode": "e7bb",
+      "unicode_decimal": 59323
+    },
+    {
+      "icon_id": "13029597",
+      "name": "k8s",
+      "font_class": "kubernets",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "14406064",
+      "name": "configuration",
+      "font_class": "configuration",
+      "unicode": "e78b",
+      "unicode_decimal": 59275
+    },
+    {
+      "icon_id": "16307429",
+      "name": "钟表",
+      "font_class": "event",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "18816267",
+      "name": "storage",
+      "font_class": "storage",
+      "unicode": "e6c5",
+      "unicode_decimal": 59077
+    },
+    {
+      "icon_id": "20610267",
+      "name": "服务器",
+      "font_class": "node",
+      "unicode": "e7cd",
+      "unicode_decimal": 59341
+    },
+    {
+      "icon_id": "21671363",
+      "name": "工作负载",
+      "font_class": "workload",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
       "icon_id": "15493934",
       "name": "授权",
       "font_class": "authorization",

@@ -15,7 +15,7 @@ const Users = {
       name: "UserList",
       meta: {
         title: "route.user",
-        icon: "el-icon-user",
+        icon: "iconfont iconyonghuguanli",
         roles: ["ADMIN"]
       }
     },

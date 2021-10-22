@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2474164 */
-  src: url('iconfont.woff2?t=1620368986066') format('woff2'),
-       url('iconfont.woff?t=1620368986066') format('woff'),
-       url('iconfont.ttf?t=1620368986066') format('truetype');
+  src: url('iconfont.woff2?t=1634883241234') format('woff2'),
+       url('iconfont.woff?t=1634883241234') format('woff'),
+       url('iconfont.ttf?t=1634883241234') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,62 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconyonghuguanli:before {
+  content: "\e615";
+}
+
+.iconxitongshezhi:before {
+  content: "\e60a";
+}
+
+.iconxitongrizhi:before {
+  content: "\e613";
+}
+
+.iconnetwork:before {
+  content: "\e6d9";
+}
+
+.iconcustom:before {
+  content: "\e611";
+}
+
+.iconaccesscontrol:before {
+  content: "\e60b";
+}
+
+.icondashboard:before {
+  content: "\e63a";
+}
+
+.iconnamesapce:before {
+  content: "\e7bb";
+}
+
+.iconkubernets:before {
+  content: "\e62d";
+}
+
+.iconconfiguration:before {
+  content: "\e78b";
+}
+
+.iconevent:before {
+  content: "\e663";
+}
+
+.iconstorage:before {
+  content: "\e6c5";
+}
+
+.iconnode:before {
+  content: "\e7cd";
+}
+
+.iconworkload:before {
+  content: "\e639";
 }
 
 .iconauthorization:before {
