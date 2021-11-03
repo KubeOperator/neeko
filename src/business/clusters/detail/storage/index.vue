@@ -139,7 +139,7 @@
 import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
-import { openProvisionerLogger } from "@/api/cluster"
+import { openLoggerWithID } from "@/api/cluster"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
@@ -367,7 +367,7 @@ export default {
       })
     },
     openXterm(row) {
-      openProvisionerLogger(this.clusterName, row.id)
+      openLoggerWithID(this.clusterName, row.id)
     },
     onSync() {
       this.dialogSyncVisible = true

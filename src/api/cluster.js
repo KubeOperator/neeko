@@ -81,7 +81,7 @@ export function openLogger(clusterName) {
   window.open(`/ui/#/logger?clusterName=${clusterName}`, "_blank", "height=865, width=800, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 }
 
-export function openProvisionerLogger(clusterName, logId) {
+export function openLoggerWithID(clusterName, logId) {
   window.open(`/ui/#/logger?clusterName=${clusterName}&logId=${logId}`, "_blank", "height=865, width=800, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
 }
 

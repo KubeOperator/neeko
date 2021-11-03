@@ -131,9 +131,9 @@
                   </div>
                 </el-popover>
               </div>
-              <div v-if="row.status ==='Running'">
-                <i class="el-icon-loading"/>
-                {{ $t("commons.status.running") }}
+              <div v-if="row.status === 'Running'">
+                <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.running") }}</el-link>
               </div>
               <div v-if="row.status ==='SUCCESS'">
                 <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -154,6 +154,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
+import { openLoggerWithID } from "@/api/cluster"
 import {
   listBackupByPage,
   startBackup,
@@ -227,6 +228,9 @@ export default {
             this.logLoading = false
           })
       }
+    },
+    openXterm(row) {
+      openLoggerWithID(this.clusterName, row.id)
     },
     backupNow () {
       this.$refs["strategyForm"].validate((valid) => {
