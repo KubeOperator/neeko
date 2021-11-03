@@ -368,6 +368,18 @@ const message = {
       EnsureUpdateCertificates: "Renew certificate",
       EnsureUpgradeTaskStart: "Scheduling tasks",
       DeleteCluster: "Delete cluster",
+            
+      EnsureAddWorkerTaskStart: "Scheduling tasks",
+      EnsureAddWorkerBaseSystemConfig: "Prepare the system environment",
+      EnsureAddWorkerContainerRuntime: "Initialize the container engine",
+      EnsureAddWorkerKubernetesComponent: "Prepare Kubernetes components",
+      EnsureAddWorkerLoadBalancer: "Prepare the load balance",
+      EnsureAddWorkerCertificates: "Prepare the CA certificate",
+      EnsureAddWorkerWorker: "Initialize workload",
+      EnsureAddWorkerNetwork: "Initialize the network",
+      EnsureAddWorkerPost: "Configure the cluster",
+      DeleteNode: "Delete Node",
+
       CheckAPIStatus: "Check API status",
     },
     detail: {

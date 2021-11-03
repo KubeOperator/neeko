@@ -60,6 +60,9 @@
           <div v-if="row.status === 'Creating'">
             <i class="el-icon-loading" />{{ $t("commons.status.creating") }}
           </div>
+          <div v-if="row.status === 'Waiting'">
+            <i class="el-icon-loading" />{{ $t("commons.status.waiting") }}
+          </div>
           <div v-if="row.status === 'NotReady'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.not_ready") }}</el-link>
@@ -74,25 +77,8 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
-    <el-dialog :before-close="closeDialogLog" @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div class="dialog" v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
-        <el-scrollbar style="height:100%">
-          <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
-          <div>
-            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
-              <el-step v-for="condition in log.conditions" :key="condition.name" :title="$t('cluster.condition.' +condition.name)" :description="condition.message | errorFormat ">
-                <i :class="loadStepIcon(condition.status)" slot="icon"></i>
-              </el-step>
-            </el-steps>
-          </div>
-        </el-scrollbar>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed'" @click="onRetry()" v-preventReClick>
-          {{ $t("commons.button.retry") }}
-        </el-button>
-      </div>
+    <el-dialog @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" destroy-on-close width="70%" :visible.sync="dialogLogVisible">
+      <ko-logs :operation="operationType" :clusterName="clusterName" @retry="onRetry" @cancle="dialogLogVisible = false" />
     </el-dialog>
 
     <el-dialog :title="$t('cluster.delete.delete_cluster')" width="30%" :visible.sync="dialogDeleteVisible">
@@ -162,13 +148,14 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import { getClusterStatus, initCluster, upgradeCluster, openLogger, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
+import { initCluster, upgradeCluster, deleteCluster, healthCheck, clusterRecover, searchClusters } from "@/api/cluster"
+import KoLogs from "@/components/ko-logs/index.vue"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
 
 export default {
   name: "ClusterList",
-  components: { ComplexTable, LayoutContent },
+  components: { ComplexTable, LayoutContent, KoLogs },
   data() {
     return {
       buttons: [
@@ -223,15 +210,7 @@ export default {
 
       // cluster logs
       dialogLogVisible: false,
-      dialogHeight: "400px",
-      log: {
-        phase: "",
-        prePhase: "",
-        message: "",
-        conditions: [],
-      },
-      activeName: 1,
-      conditionLoading: false,
+      operationType: "",
 
       // cluster delete
       isForce: false,
@@ -252,7 +231,6 @@ export default {
       },
       loading: false,
       timer: {},
-      timer2: {},
     }
   },
   methods: {
@@ -425,103 +403,31 @@ export default {
       })
     },
 
-    // cluster logs
     getStatus(row) {
-      this.dialogHeight = row.status === "Terminating" || row.status === "NotReady" ? "100px" : "400px"
+      this.operationType = (row.status.indexOf("NotReady") !== -1) ? "not-ready" : "create-cluster"
       this.dialogLogVisible = true
-      if (row.status === "NotReady") {
-        this.log = {
-          phase: "NotReady",
-          message: "",
-          conditions: [
-            {
-              name: "CheckAPIStatus",
-              status: "False",
-              message: row.message,
-            },
-          ],
-        }
-        return
-      }
-      this.currentCluster = row
       this.clusterName = row.name
-      this.dialogPolling()
-      getClusterStatus(row.name).then((data) => {
-        this.log = data
-        this.activeName = this.log.conditions.length + 1
-      })
     },
-    loadStepIcon(status) {
-      switch (status) {
-        case "True":
-          return "el-icon-check"
-        case "False":
-          return "el-icon-close"
-        case "Unknown":
-          return "el-icon-loading"
-      }
-    },
-    goForLogs() {
-      openLogger(this.clusterName)
-    },
-    onRetry() {
-      switch (this.log.prePhase) {
+    onRetry(prestatus) {
+      switch (prestatus) {
         case "Upgrading":
-          upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion).then(() => {
-            this.log.phase = "Upgrading"
-          })
+          upgradeCluster(this.clusterName, this.currentCluster.spec.upgradeVersion)
           break
         case "Initializing":
-          initCluster(this.clusterName).then(() => {
-            this.log.phase = "Initializing"
-          })
+          initCluster(this.clusterName)
           break
         case "Terminating":
-          deleteCluster(this.clusterName, true, this.isUninstall).then(() => {
-            this.log.phase = "Terminating"
-          })
+          deleteCluster(this.clusterName, true, this.isUninstall)
           break
         case "Creating":
-          initCluster(this.clusterName).then(() => {
-            this.dialogLogVisible = false
-            this.log.phase = "Creating"
-          })
+          initCluster(this.clusterName)
           break
         case "Waiting":
-          initCluster(this.clusterName).then(() => {
-            this.log.phase = "Waiting"
-          })
+          initCluster(this.clusterName)
           break
       }
     },
-    closeDialogLog() {
-      clearInterval(this.timer2)
-      this.dialogLogVisible = false
-    },
-    dialogPolling() {
-      this.timer2 = setInterval(() => {
-        if (this.log.conditions.length !== 0 || this.currentCluster.status === "Failed") {
-          this.conditionLoading = false
-        }
-        if (this.log.phase !== "Running" && this.log.phase !== "Failed") {
-          getClusterStatus(this.clusterName)
-            .then((data) => {
-              this.activeName = this.log.conditions.length + 1
-              this.log.conditions = data.conditions
-              if (this.log.phase !== data.phase) {
-                this.log.phase = data.phase
-              }
-              if (this.log.prePhase !== data.prePhase) {
-                this.log.prePhase = data.prePhase
-              }
-            })
-            .catch(() => {
-              this.dialogLogVisible = false
-              clearInterval(this.timer2)
-            })
-        }
-      }, 3000)
-    },
+
     polling() {
       this.timer = setInterval(() => {
         let flag = false
@@ -544,7 +450,6 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
-    clearInterval(this.timer2)
   },
 }
 </script>

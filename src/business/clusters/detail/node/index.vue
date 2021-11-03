@@ -59,6 +59,11 @@
             <span class="loading" style="color: #32B350"></span>
             {{ $t("commons.status.creating") }}
           </div>
+          <div v-if="row.status === 'Waiting'">
+            <span class="loading" style="color: #32B350"></span>
+            {{ $t("commons.status.waiting") }}
+          </div>
+          
           <div v-if="row.status === 'NotReady'">
             <span class="iconfont iconping" style="color: #FA4147"></span>
             {{ $t("commons.status.not_ready") }}
@@ -88,7 +93,7 @@
           <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [maxNodeNum])}}</span></div>
         </el-form-item>
         <el-form-item v-if="supportGpu === 'disable' && !gpuExist" prop="supportGpu" :label="$t ('cluster.creation.support_gpu')">
-          <el-switch style="width: 80%" active-value="enable" inactive-value="diable" v-model="createForm.supportGpu" />
+          <el-switch style="width: 80%" active-value="enable" inactive-value="disable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -177,24 +182,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog :before-close="closeDialogLog" @close="search()" :title="$t('cluster.condition.condition_detail')" width="50%" :visible.sync="dialogLogVisible">
-      <div class="dialog" style="height: 200px">
-        <el-scrollbar style="height:100%">
-          <div>
-            <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="1">
-              <el-step :title="log.name" :description="log.message | errorFormat ">
-                <i :class="log.icon" slot="icon"></i>
-              </el-step>
-            </el-steps>
-          </div>
-        </el-scrollbar>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
-        <el-button size="small" v-if="log.phase === 'Failed' && (log.pre_status !== 'Initializing' || log.pre_status !== 'Terminating')" :v-loading="retryLoadding" @click="onRetry()">
-          {{ $t("commons.button.retry") }}
-        </el-button>
-      </div>
+    <el-dialog @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" destroy-on-close width="70%" :visible.sync="dialogLogVisible">
+      <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="dialogLogVisible = false" />
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
@@ -237,15 +226,16 @@
 import ComplexTable from "@/components/complex-table"
 
 import { listNamespace } from "@/api/cluster/namespace"
-import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate, getNodeByName } from "@/api/cluster/node"
+import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
-import { getClusterByName, openLogger } from "@/api/cluster"
+import { getClusterByName } from "@/api/cluster"
+import KoLogs from "@/components/ko-logs/index.vue"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterNode",
-  components: { ComplexTable },
+  components: { ComplexTable, KoLogs },
   data() {
     return {
       loading: false,
@@ -276,6 +266,7 @@ export default {
         hosts: [],
         nodes: [],
         increase: 1,
+        statusId: "",
         supportGpu: "",
       },
       supportGpu: "",
@@ -301,14 +292,8 @@ export default {
       },
       // cluster logs
       dialogLogVisible: false,
-      log: {
-        name: "",
-        phase: "",
-        prePhase: "",
-        message: "",
-      },
-      retryLoadding: false,
-      currentNode: {},
+      nodeName: "",
+      operationType: "",
 
       // node delete
       dialogDeleteVisible: false,
@@ -373,7 +358,7 @@ export default {
       })
     },
     buttonDisabled(row) {
-      const onPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+      const onPolling = ["Initializing", "Terminating", "Waiting", "Terminating, SchedulingDisabled", "Creating"]
       if (row) {
         return onPolling.indexOf(row.status) !== -1
       } else {
@@ -613,79 +598,33 @@ export default {
 
     // cluster logs
     getStatus(row) {
-      this.currentNode = row
+      if (row.status.indexOf("Terminating") !== -1) {
+        this.operationType = "terminal-node"
+      }
+      if (row.status.indexOf("Failed") !== -1) {
+        this.operationType = row.preStatus === "Initializing" ? "add-worker" : "terminal-node"
+      }
+      if (row.status.indexOf("Initializing") !== -1) {
+        this.operationType = "add-worker"
+      }
       this.dialogLogVisible = true
-      this.dialogPolling()
-      getNodeByName(this.clusterName, this.currentNode.name).then((data) => {
-        this.log.icon = data.status === "Failed" ? "el-icon-close" : "el-icon-loading"
-        const status = data.status === "Failed" ? data.pre_status : data.status
-        this.log.name = status === "Initializing" ? this.$t("cluster.detail.node.node_expand") : this.$t("cluster.detail.node.node_shrink")
-        this.log.phase = data.status
-        this.log.message = data.message
-        this.log.prePhase = data.pre_status
-      })
+      this.nodeName = row.name
     },
-    goForLogs() {
-      openLogger(this.clusterName)
-    },
-    onRetry() {
-      this.retryLoadding = true
-      switch (this.currentNode.pre_status) {
+    onRetry(id, prestatus) {
+      switch (prestatus) {
         case "Initializing":
-          nodeReCreate(this.clusterName, this.currentNode.name).then(() => {
-            this.retryLoadding = false
-            this.log.phase = "Initializing"
-          })
+          nodeReCreate(this.clusterName, { statusID: id })
           break
         case "Terminating":
-          nodeBatchOperation(this.clusterName, { operation: "delete", nodes: [this.currentNode.name] }).then(() => {
-            this.retryLoadding = false
-            this.log.phase = "Terminating"
-          })
+          nodeBatchOperation(this.clusterName, { operation: "delete", nodes: [this.currentNode.name] })
           break
       }
-      this.log.icon = "el-icon-loading"
-    },
-    closeDialogLog() {
-      clearInterval(this.timer2)
-      this.dialogLogVisible = false
-    },
-    dialogPolling() {
-      this.timer2 = setInterval(() => {
-        if (this.log.phase !== "Running" && this.log.phase !== "Failed" && this.log.phase !== "Failed") {
-          getNodeByName(this.clusterName, this.currentNode.name)
-            .then((data) => {
-              if (data.status !== this.log.phase) {
-                this.log.prePhase = this.log.phase
-                this.log.phase = data.status
-              }
-              this.log.status = data.status
-              this.log.message = data.message
-              switch (data.status) {
-                case "Running":
-                  this.log.icon = "el-icon-check"
-                  break
-                case "Failed":
-                case "NotReady":
-                  this.log.icon = "el-icon-close"
-                  break
-                default:
-                  this.log.icon = "el-icon-loading"
-                  break
-              }
-            })
-            .catch(() => {
-              this.dialogLogVisible = false
-              clearInterval(this.timer2)
-            })
-        }
-      }, 3000)
     },
 
     polling() {
       this.timer = setInterval(() => {
         let flag = false
-        const needPolling = ["Initializing", "Terminating", "Terminating, SchedulingDisabled", "Creating"]
+        const needPolling = ["Initializing", "Terminating", "Waiting", "Terminating, SchedulingDisabled", "Creating"]
         for (const item of this.data) {
           if (needPolling.indexOf(item.status) !== -1) {
             flag = true

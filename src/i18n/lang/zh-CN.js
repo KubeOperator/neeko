@@ -364,6 +364,18 @@ const message = {
       EnsureUpdateCertificates: "更新证书",
       EnsureUpgradeTaskStart: "调度任务",
       DeleteCluster: "删除集群",
+      
+      EnsureAddWorkerTaskStart: "调度任务",
+      EnsureAddWorkerBaseSystemConfig: "准备系统环境",
+      EnsureAddWorkerContainerRuntime: "初始化容器引擎",
+      EnsureAddWorkerKubernetesComponent: "准备 Kubernetes 组件",
+      EnsureAddWorkerLoadBalancer: "准备负载均衡器",
+      EnsureAddWorkerCertificates: "准备 CA 证书",
+      EnsureAddWorkerWorker: "初始化工作负载",
+      EnsureAddWorkerNetwork: "初始化网络",
+      EnsureAddWorkerPost: "配置集群",
+      DeleteNode: "删除节点",
+
       CheckAPIStatus: "检测 API 状态",
     },
     detail: {
