@@ -1,6 +1,7 @@
 import {get, patch, post, del} from "@/plugins/request"
 
 const settingUrl = "/api/v1/settings"
+const ntpUrl = "/api/v1/ntp"
 const messageUrl = "/api/v1/message/setting"
 
 // Settings
@@ -46,6 +47,23 @@ export function getRegistry(id) {
 
 export function deleteRegistry(id) {
   return del(`${settingUrl}/registry/${id}`)
+}
+
+// ntp
+export function searchNtp(currentPage, pageSize) {
+  return get(`${ntpUrl}/?pageNum=${currentPage}&pageSize=${pageSize}`)
+}
+
+export function deleteNtp(name) {
+  return del(`${ntpUrl}/${name}`)
+}
+
+export function createNtp(data) {
+  return post(`${ntpUrl}`, data)
+}
+
+export function updateNtp(name, data) {
+  return patch(`${ntpUrl}/${name}`, data)
 }
 
 // Message
