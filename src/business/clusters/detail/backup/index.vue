@@ -131,6 +131,10 @@
                   </div>
                 </el-popover>
               </div>
+              <div v-if="row.status === 'Waiting'">
+                <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+                <span>{{ $t("commons.status.waiting") }}</span>
+              </div>
               <div v-if="row.status === 'Running'">
                 <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
                 <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.running") }}</el-link>

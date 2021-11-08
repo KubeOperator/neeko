@@ -28,7 +28,7 @@
                 </div>
               </el-upload>
               <div style="position: absolute;right: 0px;margin-top: 20px">
-                <el-button type="primary" @click="onSubmit()" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
+                <el-button :disabled="submitDisable" type="primary" @click="onSubmit()" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </div>
             </el-form-item>
           </el-form>
@@ -55,7 +55,8 @@ export default {
       },
       logoBase64: '',
       logoFile: '',
-      loading: false
+      loading: false,
+      submitDisable: true,
     }
   },
   methods: {
@@ -77,6 +78,15 @@ export default {
       })
     },
     onUploadChange(e) {
+      const types = ["image/jpeg", "image/jpg", "image/png"]
+      if (!types.includes(e.raw.type)) {
+        this.$message({
+          type: "error",
+          message: this.$t("commons.validate.support_image_type"),
+        })
+        return false
+      }
+      this.submitDisable = false
       this.logoFile = e.raw
       const r = new FileReader();
       r.readAsDataURL(e.raw);

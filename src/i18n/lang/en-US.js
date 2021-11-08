@@ -84,6 +84,7 @@ const message = {
       name_help: "Chinese, uppercase and lowercase English, numbers, - and .",
       ip_range_error: "IP range error",
       subnet_error: "Subnet error",
+      support_image_type: "Only JPG/PNG/JPEG files can be uploaded!",
     },
     search: {
       name: "",

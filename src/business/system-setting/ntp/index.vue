@@ -49,7 +49,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="onSubmit()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button type="primary" @click="onSubmit()" v-preventReClick>{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -69,7 +69,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button type="primary" @click="onSubmitEdit()">{{ $t("commons.button.ok") }}</el-button>
+        <el-button type="primary" @click="onSubmitEdit()" v-preventReClick>{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
   </div>

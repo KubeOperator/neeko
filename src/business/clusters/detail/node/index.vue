@@ -56,12 +56,12 @@
             {{ $t("commons.status.disable_scheduling") }}
           </div>
           <div v-if="row.status === 'Creating'">
-            <span class="loading" style="color: #32B350"></span>
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
             {{ $t("commons.status.creating") }}
           </div>
           <div v-if="row.status === 'Waiting'">
-            <span class="loading" style="color: #32B350"></span>
-            {{ $t("commons.status.waiting") }}
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            <span>{{ $t("commons.status.waiting") }}</span>
           </div>
           
           <div v-if="row.status === 'NotReady'">

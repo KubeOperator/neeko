@@ -83,6 +83,7 @@ const message = {
       name_help: "中文、大小写英文、数字、-和.",
       ip_range_error: "IP范围错误",
       subnet_error: "子网错误",
+      support_image_type: "只能上传 jpg/png/jpeg 文件!",
     },
     search: {
       name: "",
