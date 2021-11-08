@@ -24,7 +24,7 @@ var checkIp = (rule, value, callback) => {
 }
 
 
-const RequiredRule = { required: true, trigger: "change", message: i18n.t("commons.validate.required_msg") }
+const RequiredRule = { required: true, trigger: "blur", message: i18n.t("commons.validate.required_msg") }
 const NameRule = { validator: checkName, required: true, trigger: "blur" }
 const IpRule = { validator: checkIp, required: true, trigger: "blur" }
 const EmailRule = { type: "email", message: i18n.t("commons.validate.email") }

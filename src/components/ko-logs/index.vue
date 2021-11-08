@@ -131,7 +131,7 @@ export default {
           this.dialogHeight = "200px"
           getClusterStatus(this.clusterName).then((data) => {
             this.conditionLoading = false
-            if (data.status === "NotReady") {
+            if (data.phase === "NotReady") {
               this.log = {
                 phase: "NotReady",
                 message: data.message,

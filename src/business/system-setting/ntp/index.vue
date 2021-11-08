@@ -3,7 +3,7 @@
     <complex-table :data="data" :pagination-config="paginationConfig" @search="search" :selects.sync="selections" v-loading="loading">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
-          <el-button size="small" @click="dialogCreateVisible = true">{{ $t("commons.button.create") }}</el-button>
+          <el-button size="small" @click="onCreate()">{{ $t("commons.button.create") }}</el-button>
           <el-button :disabled="selections.length===0" size="small" @click="onDelete()">
             {{ $t("commons.button.delete") }}
           </el-button>
@@ -129,7 +129,6 @@ export default {
           createNtp(this.form).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
             this.dialogCreateVisible = false
-            this.resetForm("form")
             this.search()
           })
         } else {
@@ -143,7 +142,6 @@ export default {
           updateNtp(this.form.name, this.form).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
             this.dialogEditVisible = false
-            this.resetForm("form")
             this.search()
           })
         } else {
@@ -163,6 +161,14 @@ export default {
         .catch(() => {
           this.loading = false
         })
+    },
+    onCreate() {
+      this.form = {
+        name: "",
+        address: "",
+        status: "enable",
+      }
+      this.dialogCreateVisible = true
     },
     onEdit(row) {
       this.form = row
@@ -196,9 +202,6 @@ export default {
             this.selections = []
           })
       })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
     },
   },
   created() {

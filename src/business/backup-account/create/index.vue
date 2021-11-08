@@ -10,7 +10,7 @@
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item :label="$t('commons.table.type')" required>
-              <el-select style="width: 100%" v-model="form.type" :placeholder="$t('commons.validate.select')">
+              <el-select @change="changType" style="width: 100%" v-model="form.type" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in typeOptions" :key="item.value" :value="item.value" :label="item.label" :disabled="item.disabled">
                 </el-option>
               </el-select>
@@ -174,6 +174,13 @@ export default {
           })
       })
     },
+    changType() {
+      if (this.form.type === "SFTP") {
+        this.form.credentialVars["port"] = 22
+      } else {
+        delete this.form.credentialVars.port
+      }
+    },
     onCancel() {
       this.$router.push({ name: "BackupAccount" })
     },
@@ -209,6 +216,7 @@ export default {
   },
   created() {
     this.form.type = "SFTP"
+    this.changType()
     allProjects().then((res) => {
       this.projects = res.items
     })
