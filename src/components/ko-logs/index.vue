@@ -111,7 +111,7 @@ export default {
         case "create-cluster":
           getClusterStatus(this.clusterName).then((data) => {
             if (data.conditions.length !== 0) {
-              this.conditionLoading = false 
+              this.conditionLoading = false
             }
             this.handleResponse(data)
             this.dialogPolling()
@@ -121,7 +121,7 @@ export default {
           getNodeStatus(this.clusterName, this.nodeName).then((data) => {
             this.log.id = data.id
             if (data.conditions.length !== 0) {
-              this.conditionLoading = false 
+              this.conditionLoading = false
             }
             this.handleResponse(data)
             this.dialogPolling()
@@ -270,7 +270,9 @@ export default {
           itemMsg.type = "unFormat"
           itemMsg.info = json1[key]
         }
-        formatMsgs.push(itemMsg)
+        if (itemMsg.info.length !== 0) {
+          formatMsgs.push(itemMsg)
+        }
       }
       return formatMsgs
     },
