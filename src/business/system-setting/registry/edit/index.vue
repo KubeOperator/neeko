@@ -61,15 +61,15 @@
       <el-col :span="4"><br /></el-col>
     </el-row>
     <el-dialog :title="$t('commons.personal.change_password')" :close-on-click-modal="false" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="passwordForm" label-position="left" :model="passwordForm" label-width="100px">
-        <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" required>
+      <el-form ref="passwordForm" label-position="left" :rules="passwordRules" :model="passwordForm" label-width="100px">
+        <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" prop="original">
           <el-input type="password" v-model="passwordForm.original"></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%" :rules="passwordRules.password" :label="$t('commons.personal.new_password')" prop="password" required>
+        <el-form-item style="width: 100%" :label="$t('commons.personal.new_password')" prop="password">
           <el-input type="password" v-model="passwordForm.password"></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%" :rules="passwordRules.confirmPassword" :label="$t('commons.personal.confirm_password')" prop="password" required>
-          <el-input type="password" v-model="confirmPassword"></el-input>
+        <el-form-item style="width: 100%" :label="$t('commons.personal.confirm_password')" prop="confirmPassword">
+          <el-input type="password" v-model="passwordForm.confirmPassword"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -131,14 +131,20 @@ export default {
         id: "",
         original: "",
         password: "",
+        confirmPassword: "",
       },
-      confirmPassword: "",
       passwordRules: {
-        password: [Rule.RequiredRule,Rule.PasswordRule],
-        confirmPassword: [Rule.RequiredRule,Rule.PasswordRule, {
-          validator: this.checkPassword, trigger: "blur"
-        }],
-      }
+        original: [Rule.RequiredRule, Rule.PasswordRule],
+        password: [Rule.RequiredRule, Rule.PasswordRule],
+        confirmPassword: [
+          Rule.RequiredRule,
+          Rule.PasswordRule,
+          {
+            validator: this.checkPassword,
+            trigger: "blur",
+          },
+        ],
+      },
     }
   },
   methods: {
@@ -195,17 +201,17 @@ export default {
     onChange() {
       this.passwordForm.password = ""
       this.passwordForm.original = ""
-      this.confirmPassword = ""
+      this.passwordForm.confirmPassword = ""
       this.passwordForm.id = this.form.id
       this.dialogVisible = true
     },
-    checkPassword (rule, value, callback) {
-      if (this.passwordForm.password !== this.confirmPassword) {
+    checkPassword(rule, value, callback) {
+      if (this.passwordForm.password !== this.passwordForm.confirmPassword) {
         return callback(new Error(this.$t("commons.personal.confirm_password1_info")))
       }
       callback()
     },
-    submit (formName) {
+    submit(formName) {
       this.$refs[formName].validate((valid) => {
         if (!valid) {
           return false
@@ -217,7 +223,7 @@ export default {
         }).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.save_success")
+            message: this.$t("commons.msg.save_success"),
           })
           this.dialogVisible = false
         })
