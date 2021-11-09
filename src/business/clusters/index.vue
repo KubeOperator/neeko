@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('cluster.cluster')">
-    <complex-table local-key="cluster_columns" :selects.sync="clusterSelection" @selection-change="selectChange" :search-config="searchConfig" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading">
+    <complex-table local-key="cluster_columns" :row-key="getRowKeys" :selects.sync="clusterSelection" @selection-change="selectChange" :search-config="searchConfig" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="onCreate()" v-permission="['ADMIN','PROJECT_MANAGER']">
@@ -21,7 +21,7 @@
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status === 'Running'" type="info" @click="goForDetail(row)">{{ row.name }}</el-link>
@@ -234,6 +234,9 @@ export default {
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.name
+    },
     search(condition) {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig

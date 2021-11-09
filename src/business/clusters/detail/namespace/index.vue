@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table :selects.sync="nsSelection" v-loading="loading" :data="data">
+    <complex-table :selects.sync="nsSelection" :row-key="getRowKeys" v-loading="loading" :data="data">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -8,7 +8,7 @@
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" :selectable="isInSystemSpace" fix></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" :selectable="isInSystemSpace" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
       <el-table-column sortable  :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix>
         <template v-slot:default="{row}">
@@ -89,6 +89,9 @@ export default {
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.metadata.name
+    },
     search() {
       this.loading = true
       listNamespace(this.clusterName)

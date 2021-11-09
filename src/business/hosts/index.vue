@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" :row-key="getRowKeys" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -12,7 +12,7 @@
           </el-button>
         </el-button-group>
       </template>
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" prop="name" show-overflow-tooltip min-width="120" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status === 'Running'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
@@ -225,6 +225,9 @@ export default {
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.name
+    },
     create() {
       listRegistryAll().then((data) => {
         if (data.items !== null) {

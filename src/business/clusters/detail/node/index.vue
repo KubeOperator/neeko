@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info" />
-    <complex-table style="margin-top: 20px" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
+    <complex-table style="margin-top: 20px" :row-key="getRowKeys" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="provider === '' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -11,7 +11,7 @@
         </el-button-group>
       </template>
 
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
           <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
@@ -312,6 +312,9 @@ export default {
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.name
+    },
     search() {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
