@@ -221,7 +221,7 @@ export default {
       },
       loading: false,
       isAdmin: checkPermission("ADMIN"),
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -367,7 +367,7 @@ export default {
       searchHosts(currentPage, pageSize, condition)
         .then((data) => {
           this.loading = false
-          this.data = data.items
+          this.data = data.items || []
           this.paginationConfig.total = data.total
         })
         .catch(() => {
@@ -387,7 +387,7 @@ export default {
         if (flag) {
           const { currentPage, pageSize } = this.paginationConfig
           searchHosts(currentPage, pageSize).then((data) => {
-            this.data = data.items
+            this.data = data.items || []
             this.paginationConfig.total = data.total
           })
         }
@@ -400,6 +400,7 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

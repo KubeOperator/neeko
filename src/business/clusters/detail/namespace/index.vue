@@ -85,7 +85,7 @@ export default {
       selects: [],
       data: [],
       ps: [],
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -96,7 +96,7 @@ export default {
       this.loading = true
       listNamespace(this.clusterName)
         .then((data) => {
-          this.data = data.items
+          this.data = data.items || []
           this.loading = false
         })
         .catch(() => {
@@ -206,7 +206,7 @@ export default {
         }
         if (flag) {
           listNamespace(this.clusterName).then((data) => {
-            this.data = data.items
+            this.data = data.items || []
           })
         }
       }, 10000)
@@ -220,6 +220,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

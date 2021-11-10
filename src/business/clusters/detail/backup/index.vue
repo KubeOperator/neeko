@@ -206,7 +206,7 @@ export default {
       backupAccounts: [],
       logs: [],
       selects: [],
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -367,6 +367,7 @@ export default {
   },
   destroyed () {
     clearInterval(this.timer)
+    this.timer = null
   },
   created () {
     this.clusterName = this.$route.params.name

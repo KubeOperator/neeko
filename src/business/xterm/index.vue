@@ -21,6 +21,7 @@ export default {
     return {
       term: Terminal,
       isRun: true,
+      timer: null,
     }
   },
   methods: {
@@ -88,6 +89,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer = null
   },
   mounted() {
     this.init()

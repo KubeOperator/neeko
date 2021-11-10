@@ -230,7 +230,7 @@ export default {
         ],
       },
       loading: false,
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -242,14 +242,14 @@ export default {
       const { currentPage, pageSize } = this.paginationConfig
       searchClusters(currentPage, pageSize, condition, false).then((data) => {
         this.loading = false
-        this.data = data.items
+        this.data = data.items || []
         this.paginationConfig.total = data.total
       })
     },
     searchForPolling(condition) {
       const { currentPage, pageSize } = this.paginationConfig
       searchClusters(currentPage, pageSize, condition, true).then((data) => {
-        this.data = data.items
+        this.data = data.items || []
         this.paginationConfig.total = data.total
       })
     },
@@ -453,6 +453,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

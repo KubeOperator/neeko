@@ -200,7 +200,7 @@ export default {
       dialogErrorVisible: false,
       errMsg: "",
       activeName: "pv",
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -233,7 +233,7 @@ export default {
         listProvisioner(this.clusterName)
           .then((data) => {
             this.loading = false
-            this.provisionerDatas = data
+            this.provisionerDatas = data || []
           })
           .catch(() => {
             this.loading = false
@@ -399,7 +399,7 @@ export default {
         }
         if (flag) {
           listProvisioner(this.clusterName).then((data) => {
-            this.provisionerDatas = data
+            this.provisionerDatas = data || []
           })
         }
       }, 10000)
@@ -416,6 +416,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

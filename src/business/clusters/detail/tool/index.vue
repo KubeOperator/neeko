@@ -346,7 +346,7 @@ export default {
       storages: [],
       loadMenu: false,
       syncStatus: false,
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -654,6 +654,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

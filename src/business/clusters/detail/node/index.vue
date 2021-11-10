@@ -182,7 +182,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" destroy-on-close width="70%" :visible.sync="dialogLogVisible">
+    <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('cluster.condition.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
       <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="dialogLogVisible = false" />
     </el-dialog>
 
@@ -308,7 +308,7 @@ export default {
       dialogCordonVisible: false,
       modeSelect: "safe",
       namespaces: [],
-      timer: {},
+      timer: null,
     }
   },
   methods: {
@@ -321,7 +321,7 @@ export default {
       listNodesByPage(this.clusterName, currentPage, pageSize, false)
         .then((data) => {
           this.loading = false
-          this.data = data.items
+          this.data = data.items || []
           this.data.forEach((item) => {
             item.roles = this.getNodeRoles(item)
             if (item.info.spec["unschedulable"]) {
@@ -350,7 +350,7 @@ export default {
     searchForPolling() {
       const { currentPage, pageSize } = this.paginationConfig
       listNodesByPage(this.clusterName, currentPage, pageSize, true).then((data) => {
-        this.data = data.items
+        this.data = data.items || []
         this.data.forEach((item) => {
           item.roles = this.getNodeRoles(item)
           if (item.info.spec["unschedulable"]) {
@@ -649,6 +649,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
+    this.timer =  null
   },
 }
 </script>

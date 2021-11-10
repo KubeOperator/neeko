@@ -44,7 +44,7 @@
           </el-steps>
         </div>
       </el-scrollbar>
-      <div style="float:right">
+      <div style="float:right" v-if="!conditionLoading">
         <el-button size="small" v-if="log.phase === 'Failed'" @click="onRetry()">{{ $t("commons.button.retry") }}</el-button>
         <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
       </div>
@@ -66,8 +66,8 @@ export default {
   },
   data() {
     return {
-      timer: {},
-      timer2: {},
+      timer: null,
+      timer2: null,
       conditionLoading: true,
       log: {
         phase: "",
@@ -145,19 +145,13 @@ export default {
         }
         case "terminal-node": {
           this.dialogHeight = "200px"
-          getNodeByName(this.clusterName, this.nodeName)
-            .then((data) => {
-              this.conditionLoading = false
-              this.log = {
-                phase: "Terminating",
-                message: "",
-                conditions: [{ name: "DeleteNode", status: "Unknown", message: data.message }],
-              }
-              this.dialogPolling2()
-            })
-            .catch(() => {
-              this.$emit("cancle")
-            })
+          this.conditionLoading = false
+          this.log = {
+            phase: "Terminating",
+            message: "",
+            conditions: [{ name: "DeleteNode", status: "Unknown", message: "" }],
+          }
+          this.dialogPolling2()
         }
       }
     },
@@ -183,6 +177,8 @@ export default {
               }
             })
             .catch(() => {
+              clearInterval(this.timer2)
+              this.timer2 = null
               this.$emit("cancle")
             })
         }
@@ -206,6 +202,8 @@ export default {
                 this.handleResponse(data)
               })
               .catch(() => {
+                clearInterval(this.timer)
+                this.timer = null
                 this.$emit("cancle")
               })
           } else {
@@ -214,6 +212,8 @@ export default {
                 this.handleResponse(data)
               })
               .catch(() => {
+                clearInterval(this.timer)
+                this.timer = null
                 this.$emit("cancle")
               })
           }
@@ -293,6 +293,8 @@ export default {
   destroyed() {
     clearInterval(this.timer)
     clearInterval(this.timer2)
+    this.timer = null
+    this.timer2 = null
   },
 }
 </script>
