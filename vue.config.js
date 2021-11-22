@@ -14,6 +14,16 @@ module.exports = {
       errors: true
     },
     proxy: {
+      '/kubepi': {
+        target: 'http://0.0.0.0:80',
+        ws: true,
+        secure: false
+      },
+      '/kubepi/api/': {
+        target: 'http://0.0.0.0:80',
+        ws: true,
+        secure: false
+      },
       '/api': {
         target: 'http://0.0.0.0:8080',
         ws: true,

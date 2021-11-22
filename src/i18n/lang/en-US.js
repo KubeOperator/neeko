@@ -52,7 +52,8 @@ const message = {
       active: "Active",
       cordon: "Cordon",
       uncordon: "Resume to disperse",
-      log: "Log"
+      log: "Log",
+      dashboard: "dashboard"
     },
     msg: {
       success: "{0} success",
@@ -341,7 +342,7 @@ const message = {
 
       RECOVER_SYNC_NODE_STATUS: "Forcibly delete a node from the node list to uninstall related cluster services (manually)",
       RECOVER_SYNC_ROUTER_IP: "Update the cluster agent IP address",
-      RECOVER_SYNC_TOKEN:  "Get cluster token again",
+      RECOVER_SYNC_TOKEN: "Get cluster token again",
       RECOVER_HOST_CONN: "Checking the SSH service and network status of the host (manually)",
       RECOVER_API_CONN: "Check whether cluster services and cluster networks are available (manually)",
     },
@@ -369,7 +370,7 @@ const message = {
       EnsureUpdateCertificates: "Renew certificate",
       EnsureUpgradeTaskStart: "Scheduling tasks",
       DeleteCluster: "Delete cluster",
-            
+
       EnsureAddWorkerTaskStart: "Scheduling tasks",
       EnsureAddWorkerBaseSystemConfig: "Prepare the system environment",
       EnsureAddWorkerContainerRuntime: "Initialize the container engine",

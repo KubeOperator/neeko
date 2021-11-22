@@ -51,7 +51,8 @@ const message = {
       relation: "关联",
       active: "激活",
       cordon: "驱散",
-      log: "日志"
+      log: "日志",
+      dashboard:"控制台"
     },
     msg: {
       success: "{0}成功",
@@ -365,7 +366,7 @@ const message = {
       EnsureUpdateCertificates: "更新证书",
       EnsureUpgradeTaskStart: "调度任务",
       DeleteCluster: "删除集群",
-      
+
       EnsureAddWorkerTaskStart: "调度任务",
       EnsureAddWorkerBaseSystemConfig: "准备系统环境",
       EnsureAddWorkerContainerRuntime: "初始化容器引擎",
