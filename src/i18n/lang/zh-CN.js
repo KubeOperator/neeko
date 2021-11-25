@@ -309,6 +309,8 @@ const message = {
       import_help: "单击可启用编辑，",
       import_help2: "详细操作可参照官方文档",
       import_name: "导入集群名称为原集群名称：",
+      import_version_help: "若导入集群版本不存在于 KubeOperator 支持集群版本库中，集群工具将使用默认配置。",
+      import_version_link: "查看 KubeOperator 支持集群版本",
     },
     delete: {
       delete_cluster: "集群删除",

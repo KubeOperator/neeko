@@ -313,6 +313,8 @@ const message = {
       import_help: "Click to enable editing",
       import_help2: "For details, please refer to the official documentation",
       import_name: "The imported cluster name is the original cluster name: ",
+      import_version_help: "If the imported cluster version is not supported by KubeOperator, the clustering tool uses the default configuration.",
+      import_version_link: "Check version supported by KubeOperator",
     },
     delete: {
       delete_cluster: "Cluster Delete",
