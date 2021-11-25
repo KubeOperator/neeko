@@ -26,6 +26,8 @@ const message = {
       upgrade: "升级",
       check: "诊断",
       cancel: "取消",
+      close: "关闭",
+      export: "导出",
       return: "返回",
       create: "添加",
       confirm: "确定",
@@ -52,7 +54,7 @@ const message = {
       active: "激活",
       cordon: "驱散",
       log: "日志",
-      dashboard:"控制台"
+      dashboard: "控制台"
     },
     msg: {
       success: "{0}成功",
