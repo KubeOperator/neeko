@@ -1,6 +1,13 @@
 <template>
   <layout-content :header="$t('commons.button.import')" :back-to="{ name: 'ClusterList' }">
-    <el-row>
+    <el-alert type="info">
+      <div slot="title">
+        <span>{{$t('cluster.import.import_version_help')}}
+          (<el-link style="font-size:13px;line-height: 18px;" type="info" icon="el-icon-position" @click="openMinifest()">{{$t('cluster.import.import_version_link')}})</el-link>
+        </span>
+      </div>
+    </el-alert>
+    <el-row style="margin-top: 20px">
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
@@ -101,6 +108,12 @@ export default {
           return false
         }
       })
+    },
+    openMinifest() {
+      let routeUrl = this.$router.resolve({
+        name: "Manifests",
+      })
+      window.open(routeUrl.href, "_blank")
     },
     changeVisble(val) {
       this.dialogKoImportVisible = val

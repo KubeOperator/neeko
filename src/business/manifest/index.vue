@@ -149,9 +149,6 @@
         <span slot="footer" class="dialog-footer">
       </span>
       </div>
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--      <el-button  type="primary" @click="manifestVisible = false">{{$t('commons.button.ok')}}</el-button>-->
-<!--      </span>-->
     </el-dialog>
   </layout-content>
 </template>
