@@ -2,7 +2,8 @@
   <div>
     <template>
       <el-button-group>
-        <el-button size="small" :disabled="submitLoading" @click="cisCreate()">{{ $t('commons.button.create') }}
+        <el-button size="small" :disabled="submitLoading" @click="dialogCreateVisible=true">
+          {{ $t('commons.button.create') }}
         </el-button>
       </el-button-group>
     </template>
@@ -10,32 +11,41 @@
                    :pagination-config="paginationConfig">
       <el-table-column label="ID" min-width="150" prop="id" fix>
         <template v-slot:default="{row}">
-          <el-link v-if="row.status ==='Success'" type="info" @click="cisDetail(row.id)">{{ row.id }}</el-link>
+          <el-link :disabled="!(row.status==='Success')" type="info" @click="cisDetail(row.id)">{{ row.id }}</el-link>
         </template>
       </el-table-column>
 
-      <el-table-column label="pass" min-width="36" prop="totalPass" fix>
+      <el-table-column label="PASS" min-width="36" prop="totalPass" fix>
         <template v-slot:default="{row}">
-          <el-tag effect="plain" type="success" @click="cisDetail(row.id,'PASS')">{{ row.totalPass }}</el-tag>
+          <el-tag style="cursor: pointer" effect="plain" type="success" @click="cisDetail(row.id,'PASS')">
+            {{ row.totalPass }}
+          </el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="info" min-width="36" prop="totalInfo" fix>
+      <el-table-column label="INFO" min-width="36" prop="totalInfo" fix>
 
         <template v-slot:default="{row}">
-          <el-tag effect="plain" type="info" @click="cisDetail(row.id,'INFO')">{{ row.totalInfo }}</el-tag>
+          <el-tag style="cursor: pointer" effect="plain" type="info" @click="cisDetail(row.id,'INFO')">{{
+              row.totalInfo
+            }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="warn" min-width="36" prop="totalWarn" fix>
+      <el-table-column label="WARN" min-width="36" prop="totalWarn" fix>
 
         <template v-slot:default="{row}">
-          <el-tag effect="plain" type="warning" @click="cisDetail(row.id,'WARN')">{{ row.totalWarn }}</el-tag>
+          <el-tag style="cursor: pointer" effect="plain" type="warning" @click="cisDetail(row.id,'WARN')">
+            {{ row.totalWarn }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="fail" min-width="36" prop="totalFail" fix>
+      <el-table-column label="FAIL" min-width="36" prop="totalFail" fix>
 
         <template v-slot:default="{row}">
-          <el-tag effect="plain" type="danger" @click="cisDetail(row.id,'FAIL')">{{ row.totalFail }}</el-tag>
+          <el-tag style="cursor: pointer" effect="plain" type="danger" @click="cisDetail(row.id,'FAIL')">
+            {{ row.totalFail }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
@@ -66,102 +76,124 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
 
+    <el-dialog :title="$t('cluster.detail.security.create_task')" width="30%" :visible.sync="dialogCreateVisible">
+      <el-form label-position='left' :model="createForm" ref="createForm" label-width="110px">
+        <el-form-item :label="$t('cluster.scan_policy')">
+          <el-select style="width: 80%" v-model="createForm.policy" :placeholder="$t('commons.validate.select')">
+            <el-option
+              v-for="item in policyOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogCreateVisible = false">{{ $t('commons.button.cancel') }}</el-button>
+      <el-button type="primary" @click="cisCreate">{{ $t('commons.button.submit') }}</el-button>
+      </span>
+    </el-dialog>
+
 
     <el-dialog :title="$t('cluster.detail.security.cis_result')" width="85%" :visible.sync="dialogDetailVisible">
-      <div class="dialog" style="height: 840px;padding:0 10px">
-        <el-row style="height: 360px">
+      <el-row style="height: 500px">
 
-          <el-col :span="8" style="padding: 1% 2%;bottom: 0">
-            <table style="border-collapse:separate; border-spacing:0px 10px;margin-left: 8px;margin-bottom: 20px">
-              <tr>
-                <th>集群名称:</th>
-                <td style="padding-left: 20px">cluster</td>
-              </tr>
-              <tr>
-                <th>Version:</th>
-                <td style="padding-left: 20px">v1.8.4</td>
-              </tr>
-              <tr>
-                <th>扫描策略:</th>
-                <td style="padding-left: 20px">cis-1.5</td>
-              </tr>
-              <tr>
-                <th>扫描时间:</th>
-                <td style="padding-left: 20px">cis-1.5</td>
-              </tr>
-            </table>
-            <div id="chart" :style="{width: '280px', height: '280px'}"></div>
-          </el-col>
-          <el-col :span=16 style="min-height: 840px;height: 100%">
-            <el-select @change="onFilterChange" v-model="levelFilter" multiple placeholder="过滤" style="width: 100%">
-              <el-option
-                v-for="item in filterOptions"
-                :key="item.value"
-                :label="item.key"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <el-scrollbar style="height:100%">
-              <div v-for="(node,index) in nodeList" :key="index">
-                <h3>{{ node.text }}</h3>
-                <div v-for="(test,index) in node.tests" :key="index">
-                  <h4>{{ " " + test.section + " " + test.desc }}</h4>
-                  <el-table
-                    :data="test.results"
-                    style="width: 100%">
-                    <el-table-column type="expand">
-                      <template slot-scope="props">
-                        <table style="border-collapse:separate; border-spacing:0px 10px;">
-                          <tr>
-                            <th>number:</th>
-                            <th style="padding-left: 20px">{{ props.row.test_number }}</th>
-                          </tr>
-                          <tr>
-                            <th>status:</th>
-                            <th style="padding-left: 20px">{{ props.row.status }}</th>
-                          </tr>
-                          <tr>
-                            <th>description:</th>
-                            <th style="padding-left: 20px">{{ props.row.test_desc }}</th>
-                          </tr>
-                          <tr>
-                            <th>remediation:</th>
-                            <th style="padding-left: 20px">{{ props.row.remediation }}</th>
-                          </tr>
-                        </table>
-                      </template>
-                    </el-table-column>
-                    <el-table-column
-                      label="status"
-                      prop="status" fix>
-                      <template v-slot:default="{row}">
-                        <el-tag effect="plain" :type="getTagTypeByStatus(row.status)">{{ row.status }}</el-tag>
-                      </template>
-                    </el-table-column>
+        <el-col :span="8" style="padding: 1% 2%;bottom: 0">
+          <table style="border-collapse:separate; border-spacing:0px 10px;margin-left: 8px;margin-bottom: 20px">
+            <tr>
+              <th>{{ $t('cluster.cluster') + $t('cluster.creation.name') }}:</th>
+              <td style="padding-left: 20px">{{ taskInfo.clusterName }}</td>
+            </tr>
+            <tr>
+              <th>{{ $t('cluster.cluster') + $t('cluster.creation.version') }}:</th>
+              <td style="padding-left: 20px">{{ taskInfo.clusterVersion }}</td>
+            </tr>
+            <tr>
+              <th>{{ $t('cluster.scan_policy') }}:</th>
+              <td style="padding-left: 20px">{{ taskInfo.policy }}</td>
+            </tr>
+            <tr>
+              <th>{{ $t('commons.table.create_time') }}:</th>
+              <td style="padding-left: 20px">{{ taskInfo.createdAt | datetimeFormat }}</td>
+            </tr>
+          </table>
+          <div id="chart" :style="{width: '280px', height: '280px'}"></div>
+        </el-col>
+        <el-col :span=16 style="height: 100%">
+          <el-select @change="onFilterChange" v-model="levelFilter" multiple placeholder="Search" style="width: 93%">
+            <el-option
+              v-for="item in filterOptions"
+              :key="item.value"
+              :label="item.key"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          &nbsp;
+          <el-button type="primary" size="small" @click="onDownloadReport(taskInfo.id)"><i
+            class="el-icon-download"></i>
+          </el-button>
 
-                    <el-table-column
-                      label="number"
-                      prop="test_number">
-                    </el-table-column>
-                    <el-table-column
-                      label="desc"
-                      prop="test_desc">
-                    </el-table-column>
-                  </el-table>
-                </div>
+          <el-scrollbar style="height:100%">
+            <div v-for="(node,index) in nodeList" :key="index">
+              <h3>{{ node.text }}</h3>
+              <div v-for="(test,index) in node.tests" :key="index">
+                <h4>{{ " " + test.section + " " + test.desc }}</h4>
+                <el-table
+                  :data="test.results"
+                  style="width: 100%">
+                  <el-table-column type="expand">
+                    <template slot-scope="props">
+                      <table style="border-collapse:separate; border-spacing:0px 10px;">
+                        <tr>
+                          <th>number:</th>
+                          <th style="padding-left: 20px">{{ props.row.test_number }}</th>
+                        </tr>
+                        <tr>
+                          <th>status:</th>
+                          <th style="padding-left: 20px">{{ props.row.status }}</th>
+                        </tr>
+                        <tr>
+                          <th>description:</th>
+                          <th style="padding-left: 20px">{{ props.row.test_desc }}</th>
+                        </tr>
+                        <tr>
+                          <th>remediation:</th>
+                          <th style="padding-left: 20px">{{ props.row.remediation }}</th>
+                        </tr>
+                      </table>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    label="status"
+                    prop="status" fix>
+                    <template v-slot:default="{row}">
+                      <el-tag effect="plain" :type="getTagTypeByStatus(row.status)">{{ row.status }}</el-tag>
+                    </template>
+                  </el-table-column>
+
+                  <el-table-column
+                    label="number"
+                    prop="test_number">
+                  </el-table-column>
+                  <el-table-column
+                    label="desc"
+                    prop="test_desc">
+                  </el-table-column>
+                </el-table>
               </div>
-            </el-scrollbar>
-          </el-col>
-        </el-row>
+            </div>
+          </el-scrollbar>
+        </el-col>
+      </el-row>
 
-      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {listCisByPage, cisCreate, cisDelete, getCisDetail} from "@/api/cluster/security"
+import {listCisByPage, cisCreate, cisDelete, getCisDetail, getCisReport} from "@/api/cluster/security"
 
 let echarts = require("echarts/lib/echarts")
 
@@ -192,8 +224,25 @@ export default {
       clusterName: "",
       passPercent: 0,
       dialogDetailVisible: false,
+      dialogCreateVisible: false,
       nodeList: [],
       oNodeList: [],
+      createForm: {
+        policy: "auto",
+      },
+      policyOptions: [
+        {label: this.$t('cluster.detail.security.auto'), value: "auto"},
+        {label: "cis-1.5", value: "cis-1.5"},
+        {label: "cis-1.6", value: "cis-1.6"},
+        {label: "cis-1.20", value: "cis-1.20"},
+      ],
+      taskInfo: {
+        clusterName: "",
+        clusterVersion: "",
+        createdAt: "",
+        policy: "",
+        id: ""
+      },
       levelFilter: [],
       filterOptions: [
         {key: "PASS", value: "PASS"},
@@ -212,7 +261,6 @@ export default {
         color: ["#87cb16", "#99adff", "#ffdbae", "#fb404b"],
         series: [
           {
-            name: 'Access From',
             type: 'pie',
             radius: ['30%', '60%'],
             avoidLabelOverlap: false,
@@ -247,22 +295,21 @@ export default {
         this.loading = false
       })
     },
+    onCreate() {
+      this.createForm = {
+        policy: "auto"
+      }
+      this.dialogCreateVisible = true
+    },
     cisCreate() {
-      this.$confirm(this.$t("cluster.detail.security.start_cis"), this.$t("commons.button.confirm"), {
-        confirmButtonText: this.$t("commons.button.ok"),
-        cancelButtonText: this.$t("commons.button.cancel"),
-        type: "warning",
-      }).then(() => {
-        this.submitLoading = true
-        cisCreate(this.clusterName)
-          .then(() => {
-            this.$message({type: "success", message: this.$t("commons.msg.save_success")})
-            this.search()
-            this.submitLoading = false
-          })
-          .catch(() => {
-            this.submitLoading = false
-          })
+      this.submitLoading = true
+      cisCreate(this.clusterName, {policy: this.createForm.policy})
+        .then(() => {
+          this.$message({type: "success", message: this.$t("commons.msg.save_success")})
+          this.search()
+        }).finally(() => {
+        this.submitLoading = false
+        this.dialogCreateVisible = false
       })
     },
     onDelete(row) {
@@ -288,6 +335,9 @@ export default {
         case "FAIL":
           return "danger"
       }
+    },
+    onDownloadReport(id) {
+      getCisReport(this.clusterName, id, "yaml").then()
     },
     onFilterChange() {
       const temp = this.deepCopy(this.oNodeList)
@@ -319,8 +369,18 @@ export default {
             this.onFilterChange()
           }
         })
-        this.oNodeList = this.deepCopy(data.nodeList)
-        this.nodeList = this.deepCopy(data.nodeList)
+
+        console.log(data)
+
+        this.oNodeList = this.deepCopy(data.cisReport.Controls)
+        this.nodeList = this.deepCopy(data.cisReport.Controls)
+        let {clusterName, clusterVersion, createdAt, policy, id} = data
+        this.taskInfo.clusterName = clusterName
+        this.taskInfo.clusterVersion = clusterVersion
+        this.taskInfo.createdAt = createdAt
+        this.taskInfo.policy = policy
+        this.taskInfo.id = id
+
         if (level != null) {
           this.levelFilter = [level]
         } else {
