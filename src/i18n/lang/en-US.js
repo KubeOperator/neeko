@@ -199,6 +199,7 @@ const message = {
     project: "Project",
     cluster_detail: "Cluster Details",
     version: "Version",
+    scan_policy: "Scan Policy",
     node_size: "Nodes",
     creation: {
       step1: "Cluster Information",
@@ -595,6 +596,8 @@ const message = {
         description: "Description",
         advise: "Suggest",
         start_cis: "Whether to start the CIS scan task？",
+        create_task:"Create Task",
+        auto: "Adaptive (adaptive scanning strategy according to current kubernetes version)"
       },
       f5: {
         big_ip_addr: "BIG-IP Address",

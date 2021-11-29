@@ -26,6 +26,8 @@ const message = {
       upgrade: "升级",
       check: "诊断",
       cancel: "取消",
+      close: "关闭",
+      export: "导出",
       return: "返回",
       create: "添加",
       confirm: "确定",
@@ -52,7 +54,7 @@ const message = {
       active: "激活",
       cordon: "驱散",
       log: "日志",
-      dashboard:"控制台"
+      dashboard: "控制台"
     },
     msg: {
       success: "{0}成功",
@@ -199,6 +201,7 @@ const message = {
     cluster_detail: "集群详情",
     version: "版本",
     node_size: "节点数量",
+    scan_policy: "扫描策略",
     creation: {
       step1: "集群信息",
       name: "名称",
@@ -592,6 +595,8 @@ const message = {
         description: "描述",
         advise: "建议",
         start_cis: "是否开始CIS扫描任务？",
+        create_task: "创建任务",
+        auto: "自适应（根据当前 kubernetes 版本自适应扫描策略）"
       },
       f5: {
         big_ip_addr: "BIG-IP 地址",

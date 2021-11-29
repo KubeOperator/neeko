@@ -177,5 +177,5 @@ export function getClusterToken(clusterName) {
 }
 
 export function getDashboard(clusterName){
-  return get(`/api/v1/clusters//dashboard/${clusterName}?l=zh-CN`)
+  return get(`/api/v1/clusters/dashboard/${clusterName}?l=zh-CN`)
 }
