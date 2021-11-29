@@ -173,27 +173,6 @@
           </div>
         </div>
 
-        <div v-if="toolForm.name === 'kubepi'">
-          <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
-          </el-form-item>
-          <div v-if="toolForm.vars['persistence_enabled']">
-            <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="requiredRules">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['persistence_storageClassName']" clearable>
-                <el-option v-for="item of storages" :key="item" :value="item">{{item}}</el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tool.storage_size')" prop="vars.persistence_size" :rules="numberRules">
-              <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['persistence_size']" clearable></el-input-number>
-            </el-form-item>
-            <el-form-item :label="$t('cluster.detail.tag.node')">
-              <el-select style="width: 80%" filterable v-model="toolForm.vars['nodeSelector_kubernetes\\_io/hostname']" clearable>
-                <el-option v-for="item of nodes" :key="item" :value="item">{{item}}</el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-        </div>
-
         <div v-if="toolForm.name === 'grafana'">
           <el-form-item :label="$t('cluster.detail.tool.password')" prop="vars.adminPassword" :rules="passwordRules">
             <el-input @blur="checkPassword" type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
@@ -637,12 +616,9 @@ export default {
             global_storageClass: "",
           }
           break
-        case "kubepi":
+        case "gatekeeper":
           item.vars = {
             namespace: "kube-operator",
-            persistence_enabled: false,
-            persistence_size: 10,
-            persistence_storageClassName: "",
           }
           break
       }
