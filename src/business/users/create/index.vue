@@ -18,7 +18,7 @@
             <el-form-item :label="$t('user.confirm_password')" prop="confirmPassword" required>
               <el-input type="password" v-model="form.confirmPassword"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('user.role')" required prop="role">
+            <el-form-item v-if="currentUser.isSuper" :label="$t('user.role')" required prop="role">
               <el-radio-group v-model="form.role">
                 <el-radio label="admin">{{ $t("commons.role.admin") }}</el-radio>
                 <el-radio label="user">{{ $t("commons.role.user") }}</el-radio>
@@ -41,6 +41,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import {createUser} from "@/api/user"
+import {getSession} from "@/api/auth"
 import Rule from "@/utils/rules"
 
 export default {
@@ -62,7 +63,8 @@ export default {
           validator: this.checkPassword, trigger: "blur"
         }],
         role: [Rule.RequiredRule],
-      }
+      },
+      currentUser: {},
     }
   },
   methods: {
@@ -94,6 +96,11 @@ export default {
       }
       callback()
     },
+  },
+  created () {
+    getSession().then(res => {
+      this.currentUser = res.user
+    })
   }
 }
 </script>

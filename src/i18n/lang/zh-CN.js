@@ -151,6 +151,7 @@ const message = {
       disable_scheduling: "禁用调度",
     },
     role: {
+      super_admin: "超级管理员",
       admin: "管理员",
       user: "用户"
     },
@@ -412,9 +413,9 @@ const message = {
         open_in_new_windows: "在新的窗口中打开",
       },
       node: {
-        increment: "增量",
+        increment: "worker 增量",
         operator_help: "导入的外部集群暂不支持扩缩容",
-        host: "主机",
+        host: "worker 节点",
         node_detail: "节点详情",
         base_infomation: "基础信息",
         label: "标签",

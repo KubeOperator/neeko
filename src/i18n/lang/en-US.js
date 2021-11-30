@@ -150,6 +150,7 @@ const message = {
       disable_scheduling: "Disable scheduling",
     },
     role: {
+      super_admin: "Super admin",
       admin: "Admin",
       user: "User"
     },
