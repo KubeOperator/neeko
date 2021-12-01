@@ -78,9 +78,9 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column width="110px" label="">
+      <el-table-column width="110px" fix>
         <template v-slot:default="{row}">
-          <el-button :disabled="row.status !== 'Running'" type="primary" plain size="mini" @click="getDashboardUrl(row.name)" icon="el-icon-data-board">{{$t('commons.button.dashboard')}}</el-button>
+          <el-button :disabled="row.status !== 'Running'" type="primary" plain size="mini" @click="getDashboardUrl(row.name)">Dashboard</el-button>
         </template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
