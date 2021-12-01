@@ -384,6 +384,7 @@ const message = {
       EnsureAddWorkerWorker: "Initialize workload",
       EnsureAddWorkerNetwork: "Initialize the network",
       EnsureAddWorkerPost: "Configure the cluster",
+      EnsureAddWorkerStorage: "Initialize the storage provisioner",
       DeleteNode: "Delete Node",
 
       CheckAPIStatus: "Check API status",

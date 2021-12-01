@@ -33,8 +33,8 @@
         </template>
       </el-table-column>
       <el-table-column sortable :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix/>
-      <el-table-column sortable :label="$t('cluster.version')" min-width="80" prop="spec.version" fix/>
-      <el-table-column sortable :label="$t('cluster.node_size')" min-width="60" prop="nodeSize"/>
+      <el-table-column sortable :label="$t('cluster.version')" min-width="75" prop="spec.version" fix/>
+      <el-table-column sortable :label="$t('cluster.node_size')" min-width="70" prop="nodeSize"/>
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status ==='Running'">
@@ -73,9 +73,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="150px" sortable :label="$t('commons.table.create_time')" prop="createdAt">
+      <el-table-column width="140px" sortable :label="$t('commons.table.create_time')" prop="createdAt">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
+        </template>
+      </el-table-column>
+      <el-table-column width="110px" label="">
+        <template v-slot:default="{row}">
+          <el-button :disabled="row.status !== 'Running'" type="primary" plain size="mini" @click="getDashboardUrl(row.name)" icon="el-icon-data-board">{{$t('commons.button.dashboard')}}</el-button>
         </template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
@@ -177,16 +182,6 @@ export default {
   data() {
     return {
       buttons: [
-        {
-          label: this.$t("commons.button.dashboard"),
-          icon: "el-icon-data-board",
-          click: (row) => {
-            this.getDashboardUrl(row.name)
-          },
-          disabled: (row) => {
-            return row.status !== "Running"
-          },
-        },
         {
           label: this.$t("commons.button.upgrade"),
           icon: "el-icon-upload2",

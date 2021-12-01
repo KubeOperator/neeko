@@ -382,6 +382,7 @@ const message = {
       EnsureAddWorkerWorker: "初始化工作负载",
       EnsureAddWorkerNetwork: "初始化网络",
       EnsureAddWorkerPost: "配置集群",
+      EnsureAddWorkerStorage: "初始化存储提供商",
       DeleteNode: "删除节点",
 
       CheckAPIStatus: "检测 API 状态",
