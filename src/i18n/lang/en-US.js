@@ -279,7 +279,7 @@ const message = {
       support_gpu: "Install GPU kit",
 
       step6_of_bare_metal: "Node Information",
-      node_help: "The host needs to be authorized in the project-resource first",
+      node_help: "The host must first be authorized in project-Resource and in the running state in the host list",
       master_select_help: "The number of Master nodes must be 1 or 3",
       node_number_help: "In the current configuration, a maximum of {0} nodes can be deployed",
       cluster_high_availability: "High Availability",

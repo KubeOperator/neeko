@@ -277,7 +277,7 @@ const message = {
       support_gpu: "安装GPU套件",
 
       step6_of_bare_metal: "节点信息",
-      node_help: "主机需要先在项目-资源中授权",
+      node_help: "主机需要先在项目-资源中授权，并且在主机列表中为运行中状态",
       master_select_help: "Master 节点的数量必须为1或者3",
       node_number_help: "当前配置下，集群内最多可允许部署 {0} 个节点",
       cluster_high_availability: "集群高可用",

@@ -28,10 +28,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="Server" prop="vars.storage_nfs_server" :rules="requiredRules">
-                <el-input v-model="form.vars['storage_nfs_server']" clearable></el-input>
+                <el-input v-model="form.vars['storage_nfs_server']" placeholder="192.168.1.10" clearable></el-input>
               </el-form-item>
               <el-form-item label="Path" prop="vars.storage_nfs_server_path" :rules="requiredRules">
-                <el-input v-model="form.vars['storage_nfs_server_path']" clearable></el-input>
+                <el-input v-model="form.vars['storage_nfs_server_path']" placeholder="/data/nfs" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph'">
@@ -253,6 +253,11 @@ export default {
           break
         case "vsphere":
           this.form.name = "csi.vsphere.vmware.com"
+          break
+        case "nfs":
+          this.form.vars = {
+            storage_nfs_server_version: "4",
+          }
           break
       }
     },

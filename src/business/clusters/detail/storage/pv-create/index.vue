@@ -49,7 +49,7 @@
             </div>
 
             <div v-if="pvType === 'Local Volume'">
-              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="nameRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
@@ -89,7 +89,7 @@
             </div>
 
             <div v-if="pvType === 'NFS Share'">
-              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="requiredRules">
+              <el-form-item :label="$t('commons.table.name')" prop="submitForm.metadata.name" :rules="nameRules">
                 <el-input v-model="form.submitForm.metadata.name" clearable></el-input>
                 <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
               </el-form-item>
