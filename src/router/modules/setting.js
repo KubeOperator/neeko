@@ -73,6 +73,17 @@ const SystemSetting = {
           }
         },
         {
+          path: "kubepi",
+          name: "kubepi",
+          hidden: true,
+          props: true,
+          component: () => import('@/business/system-setting/kubepi'),
+          meta: {
+            activeMenu: "/setting",
+            roles: ['ADMIN']
+          }
+        },
+        {
           path: "license",
           name: "License",
           hidden: true,

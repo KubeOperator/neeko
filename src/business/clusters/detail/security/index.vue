@@ -136,53 +136,58 @@
 
           <el-scrollbar style="height:100%">
             <div v-for="(node,index) in nodeList" :key="index">
-              <h3>{{ node.text }}</h3>
-              <div v-for="(test,index) in node.tests" :key="index">
-                <h4>{{ " " + test.section + " " + test.desc }}</h4>
-                <el-table
-                  :data="test.results"
-                  style="width: 100%">
-                  <el-table-column type="expand">
-                    <template slot-scope="props">
-                      <table style="border-collapse:separate; border-spacing:0px 10px;">
-                        <tr>
-                          <th>number:</th>
-                          <th style="padding-left: 20px">{{ props.row.test_number }}</th>
-                        </tr>
-                        <tr>
-                          <th>status:</th>
-                          <th style="padding-left: 20px">{{ props.row.status }}</th>
-                        </tr>
-                        <tr>
-                          <th>description:</th>
-                          <th style="padding-left: 20px">{{ props.row.test_desc }}</th>
-                        </tr>
-                        <tr>
-                          <th>remediation:</th>
-                          <th style="padding-left: 20px">{{ props.row.remediation }}</th>
-                        </tr>
-                      </table>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                    label="status"
-                    prop="status" fix>
-                    <template v-slot:default="{row}">
-                      <el-tag effect="plain" :type="getTagTypeByStatus(row.status)">{{ row.status }}</el-tag>
-                    </template>
-                  </el-table-column>
+              <div v-if="!hiddenNode(node)">
+                <h3>{{ node.text }}</h3>
+                <div v-for="(test,index) in node.tests" :key="index">
+                  <div v-if="test.results.length>0">
+                    <h4>{{ " " + test.section + " " + test.desc }}</h4>
+                    <el-table
+                      :data="test.results"
+                      style="width: 100%">
+                      <el-table-column type="expand">
+                        <template slot-scope="props">
+                          <table style="border-collapse:separate; border-spacing:0px 10px;">
+                            <tr>
+                              <th>number:</th>
+                              <th style="padding-left: 20px">{{ props.row.test_number }}</th>
+                            </tr>
+                            <tr>
+                              <th>status:</th>
+                              <th style="padding-left: 20px">{{ props.row.status }}</th>
+                            </tr>
+                            <tr>
+                              <th>description:</th>
+                              <th style="padding-left: 20px">{{ props.row.test_desc }}</th>
+                            </tr>
+                            <tr>
+                              <th>remediation:</th>
+                              <th style="padding-left: 20px">{{ props.row.remediation }}</th>
+                            </tr>
+                          </table>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                        label="status"
+                        prop="status" fix>
+                        <template v-slot:default="{row}">
+                          <el-tag effect="plain" :type="getTagTypeByStatus(row.status)">{{ row.status }}</el-tag>
+                        </template>
+                      </el-table-column>
 
-                  <el-table-column
-                    label="number"
-                    prop="test_number">
-                  </el-table-column>
-                  <el-table-column
-                    label="desc"
-                    prop="test_desc">
-                  </el-table-column>
-                </el-table>
+                      <el-table-column
+                        label="number"
+                        prop="test_number">
+                      </el-table-column>
+                      <el-table-column
+                        label="desc"
+                        prop="test_desc">
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </div>
               </div>
             </div>
+
           </el-scrollbar>
         </el-col>
       </el-row>
@@ -338,6 +343,17 @@ export default {
     },
     onDownloadReport(id) {
       getCisReport(this.clusterName, id, "yaml").then()
+    },
+
+    hiddenNode(node) {
+      if (node.tests) {
+        for (const test of node.tests) {
+          if (test.results.length > 0) {
+            return false
+          }
+        }
+      }
+      return true
     },
     onFilterChange() {
       const temp = this.deepCopy(this.oNodeList)
