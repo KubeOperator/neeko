@@ -10,7 +10,7 @@
     </el-row>
     <el-button type="primary" style="float: right;margin: 0 10px 8px " @click="dialogVisible = true">{{ $t('commons.button.import')}}</el-button>
     <el-dialog
-      :title="$t('setting.option.addLicense')"
+      :title="$t('setting.table.license.title')"
       :visible.sync="dialogVisible"
       @cancel="dialogLicenseImport = false"
       width="30%"

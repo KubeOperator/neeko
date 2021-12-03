@@ -80,7 +80,7 @@
       </el-table-column>
       <el-table-column width="110px" fix>
         <template v-slot:default="{row}">
-          <el-button :disabled="row.status !== 'Running'" type="primary" plain size="mini" @click="getDashboardUrl(row.name)">Dashboard</el-button>
+          <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row.name)">Dashboard</el-button>
         </template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
