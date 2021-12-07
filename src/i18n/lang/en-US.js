@@ -113,7 +113,7 @@ const message = {
       talk: "Participate in the discussion",
       star: "Star",
       version: "Version",
-      ko_introduction: "KubeOperator is an open source, lightweight Kubernetes distribution that focuses on helping companies plan, deploy, and operate production-level Kubernetes clusters."
+      ko_introduction: "is an open source, lightweight Kubernetes distribution that focuses on helping companies plan, deploy, and operate production-level Kubernetes clusters."
     },
     help: {
       help: "Help",
@@ -175,10 +175,20 @@ const message = {
     reset_message: "Password reset successfully! Please check your emails"
   },
   theme: {
-    systemName: "Login page title",
-    logo: "Logo",
-    uploadLogoHelper: "Only image files in jpg/png formats can be uploaded. If the uploaded picture is empty, it will be restored to the default Log",
-    uploadLogoNumHelper: "Only one file can be uploaded by default, please delete the current file and upload again!"
+    systemName: "System name",
+    system_name_help: "Will be displayed on the Enterprise Edition user login page（eg: KubeOperator)",
+    login_image: "Image of login page",
+    login_image_help: "Will be displayed on the Enterprise Edition user login page（Suggest size: 480px*480px）",
+    icon: "Website icon",
+    icon_help: "Website icon（Suggest size: 16px*16px）",
+    logo: "Logo(Without text)",
+    logo_help: "The zoom menu is displayed in the upper left of the admin page（Suggest size: 35px*40px）",
+    logo_with_text: "Logo(With text)",
+    logo_with_text_help: "It will be displayed in the upper left of the admin page（Suggest size: 212p*40px）",
+    logo_about: "Image of about page",
+    logo_about_help: "Will be displayed in the Enterprise edition user about interface（Suggest size: 212p*40px）",
+    re_upload: "Upload",
+    reset: "Reset",
   },
   route: {
     project_management: "Project Management",
@@ -192,7 +202,7 @@ const message = {
     complex_table: "Compound Form",
     user: "User Management",
     multi_cluster: "Multi-cluster Management",
-    theme: "Theme",
+    theme: "Interface setting",
     ldap: "LDAP",
   },
   cluster: {
@@ -932,7 +942,7 @@ const message = {
         ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!"
       },
       license: {
-        title: "KubeOperator License",
+        title: "Import license",
         corporation: "Company",
         count: "Count",
         expiration: "Expire Date",

@@ -114,7 +114,7 @@ const message = {
       talk: "参与讨论",
       star: "点亮 Star",
       version: "版本",
-      ko_introduction: "KubeOperator 是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。"
+      ko_introduction: "是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。"
     },
     help: {
       help: "帮助",
@@ -166,7 +166,7 @@ const message = {
   login: {
     username: "用户名",
     password: "密码",
-    title: "登录 KubeOperator",
+    title: "KubeOperator",
     welcome: "欢迎回来，请输入用户名和密码登录",
     expires: "认证信息已过期，请重新登录",
     captcha: "验证码",
@@ -176,10 +176,20 @@ const message = {
     reset_message: "重置密码成功！请查看邮件"
   },
   theme: {
-    systemName: "登录页面标题",
-    logo: "Logo",
-    uploadLogoHelper: "只能上传 jpg/png 等格式的图片文件。若上传的图片为空，则会恢复成默认的 Logo",
-    uploadLogoNumHelper: "默认只能上传一个文件，请删除当前文件后，重新上传!"
+    systemName: "系统名称",
+    system_name_help: "将会显示在企业版用户登录页面（eg: KubeOperator)",
+    login_image: "登录页面图片",
+    login_image_help: "将会显示在企业版用户登录页面（建议图片大小为: 480px*480px）",
+    icon: "网站图标",
+    icon_help: "网站图标（建议图片大小为: 16px*16px）",
+    logo: "Logo(不带文字)",
+    logo_help: "缩放菜单时，将会显示在管理页面左上方（建议图片大小为: 35px*40px）",
+    logo_with_text: "Logo(带文字)",
+    logo_with_text_help: "将会显示在管理页面左上方（建议图片大小为: 212p*40px）",
+    logo_about: "关于页面图片",
+    logo_about_help: "将会显示在企业版用户关于界面（建议图片大小为: 212p*40px）",
+    re_upload: "重新上传",
+    reset: "重置",
   },
   route: {
     project_management: "项目管理",
@@ -193,7 +203,7 @@ const message = {
     complex_table: "复合表格",
     user: "用户管理",
     multi_cluster: "多集群管理",
-    theme: "主题",
+    theme: "界面设置",
     ldap: "LDAP",
   },
   cluster: {
@@ -216,7 +226,7 @@ const message = {
       arch: "架构",
       repo_err: "请在系统设置中完善对应仓库信息",
       yum_repo: "Yum 仓库",
-      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 KubeOperator 的 yum repo",
+      yum_repo_replace_help: "此操作将会对 K8S 节点服务器原始 yum repo 文件进行备份，之后生成并仅使用 kubeoperator 的 yum repo",
       yum_repo_coexist_help: "此操作将保持K8S节点服务器原始 yum repo 文件不变，同时生成并使用 kubeoperator 的 yum repo",
       yum_repo_no_help: "此操作将保持使用 K8S 节点服务器原始 yum repo 文件，不对K8S节点服务器的 yum repo 做任何操作",
 
@@ -934,7 +944,7 @@ const message = {
         ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登录名重复的也不会被同步!"
       },
       license: {
-        title: "KubeOperator 许可证",
+        title: "导入许可证",
         corporation: "公司",
         count: "数量",
         expiration: "过期时间",

@@ -49,10 +49,9 @@
             :visible.sync="aboutDialogVisible"
             width="40%">
       <div class="aboutBackground" style="padding: 20px 25px;">
-        <img style="margin-left: 0;" :src="require('@/assets/KubeOperator-red.png')"
-             class="sidebar-logo"
-             alt="Sidebar Logo">
-        <p style="color: #242e42;">{{ $t("commons.personal.ko_introduction") }}</p>
+        <el-image v-if="logoAbout === ''" :src="require('@/assets/KubeOperator-red.png')" class="sidebar-logo" />
+        <el-image v-else :src="logoAbout" class="sidebar-logo" />
+        <p style="color: #242e42;">{{systemName}} {{ $t("commons.personal.ko_introduction") }}</p>
         <strong>{{ $t("commons.personal.version") }}: v3.7.0</strong>
       </div>
       <div style="padding:15px 20px;box-shadow:0px -10px 8px -5px #F0F1F2;">
@@ -95,6 +94,8 @@ export default {
     return {
       dialogVisible: false,
       aboutDialogVisible: false,
+      systemName: "",
+      logoAbout : "",
       form: {
         name: "",
         original: "",
@@ -171,7 +172,19 @@ export default {
       }
       callback()
     },
-  }
+  },
+  created() {
+    console.log(store.getters.theme)
+    if (store.getters.theme) {
+      this.systemName = store.getters.theme.systemName
+      this.logoAbout = store.getters.theme.logoAbout
+    } else {
+      this.$store.dispatch("theme/getThemeInfo").then((data) => {
+        this.systemName = data.systemName
+        this.logoAbout = data.logoAbout
+      })
+    }
+  },
 }
 </script>
 
