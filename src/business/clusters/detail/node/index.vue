@@ -86,7 +86,8 @@
           <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [currentCluster.spec.maxNodeNum - data.length])}}</span></div>
         </el-form-item>
 
-        <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')">
+        <span v-if="provider === 'bareMetal'">{{$t ('cluster.creation.node_help')}}</span>
+        <el-form-item v-if="provider === 'bareMetal'" prop="hosts" :label="$t('cluster.detail.node.host')" style="margin-top:20px">
           <el-select style="width: 80%" v-model="createForm.hosts" multiple clearable>
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}</el-option>
           </el-select>
