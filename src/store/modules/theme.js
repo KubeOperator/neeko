@@ -18,7 +18,7 @@ const mutations = {
     if (data.icon !== '') {
       link.href = data.icon;
     } else {
-      link.href = "<%= BASE_URL %>favicon.ico"
+      link.href = "<%= BASE_URL %>/ui/favicon.ico"
     }
     document.title = state.theme.systemName;
   }

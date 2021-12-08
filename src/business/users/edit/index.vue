@@ -103,7 +103,7 @@ export default {
         }).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.create_success")
+            message: this.$t("commons.msg.op_success")
           })
           this.$router.push({ name: "UserList" })
         })
@@ -133,7 +133,7 @@ export default {
         }).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.save_success")
+            message: this.$t("commons.msg.op_success")
           })
           this.dialogVisible = false 
         })
