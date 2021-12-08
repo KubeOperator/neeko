@@ -96,7 +96,11 @@ export default {
     },
     onRetry() {
       let prePhase = this.log.prePhase
-      this.log.conditions[this.log.conditions.length - 1].status = "Unknown"
+      if (this.log.conditions.length !== 0) {
+        this.log.conditions[this.log.conditions.length - 1].status = "Unknown"
+      } else {
+        this.conditionLoading = true
+      }
       this.log.phase = "Waiting"
       if (this.operation == "add-worker") {
         let id = this.log.id
@@ -158,7 +162,7 @@ export default {
     // 直接拉取node
     dialogPolling2() {
       this.timer2 = setInterval(() => {
-        if (this.log.conditions.length !== 0 || this.log.status === "Failed") {
+        if (this.log.conditions.length !== 0 || this.log.phase === "Failed") {
           this.conditionLoading = false
         }
         if (this.log.phase === "Terminating") {
@@ -187,13 +191,15 @@ export default {
     // 拉取clusterStatus
     dialogPolling() {
       this.timer = setInterval(() => {
-        if (this.log.conditions.length !== 0 || this.log.status === "Failed") {
+        if (this.log.conditions.length !== 0 || this.log.phase === "Failed") {
           this.conditionLoading = false
         }
         let isConditionNotOK = true
         if (this.log.conditions.length !== 0) {
           let lastCondition = this.log.conditions[this.log.conditions.length - 1]
           isConditionNotOK = lastCondition.status !== "True" && lastCondition.status !== "False"
+        } else {
+          isConditionNotOK = false
         }
         if ((this.log.phase !== "Running" && this.log.phase !== "Failed") || isConditionNotOK) {
           if (this.operation == "add-worker") {
@@ -229,6 +235,7 @@ export default {
       if (this.log.phase !== data.phase) {
         this.log.phase = data.phase
       }
+      this.log.message = data.message
       if (this.log.prePhase !== data.prePhase) {
         this.log.prePhase = data.prePhase
       }
