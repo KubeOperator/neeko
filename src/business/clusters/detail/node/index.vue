@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info" />
-    <complex-table style="margin-top: 20px" :row-key="getRowKeys" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
+    <complex-table style="margin-top: 20px" ref="nodeData" :row-key="getRowKeys" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="provider === '' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -318,6 +318,7 @@ export default {
     },
     search() {
       this.loading = true
+      this.$refs.nodeData?.clearSelection()
       const { currentPage, pageSize } = this.paginationConfig
       listNodesByPage(this.clusterName, currentPage, pageSize, false)
         .then((data) => {

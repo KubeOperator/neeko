@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('cluster.cluster')">
-    <complex-table local-key="cluster_columns" :row-key="getRowKeys" :selects.sync="clusterSelection"
+    <complex-table ref="clusterData" local-key="cluster_columns" :row-key="getRowKeys" :selects.sync="clusterSelection"
                    @selection-change="selectChange" :search-config="searchConfig" :data="data"
                    :pagination-config="paginationConfig" @search="search" v-loading="loading">
       <template #header>
@@ -272,6 +272,7 @@ export default {
     },
     search(condition) {
       this.loading = true
+      this.$refs.clusterData?.clearSelection()
       const {currentPage, pageSize} = this.paginationConfig
       searchClusters(currentPage, pageSize, condition, false).then((data) => {
         this.loading = false

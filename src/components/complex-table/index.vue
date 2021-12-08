@@ -21,7 +21,7 @@
 
     <div class="complex-table__body">
       <fu-table v-on="$listeners" v-bind="$attrs" :columns="columns" :local-key="localKey"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange" ref="futable">
         <slot></slot>
       </fu-table>
     </div>
@@ -58,6 +58,9 @@ export default {
     }
   },
   methods: {
+    clearSelection(){
+      this.$refs.futable?.$children[0].clearSelection()
+    },
     search (condition, e) {
       if (condition) {
         this.condition = condition

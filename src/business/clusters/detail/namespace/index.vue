@@ -1,6 +1,6 @@
 <template>
   <div>
-    <complex-table :selects.sync="nsSelection" :row-key="getRowKeys" v-loading="loading" :data="data">
+    <complex-table ref="nsData" :selects.sync="nsSelection" :row-key="getRowKeys" v-loading="loading" :data="data">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">{{$t('commons.button.create')}}</el-button>
@@ -94,6 +94,7 @@ export default {
     },
     search() {
       this.loading = true
+      this.$refs.nsData?.clearSelection()
       listNamespace(this.clusterName)
         .then((data) => {
           this.data = data.items || []

@@ -63,7 +63,7 @@
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
             </template>
-            <complex-table style="margin-top: 20px" :row-key="getRowKeys" v-loading="loading" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
+            <complex-table style="margin-top: 20px" ref="provisionerData" :row-key="getRowKeys" v-loading="loading" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
               <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
               <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
               <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
@@ -230,6 +230,7 @@ export default {
             this.loading = false
           })
       } else if (this.activeName === "provisioner") {
+        this.$refs.provisionerData?.clearSelection()
         listProvisioner(this.clusterName)
           .then((data) => {
             this.loading = false

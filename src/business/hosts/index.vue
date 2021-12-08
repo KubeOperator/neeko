@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" :row-key="getRowKeys" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" ref="hostData" :row-key="getRowKeys" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <el-button-group v-permission="['ADMIN']">
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
@@ -363,6 +363,7 @@ export default {
     },
     search(condition) {
       this.loading = true
+      this.$refs.hostData?.clearSelection()
       const { currentPage, pageSize } = this.paginationConfig
       searchHosts(currentPage, pageSize, condition)
         .then((data) => {
