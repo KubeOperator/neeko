@@ -7,10 +7,10 @@
         <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
 
 
-          <el-form-item style="width: 100%" :label="'KUBEPI '+$t('login.username') " prop="vars.KUBEPI_USERNAME">
+          <el-form-item style="width: 100%" :label="$t('login.username') " prop="vars.KUBEPI_USERNAME">
             <el-input v-model="form.vars.KUBEPI_USERNAME"></el-input>
           </el-form-item>
-          <el-form-item style="width: 100%" :label="'KUBEPI '+$t('login.password')" prop="vars.KUBEPI_PASSWORD">
+          <el-form-item style="width: 100%" :label="$t('login.password')" prop="vars.KUBEPI_PASSWORD">
             <el-input type="password" v-model="form.vars.KUBEPI_PASSWORD"></el-input>
           </el-form-item>
 
