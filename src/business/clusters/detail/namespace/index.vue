@@ -39,7 +39,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" :disabled="form.metadata.name.length === 0 || submitLoading" @click="submitCreate()" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
+        <el-button type="primary" @click="submitCreate()" v-preventReClick>{{$t('commons.button.ok')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -115,16 +115,14 @@ export default {
     submitCreate() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          this.submitLoading = true
           createNamespace(this.clusterName, this.form)
             .then(() => {
               this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
+              this.form.metadata.name = ""
               this.dialogCreateVisible = false
               this.search()
-              this.submitLoading = false
             })
             .catch(() => {
-              this.submitLoading = false
               this.dialogCreateVisible = false
             })
         } else {
