@@ -3,6 +3,8 @@
                   v-loading="loading">
     <complex-table
             local-key="zone_columns"
+            ref="zoneData"
+            :row-key="getRowKeys"
             :data="data"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
@@ -19,7 +21,7 @@
           </el-button>
         </el-button-group>
       </template>
-      <el-table-column type="selection" fix></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{row}">
           <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
@@ -101,26 +103,6 @@
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
-<!--              <td>{{ item.ipPool.subnet }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
-<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
-<!--            </tr>-->
           </table>
           <table style="width: 90%" class="myTable"  v-if="item.provider==='FusionCompute'">
             <tr>
@@ -159,27 +141,6 @@
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
-<!--              <td>{{ item.ipPool.subnet }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
-<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
-<!--            </tr>-->
 
           </table>
           <table style="width: 90%" class="myTable"  v-if="item.provider==='OpenStack'">
@@ -223,26 +184,6 @@
               <td>{{ $t("automatic.ip_pool.name") }}</td>
               <td>{{ item.ipPool.name }}</td>
             </tr>
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.subnet") }}</td>-->
-<!--              <td>{{ item.ipPool.subnet }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.ip_usage") }}</td>-->
-<!--              <td  v-if="item.ipPool.ips.length>0">{{ item.ipPool.ipUsed }}/{{ item.ipPool.ips.length }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.gateway") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0"> {{ item.ipPool.ips[0].gateway }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns1") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns1 }}</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>{{ $t("automatic.ip_pool.dns2") }}</td>-->
-<!--              <td v-if="item.ipPool.ips.length>0">{{ item.ipPool.ips[0].dns2 }}</td>-->
-<!--            </tr>-->
           </table>
         </div>
       </div>
@@ -324,12 +265,17 @@ export default {
           ips: []
         },
         provider: ""
-      }
+      },
+      timer: null,
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.name
+    },
     search (condition) {
       this.loading = true
+      this.$refs.zoneData?.clearSelection()
       const { currentPage, pageSize } = this.paginationConfig
       searchZone(currentPage, pageSize, condition).then(data => {
         this.loading = false
@@ -391,11 +337,34 @@ export default {
     },
     onCancel () {
       this.openDetail = false
-    }
+    },
+    polling() {
+      this.timer = setInterval(() => {
+        let flag = false
+        for (const item of this.data) {
+          if (item.status === "INITIALIZING") {
+            flag = true
+            break
+          }
+        }
+        if (flag) {
+          const { currentPage, pageSize } = this.paginationConfig
+          searchZone(currentPage, pageSize).then((data) => {
+            this.data = data.items || []
+            this.paginationConfig.total = data.total
+          })
+        }
+      }, 10000)
+    },
   },
   created () {
     this.search()
-  }
+    this.polling()
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
+    this.timer = null
+  },
 }
 </script>
 
