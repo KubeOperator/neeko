@@ -215,6 +215,9 @@ const message = {
     scan_policy: "扫描策略",
     creation: {
       step1: "集群信息",
+      name_type: "节点命名规则",
+      name_type_default_help: "节点命名将以 k8s-master-1 形式",
+      name_type_ip_help: "节点将直接以 ip 命名",
       name: "名称",
       name_check: "校验中",
       name_help: "支持小写英文、数字和- 不能以数字开头",

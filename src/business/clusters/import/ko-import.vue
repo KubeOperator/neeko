@@ -358,6 +358,7 @@ export default {
 
         clusterInfo: {
           name: "",
+          nodeNameRule: "",
           version: "",
           maxNodePodNum: null,
           maxNodeNum: null,
@@ -508,6 +509,7 @@ export default {
       this.form.architectures = this.clusterImportInfo.architectures
       this.form.isKoCluster = this.clusterImportInfo.isKoCluster
       let data = {
+        name: this.clusterImportInfo.name,
         apiServer: this.clusterImportInfo.apiServer,
         router: this.clusterImportInfo.router,
         token: this.clusterImportInfo.token,
