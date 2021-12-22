@@ -3,7 +3,7 @@ const PasswordPattern = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z~!@#$%^&*]{8,30}$/
 const NamePattern = /^[a-zA-Z0-9\u4e00-\u9fa5]{1}[a-zA-Z0-9_.\u4e00-\u9fa5-]{0,30}$/
 
 // 支持小写英文、数字和- 不能以数字开头
-const ClusterNamePattern = /^[a-z]([-a-z0-9]*[a-z0-9])?(\\\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/
+const ClusterNamePattern = /^[a-z]([-a-z0-9]{0,48})[a-z0-9]$/
 // 支持小写英文、数字和-
 const StorageNamePattern = /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/
 

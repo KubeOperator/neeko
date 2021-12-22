@@ -220,7 +220,7 @@ const message = {
       name_type_ip_help: "节点将直接以 ip 命名",
       name: "名称",
       name_check: "校验中",
-      name_help: "支持小写英文、数字和- 不能以数字开头",
+      name_help: "最大长度为 50，小写字母开始，数字或字母结束，支持小写字母、数字、以及-",
       name_invalid_err: "集群名称无效",
       provider: "提供商",
       provide_plan: "部署计划",

@@ -219,7 +219,7 @@ const message = {
       name_type_default_help: "The node name will be k8s-master-1",
       name_type_ip_help: "Nodes will be named directly as IP",
       name_check: "Checking",
-      name_help: "Support lowercase English, numbers and-cannot start with a number",
+      name_help: "Maximum length: 50, start with lowercase letters, end with lowercase letters or numbers, support lowercase letters, numbers and-",
       name_invalid_err: "Invalid cluster name",
       provider: "Provider",
       provide_plan: "Plan",
