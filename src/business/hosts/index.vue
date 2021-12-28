@@ -26,7 +26,7 @@
       <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
-      <el-table-column :label="$t('host.os')" min-width="110px">
+      <el-table-column :label="$t('host.os')"  show-overflow-tooltip min-width="120px">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -40,7 +40,11 @@
           <svg v-if="row.os === 'Ubuntu'" class="icon" aria-hidden="true">
             <use xlink:href="#iconubuntu"></use>
           </svg>
-          {{ row.os }} {{ row['osVersion'] }}
+          <svg v-if="row.os === 'Kylin' || row.os === 'Kylin Linux Advanced Server'" class="icon" aria-hidden="true">
+            <use xlink:href="#iconqilin"></use>
+          </svg>
+          <span v-if="row.os === 'Kylin' ||  row.os === 'Kylin Linux Advanced Server'"> Kylin {{ row['osVersion'] }}</span>
+          <span v-else> {{ row.os }} {{ row['osVersion'] }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />

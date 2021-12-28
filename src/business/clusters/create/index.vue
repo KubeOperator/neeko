@@ -14,6 +14,14 @@
                         <div v-if="!nameValid"><span class="input-error">{{$t('cluster.creation.name_invalid_err')}}</span></div>
                         <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
                       </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.name_type')" prop="name">
+                        <el-radio-group v-model="form.nodeNameRule">
+                          <el-radio label="default">default</el-radio>
+                          <el-radio label="ip">ip</el-radio>
+                        </el-radio-group>
+                        <div v-if="form.nodeNameRule === 'default'"><span class="input-help">{{$t('cluster.creation.name_type_default_help')}}</span></div>
+                        <div v-if="form.nodeNameRule === 'ip'"><span class="input-help">{{$t('cluster.creation.name_type_ip_help')}}</span></div>
+                      </el-form-item>
                       <el-form-item :label="$t('project.project')" prop="projectName">
                         <el-select filterable style="width: 100%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
                           <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
@@ -552,6 +560,7 @@ export default {
       form: {
         projectName: "",
         name: "",
+        nodeNameRule: "default",
         provider: "bareMetal",
         version: "",
         architectures: "amd64",
