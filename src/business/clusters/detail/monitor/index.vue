@@ -1,40 +1,83 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-form :inline="true">
       <el-form-item :label="$t('cluster.detail.log.monitor_node')">
-        <el-select size="small" @change="search()" allow-create filterable v-model="searchruleForm.node">
+        <el-select size="small" @change="changeNode" filterable v-model="searchruleForm.nodeName">
+          <el-option :label="$t('cluster.detail.monitor.all_node')" value="all"></el-option>
           <el-option v-for="node in nodes" :key="node" :label="node" :value="node"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('commons.search.time')">
-        <el-date-picker @change="search()" v-model="searchruleForm.timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')">
+        <el-date-picker @change="search()" v-model="timeRange" type="datetimerange" :range-separator="$t('commons.search.time_range')" :start-placeholder="$t('commons.search.time_start')" :end-placeholder="$t('commons.search.time_end')" :picker-options="pickerOptions" align="right">
         </el-date-picker>
       </el-form-item>
+      <el-form-item :label="$t('cluster.detail.monitor.step')">
+        <el-select size="small" @change="search()" filterable v-model="searchruleForm.step">
+          <el-option v-for="(step, index) in stepOptions" :key="index" :label="step.label" :value="step.value"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
-    <el-row>
-      <el-col :span="12">
-        <el-card style="overflow: inherit">
-          <div v-loading="loading_cpu" id="cpuChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card style="overflow: inherit">
-          <div v-loading="loading_memory" id="memoryChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-card style="overflow: inherit">
-          <div v-loading="loading_disk" id="diskChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card style="overflow: inherit">
-          <div v-loading="loading_network" id="networkChart" style="width: 100%;height: 350%;margin-top: 40px;"></div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <el-alert v-if="hasPrometheus === 'false'">
+      <el-button type="text" icon="el-icon-setting" @click="toTools">{{ $t("cluster.detail.monitor.monitor_help") }}</el-button>
+    </el-alert>
+    <div v-if="hasPrometheus === 'true'">
+      <el-row>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="cpuErr !== ''">{{cpuErr}}</span>
+            <div v-else id="cpuChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="memoryErr !== ''">{{memoryErr}}</span>
+            <div v-else id="memoryChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="loadErr !== ''">{{loadErr}}</span>
+            <div v-else id="loadChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="diskErr !== ''">{{diskErr}}</span>
+            <div v-else id="diskChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="inodeErr !== ''">{{inodeErr}}</span>
+            <div v-else id="inodeChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="diskRWErr !== ''">{{diskRWErr}}</span>
+            <div v-else id="diskRwChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="iopsErr !== ''">{{iopsErr}}</span>
+            <div v-else id="diskIopsChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card style="overflow: inherit">
+            <span v-if="netErr !== ''">{{netErr}}</span>
+            <div v-else id="netChart" style="width: 100%;height: 250%;margin-top: 40px;"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -42,289 +85,370 @@
 import { listNodeInDB } from "@/api/cluster/node"
 import { listTool } from "@/api/cluster/tool"
 let echarts = require("echarts/lib/echarts")
-import { QueryCPU, QueryMemoryTotal, QueryMemoryUsed, QueryMemoryCacheBuffer, QueryMemoryFree, QueryMemorySWAPUsed, QueryDisk, QueryNetworkRecv, QueryNetworkTrans } from "@/api/cluster/monitor"
+import { Monitor } from "@/api/cluster/monitor"
 
 export default {
   name: "ClusterMonitor",
   components: {},
   data() {
     return {
-      startDate: Date.now(),
-      loading_cpu: false,
-      loading_memory: false,
-      loading_disk: false,
-      loading_network: false,
+      loading: false,
+      hasPrometheus: null,
       searchruleForm: {
-        node: "",
-        timeRange: [],
+        level: "cluster",
+        nodeName: "all",
+        start: "",
+        end: "",
+        step: 2,
+        metricsFilter: ["cpu_used", "memory_used", "load1", "load5", "load15", "disk_used", "disk_inode_utilisation", "disk_read_throughput", "disk_write_throughput", "disk_read_iops", "disk_write_iops", "net_bytes_transmitted", "net_bytes_received"],
       },
+      timeRange: [],
       nodes: [],
-      cpuDateList: [],
-      cpuValueList: [],
-      memoryDateList: [],
-      memoryValueList: [],
-      diskDateList: [],
-      diskValueList: [],
-      networkDateList: [],
-      networkValueList: [],
       data: [],
+      cpuErr: "",
+      memoryErr: "",
+      diskErr: "",
+      loadErr: "",
+      inodeErr: "",
+      iopsErr: "",
+      netErr: "",
+      diskRWErr: "",
+      stepOptions: [
+        { label: "1 " + this.$t("cluster.detail.monitor.minute"), value: 1 },
+        { label: "2 " + this.$t("cluster.detail.monitor.minutes"), value: 2 },
+        { label: "5 " + this.$t("cluster.detail.monitor.minutes"), value: 5 },
+        { label: "10 " + this.$t("cluster.detail.monitor.minutes"), value: 10 },
+        { label: "15 " + this.$t("cluster.detail.monitor.minutes"), value: 15 },
+        { label: "30 " + this.$t("cluster.detail.monitor.minutes"), value: 30 },
+        { label: "1 " + this.$t("cluster.detail.monitor.hour"), value: 60 },
+        { label: "2 " + this.$t("cluster.detail.monitor.hours"), value: 120 },
+        { label: "5 " + this.$t("cluster.detail.monitor.hours"), value: 300 },
+      ],
+      color: ["#f75e4f", "#2d8771", "#6c357a"],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: this.$t("cluster.detail.monitor.last_x_minutes", [10]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 600 * 1000)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_minutes", [20]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 1200 * 1000)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_minutes", [30]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 1800 * 1000)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [1]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [2]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 2)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [3]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 3)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [5]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 5)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [12]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 12)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_days", [1]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_days", [2]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 2)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_hours", [3]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
+              picker.$emit("pick", [start, end])
+            },
+          },
+          {
+            text: this.$t("cluster.detail.monitor.last_x_days", [7]),
+            onClick(picker) {
+              const start = new Date()
+              const end = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit("pick", [start, end])
+            },
+          },
+        ],
+        disabledDate: (time) => {
+          return time.getTime() > Date.now()
+        },
+      },
     }
   },
   methods: {
-    search() {
-      this.loading_cpu = true
-      this.loading_memory = true
-      this.loading_disk = true
-      this.loading_network = true
+    loadNodes() {
       listNodeInDB(this.clusterName).then((data) => {
         this.nodes = data.items.map(function (item) {
           return item.ip
         })
-        this.searchruleForm.node = this.searchruleForm.node ? this.searchruleForm.node : this.nodes[0]
-
-        if (!this.searchruleForm.timeRange) {
-          this.searchruleForm.timeRange = []
-        }
-        if (this.searchruleForm.timeRange.length === 0) {
-          this.searchruleForm.timeRange[0] = new Date(new Date().setMinutes(new Date().getMinutes() - 30))
-          this.searchruleForm.timeRange[1] = new Date()
-        }
-        let start = this.searchruleForm.timeRange[0].getTime() / 1000
-        let end = this.searchruleForm.timeRange[1].getTime() / 1000
-
-        this.getCPUDatas(start, end)
-        this.getMemoryDatas(start, end)
-        this.getDiskDatas(start, end)
-        this.getNetworkDatas(start, end)
       })
     },
-    getCPUDatas(start, end) {
-      this.cpuDateList = []
-      this.cpuValueList = []
-      let system = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"system"', start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            this.cpuDateList = data.data.result[0].values.map(function (item) {
-              const timeNow = new Date(item[0] * 1000)
-              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-            })
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
-          }
-          this.cpuValueList.push(this.addSeries(itemDatas, "Busy System"))
-          resolve()
-        })
-      })
-      let user = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"user"', start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
-          }
-          this.cpuValueList.push(this.addSeries(itemDatas, "Busy User"))
-          resolve()
-        })
-      })
-      let iowait = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"iowait"', start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
-          }
-          this.cpuValueList.push(this.addSeries(itemDatas, "Busy Iowait"))
-          resolve()
-        })
-      })
-      let idle = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '"idle"', start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
-          }
-          this.cpuValueList.push(this.addSeries(itemDatas, "Busy Idle"))
-          resolve()
-        })
-      })
-      let irq = new Promise((resolve) => {
-        QueryCPU(this.clusterName, this.searchruleForm.node + ":9100", '~".*irq"', start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
-          }
-          this.cpuValueList.push(this.addSeries(itemDatas, "Busy Irqs"))
-          resolve()
-        })
-      })
-      Promise.all([system, user, iowait, idle, irq])
-        .then(() => {
-          this.loading_cpu = false
-          this.initCharts("cpuChart", "CPU Basic", this.cpuDateList, this.cpuValueList, "%")
-        })
-        .catch(() => {
-          this.loading_cpu = false
-        })
+    changeNode(node) {
+      if (node !== "all") {
+        this.searchruleForm.level = "node"
+      } else {
+        this.searchruleForm.level = "cluster"
+      }
+      this.search()
     },
-
-    getMemoryDatas(start, end) {
-      this.memoryDateList = []
-      this.memoryValueList = []
-      let total = new Promise((resolve) => {
-        QueryMemoryTotal(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            this.memoryDateList = data.data.result[0].values.map(function (item) {
-              const timeNow = new Date(item[0] * 1000)
-              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-            })
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-            })
-          }
-          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Total"))
-          resolve()
-        })
-      })
-      let used = new Promise((resolve) => {
-        QueryMemoryUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-            })
-          }
-          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Used"))
-          resolve()
-        })
-      })
-      let cache = new Promise((resolve) => {
-        QueryMemoryCacheBuffer(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-            })
-          }
-          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Cache + Buffer"))
-          resolve()
-        })
-      })
-      let free = new Promise((resolve) => {
-        QueryMemoryFree(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-            })
-          }
-          this.memoryValueList.push(this.addSeries(itemDatas, "RAM Free"))
-          resolve()
-        })
-      })
-      let swap = new Promise((resolve) => {
-        QueryMemorySWAPUsed(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return (Number(item[1]) / 1024 / 1024 / 1024).toFixed(2)
-            })
-          }
-          this.memoryValueList.push(this.addSeries(itemDatas, "SWAP Used"))
-          resolve()
-        })
-      })
-      Promise.all([total, used, cache, free, swap])
-        .then(() => {
-          this.loading_memory = false
-          this.initCharts("memoryChart", "Memory Basic", this.memoryDateList, this.memoryValueList, "GiB")
-        })
-        .catch(() => {
-          this.loading_memory = false
-        })
+    toTools() {
+      this.$router.push({name: "ClusterTool"})
     },
-
-    getDiskDatas(start, end) {
-      this.diskDateList = []
-      this.diskValueList = []
-      QueryDisk(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString())
-        .then((data) => {
-          let itemDatas = []
-          if (data.data.result.length !== 0) {
-            this.diskDateList = data.data.result[0].values.map(function (item) {
-              const timeNow = new Date(item[0] * 1000)
-              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-            })
-            itemDatas = data.data.result[0].values.map(function (item) {
-              return Number(item[1]).toFixed(2)
-            })
+    search() {
+      if (this.hasPrometheus === 'false') {
+        return
+      }
+      if (this.timeRange.length === 2) {
+        this.searchruleForm.start = parseInt(this.timeRange[0].getTime() / 1000)
+        this.searchruleForm.end = parseInt(this.timeRange[1].getTime() / 1000)
+      }
+      Monitor(this.clusterName, this.searchruleForm).then((res) => {
+        let chartDatas = []
+        for (const d of res) {
+          let chartName = this.loadChart(d)
+          if (chartName === "") {
+            continue
           }
-          this.diskValueList.push(this.addSeries(itemDatas, "Disk Space Used"))
-          this.loading_disk = false
-          this.initCharts("diskChart", "Disk Space Used Basic", this.diskDateList, this.diskValueList, "%")
-        })
-        .catch(() => {
-          this.loading_disk = false
-        })
-    },
-
-    getNetworkDatas(start, end) {
-      this.networkDateList = []
-      this.networkValueList = []
-      let recv = new Promise((resolve) => {
-        QueryNetworkRecv(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          if (data.data.result.length !== 0) {
-            this.networkDateList = data.data.result[0].values.map(function (item) {
-              const timeNow = new Date(item[0] * 1000)
-              return timeNow.getMonth() + 1 + "月" + timeNow.getDate() + "日" + timeNow.getHours() + ":" + timeNow.getMinutes()
-            })
-            for (const res of data.data.result) {
-              let itemDatas = []
-              itemDatas = res.values.map(function (item) {
-                return (Number(item[1]) / 1000).toFixed(0)
-              })
-              this.networkValueList.push(this.addSeries(itemDatas, "Recv " + res.metric.device))
+          let isExist = false
+          for (const chart of chartDatas) {
+            if (chartName === chart.name) {
+              isExist = true
+              if (d.data.result.length !== 0) {
+                let yDatas = d.data.result[0].values.map(function (item) {
+                  return chartName === "diskIopsChart" ? Math.round(item[1]) : Number(item[1]).toFixed(2)
+                })
+                let info = this.loadInfo(d.metric_name)
+                chart.legendDatas.push(info.tipTitle)
+                chart.yDatas.push(this.addSeries(yDatas, info.tipTitle, this.color[chart.yDatas.length]))
+              }
             }
           }
-          resolve()
-        })
-      })
-      let trans = new Promise((resolve) => {
-        QueryNetworkTrans(this.clusterName, this.searchruleForm.node + ":9100", start.toString(), end.toString()).then((data) => {
-          for (const res of data.data.result) {
-            let itemDatas = []
-            itemDatas = res.values.map(function (item) {
-              return -(Number(item[1]) / 1000).toFixed(0)
-            })
-            this.networkValueList.push(this.addSeries(itemDatas, "Trans " + res.metric.device))
+          if (!isExist) {
+            if (d.data.result.length !== 0) {
+              let xDatas = d.data.result[0].values.map(function (item) {
+                const timeNow = new Date(item[0] * 1000)
+                return timeNow.getHours() + ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds()
+              })
+              let yDatas = d.data.result[0].values.map(function (item) {
+                return chartName === "diskIopsChart" ? Math.round(item[1]) : Number(item[1]).toFixed(2)
+              })
+              let info = this.loadInfo(d.metric_name)
+              let chartItem = {
+                name: chartName,
+                legendDatas: [],
+                xDatas: xDatas,
+                yDatas: [],
+                yTitle: info.yTitle,
+                formatStr: info.formatStr,
+              }
+              chartItem.legendDatas.push(info.tipTitle)
+              chartItem.yDatas.push(this.addSeries(yDatas, info.tipTitle, this.color[0]))
+              chartDatas.push(chartItem)
+            }
           }
-          resolve()
-        })
+        }
+        for (const chart of chartDatas) {
+          if (chart.legendDatas.length !== 1) {
+            this.initCharts(chart.name, chart.legendDatas, chart.xDatas, chart.yDatas, chart.yTitle, chart.formatStr)
+          } else {
+            this.initCharts(chart.name, [], chart.xDatas, chart.yDatas, chart.yTitle, chart.formatStr)
+          }
+        }
       })
-      Promise.all([recv, trans])
-        .then(() => {
-          this.loading_network = false
-          this.initCharts("networkChart", "Network Traffic Basic", this.networkDateList, this.networkValueList, "kb/s")
-        })
-        .catch(() => {
-          this.loading_network = false
-        })
     },
-    initCharts(chartName, title, xDatas, yDatas, formatStr) {
+
+    loadChart(val) {
+      switch (val.metric_name) {
+        case "cpu_used":
+          this.cpuErr = val.error || ""
+          return val.error ? "" : "cpuChart"
+        case "memory_used":
+          this.memoryErr = val.error || ""
+          return val.error ? "" : "memoryChart"
+        case "load1":
+        case "load5":
+        case "load15":
+          this.loadErr = val.error || ""
+          return val.error ? "" : "loadChart"
+        case "disk_used":
+          this.diskErr = val.error || ""
+          return val.error ? "" : "diskChart"
+        case "disk_inode_total":
+        case "disk_inode_usage":
+        case "disk_inode_utilisation":
+          this.inodeErr = val.error || ""
+          return val.error ? "" : "inodeChart"
+        case "disk_read_iops":
+        case "disk_write_iops":
+          this.iopsErr = val.error || ""
+          return val.error ? "" : "diskIopsChart"
+        case "disk_read_throughput":
+        case "disk_write_throughput":
+          this.diskRWErr = val.error || ""
+          return val.error ? "" : "diskRwChart"
+        case "net_bytes_transmitted":
+        case "net_bytes_received":
+          this.netErr = val.error || ""
+          return val.error ? "" : "netChart"
+      }
+    },
+    loadInfo(val) {
+      switch (val) {
+        case "cpu_used":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.cpu_usage"),
+            tipTitle: this.$t("cluster.detail.monitor.usage"),
+            formatStr: "%",
+          }
+        case "memory_used":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.memory_usage"),
+            tipTitle: this.$t("cluster.detail.monitor.usage"),
+            formatStr: "%",
+          }
+        case "load1":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.cpu_avg_load"),
+            tipTitle: "1 " + this.$t("cluster.detail.monitor.minute"),
+            formatStr: "",
+          }
+        case "load5":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.cpu_avg_load"),
+            tipTitle: "5 " + this.$t("cluster.detail.monitor.minutes"),
+            formatStr: "",
+          }
+        case "load15":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.cpu_avg_load"),
+            tipTitle: "15 " + this.$t("cluster.detail.monitor.minutes"),
+            formatStr: "",
+          }
+        case "disk_used":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.disk_usage"),
+            tipTitle: this.$t("cluster.detail.monitor.usage"),
+            formatStr: "Gi",
+          }
+        case "disk_inode_utilisation":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.inode_usage"),
+            tipTitle: this.$t("cluster.detail.monitor.usage"),
+            formatStr: "%",
+          }
+        case "disk_read_throughput":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.disk_transfer"),
+            tipTitle: this.$t("cluster.detail.monitor.read"),
+            formatStr: "Mb/s",
+          }
+        case "disk_write_throughput":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.disk_transfer"),
+            tipTitle: this.$t("cluster.detail.monitor.write"),
+            formatStr: "Mb/s",
+          }
+        case "disk_read_iops":
+          return {
+            yTitle: "IOPS",
+            tipTitle: this.$t("cluster.detail.monitor.read"),
+            formatStr: "",
+          }
+        case "disk_write_iops":
+          return {
+            yTitle: "IOPS",
+            tipTitle: this.$t("cluster.detail.monitor.write"),
+            formatStr: "",
+          }
+        case "net_bytes_transmitted":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.net_transfer"),
+            tipTitle: this.$t("cluster.detail.monitor.out"),
+            formatStr: "Mbps",
+          }
+        case "net_bytes_received":
+          return {
+            yTitle: this.$t("cluster.detail.monitor.net_transfer"),
+            tipTitle: this.$t("cluster.detail.monitor.in"),
+            formatStr: "Mbps",
+          }
+      }
+    },
+
+    initCharts(chartName, legendDatas, xDatas, yDatas, yTitle, formatStr) {
       const lineChart = echarts.init(document.getElementById(chartName))
       const option = {
         title: [
           {
             left: "center",
-            text: title,
+            text: yTitle,
           },
         ],
         tooltip: {
@@ -340,44 +464,70 @@ export default {
             align: "left",
           },
         },
+        legend: {
+          data: legendDatas,
+          right: 10,
+        },
         xAxis: [
           {
+            type: "category",
+            boundaryGap: false,
             data: xDatas,
-            gridIndex: 1,
           },
         ],
         yAxis: [
           {
+            type: "value",
             axisLabel: { formatter: "{value} " + formatStr },
-            gridIndex: 1,
           },
         ],
-        grid: [{ bottom: "60%" }, { left: "20%" }, { top: "15%" }],
+        grid: [{ bottom: "10%" }, { left: "10%" }, { top: "0" }],
         series: yDatas,
       }
       lineChart.setOption(option, true)
     },
-    addSeries(datas, name) {
+    addSeries(datas, name, color) {
       return {
         name: name,
         type: "line",
-        smooth: true,
-        showSymbol: true,
-        areaStyle: {},
+        showSymbol: false,
         data: datas,
+        itemStyle: {
+          color: color,
+        },
+        areaStyle: {
+          color: "#ebdee3",
+        },
       }
     },
   },
   mounted() {
     this.clusterName = this.$route.params.name
+    this.loadNodes()
     listTool(this.clusterName).then((data) => {
       for (const tool of data) {
-        if (tool.name === "prometheus") {
-          this.startDate = new Date(tool.updatedAt).getTime()
+        if (tool.name === "prometheus" && tool.status === "Running") {
+          this.hasPrometheus = 'true'
+          break
+        }
+      }
+      if (this.hasPrometheus === 'true') {
+        let now = new Date()
+        this.timeRange = [new Date(now.setHours(now.getHours() - 2)), new Date()]
+        this.search()
+
+        window.onresize = () => {
+          echarts.init(document.getElementById("cpuChart")).resize()
+          echarts.init(document.getElementById("memoryChart")).resize()
+          echarts.init(document.getElementById("loadChart")).resize()
+          echarts.init(document.getElementById("diskChart")).resize()
+          echarts.init(document.getElementById("inodeChart")).resize()
+          echarts.init(document.getElementById("diskIopsChart")).resize()
+          echarts.init(document.getElementById("diskRwChart")).resize()
+          echarts.init(document.getElementById("netChart")).resize()
         }
       }
     })
-    this.search()
   },
 }
 </script>

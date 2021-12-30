@@ -7,7 +7,7 @@
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/namespace'">{{$t('cluster.detail.tag.namespace')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/storage'">{{$t('cluster.detail.tag.storage')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/event'">{{$t('cluster.detail.tag.event')}}</el-menu-item>
-        <el-menu-item v-if="isPrometheusOn" :index="'/clusters/detail/'+project+'/'+name+'/monitor'">
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/monitor'">
           {{$t('cluster.detail.tag.monitor')}}
         </el-menu-item>
         <el-menu-item v-if="isLoggingOn" :index="'/clusters/detail/'+project+'/'+name+'/logging'">{{$t('cluster.detail.tag.log')}}
@@ -45,7 +45,6 @@ export default {
     return {
       isLokiOn: null,
       isLoggingOn: null,
-      isPrometheusOn: null,
       hasLicense: null,
       arch: null,
       loading: false,
@@ -71,9 +70,6 @@ export default {
           }
           if (item.name === "loki") {
             this.isLokiOn = item.status === "Running"
-          }
-          if (item.name === "prometheus") {
-            this.isPrometheusOn = item.status === "Running"
           }
         })
       })
