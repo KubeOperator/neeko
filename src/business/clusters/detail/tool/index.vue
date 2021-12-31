@@ -360,8 +360,8 @@ export default {
     },
     openFrame(item) {
       if (item.proxyType === "nodeport") {
-        getNodePort(this.clusterName, item.vars["namespace"], item.name, item.version).then((data) => {
-          window.open("http://" + this.currentCluster.spec.kubeRouter + ":" + data.nodePort, "_blank")
+        getNodePort(this.clusterName, item.name).then((endPoint) => {
+          window.open(endPoint, "_blank")
         })
       } else {
         getSecret(this.clusterName).then((data) => {

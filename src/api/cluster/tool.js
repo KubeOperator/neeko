@@ -18,8 +18,8 @@ export function upgradeTool(clusterName, data) {
   return post(`${toolUrl}/upgrade/${clusterName}`, data)
 }
 
-export function getNodePort(clusterName, namespace, toolName, toolVersion) {
-  return get(`${toolUrl}/port/${clusterName}/${namespace}/${toolName}/${toolVersion}`)
+export function getNodePort(clusterName, toolName) {
+  return get(`${toolUrl}/port/${clusterName}/${toolName}`)
 }
 
 export function syncTool(clusterName, data) {
