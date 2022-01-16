@@ -36,7 +36,7 @@
             <template v-slot:default="{ row }">{{ row.gpuNum }}</template>
           </el-table-column>
           <el-table-column :label="$t('host.os')">
-            <template v-slot:default="{ row }">{{ row.os }}{{ row.osVersion }}</template>
+            <template v-slot:default="{ row }">{{ row.os }} {{ row.osVersion }}</template>
           </el-table-column>
         </complex-table>
       </el-tab-pane>

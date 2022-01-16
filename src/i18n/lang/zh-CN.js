@@ -935,7 +935,7 @@ const message = {
     license: "许可证",
     apply_licensee: "申请许可证",
     message: "消息",
-    credential: "凭证",
+    credential: "凭据",
     ntpServer: "NTP服务器",
     table: {
       registry: {
@@ -1000,8 +1000,8 @@ const message = {
     option: {
       addRegistry: "添加仓库",
       editRegistry: "编辑仓库",
-      addCredential: "添加SSH凭证",
-      editCredential: "编辑SSH凭证",
+      addCredential: "添加 SSH 凭据",
+      editCredential: "编辑 SSH 凭据",
       addLicense: "添加许可"
     },
     helpInfo: {
