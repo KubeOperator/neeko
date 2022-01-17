@@ -55,7 +55,7 @@
         <strong>{{ $t("commons.personal.version") }}: v3.7.0</strong>
       </div>
       <div style="padding:15px 20px;box-shadow:0px -10px 8px -5px #F0F1F2;">
-        <el-row style="font-size: 6px;color: #242e42;text-align: center">
+        <el-row style="color: #242e42;text-align: center">
           <el-col :span="6">
             <el-link @click="toGithub" class="iconfont iconhuaban88"><span>{{
                 $t("commons.personal.project_url")
@@ -174,7 +174,6 @@ export default {
     },
   },
   created() {
-    console.log(store.getters.theme)
     if (store.getters.theme) {
       this.systemName = store.getters.theme.systemName
       this.logoAbout = store.getters.theme.logoAbout
