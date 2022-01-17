@@ -22,6 +22,8 @@ const message = {
       save: "保存",
       delete: "删除",
       import: "导入",
+      watch: "追踪",
+      pause: "暂停",
       batch_import: "批量导入",
       upgrade: "升级",
       check: "诊断",
@@ -517,7 +519,7 @@ const message = {
         },
       },
       monitor: {
-        monitor_help: "Prometheus 服务未启用，请先在集群工具列表中启用 Prometheus",
+        monitor_help: "监控服务未启用，请先在集群工具列表中启用 Prometheus",
         usage: "用量",
         cpu_usage: "CPU 用量",
         cpu_avg_load: "CPU 平均负载",
@@ -549,6 +551,7 @@ const message = {
         disable_npd_success: "NPD 禁用成功",
       },
       log: {
+        log_help: "日志服务未启用，请先在集群工具列表中启用 Logging 或 Loki",
         time: "时间",
         msg_info: "消息内容",
         monitor_node: "监控节点",

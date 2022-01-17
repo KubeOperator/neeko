@@ -22,6 +22,8 @@ const message = {
       save: "Save",
       delete: "Delete",
       import: "Import",
+      watch: "Watch",
+      pause: "Pause",
       batch_import: "Batch Import",
       upgrade: "Upgrade",
       check: "Diagnostic",
@@ -518,6 +520,7 @@ const message = {
         },
       },
       monitor: {
+        monitor_help: "The monitor service is not available, enable Prometheus in the cluster tool list",
         usage: "Usage",
         cpu_usage: "CPU Usage",
         cpu_avg_load: "Average CPU Load",
@@ -549,6 +552,7 @@ const message = {
         disable_npd_success: "NPD Successfully disabled",
       },
       log: {
+        log_help: "The log service is not available, enable Logging or Loki in the cluster tool list",
         time: "Time",
         msg_info: "Message Content",
         monitor_node: "Monitoring Node",
