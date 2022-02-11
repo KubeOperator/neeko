@@ -323,7 +323,6 @@ export default {
       nodes: [],
       nodeNum: 0,
       storages: [],
-      loadMenu: false,
       syncStatus: false,
       timer: null,
     }
@@ -340,13 +339,7 @@ export default {
           const currentLanguage = this.$store.getters.language || "zh-CN"
           this.loading = false
           this.tools = data
-          const needLoad = ["Initializing", "Terminating", "Upgrading"]
           for (const to of this.tools) {
-            if (to.name === "logging" || to.name === "loki" || to.name === "prometheus") {
-              if (needLoad.indexOf(to.status) !== -1) {
-                this.loadMenu = true
-              }
-            }
             if (currentLanguage == "en-US") {
               to.describeInfo = to.describe.split("|")[1]
             } else {
@@ -417,7 +410,6 @@ export default {
     enable() {
       this.$refs["toolForm"].validate((valid) => {
         if (valid && this.isPasswordValid && this.isReplicasValid) {
-          this.loadMenu = this.toolForm.name === "logging" || this.toolForm.name === "loki" || this.toolForm.name === "prometheus"
           changeUnderLineToPoint(this.toolForm.vars)
           enableTool(this.clusterName, this.toolForm).then(() => {
             this.dialogEnableVisible = false
@@ -447,13 +439,11 @@ export default {
     },
     disable(item, status) {
       if (status === "Running") {
-        this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
         disableTool(this.clusterName, item).then(() => {
           this.dialogDisableVisible = false
           this.search()
         })
       } else {
-        this.loadMenu = item.name === "logging" || item.name === "loki" || item.name === "prometheus"
         disableTool(this.clusterName, item).then(() => {
           this.dialogErrorVisible = false
           this.search()
@@ -512,7 +502,6 @@ export default {
           }
           this.syncStatus = false
           this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-          window.location.reload()
         })
         .catch(() => {
           this.syncStatus = false
@@ -540,11 +529,6 @@ export default {
               }
             }
           })
-        } else {
-          if (this.loadMenu) {
-            window.location.reload()
-          }
-          this.loadMenu = false
         }
       }, 10000)
     },

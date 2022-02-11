@@ -16,6 +16,15 @@
           <el-option v-for="(step, index) in stepOptions" :key="index" :label="step.label" :value="step.value"></el-option>
         </el-select>
       </el-form-item>
+      <el-tooltip :content="$t('commons.button.refresh')" placement="top" effect="light">
+        <el-button :disabled="hasPrometheus === 'false'" icon="el-icon-refresh" @click="search"></el-button>
+      </el-tooltip>
+      <el-tooltip v-if="keepPoll" :content="$t('commons.button.watch')" placement="top" effect="light">
+        <el-button :disabled="hasPrometheus === 'false'" icon="el-icon-video-play" @click="keepPoll === true"></el-button>
+      </el-tooltip>
+      <el-tooltip v-else :content="$t('commons.button.pause')" placement="top" effect="light">
+        <el-button :disabled="hasPrometheus === 'false'" icon="el-icon-video-pause" @click="keepPoll === false"></el-button>
+      </el-tooltip>
     </el-form>
     <el-alert v-if="hasPrometheus === 'false'">
       <el-button type="text" icon="el-icon-setting" @click="toTools">{{ $t("cluster.detail.monitor.monitor_help") }}</el-button>
@@ -113,6 +122,7 @@ export default {
       iopsErr: "",
       netErr: "",
       diskRWErr: "",
+      keepPoll: true,
       stepOptions: [
         { label: "1 " + this.$t("cluster.detail.monitor.minute"), value: 1 },
         { label: "2 " + this.$t("cluster.detail.monitor.minutes"), value: 2 },
@@ -500,6 +510,16 @@ export default {
         },
       }
     },
+    polling() {
+      this.timer = setInterval(() => {
+        if (this.hasPrometheus === 'false') {
+          return
+        }
+        if(this.keepPoll) {
+          this.search()
+        }
+      }, 10000)
+    },
   },
   mounted() {
     this.clusterName = this.$route.params.name
@@ -511,6 +531,7 @@ export default {
           break
         }
       }
+      this.hasPrometheus = this.hasPrometheus ? "true" : "false"
       if (this.hasPrometheus === 'true') {
         let now = new Date()
         this.timeRange = [new Date(now.setHours(now.getHours() - 2)), new Date()]
@@ -528,6 +549,10 @@ export default {
         }
       }
     })
+  },
+  destroyed() {
+    clearInterval(this.timer)
+    this.timer = null
   },
 }
 </script>

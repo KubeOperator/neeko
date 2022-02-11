@@ -34,7 +34,7 @@ import ComplexTable from "@/components/complex-table"
 import { LokiLabels, LokiLabelValues, LokiSearch } from "@/api/cluster/log"
 
 export default {
-  name: "ClusterLoki",
+  name: "Loki",
   components: { ComplexTable },
   data() {
     return {

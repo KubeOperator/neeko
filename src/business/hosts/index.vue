@@ -43,8 +43,7 @@
           <svg v-if="row.os === 'Kylin' || row.os === 'Kylin Linux Advanced Server'" class="icon" aria-hidden="true">
             <use xlink:href="#iconqilin"></use>
           </svg>
-          <span v-if="row.os === 'Kylin' ||  row.os === 'Kylin Linux Advanced Server'"> Kylin {{ row['osVersion'] }}</span>
-          <span v-else> {{ row.os }} {{ row['osVersion'] }}</span>
+          <span> {{ row.os }} {{ row['osVersion'] }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />

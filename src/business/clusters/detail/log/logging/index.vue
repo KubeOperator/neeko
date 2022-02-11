@@ -76,7 +76,7 @@ const CustomSearchComponent = {
 }
 
 export default {
-  name: "ClusterLogging",
+  name: "Logging",
   components: { CustomSearchComponent, ComplexTable },
   data() {
     return {

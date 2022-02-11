@@ -7,13 +7,8 @@
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/namespace'">{{$t('cluster.detail.tag.namespace')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/storage'">{{$t('cluster.detail.tag.storage')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/event'">{{$t('cluster.detail.tag.event')}}</el-menu-item>
-        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/monitor'">
-          {{$t('cluster.detail.tag.monitor')}}
-        </el-menu-item>
-        <el-menu-item v-if="isLoggingOn" :index="'/clusters/detail/'+project+'/'+name+'/logging'">{{$t('cluster.detail.tag.log')}}
-        </el-menu-item>
-        <el-menu-item v-if="isLokiOn" :index="'/clusters/detail/'+project+'/'+name+'/loki'">{{$t('cluster.detail.tag.log')}}
-        </el-menu-item>
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/monitor'">{{$t('cluster.detail.tag.monitor')}}</el-menu-item>
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/log'">{{$t('cluster.detail.tag.log')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/tool'">{{$t('cluster.detail.tag.tool')}}</el-menu-item>
         <el-menu-item v-if="arch === 'amd64'" :index="'/clusters/detail/'+project+'/'+name+'/istio'">Istio</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.tag.backup')}}</el-menu-item>
@@ -34,7 +29,6 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listTool } from "@/api/cluster/tool"
 import { getClusterByName } from "@/api/cluster"
 
 export default {
@@ -43,8 +37,6 @@ export default {
   components: { LayoutContent },
   data() {
     return {
-      isLokiOn: null,
-      isLoggingOn: null,
       hasLicense: null,
       arch: null,
       loading: false,
@@ -63,16 +55,6 @@ export default {
         .catch(() => {
           this.loading = false
         })
-      listTool(this.$route.params.name).then((data) => {
-        data.forEach((item) => {
-          if (item.name === "logging") {
-            this.isLoggingOn = item.status === "Running"
-          }
-          if (item.name === "loki") {
-            this.isLokiOn = item.status === "Running"
-          }
-        })
-      })
     },
   },
   mounted() {
