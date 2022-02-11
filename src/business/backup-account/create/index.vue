@@ -15,10 +15,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey" prop="credentialVars.accessKey">
+            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3' || form.type === 'MINIO' "  label="AccessKey" prop="credentialVars.accessKey">
               <el-input v-model="form.credentialVars['accessKey']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="SecretKey" prop="credentialVars.secretKey">
+            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3' || form.type === 'MINIO' " label="SecretKey" prop="credentialVars.secretKey">
               <el-input type="password" v-model="form.credentialVars['secretKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')" prop="credentialVars.accountName">
@@ -135,6 +135,9 @@ export default {
         },
         {
           value: "SFTP",
+        },
+        {
+          value: "MINIO",
         },
         {
           label: "Azure",

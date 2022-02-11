@@ -6,6 +6,13 @@
   "description": "KubeOperator UI",
   "glyphs": [
     {
+      "icon_id": "20290513",
+      "name": "minio",
+      "font_class": "minio",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
       "icon_id": "13086037",
       "name": "麒麟",
       "font_class": "qilin",
