@@ -4,6 +4,9 @@ const fileUrl = "/api/v1/clusters/backup/files"
 const logUrl = "/api/v1/clusters/log"
 const strategyUrl = "/api/v1/clusters/backup/strategy"
 const clusterUrl = "/api/v1/clusters/backupaccounts"
+const VeleroUrl = "/api/v1/clusters/backup/velero"
+
+
 
 export function listBackupByPage (clusterName, page, size) {
   const itemUrl = `${fileUrl}?pageNum=${page}&pageSize=${size}&clusterName=${clusterName}`
@@ -45,4 +48,16 @@ export function listBackupAccounts (name) {
 
 export function deleteBackupFile(name) {
   return del(`${fileUrl}/${name}`)
+}
+
+export function getVeleroBackups(name) {
+  return get(`${VeleroUrl}/${name}`)
+}
+
+export function getVeleroBackupDescribe(name,backup){
+  return get(`${VeleroUrl}/${name}/describe?backupName=${backup}`)
+}
+
+export function getVeleroBackupLogs(name,backup){
+  return get(`${VeleroUrl}/${name}/logs?backupName=${backup}`)
 }

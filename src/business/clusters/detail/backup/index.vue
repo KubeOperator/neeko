@@ -152,6 +152,10 @@
           </el-table-column>
         </complex-table>
       </el-tab-pane>
+
+      <el-tab-pane :label="$t('cluster.detail.backup.velero_backup')" :name="$t('cluster.detail.backup.velero_backup')">
+        <velero-backup></velero-backup>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -171,10 +175,11 @@ import {
   deleteBackupFile
 } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
+import VeleroBackup from "@/business/clusters/detail/backup/velero_backup"
 
 export default {
   name: "ClusterBackup",
-  components: { ComplexTable },
+  components: { VeleroBackup, ComplexTable },
   data () {
     return {
       loading: false,
@@ -219,7 +224,7 @@ export default {
             this.paginationConfig.total = data.total
           }
         })
-      } else {
+      } else if (this.activeName === this.$t("cluster.detail.backup.backup_log")) {
         this.logLoading = true
         getBackupLog(this.clusterName)
           .then((data) => {

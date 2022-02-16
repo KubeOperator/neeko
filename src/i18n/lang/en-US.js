@@ -628,7 +628,12 @@ const message = {
         restore_message: "Make sure to use this backup file to restore？",
         FAILED: "Failed",
         detail: "Detail",
-        backup_help: "If the number of retained copies is exceeded, the oldest backup file will be deleted"
+        backup_help: "If the number of retained copies is exceeded, the oldest backup file will be deleted",
+        velero_backup: "Velero Backup",
+        velero_restore: "Velero Restore",
+        velero_describe: "Describe",
+        velero_log: "Log",
+        velero_detail: "Detail",
       },
       security: {
         start_time: "Starting Time",

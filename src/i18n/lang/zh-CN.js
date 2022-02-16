@@ -627,7 +627,12 @@ const message = {
         restore_message: "确定用此备份文件恢复？",
         FAILED: "失败",
         detail: "详情",
-        backup_help: "超过保留份数,时间最早的备份文件会被删除"
+        backup_help: "超过保留份数,时间最早的备份文件会被删除",
+        velero_backup: "Velero 备份",
+        velero_restore: "Velero 恢复",
+        velero_describe: "描述",
+        velero_log: "日志",
+        velero_detail: "详情",
       },
       security: {
         start_time: "开始时间",
