@@ -61,3 +61,7 @@ export function getVeleroBackupDescribe(name,backup){
 export function getVeleroBackupLogs(name,backup){
   return get(`${VeleroUrl}/${name}/logs?backupName=${backup}`)
 }
+
+export function createVeleroBackup(name,item) {
+  return post(`${VeleroUrl}/${name}/create`,item)
+}
