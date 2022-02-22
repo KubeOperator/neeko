@@ -4,7 +4,7 @@ const fileUrl = "/api/v1/clusters/backup/files"
 const logUrl = "/api/v1/clusters/log"
 const strategyUrl = "/api/v1/clusters/backup/strategy"
 const clusterUrl = "/api/v1/clusters/backupaccounts"
-const VeleroUrl = "/api/v1/clusters/backup/velero"
+const VeleroUrl = "/api/v1/clusters/velero"
 
 
 
@@ -50,26 +50,38 @@ export function deleteBackupFile(name) {
   return del(`${fileUrl}/${name}`)
 }
 
-export function getVeleroBackups(name) {
-  return get(`${VeleroUrl}/${name}`)
+export function getVeleroBackups(cluster) {
+  return get(`${VeleroUrl}/${cluster}/backup`)
 }
 
-export function getVeleroBackupDescribe(name,backup){
-  return get(`${VeleroUrl}/${name}/describe?backupName=${backup}`)
+export function getVeleroBackupDescribe(cluster,backup){
+  return get(`${VeleroUrl}/${cluster}/backup/describe?name=${backup}`)
 }
 
-export function getVeleroBackupLogs(name,backup){
-  return get(`${VeleroUrl}/${name}/logs?backupName=${backup}`)
+export function getVeleroBackupLogs(cluster,backup){
+  return get(`${VeleroUrl}/${cluster}/backup/logs?name=${backup}`)
 }
 
-export function createVeleroBackup(name,item) {
-  return post(`${VeleroUrl}/${name}/create`,item)
+export function createVeleroBackup(cluster,item) {
+  return post(`${VeleroUrl}/${cluster}/backup/create`,item)
 }
 
-export function getVeleroSchedules(name) {
-  return get(`${VeleroUrl}/${name}/schedules`)
+export function deleteVeleroBackup(cluster,backup) {
+  return del(`${VeleroUrl}/${cluster}/backup/del?name=${backup}`)
 }
 
-export function getVeleroScheduleDescribe(name,scheduleName){
-  return get(`${VeleroUrl}/${name}/schedule/describe?scheduleName=${scheduleName}`)
+export function getVeleroSchedules(cluster) {
+  return get(`${VeleroUrl}/${cluster}/schedule`)
+}
+
+export function getVeleroScheduleDescribe(cluster,scheduleName){
+  return get(`${VeleroUrl}/${cluster}/schedule/describe?name=${scheduleName}`)
+}
+
+export function delVeleroSchedule(cluster,scheduleName) {
+  return del(`${VeleroUrl}/${cluster}/schedule/del?name=${scheduleName}`)
+}
+
+export function createVeleroSchedule(cluster,item) {
+  return post(`${VeleroUrl}/${cluster}/schedule/create`,item)
 }

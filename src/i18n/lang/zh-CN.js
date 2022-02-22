@@ -649,6 +649,8 @@ const message = {
         velero_list: "备份列表",
         velero_schedule: "Velero 任务",
         velero_schedule_list: "任务列表",
+        velero_schedule_cycle:"周期",
+        velero_schedule_help: "每天3点创建备份"
       },
       security: {
         start_time: "开始时间",

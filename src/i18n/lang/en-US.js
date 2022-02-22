@@ -648,6 +648,10 @@ const message = {
         velero_type_schedule: "Scheduled",
         velero_help: "If none of the following items are filled in, it will be a full backup",
         velero_list: "Backup List",
+        velero_schedule: "Velero Schedule",
+        velero_schedule_list: "Schedule List",
+        velero_schedule_cycle:"Cycle",
+        velero_schedule_help: "Create a backup every day at 3 am"
       },
       security: {
         start_time: "Starting Time",

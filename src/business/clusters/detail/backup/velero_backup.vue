@@ -35,6 +35,7 @@
             </el-link>
           </template>
         </el-table-column>
+        <fu-table-operations  fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
       </complex-table>
     </el-row>
     <div>
@@ -59,6 +60,9 @@
               <el-option :value="'Normal'" :label="$t('cluster.detail.backup.velero_type_normal')"></el-option>
               <el-option :value="'Schedule'" :label="$t('cluster.detail.backup.velero_type_schedule')"></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.backup.velero_schedule_cycle')" prop="schedule" v-if="form.type==='Schedule'">
+            <el-input v-model="form.schedule" :placeholder="'eg: 0 3 * * * ('+ $t('cluster.detail.backup.velero_schedule_help')+')'" ></el-input>
           </el-form-item>
           <el-divider>{{ $t("cluster.detail.backup.velero_help") }}</el-divider>
           <el-form-item :label="$t('cluster.detail.backup.velero_namespace_include')" prop="includeNamespaces">
@@ -105,7 +109,13 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {createVeleroBackup, getVeleroBackupDescribe, getVeleroBackupLogs, getVeleroBackups} from "@/api/cluster/backup"
+import {
+  createVeleroBackup, createVeleroSchedule,
+  deleteVeleroBackup,
+  getVeleroBackupDescribe,
+  getVeleroBackupLogs,
+  getVeleroBackups
+} from "@/api/cluster/backup"
 import {listNamespace} from "@/api/cluster/namespace"
 import Rule from "@/utils/rules"
 
@@ -126,12 +136,22 @@ export default {
       rules: {
         name: [Rule.NameRule],
         type: [Rule.RequiredRule],
+        schedule: [Rule.RequiredRule],
       },
       ttls: [
         { key: "7 days", value: "168h0m0s" },
         { key: "30 days", value: "720h0m0s" },
         { key: "60 days", value: "1440h0m0s" },
         { key: "90 days", value: "2160h0m0s" },
+      ],
+      buttons:[
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.onDelete(row.metadata.name)
+          },
+        },
       ]
     }
   },
@@ -167,7 +187,13 @@ export default {
     },
     submit () {
       this.loading = true
-      createVeleroBackup(this.clusterName, this.form).then(() => {
+      const ps = []
+      if (this.form.type === 'Normal'){
+        ps.push(createVeleroBackup(this.clusterName, this.form))
+      }else {
+        ps.push(createVeleroSchedule(this.clusterName, this.form))
+      }
+      Promise.all(ps).then(() => {
         this.$message({
           type: "success",
           message: this.$t("commons.msg.create_success"),
@@ -177,6 +203,21 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    onDelete(name) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        deleteVeleroBackup(this.clusterName,name).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.search()
+        })
+      })
     }
   },
   created () {

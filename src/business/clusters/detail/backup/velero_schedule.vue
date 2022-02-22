@@ -25,6 +25,7 @@
             </el-link>
           </template>
         </el-table-column>
+        <fu-table-operations  fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
       </complex-table>
       <div>
         <el-dialog :title="$t('cluster.detail.backup.velero_detail')" width="80%" :visible.sync="openDetail">
@@ -41,7 +42,11 @@
 </template>
 
 <script>
-import {getVeleroScheduleDescribe, getVeleroSchedules} from "@/api/cluster/backup"
+import {
+  delVeleroSchedule,
+  getVeleroScheduleDescribe,
+  getVeleroSchedules
+} from "@/api/cluster/backup"
 import ComplexTable from "@/components/complex-table"
 
 export default {
@@ -52,7 +57,16 @@ export default {
     return {
       openDetail: false,
       detail: "",
-      items:[]
+      items:[],
+      buttons:[
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.onDelete(row.metadata.name)
+          },
+        },
+      ]
     }
   },
   methods: {
@@ -69,6 +83,21 @@ export default {
       getVeleroScheduleDescribe(this.clusterName,name).then(res => {
         this.detail = res
         this.openDetail = true
+      })
+    },
+    onDelete(name) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        delVeleroSchedule(this.clusterName,name).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.search()
+        })
       })
     }
   },
