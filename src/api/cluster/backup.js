@@ -65,3 +65,11 @@ export function getVeleroBackupLogs(name,backup){
 export function createVeleroBackup(name,item) {
   return post(`${VeleroUrl}/${name}/create`,item)
 }
+
+export function getVeleroSchedules(name) {
+  return get(`${VeleroUrl}/${name}/schedules`)
+}
+
+export function getVeleroScheduleDescribe(name,scheduleName){
+  return get(`${VeleroUrl}/${name}/schedule/describe?scheduleName=${scheduleName}`)
+}

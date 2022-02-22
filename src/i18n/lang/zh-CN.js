@@ -646,7 +646,9 @@ const message = {
         velero_type_normal: "手动",
         velero_type_schedule: "定时",
         velero_help: "以下项目如果全不填,则为全量备份",
-        velero_list: "备份列表"
+        velero_list: "备份列表",
+        velero_schedule: "Velero 任务",
+        velero_schedule_list: "任务列表",
       },
       security: {
         start_time: "开始时间",

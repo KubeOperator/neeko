@@ -6,18 +6,6 @@
         <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{ $t("commons.button.create") }}</el-button>
       </el-button-group>
       <complex-table  :data="items" >
-<!--        <template #toolbar>-->
-<!--          <el-button-group>-->
-<!--            <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{ $t("commons.button.create") }}-->
-<!--            </el-button>-->
-<!--            &lt;!&ndash;            <el-button size="small" @click="del()" v-permission="['ADMIN']" :disabled="selects.length===0">&ndash;&gt;-->
-<!--            &lt;!&ndash;              {{ $t("commons.button.delete") }}&ndash;&gt;-->
-<!--            &lt;!&ndash;            </el-button>&ndash;&gt;-->
-<!--            &lt;!&ndash;            <el-button size="small" @click="onGrant()">&ndash;&gt;-->
-<!--            &lt;!&ndash;              {{ $t("commons.button.authorize") }}&ndash;&gt;-->
-<!--            &lt;!&ndash;            </el-button>&ndash;&gt;-->
-<!--          </el-button-group>-->
-<!--        </template>-->
         <el-table-column :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
@@ -149,8 +137,13 @@ export default {
   },
   methods: {
     search () {
+      this.items = []
       getVeleroBackups(this.clusterName).then(res => {
-        this.items = res.items
+        if (res.kind === 'BackupList') {
+          this.items = res.items
+        }else {
+          this.items.push(res)
+        }
       })
     },
     getVeleroDescribe (backupName) {
