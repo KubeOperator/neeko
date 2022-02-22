@@ -159,6 +159,9 @@
       <el-tab-pane :label="$t('cluster.detail.backup.velero_schedule')" :name="$t('cluster.detail.backup.velero_schedule')">
         <velero-schedule></velero-schedule>
       </el-tab-pane>
+      <el-tab-pane :label="$t('cluster.detail.backup.velero_restore')" :name="$t('cluster.detail.backup.velero_restore')">
+        <velero-restore></velero-restore>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -180,10 +183,11 @@ import {
 import Rule from "@/utils/rules"
 import VeleroBackup from "@/business/clusters/detail/backup/velero_backup"
 import VeleroSchedule from "@/business/clusters/detail/backup/velero_schedule"
+import VeleroRestore from "@/business/clusters/detail/backup/velero_restore"
 
 export default {
   name: "ClusterBackup",
-  components: { VeleroSchedule, VeleroBackup, ComplexTable },
+  components: { VeleroRestore, VeleroSchedule, VeleroBackup, ComplexTable },
   data () {
     return {
       loading: false,

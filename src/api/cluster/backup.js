@@ -85,3 +85,24 @@ export function delVeleroSchedule(cluster,scheduleName) {
 export function createVeleroSchedule(cluster,item) {
   return post(`${VeleroUrl}/${cluster}/schedule/create`,item)
 }
+
+export function getRestores(cluster){
+  return get(`${VeleroUrl}/${cluster}/restore`)
+}
+
+export function getVeleroRestoreDescribe(cluster,restore){
+  return get(`${VeleroUrl}/${cluster}/restore/describe?name=${restore}`)
+}
+
+export function getVeleroRestoreLogs(cluster,restore){
+  return get(`${VeleroUrl}/${cluster}/restore/logs?name=${restore}`)
+}
+
+export function delVeleroRestore(cluster,restore) {
+  return del(`${VeleroUrl}/${cluster}/restore/del?name=${restore}`)
+}
+
+export function restore(cluster,item) {
+  return post(`${VeleroUrl}/${cluster}/restore/create`,item)
+}
+

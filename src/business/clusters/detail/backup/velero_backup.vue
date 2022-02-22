@@ -97,6 +97,9 @@
           <el-form-item :label="$t('cluster.detail.backup.velero_backup_Selector')" prop="selector">
             <el-input v-model="form.selector" placeholder="eg: app=nginx,resource=normal"></el-input>
           </el-form-item>
+          <el-form-item :label="$t('cluster.detail.backup.velero_backup_setting')" prop="selector">
+            <el-checkbox v-model="form.includeClusterResources">{{$t('cluster.detail.backup.velero_include_cluster_resource')}}</el-checkbox>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="openCreate = false">{{ $t("commons.button.cancel") }}</el-button>
@@ -114,7 +117,7 @@ import {
   deleteVeleroBackup,
   getVeleroBackupDescribe,
   getVeleroBackupLogs,
-  getVeleroBackups
+  getVeleroBackups, restore
 } from "@/api/cluster/backup"
 import {listNamespace} from "@/api/cluster/namespace"
 import Rule from "@/utils/rules"
@@ -132,7 +135,9 @@ export default {
       detail: "",
       namespaces: [],
       loading: false,
-      form: {},
+      form: {
+        includeClusterResources:true,
+      },
       rules: {
         name: [Rule.NameRule],
         type: [Rule.RequiredRule],
@@ -145,6 +150,13 @@ export default {
         { key: "90 days", value: "2160h0m0s" },
       ],
       buttons:[
+        {
+          label: this.$t("cluster.detail.backup.recover"),
+          icon: "el-icon-refresh-left",
+          click: (row) => {
+            this.onRestore(row.metadata.name)
+          },
+        },
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
@@ -179,7 +191,9 @@ export default {
       })
     },
     onCreate () {
-      this.form = {}
+      this.form = {
+        includeClusterResources:true
+      }
       listNamespace(this.clusterName).then(res => {
         this.namespaces = res.items
       })
@@ -214,6 +228,24 @@ export default {
           this.$message({
             type: "success",
             message: this.$t("commons.msg.delete_success"),
+          })
+          this.search()
+        })
+      })
+    },
+    onRestore(name) {
+      this.$confirm(this.$t("cluster.detail.backup.restore_message"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        const item = {
+          backupName : name
+        }
+        restore(this.clusterName,item).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("cluster.detail.backup.recover_success"),
           })
           this.search()
         })
