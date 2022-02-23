@@ -106,3 +106,10 @@ export function restore(cluster,item) {
   return post(`${VeleroUrl}/${cluster}/restore/create`,item)
 }
 
+export function veleroInstall(cluster,item) {
+  return post(`${VeleroUrl}/${cluster}/velero/install/config`,item)
+}
+
+export function getVeleroConfig(cluster) {
+  return get(`${VeleroUrl}/${cluster}/velero/install/config`)
+}

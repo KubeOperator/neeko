@@ -653,6 +653,7 @@ const message = {
         velero_schedule_list: "任务列表",
         velero_schedule_cycle:"周期",
         velero_schedule_help: "每天3点创建备份",
+        velero_config: "Velero 配置"
       },
       security: {
         start_time: "开始时间",
