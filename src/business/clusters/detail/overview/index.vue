@@ -6,6 +6,7 @@
           <el-card style="height: 350px">
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.base_info')}}</span>
+              <el-button type="text" style="float: right" @click="onOpenDetail">{{$t('commons.button.more_info')}}</el-button>
             </div>
             <div>
               <el-col :span="12">
@@ -92,6 +93,9 @@
         </el-col>
       </el-row>
     </div>
+    <div v-if="dialogDetailVisible">
+      <ko-detail :clusterDetailInfo="currentCluster" @changeVisble="changeVisble" :visible="dialogDetailVisible" />
+    </div>
 
     <el-card style="margin-top: 20px" v-loading="loading_xterm">
       <div slot="header" style="height: 20px">
@@ -101,7 +105,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#iconchuangkou"></use>
             </svg>
-          </el-button>  
+          </el-button>
         </el-tooltip>
         <el-button v-if="currentCluster.source!=='external'" icon="el-icon-document" @click="downloadKubeConfig()" style="float: right; margin-right: 10px">{{$t('cluster.detail.overview.download_kube_config')}}</el-button>
       </div>
@@ -117,12 +121,15 @@ import { listPod, listDeployment, getClusterToken } from "@/api/cluster/cluster"
 import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { getClusterByName } from "@/api/cluster"
+import KoDetail from "./ko-detail.vue"
 
 export default {
   name: "ClusterOverview",
+  components: { KoDetail },
   data() {
     return {
       loading_xterm: false,
+      dialogDetailVisible: false,
       clusterName: "",
       currentCluster: {
         name: "",
@@ -175,8 +182,14 @@ export default {
         this.loading_xterm = false
       })
     },
+    changeVisble(val) {
+      this.dialogDetailVisible = val
+    },
+    onOpenDetail() {
+      this.dialogDetailVisible = true
+    },
     newWindow() {
-      this.$refs.iframe.style.display="none";
+      this.$refs.iframe.style.display = "none"
       this.opened = false
       getClusterToken(this.clusterName).then((data) => {
         this.url = `/webkubectl/terminal/?token=${data.token}`

@@ -56,7 +56,8 @@ const message = {
       active: "激活",
       cordon: "驱散",
       log: "日志",
-      dashboard: "控制台"
+      dashboard: "控制台",
+      more_info: "更多信息",
     },
     msg: {
       success: "{0}成功",
@@ -220,6 +221,7 @@ const message = {
       name_type: "节点命名规则",
       name_type_default_help: "节点命名将以 k8s-master-1 形式",
       name_type_ip_help: "节点将直接以 ip 命名",
+      name_type_host_help: "节点将以主机列表中主机名称命名",
       name: "名称",
       name_check: "校验中",
       name_help: "最大长度为 50，小写字母开始，数字或字母结束，支持小写字母、数字、以及-",

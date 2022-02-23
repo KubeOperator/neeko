@@ -55,7 +55,8 @@ const message = {
       cordon: "Cordon",
       uncordon: "Resume to disperse",
       log: "Log",
-      dashboard: "dashboard"
+      dashboard: "dashboard",
+      more_info: "More"
     },
     msg: {
       success: "{0} success",
@@ -218,8 +219,9 @@ const message = {
       step1: "Cluster Information",
       name: "Name",
       name_type: "Node naming rules",
-      name_type_default_help: "The node name will be k8s-master-1",
+      name_type_default_help: "Nodes will be named as k8s-master-1",
       name_type_ip_help: "Nodes will be named directly as IP",
+      name_type_host_help: "Nodes will named as the hostname in the host list",
       name_check: "Checking",
       name_help: "Maximum length: 50, start with lowercase letters, end with lowercase letters or numbers, support lowercase letters, numbers and-",
       name_invalid_err: "Invalid cluster name",
