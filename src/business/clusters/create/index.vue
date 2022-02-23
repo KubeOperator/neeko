@@ -14,23 +14,26 @@
                         <div v-if="!nameValid"><span class="input-error">{{$t('cluster.creation.name_invalid_err')}}</span></div>
                         <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
                       </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.name_type')" prop="name">
+
+                      <el-form-item :label="$t('cluster.creation.provider')" prop="provider">
+                        <el-select style="width: 100%" v-model="form.provider" @change="changeProvide" clearable>
+                          <el-option value="bareMetal" :label="$t('cluster.creation.provide_bare_metal')">{{$t('cluster.creation.provide_bare_metal')}}</el-option>
+                          <el-option value="plan" :label="$t('cluster.creation.provide_plan')">{{$t('cluster.creation.provide_plan')}}</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.name_type')" prop="nodeNameRule">
                         <el-radio-group v-model="form.nodeNameRule">
                           <el-radio label="default">default</el-radio>
                           <el-radio label="ip">ip</el-radio>
+                          <el-radio v-if="form.provider === 'bareMetal'" label="hostname">hostname</el-radio>
                         </el-radio-group>
                         <div v-if="form.nodeNameRule === 'default'"><span class="input-help">{{$t('cluster.creation.name_type_default_help')}}</span></div>
                         <div v-if="form.nodeNameRule === 'ip'"><span class="input-help">{{$t('cluster.creation.name_type_ip_help')}}</span></div>
+                        <div v-if="form.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('project.project')" prop="projectName">
                         <el-select filterable style="width: 100%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
                           <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
-                        </el-select>
-                      </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.provider')" prop="provider">
-                        <el-select style="width: 100%" v-model="form.provider" clearable>
-                          <el-option value="bareMetal" :label="$t('cluster.creation.provide_bare_metal')">{{$t('cluster.creation.provide_bare_metal')}}</el-option>
-                          <el-option value="plan" :label="$t('cluster.creation.provide_plan')">{{$t('cluster.creation.provide_plan')}}</el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item :label="$t('cluster.creation.version')" prop="version">
@@ -632,9 +635,8 @@ export default {
         helmVersion: [Rule.RequiredRule],
         ingressControllerType: [Rule.RequiredRule],
         plan: [Rule.RequiredRule],
-        workerAmount: [Rule.NumberRule],
+        workerAmount: [Rule.NumberWithZeroRule],
         masters: [Rule.RequiredRule],
-        workers: [Rule.RequiredRule],
         lbMode: [Rule.RequiredRule],
         lbKubeApiserverIp: [Rule.IpRule],
         kubeApiServerPort: [Rule.NumberRule],
@@ -965,6 +967,9 @@ export default {
       } else {
         this.form.kubeServiceSubnet = this.serviceParts[0] + "." + this.serviceParts[1] + "." + this.serviceParts[2] + "." + this.serviceParts[3] + "/" + this.serviceParts[4]
       }
+    },
+    changeProvide() {
+      this.form.nodeNameRule = "default"
     },
     changeArch(type) {
       this.hosts = []

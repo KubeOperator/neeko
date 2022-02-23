@@ -29,11 +29,20 @@ const NameRule = { validator: checkName, required: true, trigger: "blur" }
 const IpRule = { validator: checkIp, required: true, trigger: "blur" }
 const EmailRule = { type: "email", message: i18n.t("commons.validate.email") }
 
-// 中文、大小写英文、数字和-
+// 非零正整数
 const NumberRule = {
   required: true,
   trigger: "blur",
   min: 1,
+  type: "number",
+  message: i18n.t("commons.validate.number_limit")
+}
+
+// 含零正整数
+const NumberWithZeroRule = {
+  required: true,
+  trigger: "blur",
+  min: 0,
   type: "number",
   message: i18n.t("commons.validate.number_limit")
 }
@@ -67,5 +76,5 @@ const LengthRule = {
   trigger: "blur"
 }
 export default {
-  NameRule, RequiredRule, EmailRule, IpRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule, LengthRule
+  NameRule, RequiredRule, EmailRule, IpRule, NumberWithZeroRule, NumberRule, ClusterNameRule, CommonNameRule, PasswordRule, LengthRule
 }
