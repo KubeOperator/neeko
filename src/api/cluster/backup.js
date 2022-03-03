@@ -113,3 +113,7 @@ export function veleroInstall(cluster,item) {
 export function getVeleroConfig(cluster) {
   return get(`${VeleroUrl}/${cluster}/velero/install/config`)
 }
+
+export function veleroUninstall(cluster) {
+  return del(`${VeleroUrl}/${cluster}/velero/uninstall`)
+}
