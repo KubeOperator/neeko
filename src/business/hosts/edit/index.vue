@@ -12,6 +12,16 @@
             <el-form-item label="IP" prop="ip">
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
+
+            <el-form-item>
+              <el-button v-if="!enableFlexIp" @click="enableFlexIp = true" type="text">{{$t("host.enable_flex_ip")}}</el-button>
+              <el-button v-if="enableFlexIp" @click="enableFlexIp = false" type="text">{{$t("host.disable_flex_ip")}}</el-button>
+            </el-form-item>
+
+            <el-form-item v-if="enableFlexIp" :label="$t('host.flex_ip')" prop="flexIp">
+              <el-input v-model="form.flexIp" clearable></el-input>
+            </el-form-item>
+            
             <el-form-item :label="$t('host.port')" prop="port">
               <el-input-number :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
@@ -72,6 +82,7 @@ export default {
   data() {
     return {
       credentialType: "exists",
+      enableFlexIp: false,
       form: {
         name: "",
         ip: "",
@@ -88,6 +99,7 @@ export default {
       rules: {
         name: [Rule.NameRule],
         ip: [Rule.IpRule],
+        flexIp: [Rule.IpRule],
         port: [Rule.NumberRule],
         credentialId: [Rule.RequiredRule],
         credential: {
@@ -130,6 +142,8 @@ export default {
     getHostByName(this.name).then(data => {
       this.form.name = data.name
       this.form.ip = data.ip
+      this.enableFlexIp = data.flexIp !== ""
+      this.form.flexIp = data.flexIp
       this.form.port = data.port
       this.form.credentialId = data.credentialId
     })

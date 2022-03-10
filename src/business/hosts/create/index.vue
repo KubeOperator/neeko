@@ -12,6 +12,15 @@
             <el-form-item label="IP" prop="ip">
               <el-input v-model="form.ip" clearable></el-input>
             </el-form-item>
+
+            <el-form-item>
+              <el-button v-if="!enableFlexIp" @click="enableFlexIp = true" type="text">{{$t("host.enable_flex_ip")}}</el-button>
+              <el-button v-if="enableFlexIp" @click="enableFlexIp = false" type="text">{{$t("host.disable_flex_ip")}}</el-button>
+            </el-form-item>
+
+            <el-form-item v-if="enableFlexIp" :label="$t('host.flex_ip')" prop="flexIp">
+              <el-input v-model="form.flexIp" clearable></el-input>
+            </el-form-item>
             <el-form-item :label="$t('host.port')" prop="port">
               <el-input-number :step="1" :max="65535" step-strictly v-model.number="form.port" clearable></el-input-number>
             </el-form-item>
@@ -25,7 +34,6 @@
                 <el-option v-for="(item,index) in clusterList" :key="index" :value="item" :label="item" />
               </el-select>
               <div><span class="input-help">{{$t('host.cluster_auth_help')}}</span></div>
-
             </el-form-item>
 
             <el-form-item :label="$t('credential.type')" required>
@@ -85,9 +93,11 @@ export default {
   data() {
     return {
       credentialType: "exists",
+      enableFlexIp: false,
       form: {
         name: "",
         ip: "",
+        flexIp: "",
         port: 22,
         project: "",
         cluster: "",
@@ -103,6 +113,7 @@ export default {
       rules: {
         name: [Rule.NameRule],
         ip: [Rule.IpRule],
+        flexIp: [Rule.IpRule],
         port: [Rule.NumberRule],
         project: [Rule.RequiredRule],
         credentialId: [Rule.RequiredRule],

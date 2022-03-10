@@ -45,7 +45,7 @@
         <el-row type="flex" justify="center">
           <el-col :span="10">
             <el-form-item :label="$t ('cluster.creation.node_ip_num')">
-              <span>{{clusterDetailInfo.spec.maxNodeNum}}</span>
+              <span>{{loadNodeIPNum(clusterDetailInfo.spec.kubeNetworkNodePrefix)}}</span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -231,6 +231,9 @@ export default {
       this.dialogDetailVisible = false
       this.$emit("changeVisble", this.dialogDetailVisible)
     },
+    loadNodeIPNum (maxNodeNum) {
+      return Math.pow(2, (32 - maxNodeNum))
+    }
   },
   created() {
     this.dialogDetailVisible = true

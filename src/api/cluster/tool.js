@@ -25,3 +25,15 @@ export function getNodePort(clusterName, toolName) {
 export function syncTool(clusterName, data) {
   return post(`${toolUrl}/sync/${clusterName}`, data)
 }
+
+export function getFlex(clusterName) {
+  return get(`${toolUrl}/flex/${clusterName}`)
+}
+
+export function enableFlex(clusterName) {
+  return post(`${toolUrl}/flex/enable/${clusterName}`)
+}
+
+export function disableFlex(clusterName) {
+  return post(`${toolUrl}/flex/disable/${clusterName}`)
+}

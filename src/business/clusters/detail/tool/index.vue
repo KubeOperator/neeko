@@ -10,6 +10,21 @@
         <el-button v-if="!syncStatus" style="margin-left:10px" icon="el-icon-refresh-left" @click="syncToolStatus">{{$t('cluster.detail.tool.sync_tool')}}</el-button>
         <el-button v-if="syncStatus" style="margin-left:10px" icon="el-icon-loading" disabled>{{$t('commons.status.synchronizing')}}...</el-button>
       </el-tooltip>
+
+      <el-tooltip v-if="flexStatus === 'enable'"  placement="top-start">
+        <div slot="content">
+          {{$t('cluster.detail.tool.disable_flex_ip_help')}}
+        </div>
+        <el-button style="margin-left:10px" icon="el-icon-video-play" @click="disableFlexIp">{{$t('host.disable_flex_ip')}}</el-button>
+      </el-tooltip>
+
+      <el-tooltip v-if="flexStatus === 'disable'" placement="top-start">
+        <div slot="content">
+          {{$t('cluster.detail.tool.enable_flex_ip_help')}}
+        </div>
+        <el-button style="margin-left:10px" icon="el-icon-video-pause" @click="enableFlexIp">{{$t('host.enable_flex_ip')}}</el-button>
+      </el-tooltip>
+
       <div v-loading="loading" v-for="tool in tools" :key="tool.name">
         <el-col :span="6">
           <el-card style="margin-left:10px; margin-top:10px; height: 180px" class="box-card">
@@ -276,7 +291,7 @@
 </template>
 
 <script>
-import { listTool, enableTool, disableTool, upgradeTool, getNodePort, syncTool } from "@/api/cluster/tool"
+import { listTool, enableTool, disableTool, getFlex, enableFlex, disableFlex, upgradeTool, getNodePort, syncTool } from "@/api/cluster/tool"
 import { listNodeInCluster } from "@/api/cluster/node"
 import { listNamespace } from "@/api/cluster/namespace"
 import { listStorageClass } from "@/api/cluster/storage"
@@ -324,16 +339,19 @@ export default {
       nodeNum: 0,
       storages: [],
       syncStatus: false,
+      flexStatus: null,
       timer: null,
     }
   },
   methods: {
     search() {
-      this.loading = true
-      this.clusterName = this.$route.params.name
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
+        this.getFlexIp()
       })
+    },
+    loadTool() {
+      this.loading = true
       listTool(this.clusterName)
         .then((data) => {
           const currentLanguage = this.$store.getters.language || "zh-CN"
@@ -418,6 +436,23 @@ export default {
         } else {
           return false
         }
+      })
+    },
+    enableFlexIp() {
+      enableFlex(this.clusterName).then(() => {
+        this.search()
+        this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+      })
+    },
+    disableFlexIp() {
+      disableFlex(this.clusterName).then(() => {
+        this.search()
+        this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+      })
+    },
+    getFlexIp() {
+      getFlex(this.clusterName).then((res) => {
+        this.flexStatus = res === this.currentCluster.spec.kubeRouter ? "enable" : "disable"
       })
     },
     checkPassword() {
@@ -609,7 +644,9 @@ export default {
     },
   },
   created() {
+    this.clusterName = this.$route.params.name
     this.search()
+    this.loadTool()
     this.polling()
   },
   destroyed() {
