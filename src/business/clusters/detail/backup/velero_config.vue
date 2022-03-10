@@ -12,6 +12,9 @@
           </el-select>
         </el-form-item>
         <el-form-item style="float: right">
+          <el-button :disabled="submitLoading" @click="onDelete()" v-preventReClick>
+            {{ $t("commons.button.delete") }}
+          </el-button>
           <el-button type="primary" :disabled="submitLoading" @click="onSubmit()" v-preventReClick>
             {{ $t("commons.button.submit") }}
           </el-button>
@@ -22,7 +25,12 @@
 </template>
 
 <script>
-import {getVeleroConfig, listBackupAccounts, veleroInstall} from "@/api/cluster/backup"
+import {
+  getVeleroConfig,
+  listBackupAccounts,
+  veleroInstall,
+  veleroUninstall
+} from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 
 export default {
@@ -55,6 +63,21 @@ export default {
     getConfig () {
       getVeleroConfig(this.clusterName).then(res => {
         this.form = res
+      })
+    },
+    onDelete() {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        veleroUninstall(this.clusterName).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.delete_success"),
+          })
+          this.search()
+        })
       })
     }
   },
