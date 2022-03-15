@@ -65,7 +65,12 @@
             </template>
             <complex-table style="margin-top: 20px" ref="provisionerData" :row-key="getRowKeys" v-loading="loading" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
               <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
-              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
+              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name">
+                <template v-slot:default="{row}">
+                  <el-link v-if="row.type !== 'gfs' && row.type !== 'external-ceph'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
+                  <span v-else>{{ row.name }}</span>
+                </template>
+              </el-table-column>
               <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
               <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
                 <template v-slot:default="{row}">
@@ -115,6 +120,10 @@
       </el-tabs>
     </div>
 
+    <div v-if="dialogDetailVisible">
+      <cluster-storage-provioner-detail :provioner="currentProvisioner" @changeVisble="changeVisble" :visible="dialogDetailVisible" />
+    </div>
+
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
       <span>{{$t('cluster.detail.storage.ensure_provisioner_sync')}}</span>
       <ul style="margin-left: 5%;" :key="pro.name" v-for="pro of provisionerSelection">
@@ -140,11 +149,12 @@ import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
 import { openLoggerWithID } from "@/api/cluster"
+import ClusterStorageProvionerDetail from "./provisioner-detail"
 import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable, K8sPage },
+  components: { ComplexTable, K8sPage, ClusterStorageProvionerDetail },
   data() {
     return {
       buttons_pv: [
@@ -201,6 +211,9 @@ export default {
       errMsg: "",
       activeName: "pv",
       timer: null,
+
+      dialogDetailVisible: false,
+      currentProvisioner: {},
     }
   },
   methods: {
@@ -240,6 +253,13 @@ export default {
             this.loading = false
           })
       }
+    },
+    changeVisble(val) {
+      this.dialogDetailVisible = val
+    },
+    getDetailInfo(val) {
+      this.dialogDetailVisible = true
+      this.currentProvisioner = val
     },
     getCluster() {
       getClusterByName(this.clusterName).then((data) => {
