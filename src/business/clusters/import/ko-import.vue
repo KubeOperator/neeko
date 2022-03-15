@@ -4,7 +4,6 @@
       <div slot="title">
         <div>
           <span style="font-size: 18px">{{ $t("cluster.import.ko_cluster_info") }}</span>
-          <span> ({{ $t("cluster.import.import_name") }}{{ form.clusterInfo.name }}) </span>
         </div>
         <br><br>
         <span style="float: left;margin-top: 5px">{{ $t("cluster.import.import_help") }}</span>
@@ -52,6 +51,21 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-form-item style="margin-top: 20px" :label="$t('cluster.creation.name_type')" prop="clusterInfo.nodeNameRule">
+                        <el-select style="width: 100%" v-model="form.clusterInfo.nodeNameRule">
+                          <el-option key="default" label="default" value="default" />
+                          <el-option key="ip" label="ip" value="ip" />
+                          <el-option key="hostname" label="hostname" value="hostname" />
+                        </el-select>
+                        <div v-if="form.clusterInfo.nodeNameRule === 'default'"><span class="input-help">{{$t('cluster.creation.name_type_default_help')}}</span></div>
+                        <div v-if="form.clusterInfo.nodeNameRule === 'ip'"><span class="input-help">{{$t('cluster.creation.name_type_ip_help')}}</span></div>
+                        <div v-if="form.clusterInfo.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.node_ip_num')" prop="clusterInfo.maxNodePodNum">
@@ -395,6 +409,7 @@ export default {
 
       rules: {
         clusterInfo: {
+          nodeNameRule: [Rule.RequiredRule],
           runtimeType: [Rule.RequiredRule],
           kubeApiServerPort: [Rule.NumberRule],
           dockerStorageDir: [Rule.RequiredRule],
