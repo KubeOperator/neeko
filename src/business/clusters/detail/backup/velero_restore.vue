@@ -84,6 +84,7 @@ export default {
   methods: {
     search(){
       this.loading = true
+      this.items = []
       getRestores(this.clusterName).then(res => {
         if (res.kind === 'RestoreList') {
           this.items = res.items

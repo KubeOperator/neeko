@@ -80,6 +80,7 @@ export default {
   methods: {
     search () {
       this.loading = true
+      this.items = []
       getVeleroSchedules(this.clusterName).then(res => {
         if (res.kind === "ScheduleList") {
           this.items = res.items
