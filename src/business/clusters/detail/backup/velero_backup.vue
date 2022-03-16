@@ -2,13 +2,19 @@
   <div>
     <el-row>
       <h3>{{ $t("cluster.detail.backup.velero_list") }}</h3>
-      <el-button-group>
-        <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{
-            $t("commons.button.create")
-          }}
-        </el-button>
-      </el-button-group>
-      <complex-table :data="items">
+      <div>
+        <el-button-group>
+          <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{
+              $t("commons.button.create")
+            }}
+          </el-button>
+        </el-button-group>
+        <div style="float: right">
+          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']" :disabled="loading">
+          </el-button>
+        </div>
+      </div>
+      <complex-table :data="items" v-loading="loading">
         <el-table-column :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
@@ -204,12 +210,15 @@ export default {
   methods: {
     search () {
       this.items = []
+      this.loading = true
       getVeleroBackups(this.clusterName).then(res => {
         if (res.kind === "BackupList") {
           this.items = res.items
         } else {
           this.items.push(res)
         }
+      }).finally(() =>  {
+        this.loading = false
       })
     },
     getVeleroDescribe (backupName) {
