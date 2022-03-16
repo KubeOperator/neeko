@@ -92,3 +92,11 @@ export function getSecret(clusterName) {
 export function getClusterInfo(data) {
   return post(clusterUrl + "/load", data)
 }
+
+export function handleGpu(clusterName, handle) {
+  return post(`${clusterUrl}/gpu/${clusterName}/${handle}`)
+}
+
+export function getGpuStatu(clusterName) {
+  return get(`${clusterUrl}/gpu/${clusterName}`)
+}

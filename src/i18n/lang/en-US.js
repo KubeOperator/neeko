@@ -15,6 +15,8 @@ const message = {
       delete: "This operation cannot be undone, do you want to continue?",
       force_delete: "The error information during script execution is ignored and data is forcibly deleted",
       uncordon: "This operation will restore the node to a schedulable state. Do you want to continue?",
+      enable_gpu: "This operation will enable the cluster GPU suite. Continue?",
+      disable_gpu: "This operation will disable the cluster GPU suite. Continue?",
     },
     button: {
       login: "Login",
@@ -151,6 +153,8 @@ const message = {
       failure: "Abnormal",
       lost: "Losted",
       disable_scheduling: "Disable scheduling",
+      enable: "Enable",
+      disable: "Disable",
     },
     role: {
       super_admin: "Super admin",
@@ -214,6 +218,8 @@ const message = {
     cluster_detail: "Cluster Details",
     version: "Version",
     scan_policy: "Scan Policy",
+    handle_gpu: "GPU Operation",
+    handle_gpu_help: "GPU Image is not added to the offline environment. To enable this function, the cluster must pull the image from the Internet",
     node_size: "Nodes",
     creation: {
       step1: "Cluster Information",

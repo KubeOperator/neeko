@@ -35,6 +35,34 @@
       <el-table-column sortable :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix/>
       <el-table-column sortable :label="$t('cluster.version')" min-width="75" prop="spec.version" fix/>
       <el-table-column sortable :label="$t('cluster.node_size')" min-width="70" prop="nodeSize"/>
+
+      <el-table-column label="GPU" min-width="70" prop="spec.supportGpu">
+        <template v-slot:default="{row}">
+          <div v-if="row.spec.supportGpu ==='enable' || row.spec.supportGpu === 'disable'">
+            <el-button type="text" @click="onOpenGpuDialog(row)">{{ $t("commons.status." + row.spec.supportGpu) }}</el-button>
+          </div>
+          <div v-if="row.spec.supportGpu === 'Creating'">
+            <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.creating") }}</el-link>
+          </div>
+          <div v-if="row.spec.supportGpu === 'Terminating'">
+            <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
+          </div>
+          <div v-if="row.spec.supportGpu === 'Waiting'">
+            <i class="el-icon-loading"/>{{ $t("commons.status.waiting") }}
+          </div>
+          <div v-if="row.spec.supportGpu === 'NotReady'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.not_ready") }}</el-link>
+          </div>
+          <div v-if="row.spec.supportGpu === 'Failed' ">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.failed") }}</el-link>
+          </div>
+        </template>
+      </el-table-column>
+
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status ==='Running'">
@@ -114,6 +142,27 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="$t('cluster.handle_gpu')" width="30%" :visible.sync="dialogGpuVisible">
+      <div v-if="currentCluster.spec.supportGpu === 'enable'">
+        <span style="font-size: 16px">{{$t('commons.confirm_message.disable_gpu')}}<br /></span>
+      </div>
+
+      <div v-if="currentCluster.spec.supportGpu === 'disable'">
+        <span style="font-size: 16px">{{$t('commons.confirm_message.enable_gpu')}}<br /></span>
+        <li style="margin-top: 15px; margin-left: 20px">{{$t('cluster.handle_gpu_help')}}</li>
+      </div>
+
+      <div v-if="currentCluster.spec.supportGpu === 'NotReady' || currentCluster.spec.supportGpu === 'Failed'">
+        <span>{{gpuErrorInfo | errorFormat}}</span>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogGpuVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button v-if="currentCluster.spec.supportGpu !== 'enable'" size="small" @click="submitGpuHandle('enable')" v-preventReClick>{{ $t("commons.button.enable") }}</el-button>
+        <el-button v-if="currentCluster.spec.supportGpu !== 'disable'" size="small" @click="submitGpuHandle('disable')" v-preventReClick>{{ $t("commons.button.disable") }}</el-button>
+      </div>
+    </el-dialog>
+
     <el-dialog :title="$t('cluster.health_check.health_check')" width="50%" :visible.sync="dialogCheckVisible"
                :close-on-click-modal="false">
       <div align="center" style="margin-top: 15px">
@@ -170,11 +219,14 @@ import {
   healthCheck,
   clusterRecover,
   searchClusters,
+  getGpuStatu,
+  handleGpu,
 } from "@/api/cluster"
 import KoLogs from "@/components/ko-logs/index.vue"
 import {listRegistryAll} from "@/api/system-setting"
 import {checkPermission} from "@/utils/permisstion"
 import {getDashboard} from "../../api/cluster/cluster";
+import { openLoggerWithID } from "@/api/cluster"
 
 export default {
   name: "ClusterList",
@@ -220,7 +272,9 @@ export default {
         total: 0,
       },
       clusterName: "",
-      currentCluster: {},
+      currentCluster: {
+        spec: {},
+      },
       clusterSelection: [],
       data: [],
 
@@ -230,6 +284,10 @@ export default {
       isRecover: false,
       recoverItems: [],
       checkData: {},
+
+      // gpu
+      dialogGpuVisible: false,
+      gpuErrorInfo: "",
 
       // cluster logs
       dialogLogVisible: false,
@@ -414,6 +472,30 @@ export default {
         })
     },
 
+    // gpu
+    onOpenGpuDialog(row) {
+      this.currentCluster = row
+      this.dialogGpuVisible = true
+    },
+    submitGpuHandle(operation) {
+      handleGpu(this.currentCluster.name, operation).then(() => {
+        this.dialogGpuVisible = false
+        this.searchForPolling()
+      })
+    },
+    getGpuStatus(row) {
+      getGpuStatu(row.name).then((data) => {
+        this.dialogGpuVisible = true
+        this.gpuErrorInfo = data.message
+        this.currentCluster = row
+      })
+    },
+    openXterm(row) {
+      getGpuStatu(row.name).then((data) => {
+        openLoggerWithID(row.name, data.id)
+      })
+    },
+
     // cluster health check
     onHealthCheck(row) {
       this.checkData = {}
@@ -470,7 +552,7 @@ export default {
         let flag = false
         const needPolling = ["Initializing", "Terminating", "Creating", "Waiting", "Upgrading"]
         for (const item of this.data) {
-          if (needPolling.indexOf(item.status) !== -1) {
+          if (needPolling.indexOf(item.status) !== -1 || needPolling.indexOf(item.spec.supportGpu) !== -1) {
             flag = true
             break
           }

@@ -15,6 +15,8 @@ const message = {
       delete: "此操作不可撤销, 是否继续?",
       force_delete: "强制删除，将忽略脚本执行过程中的错误信息，强制删除数据",
       uncordon: "此操作将恢复节点为可调度状态, 是否继续?",
+      enable_gpu: "此操作将启用集群 GPU 套件，是否继续?",
+      disable_gpu: "此操作将禁用集群 GPU 套件，是否继续?",
     },
     button: {
       login: "登录",
@@ -152,6 +154,8 @@ const message = {
       failure: "异常",
       lost: "失联",
       disable_scheduling: "禁用调度",
+      enable: "已启用",
+      disable: "未启用",
     },
     role: {
       super_admin: "超级管理员",
@@ -216,6 +220,8 @@ const message = {
     version: "版本",
     node_size: "节点数量",
     scan_policy: "扫描策略",
+    handle_gpu: "GPU 操作",
+    handle_gpu_help: "GPU 涉及镜像暂未添加到离线环境，启用时需要集群从外网拉取",
     creation: {
       step1: "集群信息",
       name_type: "节点命名规则",
