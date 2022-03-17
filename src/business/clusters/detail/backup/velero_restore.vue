@@ -2,7 +2,13 @@
   <div>
     <el-row>
       <h3>{{$t('cluster.detail.backup.velero_schedule')}}</h3>
-      <complex-table  :data="items" >
+      <div>
+        <div style="float: right">
+          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']" :disabled="loading">
+          </el-button>
+        </div>
+      </div>
+      <complex-table  :data="items" v-loading="loading">
         <el-table-column :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
@@ -63,6 +69,7 @@ export default {
       openDetail: false,
       detail: "",
       items:[],
+      loading: false,
       buttons:[
         {
           label: this.$t("commons.button.delete"),
@@ -76,12 +83,16 @@ export default {
   },
   methods: {
     search(){
+      this.loading = true
+      this.items = []
       getRestores(this.clusterName).then(res => {
         if (res.kind === 'RestoreList') {
           this.items = res.items
         }else {
           this.items.push(res)
         }
+      }).finally(() => {
+        this.loading = false
       })
     },
     describe(name){

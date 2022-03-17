@@ -1,11 +1,20 @@
 <template>
   <div>
     <el-row>
-      <h3>{{$t('cluster.detail.backup.velero_list')}}</h3>
-      <el-button-group>
-        <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{ $t("commons.button.create") }}</el-button>
-      </el-button-group>
-      <complex-table  :data="items" >
+      <h3>{{ $t("cluster.detail.backup.velero_list") }}</h3>
+      <div>
+        <el-button-group>
+          <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">{{
+              $t("commons.button.create")
+            }}
+          </el-button>
+        </el-button-group>
+        <div style="float: right">
+          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']" :disabled="loading">
+          </el-button>
+        </div>
+      </div>
+      <complex-table :data="items" v-loading="loading">
         <el-table-column :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
@@ -35,7 +44,7 @@
             </el-link>
           </template>
         </el-table-column>
-        <fu-table-operations  fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
+        <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix/>
       </complex-table>
     </el-row>
     <div>
@@ -61,29 +70,41 @@
               <el-option :value="'Schedule'" :label="$t('cluster.detail.backup.velero_type_schedule')"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('cluster.detail.backup.velero_schedule_cycle')" prop="schedule" v-if="form.type==='Schedule'">
-            <el-input v-model="form.schedule" :placeholder="'eg: 0 3 * * * ('+ $t('cluster.detail.backup.velero_schedule_help')+')'" ></el-input>
+          <el-form-item :label="$t('cluster.detail.backup.velero_schedule_cycle')" prop="schedule"
+                        v-if="form.type==='Schedule'">
+            <el-input v-model="form.schedule"
+                      :placeholder="'eg: 0 3 * * * ('+ $t('cluster.detail.backup.velero_schedule_help')+')'"></el-input>
           </el-form-item>
           <el-divider>{{ $t("cluster.detail.backup.velero_help") }}</el-divider>
           <el-form-item :label="$t('cluster.detail.backup.velero_namespace_include')" prop="includeNamespaces">
-            <el-select style="width: 100%" v-model="form.includeNamespaces" multiple>
-              <el-option v-for="item in namespaces" :key="item.metadata.name" :value="item.metadata.name"
-                         :label="item.metadata.name">
+            <el-select style="width: 100%" v-model="form.includeNamespaces" multiple @change="chooseNs()">
+              <el-option v-for="item in namespaces" :key="item.name" :value="item.name"
+                         :label="item.name" :disabled="item.checked">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_namespace_exclude')" prop="excludeNamespaces">
-            <el-select style="width: 100%" v-model="form.excludeNamespaces" multiple>
-              <el-option v-for="item in namespaces" :key="item.metadata.name" :value="item.metadata.name"
-                         :label="item.metadata.name">
+            <el-select style="width: 100%" v-model="form.excludeNamespaces" multiple @change="chooseNs()">
+              <el-option v-for="item in namespaces" :key="item.name" :value="item.name"
+                         :label="item.name" :disabled="item.checked">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_resource_include')" prop="includeResources">
-            <el-input v-model="form.includeResources" placeholder="eg: deployments,pods,services"></el-input>
+            <el-select style="width: 100%" v-model="form.includeResources" multiple @change="chooseResource()">
+              <el-option v-for="item in resources" :key="item.name" :value="item.name"
+                         :label="item.name" :disabled="item.checked">
+              </el-option>
+            </el-select>
+<!--            <el-input v-model="form.includeResources" placeholder="eg: deployments,pods,services"></el-input>-->
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_resource_exclude')" prop="excludeResources">
-            <el-input v-model="form.excludeResources" placeholder="eg: deployments,pods,services"></el-input>
+            <el-select style="width: 100%" v-model="form.excludeResources" multiple @change="chooseResource()">
+              <el-option v-for="item in resources" :key="item.name" :value="item.name"
+                         :label="item.name" :disabled="item.checked">
+              </el-option>
+            </el-select>
+<!--            <el-input v-model="form.excludeResources" placeholder="eg: deployments,pods,services"></el-input>-->
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_backup_retention')" prop="ttl">
             <el-select style="width: 100%" v-model="form.ttl">
@@ -98,7 +119,9 @@
             <el-input v-model="form.selector" placeholder="eg: app=nginx,resource=normal"></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_backup_setting')" prop="selector">
-            <el-checkbox v-model="form.includeClusterResources">{{$t('cluster.detail.backup.velero_include_cluster_resource')}}</el-checkbox>
+            <el-checkbox v-model="form.includeClusterResources">
+              {{ $t("cluster.detail.backup.velero_include_cluster_resource") }}
+            </el-checkbox>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -136,7 +159,7 @@ export default {
       namespaces: [],
       loading: false,
       form: {
-        includeClusterResources:true,
+        includeClusterResources: true,
       },
       rules: {
         name: [Rule.NameRule],
@@ -149,7 +172,24 @@ export default {
         { key: "60 days", value: "1440h0m0s" },
         { key: "90 days", value: "2160h0m0s" },
       ],
-      buttons:[
+      resources: [
+        {name:"services",checked:false},
+        {name:"deployments",checked:false},
+        {name:"configmaps",checked:false},
+        {name:"persistentvolumeclaims",checked:false},
+        {name:"persistentvolumes",checked:false},
+        {name:"replicationcontrollers",checked:false},
+        {name:"resourcequotas",checked:false},
+        {name:"secrets",checked:false},
+        {name:"serviceaccounts",checked:false},
+        {name:"daemonsets",checked:false},
+        {name:"replicasets",checked:false},
+        {name:"statefulsets",checked:false},
+        {name:"cronjobs",checked:false},
+        {name:"jobs",checked:false},
+        {name:"ingresses",checked:false},
+      ],
+      buttons: [
         {
           label: this.$t("cluster.detail.backup.recover"),
           icon: "el-icon-refresh-left",
@@ -170,12 +210,15 @@ export default {
   methods: {
     search () {
       this.items = []
+      this.loading = true
       getVeleroBackups(this.clusterName).then(res => {
-        if (res.kind === 'BackupList') {
+        if (res.kind === "BackupList") {
           this.items = res.items
-        }else {
+        } else {
           this.items.push(res)
         }
+      }).finally(() =>  {
+        this.loading = false
       })
     },
     getVeleroDescribe (backupName) {
@@ -192,19 +235,64 @@ export default {
     },
     onCreate () {
       this.form = {
-        includeClusterResources:true
+        includeClusterResources: true,
+        includeNamespaces: [],
+        excludeNamespaces: [],
+        includeResources: [],
+        excludeResources:[]
       }
       listNamespace(this.clusterName).then(res => {
-        this.namespaces = res.items
+        for (const ns of res.items) {
+          this.namespaces.push({
+            name: ns.metadata.name,
+            checked: false
+          })
+        }
+        // this.namespaces = res.items
       })
       this.openCreate = true
+    },
+    chooseNs () {
+      this.namespaces.forEach(ns => {
+        ns.checked = false
+      })
+
+      this.namespaces.forEach(ns => {
+        this.form.includeNamespaces.forEach(choose => {
+          if (choose === ns.name) {
+            ns.checked = true
+          }
+        })
+        this.form.excludeNamespaces.forEach(choose => {
+          if (choose === ns.name) {
+            ns.checked = true
+          }
+        })
+      })
+    },
+    chooseResource() {
+      this.resources.forEach(re => {
+        re.checked = false
+      })
+      this.resources.forEach(re => {
+        this.form.includeResources.forEach(choose => {
+          if (choose === re.name) {
+            re.checked = true
+          }
+        })
+        this.form.excludeResources.forEach(choose => {
+          if (choose === re.name) {
+            re.checked = true
+          }
+        })
+      })
     },
     submit () {
       this.loading = true
       const ps = []
-      if (this.form.type === 'Normal'){
+      if (this.form.type === "Normal") {
         ps.push(createVeleroBackup(this.clusterName, this.form))
-      }else {
+      } else {
         ps.push(createVeleroSchedule(this.clusterName, this.form))
       }
       Promise.all(ps).then(() => {
@@ -218,13 +306,13 @@ export default {
           this.loading = false
         })
     },
-    onDelete(name) {
+    onDelete (name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        deleteVeleroBackup(this.clusterName,name).then(() => {
+        deleteVeleroBackup(this.clusterName, name).then(() => {
           this.$message({
             type: "success",
             message: this.$t("commons.msg.delete_success"),
@@ -233,16 +321,16 @@ export default {
         })
       })
     },
-    onRestore(name) {
+    onRestore (name) {
       this.$confirm(this.$t("cluster.detail.backup.restore_message"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
         const item = {
-          backupName : name
+          backupName: name
         }
-        restore(this.clusterName,item).then(() => {
+        restore(this.clusterName, item).then(() => {
           this.$message({
             type: "success",
             message: this.$t("cluster.detail.backup.recover_success"),

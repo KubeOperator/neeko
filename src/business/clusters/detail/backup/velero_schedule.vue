@@ -1,8 +1,15 @@
 <template>
   <div>
     <el-row>
-      <h3>{{$t('cluster.detail.backup.velero_schedule')}}</h3>
-      <complex-table  :data="items" >
+      <h3>{{ $t("cluster.detail.backup.velero_schedule") }}</h3>
+      <div>
+        <div style="float: right">
+          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']"
+                     :disabled="loading">
+          </el-button>
+        </div>
+      </div>
+      <complex-table :data="items" v-loading="loading">
         <el-table-column :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
@@ -25,7 +32,7 @@
             </el-link>
           </template>
         </el-table-column>
-        <fu-table-operations  fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
+        <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix/>
       </complex-table>
       <div>
         <el-dialog :title="$t('cluster.detail.backup.velero_detail')" width="80%" :visible.sync="openDetail">
@@ -51,14 +58,15 @@ import ComplexTable from "@/components/complex-table"
 
 export default {
   name: "VeleroSchedule",
-  components: {ComplexTable},
+  components: { ComplexTable },
   props: {},
   data () {
     return {
       openDetail: false,
       detail: "",
-      items:[],
-      buttons:[
+      items: [],
+      loading: false,
+      buttons: [
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
@@ -70,28 +78,32 @@ export default {
     }
   },
   methods: {
-    search(){
+    search () {
+      this.loading = true
+      this.items = []
       getVeleroSchedules(this.clusterName).then(res => {
-        if (res.kind === 'ScheduleList') {
+        if (res.kind === "ScheduleList") {
           this.items = res.items
-        }else {
+        } else {
           this.items.push(res)
         }
+      }).finally(() => {
+        this.loading = false
       })
     },
-    describe(name){
-      getVeleroScheduleDescribe(this.clusterName,name).then(res => {
+    describe (name) {
+      getVeleroScheduleDescribe(this.clusterName, name).then(res => {
         this.detail = res
         this.openDetail = true
       })
     },
-    onDelete(name) {
+    onDelete (name) {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        delVeleroSchedule(this.clusterName,name).then(() => {
+        delVeleroSchedule(this.clusterName, name).then(() => {
           this.$message({
             type: "success",
             message: this.$t("commons.msg.delete_success"),
