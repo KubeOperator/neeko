@@ -6,7 +6,7 @@
           <el-card style="height: 350px">
             <div slot="header" class="clearfix">
               <span>{{$t('cluster.detail.overview.base_info')}}</span>
-              <el-button type="text" style="float: right" @click="onOpenDetail">{{$t('commons.button.more_info')}}</el-button>
+              <el-button icon="el-icon-info" type="text" style="float: right;font-size: 14px;padding: 0px 0px;" @click="onOpenDetail">{{$t('commons.button.more_info')}}</el-button>
             </div>
             <div>
               <el-col :span="12">
