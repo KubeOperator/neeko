@@ -349,6 +349,7 @@ export default {
         this.currentCluster = data
         this.getFlexIp()
       })
+      this.loadTool()
     },
     loadTool() {
       this.loading = true

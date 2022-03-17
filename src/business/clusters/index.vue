@@ -38,27 +38,32 @@
 
       <el-table-column label="GPU" min-width="70" prop="spec.supportGpu">
         <template v-slot:default="{row}">
-          <div v-if="row.spec.supportGpu ==='enable' || row.spec.supportGpu === 'disable'">
-            <el-button type="text" @click="onOpenGpuDialog(row)">{{ $t("commons.status." + row.spec.supportGpu) }}</el-button>
+          <div v-if="row.status !== 'Running'">
+            <span >{{ $t("commons.status." + row.spec.supportGpu.toLowerCase()) }}</span>
           </div>
-          <div v-if="row.spec.supportGpu === 'Creating'">
-            <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.creating") }}</el-link>
-          </div>
-          <div v-if="row.spec.supportGpu === 'Terminating'">
-            <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
-          </div>
-          <div v-if="row.spec.supportGpu === 'Waiting'">
-            <i class="el-icon-loading"/>{{ $t("commons.status.waiting") }}
-          </div>
-          <div v-if="row.spec.supportGpu === 'NotReady'">
-            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.not_ready") }}</el-link>
-          </div>
-          <div v-if="row.spec.supportGpu === 'Failed' ">
-            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.failed") }}</el-link>
+          <div v-else>
+            <div v-if="row.spec.supportGpu ==='enable' || row.spec.supportGpu === 'disable'">
+              <el-link type="info" @click="onOpenGpuDialog(row)">{{ $t("commons.status." + row.spec.supportGpu) }}</el-link>
+            </div>
+            <div v-if="row.spec.supportGpu === 'Creating'">
+              <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
+              <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.creating") }}</el-link>
+            </div>
+            <div v-if="row.spec.supportGpu === 'Terminating'">
+              <i class="el-icon-loading"/>&nbsp; &nbsp; &nbsp;
+              <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
+            </div>
+            <div v-if="row.spec.supportGpu === 'Waiting'">
+              <i class="el-icon-loading"/>{{ $t("commons.status.waiting") }}
+            </div>
+            <div v-if="row.spec.supportGpu === 'NotReady'">
+              <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+              <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.not_ready") }}</el-link>
+            </div>
+            <div v-if="row.spec.supportGpu === 'Failed' ">
+              <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+              <el-link type="info" @click="getGpuStatus(row)">{{ $t("commons.status.failed") }}</el-link>
+            </div>
           </div>
         </template>
       </el-table-column>
