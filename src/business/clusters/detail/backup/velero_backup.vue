@@ -10,7 +10,8 @@
           </el-button>
         </el-button-group>
         <div style="float: right">
-          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']" :disabled="loading">
+          <el-button size="small" icon="el-icon-refresh" circle @click="search()" v-permission="['ADMIN']"
+                     :disabled="loading">
           </el-button>
         </div>
       </div>
@@ -22,7 +23,8 @@
         </el-table-column>
         <el-table-column :label="$t('commons.table.status')">
           <template v-slot:default="{row}">
-            {{ row.status.phase }}
+            <span v-if="row.status.phase">{{ row.status.phase }}</span>
+            <span v-else>New</span>
           </template>
         </el-table-column>
         <el-table-column :label="$t('commons.table.create_time')">
@@ -62,7 +64,7 @@
         <el-form ref="form" label-position="left" :model="form" label-width="180px" :rules="rules">
           <el-form-item :label="$t('commons.table.name')" prop="name">
             <el-input v-model="form.name"></el-input>
-            <div><span class="input-help">{{ $t("commons.validate.name_help") }}</span></div>
+            <div><span class="input-help">{{ $t("commons.validate.common_name_help") }}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_type')" prop="type">
             <el-select style="width: 100%" v-model="form.type">
@@ -96,7 +98,6 @@
                          :label="item.name" :disabled="item.checked">
               </el-option>
             </el-select>
-<!--            <el-input v-model="form.includeResources" placeholder="eg: deployments,pods,services"></el-input>-->
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_resource_exclude')" prop="excludeResources">
             <el-select style="width: 100%" v-model="form.excludeResources" multiple @change="chooseResource()">
@@ -104,7 +105,6 @@
                          :label="item.name" :disabled="item.checked">
               </el-option>
             </el-select>
-<!--            <el-input v-model="form.excludeResources" placeholder="eg: deployments,pods,services"></el-input>-->
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.backup.velero_backup_retention')" prop="ttl">
             <el-select style="width: 100%" v-model="form.ttl">
@@ -162,7 +162,7 @@ export default {
         includeClusterResources: true,
       },
       rules: {
-        name: [Rule.NameRule],
+        name: [Rule.ClusterNameRule],
         type: [Rule.RequiredRule],
         schedule: [Rule.RequiredRule],
       },
@@ -173,21 +173,21 @@ export default {
         { key: "90 days", value: "2160h0m0s" },
       ],
       resources: [
-        {name:"services",checked:false},
-        {name:"deployments",checked:false},
-        {name:"configmaps",checked:false},
-        {name:"persistentvolumeclaims",checked:false},
-        {name:"persistentvolumes",checked:false},
-        {name:"replicationcontrollers",checked:false},
-        {name:"resourcequotas",checked:false},
-        {name:"secrets",checked:false},
-        {name:"serviceaccounts",checked:false},
-        {name:"daemonsets",checked:false},
-        {name:"replicasets",checked:false},
-        {name:"statefulsets",checked:false},
-        {name:"cronjobs",checked:false},
-        {name:"jobs",checked:false},
-        {name:"ingresses",checked:false},
+        { name: "services", checked: false },
+        { name: "deployments", checked: false },
+        { name: "configmaps", checked: false },
+        { name: "persistentvolumeclaims", checked: false },
+        { name: "persistentvolumes", checked: false },
+        { name: "replicationcontrollers", checked: false },
+        { name: "resourcequotas", checked: false },
+        { name: "secrets", checked: false },
+        { name: "serviceaccounts", checked: false },
+        { name: "daemonsets", checked: false },
+        { name: "replicasets", checked: false },
+        { name: "statefulsets", checked: false },
+        { name: "cronjobs", checked: false },
+        { name: "jobs", checked: false },
+        { name: "ingresses", checked: false },
       ],
       buttons: [
         {
@@ -217,20 +217,26 @@ export default {
         } else {
           this.items.push(res)
         }
-      }).finally(() =>  {
+      }).finally(() => {
         this.loading = false
       })
     },
     getVeleroDescribe (backupName) {
+      this.loading = true
       getVeleroBackupDescribe(this.clusterName, backupName).then(res => {
         this.detail = res
         this.openDetail = true
+      }).finally(() => {
+        this.loading = false
       })
     },
     getVeleroLogs (backupName) {
+      this.loading = true
       getVeleroBackupLogs(this.clusterName, backupName).then(res => {
         this.detail = res
         this.openDetail = true
+      }).finally(() => {
+        this.loading = false
       })
     },
     onCreate () {
@@ -239,7 +245,7 @@ export default {
         includeNamespaces: [],
         excludeNamespaces: [],
         includeResources: [],
-        excludeResources:[]
+        excludeResources: []
       }
       listNamespace(this.clusterName).then(res => {
         for (const ns of res.items) {
@@ -270,7 +276,7 @@ export default {
         })
       })
     },
-    chooseResource() {
+    chooseResource () {
       this.resources.forEach(re => {
         re.checked = false
       })

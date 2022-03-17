@@ -96,9 +96,12 @@ export default {
       })
     },
     describe(name){
+      this.loading = true
       getVeleroRestoreDescribe(this.clusterName,name).then(res => {
         this.detail = res
         this.openDetail = true
+      }).finally(() => {
+        this.loading = false
       })
     },
     onDelete(name) {
@@ -117,9 +120,12 @@ export default {
       })
     },
     getVeleroLogs(name) {
+      this.loading = true
       getVeleroRestoreLogs(this.clusterName, name).then(res => {
         this.detail = res
         this.openDetail = true
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
