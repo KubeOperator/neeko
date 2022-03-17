@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-row v-loading="submitLoading">
+    <el-row v-loading="loading">
       <h3>{{ $t("cluster.detail.backup.velero_config") }}</h3>
-      <el-form ref="form" label-position="left" :model="form" label-width="180px" :rules="rules">
+      <el-form ref="form" label-position="left" :model="form" label-width="180px" :rules="rules" v-loading="submitLoading">
         <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
           <el-select style="width:100%" size="small" allow-create filterable
                      v-model="form.backupAccountName">
@@ -11,11 +11,27 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-row type="flex">
+          <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="requests.cpu" :rules="numberRules">
+            <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.requests.cpu"></el-input-number>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="requests.memory" :rules="numberRules">
+            <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.requests.memory"></el-input-number>
+          </el-form-item>
+        </el-row>
+        <el-row type="flex">
+          <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="limits.cpu" :rules="numberRules">
+            <el-input-number style="width: 100%" :step="1" step-strictly v-model.number="form.limits.cpu"></el-input-number>
+          </el-form-item>
+          <el-form-item :label="$t('cluster.detail.istio.memory_limit')" prop="limits.memory" :rules="numberRules">
+            <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.limits.memory"></el-input-number>
+          </el-form-item>
+        </el-row>
         <el-form-item style="float: right">
           <el-button :disabled="submitLoading" @click="onDelete()" v-preventReClick>
             {{ $t("commons.button.delete") }}
           </el-button>
-          <el-button type="primary" :disabled="submitLoading" @click="onSubmit()" v-preventReClick>
+          <el-button type="primary" @click="onSubmit()" v-preventReClick>
             {{ $t("commons.button.submit") }}
           </el-button>
         </el-form-item>
@@ -39,13 +55,24 @@ export default {
   props: {},
   data () {
     return {
-      form: {},
+      form: {
+        requests:{
+          cpu:1000,
+          memory:512,
+        },
+        limits: {
+          cpu:1000,
+          memory:512,
+        }
+      },
       rules: {
         backupAccountName: [Rule.RequiredRule]
       },
+      numberRules: [Rule.NumberRule],
       backupAccounts: [],
       submitLoading: false,
-      clusterName: ""
+      clusterName: "",
+      loading: false,
     }
   },
   methods: {
@@ -61,8 +88,11 @@ export default {
       })
     },
     getConfig () {
+      this.loading = true
       getVeleroConfig(this.clusterName).then(res => {
         this.form = res
+      }).finally(() => {
+        this.loading = false
       })
     },
     onDelete() {

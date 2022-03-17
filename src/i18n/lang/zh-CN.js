@@ -602,7 +602,7 @@ const message = {
         err_title: "错误信息",
         cpu_limit: "CPU 限制(m)",
         memory_limit: "Memory 限制(Mb)",
-        cpu_request: "CPU 预留",
+        cpu_request: "CPU 预留(m)",
         memory_request: "Memory 预留(Mb)",
         trace: "跟踪抽样比例(%)",
         gateways_type: "网关服务类型",

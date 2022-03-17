@@ -92,9 +92,12 @@ export default {
       })
     },
     describe (name) {
+      this.loading =true
       getVeleroScheduleDescribe(this.clusterName, name).then(res => {
         this.detail = res
         this.openDetail = true
+      }).finally(() => {
+        this.loading = false
       })
     },
     onDelete (name) {
