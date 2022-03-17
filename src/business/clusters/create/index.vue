@@ -368,7 +368,7 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                      <el-input-number :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
+                      <el-input-number :min="0" :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
                     </el-form-item>
                     <div v-if="isMultiMaster()">
                       <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">

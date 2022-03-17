@@ -14,8 +14,8 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button v-if="!enableFlexIp" @click="enableFlexIp = true" type="text">{{$t("host.enable_flex_ip")}}</el-button>
-              <el-button v-if="enableFlexIp" @click="enableFlexIp = false" type="text">{{$t("host.disable_flex_ip")}}</el-button>
+              <el-button v-if="!enableFlexIp" @click="enableFlexIp = true" type="text" icon="el-icon-caret-bottom">{{$t("host.enable_flex_ip")}}</el-button>
+              <el-button v-if="enableFlexIp" @click="enableFlexIp = false" type="text" icon="el-icon-caret-top">{{$t("host.disable_flex_ip")}}</el-button>
             </el-form-item>
 
             <el-form-item v-if="enableFlexIp" :label="$t('host.flex_ip')" prop="flexIp">
