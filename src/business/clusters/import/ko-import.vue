@@ -292,6 +292,18 @@
                           </fu-select-rw-switch>
                         </el-form-item>
                       </el-col>
+                       <el-col :span="12">
+                        <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="clusterInfo.supportGpu">
+                          <fu-select-rw-switch v-model="form.clusterInfo.supportGpu">
+                            <template #read>
+                              <el-tag disable-transitions v-if="form.clusterInfo.supportGpu === 'enable'">{{$t('cluster.creation.enable')}}</el-tag>
+                              <el-tag disable-transitions v-if="form.clusterInfo.supportGpu === 'disable'">{{$t('cluster.creation.disable')}}</el-tag>
+                            </template>
+                            <el-option value="enable" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
+                            <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
+                          </fu-select-rw-switch>
+                        </el-form-item>
+                      </el-col>
                     </el-row>
                   </div>
                   <div v-if="duoMaster" class="blockBorder">
@@ -409,7 +421,7 @@ export default {
 
       rules: {
         clusterInfo: {
-          nodeNameRule: [Rule.RequiredRule],
+          nodeNameRule: [Rule.SelectRequiredRule],
           runtimeType: [Rule.RequiredRule],
           kubeApiServerPort: [Rule.NumberRule],
           dockerStorageDir: [Rule.RequiredRule],
@@ -419,7 +431,7 @@ export default {
           kubeServiceSubnet: [Rule.RequiredRule],
           kubeProxyMode: [Rule.RequiredRule],
           networkType: [Rule.RequiredRule],
-          flannelBackend: [Rule.RequiredRule],
+          flannelBackend: [Rule.SelectRequiredRule],
           calicoIpv4PoolIpip: [Rule.RequiredRule],
           ciliumTunnelMode: [Rule.RequiredRule],
           ingressControllerType: [Rule.RequiredRule],
