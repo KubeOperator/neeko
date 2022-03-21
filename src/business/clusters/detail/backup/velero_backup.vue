@@ -277,7 +277,9 @@ export default {
       this.loading = true
       getVeleroBackups(this.clusterName)
         .then((res) => {
-          this.items = res.items
+          if (res.items) {
+            this.items = res.items
+          }
         })
         .finally(() => {
           this.loading = false

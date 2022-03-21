@@ -93,7 +93,9 @@ export default {
     getConfig () {
       this.loading = true
       getVeleroConfig(this.clusterName).then(res => {
-        this.form = res
+        if (res.id !== "") {
+          this.form = res
+        }
       }).finally(() => {
         this.loading = false
       })
@@ -109,7 +111,7 @@ export default {
             type: "success",
             message: this.$t("commons.msg.delete_success"),
           })
-          this.search()
+          this.getConfig()
         })
       })
     }
