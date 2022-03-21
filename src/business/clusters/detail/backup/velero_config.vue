@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-row v-loading="loading">
-      <h3>{{ $t("cluster.detail.backup.velero_config") }}</h3>
       <el-form ref="form" label-position="left" :model="form" label-width="180px" :rules="rules" v-loading="submitLoading">
         <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
           <el-select style="width:100%" size="small" allow-create filterable
@@ -11,18 +10,22 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-row type="flex">
+        <el-row>
           <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="requests.cpu" :rules="numberRules">
             <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.requests.cpu"></el-input-number>
           </el-form-item>
+        </el-row>
+        <el-row>
           <el-form-item :label="$t('cluster.detail.istio.memory_request')" prop="requests.memory" :rules="numberRules">
             <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.requests.memory"></el-input-number>
           </el-form-item>
         </el-row>
-        <el-row type="flex">
+        <el-row>
           <el-form-item :label="$t('cluster.detail.istio.cpu_limit')" prop="limits.cpu" :rules="numberRules">
             <el-input-number style="width: 100%" :step="1" step-strictly v-model.number="form.limits.cpu"></el-input-number>
           </el-form-item>
+        </el-row>
+        <el-row>
           <el-form-item :label="$t('cluster.detail.istio.memory_limit')" prop="limits.memory" :rules="numberRules">
             <el-input-number style="width: 100%" :step="1" step-strictly v-model="form.limits.memory"></el-input-number>
           </el-form-item>

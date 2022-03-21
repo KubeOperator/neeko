@@ -41,6 +41,8 @@ const message = {
       search: "Search",
       verify: "Verify",
       management: "Management",
+      more: "more",
+      back_to_form: "form",
       submit: "Submit",
       refresh: "Refresh",
       authorize: "Authorize",

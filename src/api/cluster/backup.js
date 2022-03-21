@@ -51,39 +51,19 @@ export function deleteBackupFile(name) {
 }
 
 export function getVeleroBackups(cluster) {
-  return get(`${VeleroUrl}/${cluster}/backup`)
-}
-
-export function getVeleroBackupDescribe(cluster,backup){
-  return get(`${VeleroUrl}/${cluster}/backup/describe?name=${backup}`)
+  return get(`${VeleroUrl}/${cluster}/backups`)
 }
 
 export function getVeleroBackupLogs(cluster,backup){
   return get(`${VeleroUrl}/${cluster}/backup/logs?name=${backup}`)
 }
 
-export function createVeleroBackup(cluster,item) {
-  return post(`${VeleroUrl}/${cluster}/backup/create`,item)
+export function createVeleroBackup(cluster, type, item) {
+  return post(`${VeleroUrl}/${cluster}/${type}/create`,item)
 }
 
-export function deleteVeleroBackup(cluster,backup) {
-  return del(`${VeleroUrl}/${cluster}/backup/del?name=${backup}`)
-}
-
-export function getVeleroSchedules(cluster) {
-  return get(`${VeleroUrl}/${cluster}/schedule`)
-}
-
-export function getVeleroScheduleDescribe(cluster,scheduleName){
-  return get(`${VeleroUrl}/${cluster}/schedule/describe?name=${scheduleName}`)
-}
-
-export function delVeleroSchedule(cluster,scheduleName) {
-  return del(`${VeleroUrl}/${cluster}/schedule/del?name=${scheduleName}`)
-}
-
-export function createVeleroSchedule(cluster,item) {
-  return post(`${VeleroUrl}/${cluster}/schedule/create`,item)
+export function deleteVeleroBackup(cluster, type, backup) {
+  return del(`${VeleroUrl}/${cluster}/${type}/del?name=${backup}`)
 }
 
 export function getRestores(cluster){
