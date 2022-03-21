@@ -22,6 +22,7 @@
       <el-table-column sortable :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column sortable :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column sortable label="IP" min-width="120px" prop="ip" />
+      <el-table-column sortable :label="$t('host.flex_ip')" min-width="120px" prop="flexIp" :show="false"/>
       <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
       <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />

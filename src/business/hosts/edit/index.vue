@@ -14,8 +14,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button v-if="!enableFlexIp" @click="enableFlexIp = true" type="text">{{$t("host.enable_flex_ip")}}</el-button>
-              <el-button v-if="enableFlexIp" @click="enableFlexIp = false" type="text">{{$t("host.disable_flex_ip")}}</el-button>
+              <el-checkbox v-model="enableFlexIp">{{$t("host.enable_flex_ip")}}</el-checkbox>
             </el-form-item>
 
             <el-form-item v-if="enableFlexIp" :label="$t('host.flex_ip')" prop="flexIp">
@@ -86,6 +85,7 @@ export default {
       form: {
         name: "",
         ip: "",
+        flexIp: "",
         port: 22,
         credentialId: "",
         credential: {
@@ -116,6 +116,9 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          if (!this.enableFlexIp) {
+            this.form.flexIp = ""
+          }
           updateHost(this.form).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
             this.$router.push({ name: "HostList" })
