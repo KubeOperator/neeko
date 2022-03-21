@@ -264,6 +264,7 @@ export default {
       })
     },
     handleClick() {
+      localStorage.setItem("backup_active_name", this.activeName)
       this.search()
     },
     onSubmit() {
@@ -379,6 +380,9 @@ export default {
     listBackupAccounts(this.clusterName).then((res) => {
       this.backupAccounts = res
     })
+    if (localStorage.getItem("backup_active_name")) {
+      this.activeName = localStorage.getItem("backup_active_name")
+    }
     this.getBackupStrategy()
     this.polling()
   },

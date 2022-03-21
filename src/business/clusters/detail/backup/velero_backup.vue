@@ -332,6 +332,7 @@ export default {
         includeResources: [],
         excludeResources: [],
       }
+      this.namespaces = []
       listNamespace(this.clusterName).then((res) => {
         for (const ns of res.items) {
           this.namespaces.push({
@@ -339,6 +340,9 @@ export default {
             checked: false,
           })
         }
+      })
+      this.resources.forEach((re) => {
+        re.checked = false
       })
       this.openCreate = true
     },
