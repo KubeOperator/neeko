@@ -339,7 +339,7 @@ export default {
         restore(this.clusterName, item).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("cluster.detail.backup.recover_success"),
+            message: this.$t("commons.msg.save_success"),
           })
           this.search()
         })

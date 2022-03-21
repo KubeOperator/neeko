@@ -109,7 +109,7 @@ export default {
         delVeleroSchedule(this.clusterName, name).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.delete_success"),
+            message: this.$t("commons.msg.save_success"),
           })
           this.search()
         })
