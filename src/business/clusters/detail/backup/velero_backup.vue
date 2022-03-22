@@ -134,7 +134,8 @@
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('cluster.detail.backup.velero_schedule_cycle')" prop="schedule" v-if="form.type==='Schedule'">
-          <el-input v-model="form.schedule" :placeholder="'eg: 0 3 * * * ('+ $t('cluster.detail.backup.velero_schedule_help')+')'"></el-input>
+          <el-input v-model="form.schedule" placeholder="eg: 0 3 * * *"></el-input>
+          <div><span class="input-help">{{$t('cluster.detail.backup.utc_zone')}}</span></div>
         </el-form-item>
         <el-divider>{{ $t("cluster.detail.backup.velero_help") }}</el-divider>
         <el-form-item :label="$t('cluster.detail.backup.velero_namespace_include')" prop="includeNamespaces">

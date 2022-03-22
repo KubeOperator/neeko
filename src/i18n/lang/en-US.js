@@ -633,6 +633,7 @@ const message = {
         backup_recover: "Backup/Restore",
         backup_log: "Log",
         recover: "Restore",
+        utc_zone: "Velero uses UTC time. Adjust the time according to the time zone",
         recover_success: "Start the recovery, please check the log later",
         CLUSTER_RESTORE: "Cluster Recovery",
         CLUSTER_BACKUP: "Cluster Backup",

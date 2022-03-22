@@ -320,7 +320,7 @@
               <el-scrollbar style="height:100%">
                 <el-card>
                   <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType">
-                    <el-switch v-model="form.masterScheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                    <el-switch v-model="form.masterScheduleType" :disabled="scheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                   </el-form-item>
                   <div v-if="form.provider === 'bareMetal'">
                     <el-form-item>
@@ -368,7 +368,7 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                      <el-input-number :min="0" :max="form.maxNodeNum" v-model.number="form.workerAmount" clearable></el-input-number>
+                      <el-input-number :min="0" :max="form.maxNodeNum" @change="changeWorkNum" v-model.number="form.workerAmount" clearable></el-input-number>
                     </el-form-item>
                     <div v-if="isMultiMaster()">
                       <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
@@ -609,7 +609,7 @@ export default {
         kubeApiServerPort: 8443,
 
         plan: "",
-        workerAmount: 1,
+        workerAmount: 0,
       },
       rules: {
         name: [Rule.ClusterNameRule],
@@ -648,6 +648,7 @@ export default {
       plans: [],
       allHosts: [],
       hosts: [],
+      scheduleType: true,
       projects: [],
       repoList: [],
       validateCluster: false,
@@ -1046,6 +1047,12 @@ export default {
             cw.splice(cw.indexOf(d), 1)
             this.form.workers = cw
           })
+          if (this.form.workers.length === 0) {
+            this.scheduleType = true
+            this.form.masterScheduleType = "enable"
+          } else {
+            this.scheduleType = false
+          }
           break
         }
         case "master": {
@@ -1071,6 +1078,15 @@ export default {
       this.form.workers.forEach((n) => {
         this.form.nodes.push({ hostName: n, role: "worker" })
       })
+    },
+    changeWorkNum() {
+      console.log(this.form.workerAmount)
+      if (this.form.workerAmount === 0) {
+        this.scheduleType = true
+        this.form.masterScheduleType = "enable"
+      } else {
+        this.scheduleType = false
+      }
     },
     getHostName(hosts) {
       return hosts.join(",")

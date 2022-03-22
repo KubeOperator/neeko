@@ -632,6 +632,7 @@ const message = {
         backup_recover: "备份/恢复",
         backup_log: "日志",
         recover: "恢复",
+        utc_zone: "velero 使用 utc 时间，请根据具体时区进行调整",
         recover_success: "开始恢复，稍后请查看日志",
         CLUSTER_RESTORE: "ETCD 集群恢复",
         CLUSTER_BACKUP: "ETCD 集群备份",
