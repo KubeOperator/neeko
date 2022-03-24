@@ -145,6 +145,7 @@ const message = {
       success: "成功",
       failed: "失败",
       not_ready: "未就绪",
+      notready: "未就绪",
       error: "错误",
       active: "活跃",
       passive: "禁用",

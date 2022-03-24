@@ -144,6 +144,7 @@ const message = {
       success: "Success",
       failed: "Failed",
       not_ready: "Not ready",
+      notready: "Not ready",
       error: "Error",
       active: "Active",
       passive: "Disable",
