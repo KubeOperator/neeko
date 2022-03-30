@@ -6,7 +6,10 @@
         <template #header>
           <el-button-group>
             <el-button size="small" @click="onCreate()" v-permission="['ADMIN']">
-              {{ $t("commons.button.create") }}
+              {{ $t("commons.button.backup") }}
+            </el-button>
+            <el-button size="small" :disabled="selects.length!==1" @click="onRestore(selects[0].metadata.name)" v-permission="['ADMIN']">
+              {{ $t("commons.button.restore") }}
             </el-button>
             <el-button size="small" @click="onDelete()" :disabled="selects.length===0">
               {{ $t("commons.button.delete") }}
@@ -267,6 +270,13 @@ export default {
           icon: "el-icon-refresh-left",
           click: (row) => {
             this.onRestore(row.metadata.name)
+          },
+        },
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.onDelete(row)
           },
         },
       ],

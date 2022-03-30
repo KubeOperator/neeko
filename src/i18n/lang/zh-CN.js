@@ -62,6 +62,8 @@ const message = {
       log: "日志",
       dashboard: "控制台",
       more_info: "更多信息",
+      backup: "备份",
+      restore: "恢复",
     },
     msg: {
       success: "{0}成功",

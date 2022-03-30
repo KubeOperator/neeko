@@ -93,6 +93,7 @@
               {{ row.createdAt | datetimeFormat }}
             </template>
           </el-table-column>
+          <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
         </complex-table>
       </el-tab-pane>
 
@@ -211,6 +212,22 @@ export default {
       logs: [],
       selects: [],
       timer: null,
+      buttons: [
+        {
+          label: this.$t("cluster.detail.backup.recover"),
+          icon: "el-icon-refresh-left",
+          click: (row) => {
+            this.restoreByFiles(row)
+          },
+        },
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.deleteBackupFile(row.metadata.name)
+          },
+        },
+      ],
     }
   },
   methods: {
