@@ -4,7 +4,7 @@
       <el-button type="text" icon="el-icon-setting" @click="toTools">{{ $t("cluster.detail.log.log_help") }}</el-button>
     </el-alert>
     <div v-if="hasLogging === 'true'">
-        <logging />
+        <logging :indexPrefix="indexPrefix" />
     </div>
     <div v-if="hasLoki === 'true'">
         <loki />
@@ -26,6 +26,7 @@ export default {
       hasLogging: null,
       hasLoki: null,
       alertShow: null,
+      indexPrefix: "",
     }
   },
   methods: {
@@ -42,6 +43,7 @@ export default {
       for (const tool of data) {
         if (tool.name === "logging" && tool.status === "Running") {
           this.hasLogging = 'true'
+          this.indexPrefix = tool.vars["fluentd-elasticsearch.elasticsearch.logstashPrefix"] + "-"
           hasOne = true
           break
         }

@@ -77,13 +77,15 @@ const CustomSearchComponent = {
 
 export default {
   name: "Logging",
+  props: {
+    indexPrefix: String,
+  },
   components: { CustomSearchComponent, ComplexTable },
   data() {
     return {
       loading: false,
       clusterName: "",
       data: [],
-      indexPrefix: "logstash-",
       searchBeginDate: Date,
       searchEndDate: Date,
       paginationConfig: {
