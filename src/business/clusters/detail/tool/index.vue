@@ -416,7 +416,6 @@ export default {
       this.toolForm = item
       if (this.conditions === "") {
         this.listNamespaces()
-        this.listNodes()
         this.listStorages()
         this.setDefaultVars(item)
         this.isPasswordValid = true
@@ -649,6 +648,7 @@ export default {
     this.search()
     this.loadTool()
     this.polling()
+    this.listNodes()
   },
   destroyed() {
     clearInterval(this.timer)
