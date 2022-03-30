@@ -228,7 +228,7 @@ const message = {
       step1: "Cluster Information",
       name: "Name",
       name_type: "Node naming rules",
-      name_type_default_help: "Nodes will be named as k8s-master-1",
+      name_type_default_help: "Nodes will be named as {clusterName}-master-1",
       name_type_ip_help: "Nodes will be named directly as IP",
       name_type_host_help: "Nodes will named as the hostname in the host list",
       name_check: "Checking",
