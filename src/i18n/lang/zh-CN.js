@@ -228,7 +228,7 @@ const message = {
     creation: {
       step1: "集群信息",
       name_type: "节点命名规则",
-      name_type_default_help: "节点命名将以 k8s-master-1 形式",
+      name_type_default_help: "节点命名将以 {集群名称}-master-1 形式",
       name_type_ip_help: "节点将直接以 ip 命名",
       name_type_host_help: "节点将以主机列表中主机名称命名",
       name: "名称",
