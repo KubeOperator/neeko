@@ -60,7 +60,9 @@ const message = {
       uncordon: "Resume to disperse",
       log: "Log",
       dashboard: "dashboard",
-      more_info: "More"
+      more_info: "More",
+      backup: "Backup",
+      restore: "Restore",
     },
     msg: {
       success: "{0} success",
