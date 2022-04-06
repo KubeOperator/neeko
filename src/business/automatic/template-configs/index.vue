@@ -14,7 +14,11 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" mix-width="100" prop="name"></el-table-column>
-      <el-table-column :label="$t('commons.table.type')" mix-width="100" prop="type"></el-table-column>
+      <el-table-column :label="$t('commons.table.type')" mix-width="100" prop="type">
+        <template v-slot:default="{row}">
+          <cloud-providers :provider="row.type"></cloud-providers>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
@@ -26,10 +30,11 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import {searchTemplates} from "@/api/template-config"
+import CloudProviders from "@/components/cloud-providers"
 
 export default {
   name: "TemplateList",
-  components: { ComplexTable, LayoutContent },
+  components: { CloudProviders, ComplexTable, LayoutContent },
   props: {},
   data () {
     return {
@@ -63,8 +68,8 @@ export default {
   methods: {
     search (condition) {
       this.loading = true
-      const {currentPage,PageSize} = this.paginationConfig
-      searchTemplates(currentPage,PageSize,condition).then(res => {
+      const { currentPage, PageSize } = this.paginationConfig
+      searchTemplates(currentPage, PageSize, condition).then(res => {
         this.loading = false
         this.data = res.items
         this.paginationConfig.total = res.total
