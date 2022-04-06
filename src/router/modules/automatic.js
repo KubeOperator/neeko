@@ -171,6 +171,26 @@ const Automatic = {
         activeMenu: "ippools/:name/ips",
         roles: ["ADMIN"]
       }
+    },
+    {
+      path: "templates",
+      component: () => import("@/business/automatic/template-configs"),
+      name:"TemplateList",
+      meta: {
+        title: "automatic.template_config.name",
+        roles: ["ADMIN"]
+      }
+    },
+    {
+      path: "templates/operate",
+      component: () => import("@/business/automatic/template-configs/operate"),
+      name:"TemplateOperate",
+      hidden: true,
+      props: true,
+      meta: {
+        activeMenu: "/automatic/templates",
+        roles: ["ADMIN"]
+      }
     }
   ]
 }

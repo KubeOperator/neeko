@@ -668,7 +668,7 @@ const message = {
         velero_list: "备份列表",
         velero_schedule: "Velero 任务",
         velero_schedule_list: "任务列表",
-        velero_schedule_cycle:"周期",
+        velero_schedule_cycle: "周期",
         velero_schedule_help: "每天3点创建备份",
         velero_config: "Velero 配置"
       },
@@ -930,6 +930,13 @@ const message = {
       gateway_help: "172.1.10.254",
       dns1_help: "8.8.8.8",
       dns2_help: "114.114.114.114",
+    },
+    template_config: {
+      name: "模版配置",
+      qcow2_path: "qcow2文件位置",
+      vmdk_path: "vmdk文件位置",
+      ovf_path: "ovf文件位置",
+      template_name: "模版名称"
     }
   },
   project: {
