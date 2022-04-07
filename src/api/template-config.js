@@ -1,4 +1,4 @@
-import {post} from "@/plugins/request"
+import {get, post} from "@/plugins/request"
 
 const templateUrl = "/api/v1/templates"
 
@@ -8,5 +8,9 @@ export function searchTemplates (page, size, condition) {
 
 export function createTemplate (data) {
   return post(`${templateUrl}/create`, data)
+}
+
+export function getTemplate(name) {
+  return get(`${templateUrl}/${name}`)
 }
 
