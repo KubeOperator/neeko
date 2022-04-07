@@ -1,16 +1,16 @@
 <template>
-  <layout-content :header="$t('commons.button.create')" :back-to="{name:'TemplateList'}">
+  <layout-content :header="header" :back-to="{name:'TemplateList'}">
     <el-row>
       <el-col :span="4"><br/></el-col>
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="200px" label-position="left">
             <el-form-item :label="$t('commons.table.name')" prop="name">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.name" :disabled="mode === 'edit'"></el-input>
               <div><span class="input-help">{{ $t("commons.validate.name_help") }}</span></div>
             </el-form-item>
             <el-form-item :label="$t('commons.table.type')" prop="type">
-              <el-select v-model="form.type">
+              <el-select v-model="form.type" :disabled="mode === 'edit'">
                 <el-option
                         v-for="(item,index) in types"
                         :key="index"
@@ -52,14 +52,17 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import Rule from "@/utils/rules"
-import {createTemplate} from "@/api/template-config"
+import {createTemplate, getTemplate, updateTemplate} from "@/api/template-config"
 
 export default {
   name: "TemplateOperate",
   components: { LayoutContent },
-  props: {},
+  props: {
+    name: String
+  },
   data () {
     return {
+      mode: "",
       types: [
         {
           name: "OpenStack",
@@ -82,7 +85,8 @@ export default {
           vmdk_path: [Rule.RequiredRule],
           ovf_path: [Rule.RequiredRule],
         }
-      }
+      },
+      header: this.$t("commons.button.create")
     }
   },
   methods: {
@@ -95,19 +99,44 @@ export default {
           return false
         }
         this.loading = true
-        createTemplate(this.form).then(() => {
-          this.$message({
-            type: "success",
-            message: this.$t("commons.msg.create_success")
+        if (this.mode === "edit") {
+          updateTemplate(this.name, this.form).then(() => {
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.update_success")
+            })
+            this.$router.push({ name: "TemplateList" })
+          }).finally(() => {
+            this.loading = false
           })
-          this.$router.push({ name: "TemplateList" })
-        }).finally(() => {
-          this.loading = false
-        })
+        } else {
+          createTemplate(this.form).then(() => {
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.create_success")
+            })
+            this.$router.push({ name: "TemplateList" })
+          }).finally(() => {
+            this.loading = false
+          })
+        }
+      })
+    },
+    getDetail () {
+      this.loading = true
+      getTemplate(this.name).then(res => {
+        this.form = res
+      }).finally(() => {
+        this.loading = false
       })
     }
   },
   created () {
+    this.mode = this.$route.query.mode
+    if (this.mode === "edit") {
+      this.getDetail()
+      this.header = this.$t("commons.button.edit")
+    }
   }
 }
 </script>

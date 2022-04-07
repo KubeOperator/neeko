@@ -80,7 +80,10 @@ export default {
           label: this.$t("commons.button.edit"),
           icon: "el-icon-edit",
           click: (row) => {
-            this.$router.push({ name: "RegionEdit", params: { name: row.name } })
+            this.$router.push({
+              path: `templates/${row.name}/edit`,
+              query: { mode: "edit" }
+            })
           }
         },
         {
@@ -133,7 +136,7 @@ export default {
       })
     },
     create () {
-      this.$router.push({ path: "/automatic/templates/operate" })
+      this.$router.push({ path: "/automatic/templates/create" })
     },
     del (name) {
       this.$confirm(

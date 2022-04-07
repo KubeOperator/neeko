@@ -182,16 +182,27 @@ const Automatic = {
       }
     },
     {
-      path: "templates/operate",
+      path: "templates/create",
       component: () => import("@/business/automatic/template-configs/operate"),
-      name:"TemplateOperate",
+      name:"TemplateCreate",
       hidden: true,
       props: true,
       meta: {
         activeMenu: "/automatic/templates",
         roles: ["ADMIN"]
       }
-    }
+    },
+    {
+      path: "templates/:name/edit",
+      component: () => import("@/business/automatic/template-configs/operate"),
+      name:"TemplateEdit",
+      hidden: true,
+      props: true,
+      meta: {
+        activeMenu: "/automatic/templates",
+        roles: ["ADMIN"]
+      }
+    },
   ]
 }
 
