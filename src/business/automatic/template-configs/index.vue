@@ -1,7 +1,7 @@
 <template>
   <layout-content :header="$t('automatic.template_config.name')" v-loading="loading">
     <complex-table :data="data" :pagination-config="paginationConfig" :search-config="searchConfig" @search="search"
-                   :selects.sync="selects">
+                   :selects.sync="selects" >
       <template #header>
         <el-button-group>
           <el-button size="small" @click="create()">
@@ -26,6 +26,7 @@
       <el-table-column :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
       <div style=" text-align: center;">
@@ -65,7 +66,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {getTemplate, searchTemplates} from "@/api/template-config"
+import {delTemplate, getTemplate, searchTemplates} from "@/api/template-config"
 import CloudProviders from "@/components/cloud-providers"
 
 export default {
@@ -74,6 +75,22 @@ export default {
   props: {},
   data () {
     return {
+      buttons: [
+        {
+          label: this.$t("commons.button.edit"),
+          icon: "el-icon-edit",
+          click: (row) => {
+            this.$router.push({ name: "RegionEdit", params: { name: row.name } })
+          }
+        },
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.del(row.name)
+          }
+        }
+      ],
       loading: false,
       data: [],
       searchConfig: {
@@ -118,8 +135,35 @@ export default {
     create () {
       this.$router.push({ path: "/automatic/templates/operate" })
     },
-    del () {
-
+    del (name) {
+      this.$confirm(
+        this.$t("commons.confirm_message.delete"),
+        this.$t("commons.message_box.prompt"),
+        {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning"
+        }
+      )
+        .then(() => {
+          const ps = []
+          if (name) {
+            ps.push(delTemplate(name))
+          } else {
+            for (const item of this.selects) {
+              ps.push(delTemplate(item.name))
+            }
+          }
+          Promise.all(ps).then(() => {
+            this.search()
+            this.$message({
+              type: "success",
+              message: this.$t("commons.msg.delete_success")
+            })
+          }).catch(() => {
+            this.search()
+          })
+        })
     },
     openDetailPage (row) {
       this.loading = true

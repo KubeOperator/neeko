@@ -1,4 +1,4 @@
-import {get, post} from "@/plugins/request"
+import {del, get, post} from "@/plugins/request"
 
 const templateUrl = "/api/v1/templates"
 
@@ -12,5 +12,9 @@ export function createTemplate (data) {
 
 export function getTemplate(name) {
   return get(`${templateUrl}/${name}`)
+}
+
+export function delTemplate(name) {
+  return del(`${templateUrl}/${name}`)
 }
 
