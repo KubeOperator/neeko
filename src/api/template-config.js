@@ -21,3 +21,7 @@ export function delTemplate(name) {
 export function updateTemplate(name,data) {
   return patch(`${templateUrl}/${name}`, data)
 }
+
+export function listTemplateConfigs() {
+  return get(`${templateUrl}`)
+}
