@@ -107,11 +107,12 @@
                 </el-form-item>
               </div>
               <div v-if="form.cloudVars['templateType']==='template_config'">
-                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
-                  <el-select v-model="form.cloudVars.imageName"
+                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.templateConfig">
+                  <el-select v-model="form.cloudVars.templateConfig"
                              filterable style="width:100%"
                              reserve-keyword
-                             size="medium">
+                             size="medium"
+                             @change="changeTemplateConfig(form.cloudVars.templateConfig)">
                     <el-option
                             v-for="(item,index) in templateConfigs"
                             :key="index"
@@ -210,7 +211,7 @@
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='customize'">
                 <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
-                  <el-select v-model="form.cloudVars.imageName"
+                  <el-select v-model="form.cloudVars.templateConfig"
                              filterable style="width:100%"
                              reserve-keyword
                              size="medium"
@@ -548,6 +549,7 @@ export default {
           resourceType: "resourcePool",
           cluster: "",
           imageName: "",
+          templateConfig: "",
           storageType: "",
           securityGroup: "",
           ipType: "",
@@ -606,6 +608,7 @@ export default {
           templateType: [Rule.RequiredRule],
           datastoreType: [Rule.RequiredRule],
           imageName: [Rule.RequiredRule],
+          templateConfig: [Rule.RequiredRule],
           network: [Rule.RequiredRule],
           storageType: [Rule.RequiredRule],
           securityGroup: [Rule.RequiredRule],
@@ -716,6 +719,13 @@ export default {
       this.cloudTemplates.forEach(template => {
         if (template.imageName === imageName) {
           this.form.cloudVars["imageDisks"] = template.imageDisks
+        }
+      })
+    },
+    changeTemplateConfig (configName) {
+      this.templateConfigs.forEach(template => {
+        if (template.name === configName) {
+          this.form.cloudVars["imageName"] = template.config.name
         }
       })
     },

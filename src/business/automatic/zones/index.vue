@@ -15,7 +15,7 @@
           <el-button size="small" @click="create()">
             {{ $t("commons.button.create") }}
           </el-button>
-          <el-button size="small" @click="del()"  :disabled="selects.length===0">{{
+          <el-button size="small" @click="del()" :disabled="selects.length===0">{{
               $t("commons.button.delete")
             }}
           </el-button>
@@ -48,6 +48,7 @@
         <div v-if="row.status === 'UPLOADIMAGERROR'">
           <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
           {{ $t("automatic.zone.uploadImageError") }}
+          <el-button type="text" @click="uploadTemplate(row.name)">{{ $t("commons.button.retry") }}</el-button>
         </div>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -58,14 +59,14 @@
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
       <div style=" text-align: center;">
         <div align="center" style="margin-top: 15px">
-          <table style="width: 90%" class="myTable"  v-if="item.provider==='vSphere'">
+          <table style="width: 90%" class="myTable" v-if="item.provider==='vSphere'">
             <tr>
               <td>{{ $t("commons.table.name") }}</td>
               <td>{{ item.name }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.region.name") }}</td>
-              <td>{{ item.regionName}}</td>
+              <td>{{ item.regionName }}</td>
             </tr>
             <tr v-if="item.cloudVars.resourceType!=='host'">
               <td>{{ $t("automatic.zone.resource_pool") }}</td>
@@ -87,7 +88,7 @@
               <td>{{ $t("automatic.zone.network") }}</td>
               <td>{{ item.cloudVars.network }}</td>
             </tr>
-            <tr  v-if="item.cloudVars.templateType === 'customize'">
+            <tr v-if="item.cloudVars.templateType === 'customize'">
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.imageName }}</td>
             </tr>
@@ -104,14 +105,14 @@
               <td>{{ item.ipPool.name }}</td>
             </tr>
           </table>
-          <table style="width: 90%" class="myTable"  v-if="item.provider==='FusionCompute'">
+          <table style="width: 90%" class="myTable" v-if="item.provider==='FusionCompute'">
             <tr>
               <td>{{ $t("commons.table.name") }}</td>
               <td>{{ item.name }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.region.name") }}</td>
-              <td>{{ item.regionName}}</td>
+              <td>{{ item.regionName }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.zone.cluster") }}</td>
@@ -125,7 +126,7 @@
               <td>{{ $t("automatic.zone.network") }}</td>
               <td>{{ item.cloudVars.portgroup }}</td>
             </tr>
-            <tr  v-if="item.cloudVars.templateType === 'customize'">
+            <tr v-if="item.cloudVars.templateType === 'customize'">
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.template }}</td>
             </tr>
@@ -143,14 +144,14 @@
             </tr>
 
           </table>
-          <table style="width: 90%" class="myTable"  v-if="item.provider==='OpenStack'">
+          <table style="width: 90%" class="myTable" v-if="item.provider==='OpenStack'">
             <tr>
               <td>{{ $t("commons.table.name") }}</td>
               <td>{{ item.name }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.region.name") }}</td>
-              <td>{{ item.regionName}}</td>
+              <td>{{ item.regionName }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.zone.cluster") }}</td>
@@ -168,7 +169,7 @@
               <td>{{ $t("automatic.zone.security_group") }}</td>
               <td>{{ item.cloudVars.securityGroup }}</td>
             </tr>
-            <tr  v-if="item.cloudVars.templateType === 'customize'">
+            <tr v-if="item.cloudVars.templateType === 'customize'">
               <td>{{ $t("automatic.zone.template") }}</td>
               <td>{{ item.cloudVars.template }}</td>
             </tr>
@@ -196,9 +197,9 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import {searchZone, deleteZoneBy} from "@/api/zone"
+import {searchZone, deleteZoneBy, uploadImage} from "@/api/zone"
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listRegistryAll } from "@/api/system-setting"
+import {listRegistryAll} from "@/api/system-setting"
 
 export default {
   name: "ZoneList",
@@ -270,7 +271,7 @@ export default {
     }
   },
   methods: {
-    getRowKeys(row) {
+    getRowKeys (row) {
       return row.name
     },
     search (condition) {
@@ -338,7 +339,7 @@ export default {
     onCancel () {
       this.openDetail = false
     },
-    polling() {
+    polling () {
       this.timer = setInterval(() => {
         let flag = false
         for (const item of this.data) {
@@ -356,12 +357,19 @@ export default {
         }
       }, 10000)
     },
+    uploadTemplate (name) {
+      this.loading = true
+      uploadImage({ name: name }).then(() => {
+      }).finally(() => {
+        this.loading = false
+      })
+    },
   },
   created () {
     this.search()
     this.polling()
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.timer)
     this.timer = null
   },
