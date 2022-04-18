@@ -25,7 +25,7 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph'">
+            <div v-if="createType === 'external-ceph-rbd'">
               <el-form-item :label="$t('commons.table.name')" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
@@ -36,7 +36,7 @@
                 <el-input v-model="form.parameters['pool']" placeholder=" kube" clearable></el-input>
               </el-form-item>
               <el-form-item label="Admin Id" prop="parameters.adminId" :rules="requiredRules">
-                <el-input v-model="form.parameters['adminId']" placeholder=" secret" clearable></el-input>
+                <el-input v-model="form.parameters['adminId']" placeholder=" admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="Admin Secret Name" prop="parameters.adminSecretName" :rules="requiredRules">
                 <el-input v-model="form.parameters['adminSecretName']" placeholder=" secret" clearable></el-input>
@@ -55,6 +55,23 @@
               </el-form-item>
               <el-form-item label="ImageFormat" prop="parameters.imageFormat" :rules="requiredRules">
                 <el-input v-model="form.parameters['imageFormat']" placeholder=" 2" clearable></el-input>
+              </el-form-item>
+            </div>
+            <div v-if="createType === 'external-ceph-fs'">
+              <el-form-item :label="$t('commons.table.name')" required>
+                <el-input v-model="form.provisioner" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
+                <el-input v-model="form.parameters['monitors']" placeholder=" 172.16.10.10:6389" clearable></el-input>
+              </el-form-item>
+              <el-form-item label="Admin Id" prop="parameters.adminId" :rules="requiredRules">
+                <el-input v-model="form.parameters['adminId']" placeholder=" admin" clearable></el-input>
+              </el-form-item>
+              <el-form-item label="Admin Secret Name" prop="parameters.adminSecretName" :rules="requiredRules">
+                <el-input v-model="form.parameters['adminSecretName']" placeholder=" secret" clearable></el-input>
+              </el-form-item>
+              <el-form-item label="Admin Secret Namespace" prop="parameters.adminSecretName" :rules="requiredRules">
+                <el-input v-model="form.parameters['adminSecretNamespace']" placeholder=" kube-system" clearable></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">

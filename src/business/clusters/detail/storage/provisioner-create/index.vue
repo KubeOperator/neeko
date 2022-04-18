@@ -8,7 +8,8 @@
             <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
-                <el-option value="external-ceph" label="external-ceph">external-ceph</el-option>
+                <el-option value="external-ceph-rbd" label="external-ceph-rbd">external-ceph-rbd</el-option>
+                <el-option value="external-ceph-fs" label="external-ceph-fs">external-ceph-fs</el-option>
                 <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
                 <el-option value="glusterfs" label="glusterfs">glusterfs</el-option>
                 <el-option value="vsphere" label="vsphere">vsphere</el-option>
@@ -34,7 +35,12 @@
                 <el-input v-model="form.vars['storage_nfs_server_path']" placeholder="/data/nfs" clearable></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph'">
+            <div v-if="createType === 'external-ceph-rbd'">
+              <el-form-item :label="$t('commons.table.name')">
+                <el-input v-model="form.name" disabled></el-input>
+              </el-form-item>
+            </div>
+            <div v-if="createType === 'external-ceph-fs'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
@@ -231,8 +237,11 @@ export default {
       this.form.vars = {}
       this.form.name = ""
       switch (this.createType) {
-        case "external-ceph":
-          this.form.name = "external-ceph"
+        case "external-ceph-rbd":
+          this.form.name = "external-ceph-rbd"
+          break
+        case "external-ceph-fs":
+          this.form.name = "external-ceph-fs"
           break
         case "rook-ceph":
           this.form.name = "rook-ceph.rbd.csi.ceph.com"
