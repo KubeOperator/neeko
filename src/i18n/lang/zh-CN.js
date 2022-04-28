@@ -64,6 +64,7 @@ const message = {
       more_info: "更多信息",
       backup: "备份",
       restore: "恢复",
+      test_connection: "连接性测试",
     },
     msg: {
       success: "{0}成功",
@@ -977,6 +978,7 @@ const message = {
     address: "地址",
     username: "账号",
     password: "密码",
+    conn_successful: "仓库连接性检测成功！",
     change_nexus_password: "修改 Nexus 密码",
     password_help: "admin 用户默认密码为 admin123",
     ntp: "NTP",

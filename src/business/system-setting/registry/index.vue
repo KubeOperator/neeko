@@ -17,6 +17,20 @@
           <el-link style="font-size: 12px" type="info" @click="goForNexus(row)">{{ row.hostname }}</el-link>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
+        <template v-slot:default="{row}">
+          <div v-if="row.status ==='Success'">
+            <span class="iconfont iconduihao" style="color: #32B350"></span>
+            {{ $t("commons.status.normal") }}
+          </div>
+          <div v-if="row.status === 'Failed'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-tooltip class="item" effect="dark" :content="row.message" placement="top">
+              <el-link type="info">{{ $t("commons.status.failed") }}</el-link>
+            </el-tooltip>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
         <template v-slot:default="{row}">
           {{ row.updatedAt | datetimeFormat }}

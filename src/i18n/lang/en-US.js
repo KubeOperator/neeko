@@ -63,6 +63,7 @@ const message = {
       more_info: "More",
       backup: "Backup",
       restore: "Restore",
+      test_connection: "Test connection",
     },
     msg: {
       success: "{0} success",
@@ -973,6 +974,7 @@ const message = {
     username: "Username",
     password: "Password",
     change_nexus_password: "Change Nexus password",
+    conn_successful: "Repo connectivity check successful!",
     password_help: "Admin login password. The default value is admin123",
     ntp: "NTP",
     email: "Email",

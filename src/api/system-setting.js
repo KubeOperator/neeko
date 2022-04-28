@@ -37,6 +37,10 @@ export function changePassword(data) {
   return post(`${settingUrl}/registry/change/password`,data)
 }
 
+export function testConnection(data) {
+  return post(`${settingUrl}/registry/check/conn`, data)
+}
+
 export function searchRegistry(currentPage, pageSize, conditions) {
   return post(`${settingUrl}/registry/search?pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }
