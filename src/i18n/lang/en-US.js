@@ -864,7 +864,8 @@ const message = {
       template: "Template",
       template_type: "Template Type",
       default: "Default",
-      customize: "Customize",
+      customize: "Zone Template",
+      template_config: "Template Config",
       network: "Network",
       network_adapter: "Network Adapter",
       security_group: "Security Group",
@@ -927,6 +928,13 @@ const message = {
       gateway_help: "172.1.10.254",
       dns1_help: "8.8.8.8",
       dns2_help: "114.114.114.114",
+    },
+    template_config: {
+      name: "Template Configuration",
+      qcow2_path: "qcow2 file location",
+      vmdk_path: "vmdk file location",
+      ovf_path: "ovf file location",
+      template_name: "Template name"
     }
   },
   project: {

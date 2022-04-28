@@ -45,3 +45,7 @@ export function getZone(name) {
 export function updateZone(name,data) {
   return patch(`${zoneUrl}/${name}`, data)
 }
+
+export function uploadImage(data){
+  return post(`${zoneUrl}/upload/image`, data)
+}

@@ -82,9 +82,11 @@
               <el-form-item :label="$t('automatic.zone.template_type')"
                             prop="cloudVars.templateType">
                 <el-radio-group v-model="form.cloudVars.templateType">
-                  <el-radio label="default">{{ $t("automatic.zone.default") }}</el-radio>
-                  <el-radio label="customize" @change="changeTemplateType('customize')">
-                    {{ $t("automatic.zone.customize") }}
+                  <el-radio v-for="(item,index) in templateTypes" :label="item.value" :key="index"
+                            @change="changeTemplateType(item.value)">
+                    {{
+                      item.label
+                    }}
                   </el-radio>
                 </el-radio-group>
               </el-form-item>
@@ -103,6 +105,24 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
+              </div>
+              <div v-if="form.cloudVars['templateType']==='template_config'">
+                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.templateConfig">
+                  <el-select v-model="form.cloudVars.templateConfig"
+                             filterable style="width:100%"
+                             reserve-keyword
+                             size="medium"
+                             @change="changeTemplateConfig(form.cloudVars.templateConfig)">
+                    <el-option
+                            v-for="(item,index) in templateConfigs"
+                            :key="index"
+                            :label="item.name"
+                            :value="item.name">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <div v-if="form.cloudVars['templateType']==='customize' || form.cloudVars['templateType']==='template_config'">
                 <el-form-item :label="$t('credential.credential')" prop="credentialName">
                   <el-select v-model="form.credentialName"
                              filterable style="width:100%"
@@ -191,7 +211,7 @@
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='customize'">
                 <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
-                  <el-select v-model="form.cloudVars.imageName"
+                  <el-select v-model="form.cloudVars.templateConfig"
                              filterable style="width:100%"
                              reserve-keyword
                              size="medium"
@@ -494,12 +514,31 @@ import {listAllRegions} from "@/api/region"
 import {listCloudZones, listDatastores, listTemplates, createZone} from "@/api/zone"
 import {listAllCredentials} from "@/api/credentials"
 import {listAllIpPools} from "@/api/ip-pool"
+import {listTemplateConfigs} from "@/api/template-config"
+
+export const defaultValue = "default"
+export const customizeValue = "customize"
+export const templateValue = "template_config"
 
 export default {
   name: "ZoneCreate",
   components: { LayoutContent },
   data () {
     return {
+      templateTypes: [
+        {
+          label: this.$t("automatic.zone.default"),
+          value: defaultValue
+        },
+        {
+          label: this.$t("automatic.zone.customize"),
+          value: customizeValue
+        },
+        {
+          label: this.$t("automatic.zone.template_config"),
+          value: templateValue
+        }
+      ],
       loading: false,
       form: {
         name: "",
@@ -510,6 +549,7 @@ export default {
           resourceType: "resourcePool",
           cluster: "",
           imageName: "",
+          templateConfig: "",
           storageType: "",
           securityGroup: "",
           ipType: "",
@@ -568,6 +608,7 @@ export default {
           templateType: [Rule.RequiredRule],
           datastoreType: [Rule.RequiredRule],
           imageName: [Rule.RequiredRule],
+          templateConfig: [Rule.RequiredRule],
           network: [Rule.RequiredRule],
           storageType: [Rule.RequiredRule],
           securityGroup: [Rule.RequiredRule],
@@ -590,7 +631,8 @@ export default {
       currentPool: {
         ips: [],
         ipUsed: 0
-      }
+      },
+      templateConfigs: []
     }
   },
   methods: {
@@ -638,34 +680,52 @@ export default {
         }
       }
     },
-    changeResourcePool() {
+    changeResourcePool () {
       if (this.region.regionVars["provider"] === "vSphere") {
         this.cloudZone = this.cloudZones[0]
         this.cloudDatastores = this.cloudZone.datastores
         this.networks = this.cloudZone.networks
       }
     },
-    changeHost(host) {
-      if (host === 'Any') {
-        this.form.cloudVars.resourceType = 'resourcePool'
-      }else  {
-        this.form.cloudVars.resourceType = 'host'
+    changeHost (host) {
+      if (host === "Any") {
+        this.form.cloudVars.resourceType = "resourcePool"
+      } else {
+        this.form.cloudVars.resourceType = "host"
       }
     },
     changeTemplateType (type) {
-      if (type !== "customize") {
+      if (type === defaultValue) {
         return
       }
+      this.form.cloudVars.imageName = ""
       this.loading = true
-      listTemplates(this.cloudZoneRequest).then(res => {
-        this.cloudTemplates = res.result
-        this.loading = false
-      })
+      if (type === customizeValue) {
+        listTemplates(this.cloudZoneRequest).then(res => {
+          this.cloudTemplates = res.result
+        }).finally(() => {
+          this.loading = false
+        })
+      }
+      if (type === templateValue) {
+        listTemplateConfigs().then(res => {
+          this.templateConfigs = res.items
+        }).finally(() => {
+          this.loading = false
+        })
+      }
     },
     changeTemplate (imageName) {
       this.cloudTemplates.forEach(template => {
         if (template.imageName === imageName) {
           this.form.cloudVars["imageDisks"] = template.imageDisks
+        }
+      })
+    },
+    changeTemplateConfig (configName) {
+      this.templateConfigs.forEach(template => {
+        if (template.name === configName) {
+          this.form.cloudVars["imageName"] = template.config.name
         }
       })
     },
