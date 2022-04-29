@@ -384,7 +384,7 @@
                 </el-form-item>
                 <el-form-item :label="$t('automatic.zone.nfs_password')"
                               prop="cloudVars.nfsPassword">
-                  <el-input type="password" v-model="form.cloudVars.nfsPassword"></el-input>
+                  <el-input type="password" show-password v-model="form.cloudVars.nfsPassword"></el-input>
                 </el-form-item>
               </div>
               <div v-if="form.cloudVars['templateType']==='customize'">

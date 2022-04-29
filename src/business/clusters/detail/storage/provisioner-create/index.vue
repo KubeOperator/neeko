@@ -65,7 +65,7 @@
                 <el-input v-model="form.vars['cinder_username']" placeholder=" admin" clearable></el-input>
               </el-form-item>
               <el-form-item label="Password" prop="vars.cinder_password" :rules="passwordRules">
-                <el-input type="password" v-model="form.vars['cinder_password']" clearable></el-input>
+                <el-input type="password" show-password v-model="form.vars['cinder_password']" clearable></el-input>
               </el-form-item>
               <el-form-item label="Region" prop="vars.cinder_region" :rules="requiredRules">
                 <el-input v-model="form.vars['cinder_region']" placeholder=" RegionOne" clearable></el-input>
@@ -108,7 +108,7 @@
                 <el-input v-model="form.vars['vc_username']" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.vcenter_password')" prop="vars.vc_password" :rules="requiredRules">
-                <el-input v-model="form.vars['vc_password']" type="password" clearable></el-input>
+                <el-input v-model="form.vars['vc_password']" type="password" show-password clearable></el-input>
               </el-form-item>
               <el-form-item label="Datacenter" prop="vars.datacenter" :rules="requiredRules">
                 <el-input v-model="form.vars['datacenter']" clearable></el-input>
@@ -156,7 +156,7 @@
                 <el-input v-model="form.vars['oceanstor_user']" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.password')" prop="vars.oceanstor_password" :rules="passwordRules">
-                <el-input type="password" v-model="form.vars['oceanstor_password']" clearable></el-input>
+                <el-input type="password" show-password v-model="form.vars['oceanstor_password']" clearable></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.storage_pool')" prop="vars.oceanstor_pools" :rules="requiredRules">
                 <el-input v-model="form.vars['oceanstor_pools']" placeholder="pool1,pool2" clearable></el-input>

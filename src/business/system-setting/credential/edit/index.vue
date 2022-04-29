@@ -19,7 +19,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item v-if="form.type==='password'" :label="$t('credential.password')" required>
-              <el-input type="password" :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.password"></el-input>
+              <el-input type="password" show-password :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')" required>
               <el-input type="textarea" v-model="form.privateKey"></el-input>

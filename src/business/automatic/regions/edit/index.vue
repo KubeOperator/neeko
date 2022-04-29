@@ -31,7 +31,7 @@
                           :placeholder="$t('automatic.region.vcenter_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"
+                <el-input type="password" show-password v-model="form.regionVars.password"
                           :placeholder="$t('automatic.region.vcenter_password_help')"></el-input>
               </el-form-item>
             </div>
@@ -45,7 +45,7 @@
                           :placeholder="$t('automatic.region.openstack_username_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"
+                <el-input type="password" show-password v-model="form.regionVars.password"
                           :placeholder="$t('automatic.region.openstack_password_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.openstack_project')" prop="regionVars.projectId">
@@ -67,7 +67,7 @@
                           :placeholder="$t('automatic.region.fusionCompute_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"
+                <el-input type="password" show-password v-model="form.regionVars.password"
                           :placeholder="$t('automatic.region.fusionCompute_password_help')"></el-input>
               </el-form-item>
             </div>

@@ -24,7 +24,7 @@
               <label>admin</label>
             </el-form-item>
             <el-form-item style="width: 100%" :label="$t('login.password')" prop="nexusPassword">
-              <el-input type="password" @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword"></el-input>
+              <el-input type="password" show-password @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword"></el-input>
             </el-form-item>
             <div class="registry-collapse">
               <el-collapse accordion>

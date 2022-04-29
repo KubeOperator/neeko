@@ -16,7 +16,7 @@
             <el-input v-model="wechat.vars['WORK_WEIXIN_AGENT_ID']"></el-input>
           </el-form-item>
           <el-form-item  style="width: 100%" label="secret" required>
-            <el-input type="password" v-model="wechat.vars['WORK_WEIXIN_CORP_SECRET']"></el-input>
+            <el-input type="password" show-password v-model="wechat.vars['WORK_WEIXIN_CORP_SECRET']"></el-input>
           </el-form-item>
           <el-form-item  style="width: 100%" :label="$t('setting.table.message.testUser')" required>
             <el-input v-model="wechat.vars['WORK_WEIXIN_TEST_USER']"></el-input>
@@ -61,7 +61,7 @@
                 <el-input v-model="dingTalk.vars['DING_TALK_WEBHOOK']"></el-input>
               </el-form-item>
               <el-form-item  style="width: 100%" label="secret" required>
-                <el-input type="password" v-model="dingTalk.vars['DING_TALK_SECRET']"></el-input>
+                <el-input type="password" show-password v-model="dingTalk.vars['DING_TALK_SECRET']"></el-input>
               </el-form-item>
               <el-form-item  style="width: 100%" :label="$t('setting.table.message.testUser')" required>
                 <el-input v-model="dingTalk.vars['DING_TALK_TEST_USER']"></el-input>

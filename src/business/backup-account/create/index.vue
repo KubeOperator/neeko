@@ -19,13 +19,13 @@
               <el-input v-model="form.credentialVars['accessKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3' || form.type === 'MINIO' " label="SecretKey" prop="credentialVars.secretKey">
-              <el-input type="password" v-model="form.credentialVars['secretKey']"></el-input>
+              <el-input  show-password v-model="form.credentialVars['secretKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')" prop="credentialVars.accountName">
               <el-input v-model="form.credentialVars['accountName']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountKey')" prop="credentialVars.accountKey">
-              <el-input type="password" v-model="form.credentialVars['accountKey']"></el-input>
+              <el-input type="password" show-password v-model="form.credentialVars['accountKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'S3'" :label="$t('backup_account.table.region')" prop="credentialVars.region">
               <el-input v-model="form.credentialVars['region']"></el-input>
@@ -51,7 +51,7 @@
                 <el-input v-model="form.credentialVars['username']"></el-input>
               </el-form-item>
               <el-form-item :label="$t('backup_account.table.password')" prop="credentialVars.password">
-                <el-input type="password" v-model="form.credentialVars['password']"></el-input>
+                <el-input type="password" show-password v-model="form.credentialVars['password']"></el-input>
               </el-form-item>
               <el-form-item :label="$t('backup_account.table.path')" prop="bucket">
                 <el-input v-model="form.bucket"></el-input>

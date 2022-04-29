@@ -26,7 +26,7 @@
               <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item v-if="requireAuth" :label="$t('multi_cluster.password')" required>
-              <el-input type="password" v-model="form.password"></el-input>
+              <el-input type="password" show-password v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.sync_interval')">
               <el-input-number :min=1 v-model="form.syncInterval"></el-input-number>

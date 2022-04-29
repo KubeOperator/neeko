@@ -11,7 +11,7 @@
             <el-input v-model="form.vars.KUBEPI_USERNAME"></el-input>
           </el-form-item>
           <el-form-item style="width: 100%" :label="$t('login.password')" prop="vars.KUBEPI_PASSWORD">
-            <el-input type="password" v-model="form.vars.KUBEPI_PASSWORD"></el-input>
+            <el-input type="password" show-password v-model="form.vars.KUBEPI_PASSWORD"></el-input>
           </el-form-item>
 
           <div style="float: right">

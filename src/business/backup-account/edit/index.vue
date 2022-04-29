@@ -15,13 +15,13 @@
               <el-input v-model="form.credentialVars['accessKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="SecretKey" required>
-              <el-input type="password" v-model="form.credentialVars['secretKey']"></el-input>
+              <el-input type="password" show-password v-model="form.credentialVars['secretKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')" required>
               <el-input v-model="form.credentialVars['accountName']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountKey')" required>
-              <el-input type="password" v-model="form.credentialVars['accountKey']"></el-input>
+              <el-input type="password" show-password v-model="form.credentialVars['accountKey']"></el-input>
             </el-form-item>
             <el-form-item v-if="form.type === 'S3'" :label="$t('backup_account.table.region')" required>
               <el-input v-model="form.credentialVars['region']"></el-input>
@@ -47,7 +47,7 @@
                 <el-input v-model="form.credentialVars['username']"></el-input>
               </el-form-item>
               <el-form-item :label="$t('backup_account.table.password')" required>
-                <el-input type="password" v-model="form.credentialVars['password']"></el-input>
+                <el-input type="password" show-password v-model="form.credentialVars['password']"></el-input>
               </el-form-item>
               <el-form-item :label="$t('backup_account.table.path')" required>
                 <el-input v-model="form.bucket"></el-input>

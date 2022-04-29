@@ -61,7 +61,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item v-if="form.credential.type==='password'" :label="$t('credential.password')" prop="credential.password">
-                <el-input type="password" v-model="form.credential.password" clearable></el-input>
+                <el-input type="password" show-password v-model="form.credential.password" clearable></el-input>
               </el-form-item>
               <el-form-item v-if="form.credential.type==='privateKey'" :label="$t('credential.privateKey')" prop="credential.privateKey">
                 <el-input type="textarea" v-model="form.credential.privateKey" clearable></el-input>

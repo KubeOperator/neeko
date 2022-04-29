@@ -29,7 +29,7 @@
                 <el-input v-model="form.regionVars.username"  :placeholder="$t('automatic.region.vcenter_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password"  :placeholder="$t('automatic.region.vcenter_password_help')"></el-input>
+                <el-input type="password" show-password v-model="form.regionVars.password"  :placeholder="$t('automatic.region.vcenter_password_help')"></el-input>
               </el-form-item>
             </div>
             <div v-if="form.provider === 'OpenStack'">
@@ -40,7 +40,7 @@
                 <el-input v-model="form.regionVars.username" :placeholder="$t('automatic.region.openstack_username_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password" :placeholder="$t('automatic.region.openstack_password_help')"></el-input>
+                <el-input type="password" show-password v-model="form.regionVars.password" :placeholder="$t('automatic.region.openstack_password_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.openstack_project')" prop="regionVars.projectId">
                 <el-input v-model="form.regionVars.projectId" :placeholder="$t('automatic.region.openstack_project_help')"></el-input>
@@ -57,7 +57,7 @@
                 <el-input v-model="form.regionVars.user" :placeholder="$t('automatic.region.fusionCompute_user_help')"></el-input>
               </el-form-item>
               <el-form-item :label="$t('automatic.region.vcenter_password')" prop="regionVars.password">
-                <el-input type="password" v-model="form.regionVars.password" :placeholder="$t('automatic.region.fusionCompute_password_help')"></el-input>
+                <el-input type="password" show-password v-model="form.regionVars.password" :placeholder="$t('automatic.region.fusionCompute_password_help')"></el-input>
               </el-form-item>
             </div>
             <el-form-item :label="$t('automatic.datacenter')" prop="datacenter">

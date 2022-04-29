@@ -11,7 +11,7 @@
             <el-input v-model="form.user" placeholder="admin" clearable></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.f5.big_ip_password')" prop="password">
-            <el-input type="password" v-model="form.password" clearable></el-input>
+            <el-input type="password" show-password v-model="form.password" clearable></el-input>
           </el-form-item>
           <el-form-item label="Partition" prop="partition">
             <el-input v-model="form.partition" placeholder="Partition Name" clearable></el-input>

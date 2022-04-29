@@ -15,7 +15,7 @@
               <el-input v-model="form.vars.SMTP_USERNAME"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.password')"  prop="vars.SMTP_PASSWORD">
-              <el-input type="password" :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars.SMTP_PASSWORD"></el-input>
+              <el-input type="password" show-password :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars.SMTP_PASSWORD"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.testUser')"  prop="vars.SMTP_TEST_USER">
               <el-input v-model="form.vars.SMTP_TEST_USER"></el-input>
