@@ -1,19 +1,23 @@
 <template>
-  <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
-    <el-form-item style="width: 30%" :label="$t('login.username') " prop="bindUser">
-      <el-select style="width: 100%" @change="attachable = false" v-model="form.bindUser">
-        <el-option v-for="(item,index) in nameList" :key="index" :label="item" :value="item">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item style="width: 30%" :label="$t('login.password')" prop="bindPassword">
-      <el-input @input="attachable = false" type="password" show-password v-model="form.bindPassword"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button v-if="!attachable" @click="testConnection" v-preventReClick>{{ $t("commons.button.test_connection") }}</el-button>
-      <el-button v-if="attachable" type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <el-alert v-if="authObj.type === 'PROJECT'" :title="$t('automatic.kubepi_project_help')" type="info" />
+    <el-alert v-if="authObj.type === 'CLUSTER'" :title="$t('automatic.kubepi_cluster_help')" type="info" />
+    <el-form style="margin-top:20px" ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
+      <el-form-item style="width: 30%" :label="$t('login.username') " prop="bindUser">
+        <el-select style="width: 100%" @change="attachable = false" v-model="form.bindUser">
+          <el-option v-for="(item,index) in nameList" :key="index" :label="item" :value="item">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item style="width: 30%" :label="$t('login.password')" prop="bindPassword">
+        <el-input @input="attachable = false" type="password" show-password v-model="form.bindPassword"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button v-if="!attachable" @click="testConnection" v-preventReClick>{{ $t("commons.button.test_connection") }}</el-button>
+        <el-button v-if="attachable" type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -107,7 +111,6 @@ export default {
   },
   watch: {
     authObj() {
-      console.log(this.authObj)
       this.loadInfo()
       this.getUsers()
     },
