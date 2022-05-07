@@ -5,15 +5,16 @@
     <el-col :span="12">
       <div class="grid-content bg-purple-light">
         <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
-          <el-form-item style="width: 100%" :label="$t('login.username') " prop="bindUser">
-            <el-input v-model="form.bindUser"></el-input>
+          <el-form-item style="width: 100%" :label="$t('login.username') ">
+            <span>admin</span>
           </el-form-item>
           <el-form-item style="width: 100%" :label="$t('login.password')" prop="bindPassword">
             <el-input type="password" show-password v-model="form.bindPassword"></el-input>
           </el-form-item>
           <div style="float: right">
             <el-form-item>
-              <el-button type="primary" @click="onSubmit" v-preventReClick>{{ $t('commons.button.submit') }}</el-button>
+              <el-button v-if="!attachable" @click="testConnection" v-preventReClick>{{ $t("commons.button.test_connection") }}</el-button>
+              <el-button v-if="attachable" type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
             </el-form-item>
           </div>
         </el-form>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { bindUser, getBindInfo } from "@/api/system-setting"
+import { bindUser, getBindInfo, testKubepiConn} from "@/api/system-setting"
 import Rule from "@/utils/rules"
 
 export default {
@@ -33,23 +34,42 @@ export default {
     return {
       form: {
         sourceType: "ADMIN",
-        bindUser: "",
+        bindUser: "admin",
         bindPassword: "",
       },
       loading: false,
       rules: {
-        bindUser: [Rule.RequiredRule],
         bindPassword: [Rule.RequiredRule],
       },
+      attachable: false,
     }
   },
   methods: {
+    testConnection() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        let data = {
+          bindUser: "admin",
+          bindPassword: this.form.bindPassword,
+        }
+        testKubepiConn(data).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("setting.conn_successful"),
+          })
+          this.attachable = true
+        })
+      })
+    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
           return false
         }
         this.loading = true
+        this.form.bindUser = "admin"
         bindUser(this.form)
           .then(() => {
             this.loading = false

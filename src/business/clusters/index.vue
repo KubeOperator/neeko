@@ -230,7 +230,7 @@ import {
 import KoLogs from "@/components/ko-logs/index.vue"
 import {listRegistryAll} from "@/api/system-setting"
 import {checkPermission} from "@/utils/permisstion"
-import {getDashboard} from "../../api/cluster/cluster";
+import {jumpTo} from "../../api/system-setting";
 import { openLoggerWithID } from "@/api/cluster"
 
 export default {
@@ -325,8 +325,8 @@ export default {
     }
   },
   methods: {
-    getDashboardUrl(row) {
-      getDashboard(row).then((data) => {
+    getDashboardUrl(item) {
+      jumpTo(item).then((data) => {
         window.open(data.url, "_blank")
       })
     },

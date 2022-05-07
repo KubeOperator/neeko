@@ -96,11 +96,14 @@ export function bindUser(data) {
   return post(`/api/v1/dashboard/bind`,data)
 }
 export function getUser(data) {
-  return post(`/api/v1/dashboard/user`,data)
+  return get(`/api/v1/dashboard/user`,data)
 }
 export function getBindInfo(data) {
   return post(`/api/v1/dashboard/search`,data)
 }
 export function testKubepiConn(data) {
   return post(`/api/v1/dashboard/check/conn`,data)
+}
+export function jumpTo(name) {
+  return get(`/api/v1/dashboard/jump/${name}`)
 }
