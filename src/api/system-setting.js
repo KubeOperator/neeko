@@ -104,6 +104,6 @@ export function getBindInfo(data) {
 export function testKubepiConn(data) {
   return post(`/api/v1/dashboard/check/conn`,data)
 }
-export function jumpTo(name) {
-  return get(`/api/v1/dashboard/jump/${name}`)
+export function jumpTo(project, cluster) {
+  return get(`/api/v1/dashboard/jump/${project}/${cluster}`)
 }

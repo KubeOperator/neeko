@@ -113,7 +113,7 @@
       </el-table-column>
       <el-table-column width="110px" fix>
         <template v-slot:default="{row}">
-          <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row.name)">Dashboard</el-button>
+          <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row)">Dashboard</el-button>
         </template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
@@ -325,8 +325,8 @@ export default {
     }
   },
   methods: {
-    getDashboardUrl(item) {
-      jumpTo(item).then((data) => {
+    getDashboardUrl(row) {
+      jumpTo(row.projectName, row.name).then((data) => {
         window.open(data.url, "_blank")
       })
     },
