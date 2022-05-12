@@ -141,6 +141,9 @@
                               {{$t('multi_cluster.senior_setting')}}
                             </template>
                             <div>
+                              <el-form-item label="DnsDomain" prop="kubeDnsDomain">
+                                <el-input placeholder="cluster.local" v-model="form.kubeDnsDomain" clearable></el-input>
+                              </el-form-item>
                               <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
                                 <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                               </el-form-item>
@@ -428,6 +431,7 @@
                       <ul>{{$t ('cluster.creation.service_cidr')}}</ul>
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
                       <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
+                      <ul>DnsDomain</ul>
                       <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                       <ul>NodePort {{$t ('cluster.creation.port_range')}}</ul>
                       <ul>NodePort {{$t ('cluster.creation.address')}}</ul>
@@ -439,6 +443,7 @@
                       <ul>{{form.kubeProxyMode}}</ul>
                       <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul>{{form.kubeDnsDomain}}</ul>
                       <ul v-if="form.kubernetesAudit === 'yes'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.kubernetesAudit === 'no'">{{$t ('commons.button.disable')}}</ul>
                       <ul>{{form.kubeServiceNodePortRange1}} - {{form.kubeServiceNodePortRange2}}</ul>
@@ -578,6 +583,7 @@ export default {
         kubeServiceNodePortRange2: 32767,
         enableDnsCache: "disable",
         dnsCacheVersion: "1.17.0",
+        kubeDnsDomain: "cluster.local",
         kubernetesAudit: "no",
         kubePodSubnet: "10.10.0.0/16",
         kubeServiceSubnet: "192.168.0.0/24",
@@ -625,6 +631,7 @@ export default {
         maxNodePodNum: [Rule.RequiredRule],
         kubePodSubnet: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
+        kubeDnsDomain: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
         kubeServiceNodePortRange1: [Rule.NumberRule],
         kubeServiceNodePortRange2: [Rule.NumberRule],

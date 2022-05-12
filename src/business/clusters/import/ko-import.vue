@@ -51,9 +51,9 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-row :gutter="20">
+                  <el-row :gutter="20" style="margin-top: 20px">
                     <el-col :span="12">
-                      <el-form-item style="margin-top: 20px" :label="$t('cluster.creation.name_type')" prop="clusterInfo.nodeNameRule">
+                      <el-form-item :label="$t('cluster.creation.name_type')" prop="clusterInfo.nodeNameRule">
                         <el-select style="width: 100%" v-model="form.clusterInfo.nodeNameRule">
                           <el-option key="default" label="default" value="default" />
                           <el-option key="ip" label="ip" value="ip" />
@@ -62,6 +62,18 @@
                         <div v-if="form.clusterInfo.nodeNameRule === 'default'"><span class="input-help">{{$t('cluster.creation.name_type_default_help')}}</span></div>
                         <div v-if="form.clusterInfo.nodeNameRule === 'ip'"><span class="input-help">{{$t('cluster.creation.name_type_ip_help')}}</span></div>
                         <div v-if="form.clusterInfo.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="clusterInfo.kubeProxyMode">
+                        <fu-select-rw-switch v-model="form.clusterInfo.kubeProxyMode">
+                          <template #read>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'iptables'">Iptables</el-tag>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'ipvs'">ipvs</el-tag>
+                          </template>
+                          <el-option key="Iptables" label="Iptables" value="iptables" />
+                          <el-option key="ipvs" label="ipvs" value="ipvs" />
+                        </fu-select-rw-switch>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -75,9 +87,9 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-form-item :label="$t ('cluster.creation.pod_cidr')" prop="clusterInfo.kubePodSubnet">
-                        <fu-read-write-switch :data="form.clusterInfo.kubePodSubnet" v-model="editAble.kubePodSubnet">
-                          <el-input v-model="form.clusterInfo.kubePodSubnet" @blur="editAble.kubePodSubnet = false" />
+                      <el-form-item label="DnsDomain" prop="clusterInfo.kubeDnsDomain">
+                        <fu-read-write-switch :data="form.clusterInfo.kubeDnsDomain" v-model="editAble.kubeDnsDomain">
+                          <el-input v-model="form.clusterInfo.kubeDnsDomain" @blur="editAble.kubeDnsDomain = false" />
                         </fu-read-write-switch>
                       </el-form-item>
                     </el-col>
@@ -91,15 +103,10 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="clusterInfo.kubeProxyMode">
-                        <fu-select-rw-switch v-model="form.clusterInfo.kubeProxyMode">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'iptables'">Iptables</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'ipvs'">ipvs</el-tag>
-                          </template>
-                          <el-option key="Iptables" label="Iptables" value="iptables" />
-                          <el-option key="ipvs" label="ipvs" value="ipvs" />
-                        </fu-select-rw-switch>
+                      <el-form-item :label="$t ('cluster.creation.pod_cidr')" prop="clusterInfo.kubePodSubnet">
+                        <fu-read-write-switch :data="form.clusterInfo.kubePodSubnet" v-model="editAble.kubePodSubnet">
+                          <el-input v-model="form.clusterInfo.kubePodSubnet" @blur="editAble.kubePodSubnet = false" />
+                        </fu-read-write-switch>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -393,6 +400,7 @@ export default {
           kubeServiceNodePortRange: "",
           enableDnsCache: "",
           dnsCacheVersion: "1.17.0",
+          kubeDnsDomain: "",
           kubernetesAudit: "",
           kubePodSubnet: "",
           kubeServiceSubnet: "",
@@ -428,6 +436,7 @@ export default {
           containerdStorageDir: [Rule.RequiredRule],
           dockerSubnet: [Rule.RequiredRule],
           maxNodePodNum: [Rule.RequiredRule],
+          kubeDnsDomain: [Rule.RequiredRule],
           kubeServiceSubnet: [Rule.RequiredRule],
           kubeProxyMode: [Rule.RequiredRule],
           networkType: [Rule.RequiredRule],
@@ -445,6 +454,7 @@ export default {
         kubeServiceNodePortRange: false,
         enableDnsCache: false,
         dnsCacheVersion: false,
+        kubeDnsDomain: false,
         kubernetesAudit: false,
         kubePodSubnet: false,
         kubeServiceSubnet: false,
