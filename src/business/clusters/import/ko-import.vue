@@ -11,6 +11,7 @@
       </div>
       <el-form ref="form" label-position='left' label-width="150px" :model="form" :rules="rules">
         <fu-steps ref="steps" footerAlign="right" finish-status="success" :beforeLeave="beforeLeave" @finish="onSubmit" @cancel="onCancel" showCancel>
+
           <fu-step id="cluster-info" :title="$t('cluster.creation.step6_of_bare_metal')">
             <div class="example">
               <el-scrollbar style="height:100%;overflow-x: hidden">
@@ -47,6 +48,7 @@
               </el-scrollbar>
             </div>
           </fu-step>
+
           <fu-step id="cluster-setting" :title="$t('cluster.creation.step2')">
             <div class="example">
               <el-scrollbar style="height:100%">
@@ -299,7 +301,7 @@
                           </fu-select-rw-switch>
                         </el-form-item>
                       </el-col>
-                       <el-col :span="12">
+                      <el-col :span="12">
                         <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="clusterInfo.supportGpu">
                           <fu-select-rw-switch v-model="form.clusterInfo.supportGpu">
                             <template #read>
@@ -349,6 +351,53 @@
               </el-scrollbar>
             </div>
           </fu-step>
+
+          <fu-step id="provisioner" :title="$t('cluster.detail.storage.provisioner')">
+            <el-alert :title="$t('cluster.import.provisioner_help')" type="info" />
+            <div class="example">
+              <el-scrollbar style="height:100%;overflow-x: hidden">
+                <el-card>
+                  <div>
+                    <el-button-group>
+                      <el-button style="float: left;" @click="addProvisioner">{{$t('commons.button.create')}}</el-button>
+                    </el-button-group>
+                  </div>
+                  <complex-table :data="form.clusterInfo.provisioners" style="width: 100%">
+                    <el-table-column prop="deployment" label="Deployement">
+                      <template v-slot:default="{row}">
+                        <el-select @change="changDeployment(row)" v-model="row.deployment" clearable filterable>
+                          <el-option v-for="dep in deployments" :key="dep.metadata.name" :value="dep" :label="dep.metadata.name" />
+                        </el-select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="name" :label="$t('commons.table.name')" />
+                    <el-table-column :label="$t('commons.table.type')" prop="type" fix />
+                    <el-table-column :label="$t('commons.table.status')" prop="status" fix />
+                    <el-table-column :label="$t('commons.personal.version')" min-width="45">
+                      <template v-slot:default="{row}">
+                        <span v-if="row.type !== 'nfs'">-</span>
+                        <el-select v-else v-model="row.vars.storage_nfs_server_version">
+                          <el-option value="v3" label="v3" />
+                          <el-option value="v4" label="v4" />
+                        </el-select>
+                      </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('commons.table.create_time')">
+                      <template v-slot:default="{row}">
+                        {{ row.createdAt | datetimeFormat }}
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column :label="$t('commons.table.action')">
+                      <template slot-scope="scope">
+                        <el-button size="mini" icon="el-icon-delete" circle @click="delProvisioner(scope.$index)"></el-button>
+                      </template>
+                    </el-table-column>
+                  </complex-table>
+                </el-card>
+              </el-scrollbar>
+            </div>
+          </fu-step>
         </fu-steps>
       </el-form>
     </el-dialog>
@@ -357,7 +406,7 @@
 
 <script>
 import { listCredentialAll } from "@/api/credentials"
-import { importCluster } from "@/api/cluster"
+import { importCluster, searchDeployments } from "@/api/cluster"
 import ComplexTable from "@/components/complex-table"
 import { getClusterInfo } from "@/api/cluster"
 import Rule from "@/utils/rules"
@@ -424,6 +473,7 @@ export default {
           supportGpu: "disable",
 
           nodes: [],
+          provisioners: [],
         },
       },
 
@@ -465,6 +515,7 @@ export default {
         lbKubeApiserverIp: false,
       },
       multi_network: "",
+      deployments: [],
     }
   },
   methods: {
@@ -505,6 +556,16 @@ export default {
       return bool
     },
     onSubmit() {
+      for (const pro of this.form.clusterInfo.provisioners) {
+        if (pro.type === null || pro.type === "") {
+          this.$message({ type: "info", message: this.$t("cluster.import.provisioner_rule") })
+          return
+        }
+        if (pro.type === "nfs" && pro.vars.storage_nfs_server_version === "") {
+          this.$message({ type: "info", message: this.$t("cluster.import.nfs_version_rule") })
+          return
+        }
+      }
       this.$refs["form"].validate((valid) => {
         if (valid) {
           this.loading = true
@@ -555,6 +616,7 @@ export default {
       getClusterInfo(data)
         .then((res) => {
           this.form.clusterInfo = res
+          this.form.clusterInfo.provisioners = []
           let i = 0
           for (const node of this.form.clusterInfo.nodes) {
             if (node.role === "master") {
@@ -568,6 +630,74 @@ export default {
           this.loading = false
         })
     },
+    loadDeployments() {
+      let searchData = {
+        apiServer: this.form.apiServer,
+        router: this.form.router,
+        token: this.form.token,
+        namespace: "kube-system",
+      }
+      searchDeployments(searchData).then((data) => {
+        this.deployments = data.items
+      })
+    },
+    changDeployment(row) {
+      for (const item of this.form.clusterInfo.provisioners) {
+        if (item.name === row.deployment.metadata.name) {
+          this.$message({
+            type: "error",
+            message: this.$t("setting.conn_successful"),
+          })
+          row.deployment = {}
+          return
+        }
+      }
+      row.name = row.deployment.metadata.name
+      row.type = ""
+      if (row.deployment.spec.template.spec.containers[0].env) {
+        for (const env of row.deployment.spec.template.spec.containers[0].env) {
+          switch (env.name) {
+            case "NFS_PATH":
+              row.type = "nfs"
+              row.vars.storage_nfs_server_path = env.value
+              break
+            case "NFS_SERVER":
+              row.type = "nfs"
+              row.vars.storage_nfs_server = env.value
+              break
+          }
+        }
+      }
+      if (row.deployment.metadata.labels?.app) {
+        if (row.deployment.metadata.labels.app === "rbd-provisioner") {
+          row.type = "external-ceph-rbd"
+        }
+        if (row.deployment.metadata.labels.app === "fs-provisioner") {
+          row.type = "external-ceph-fs"
+        }
+      }
+      row.status = row.deployment.status.replicas === row.deployment.status.readyReplicas ? "Running" : "NotReady"
+      row.createdAt = row.deployment.metadata.creationTimestamp
+      if (row.type === "nfs") {
+        if (row.deployment.metadata.labels?.nfsVersion) {
+          row.vars.storage_nfs_server_version = row.deployment.metadata.labels.nfsVersion
+        }
+      }
+      row.deployment = row.deployment.metadata.name
+    },
+    addProvisioner() {
+      this.form.clusterInfo.provisioners.push({
+        deployment: "",
+        name: "",
+        type: "",
+        status: "",
+        createdAt: "",
+        vars: {},
+      })
+    },
+    delProvisioner(index) {
+      this.form.clusterInfo.provisioners.splice(index, 1)
+    },
     onCancel() {
       this.dialogKoImportVisible = false
       this.$emit("changeVisble", this.dialogKoImportVisible)
@@ -575,6 +705,7 @@ export default {
   },
   created() {
     this.loadClusterInfo()
+    this.loadDeployments()
     this.getCredentials()
     this.dialogKoImportVisible = true
   },

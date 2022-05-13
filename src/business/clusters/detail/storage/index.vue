@@ -67,7 +67,7 @@
               <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
               <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name">
                 <template v-slot:default="{row}">
-                  <el-link v-if="row.type !== 'gfs' && row.type !== 'external-ceph'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
+                  <el-link v-if="detailShow(row)" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
                   <span v-else>{{ row.name }}</span>
                 </template>
               </el-table-column>
@@ -256,6 +256,9 @@ export default {
     },
     changeVisble(val) {
       this.dialogDetailVisible = val
+    },
+    detailShow(row) {
+      return row.type !== 'gfs' && row.type !== 'external-ceph-fs' && row.type !== 'external-ceph-rbd'
     },
     getDetailInfo(val) {
       this.dialogDetailVisible = true

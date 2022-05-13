@@ -45,6 +45,10 @@ export function importCluster(data) {
   return post(`${clusterUrl}/import/`, data)
 }
 
+export function searchDeployments(data) {
+  return post(`${clusterUrl}/provisioner/deployment/`, data)
+}
+
 export function allClusters() {
   return get(`${clusterUrl}`)
 }
