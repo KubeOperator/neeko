@@ -106,7 +106,7 @@ export default {
         let id = this.log.id
         this.$emit("retry", id, prePhase)
       } else {
-        this.$emit("retry", prePhase)
+        this.$emit("retry", "", prePhase)
       }
     },
     getStatus() {

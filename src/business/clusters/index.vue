@@ -113,7 +113,7 @@
       </el-table-column>
       <el-table-column width="110px" fix>
         <template v-slot:default="{row}">
-          <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row.name)">Dashboard</el-button>
+          <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row)">Dashboard</el-button>
         </template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
@@ -230,7 +230,7 @@ import {
 import KoLogs from "@/components/ko-logs/index.vue"
 import {listRegistryAll} from "@/api/system-setting"
 import {checkPermission} from "@/utils/permisstion"
-import {getDashboard} from "../../api/cluster/cluster";
+import {jumpTo} from "../../api/system-setting";
 import { openLoggerWithID } from "@/api/cluster"
 
 export default {
@@ -326,7 +326,7 @@ export default {
   },
   methods: {
     getDashboardUrl(row) {
-      getDashboard(row).then((data) => {
+      jumpTo(row.projectName, row.name).then((data) => {
         window.open(data.url, "_blank")
       })
     },

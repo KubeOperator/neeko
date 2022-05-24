@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <el-dialog :visible.sync="dialogDetailVisible" :title="$t ('cluster.cluster_detail')" :before-close="onCancel" width="50%" :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogDetailVisible" :title="$t ('cluster.cluster_detail')" :before-close="onCancel" width="70%" :close-on-click-modal="false">
       <el-form>
         <el-divider content-position="left">{{$t ('cluster.creation.base_setting')}}</el-divider>
         <el-row type="flex" justify="center">
@@ -112,12 +112,10 @@
           </el-col>
         </el-row>
         <el-row type="flex" justify="center">
-          <el-col :span="10">
-            <el-col v-if="clusterDetailInfo.spec.runtimeType === 'docker'" :span="10">
-              <el-form-item :label="$t ('cluster.creation.subnet') + ': '">
-                <span>{{clusterDetailInfo.spec.docker_subnet}}</span>
-              </el-form-item>
-            </el-col>
+          <el-col v-if="clusterDetailInfo.spec.runtimeType === 'docker'" :span="10">
+            <el-form-item :label="$t ('cluster.creation.subnet') + ': '">
+              <span>{{clusterDetailInfo.spec.docker_subnet}}</span>
+            </el-form-item>
           </el-col>
           <el-col :span="10"></el-col>
         </el-row>
@@ -231,9 +229,9 @@ export default {
       this.dialogDetailVisible = false
       this.$emit("changeVisble", this.dialogDetailVisible)
     },
-    loadNodeIPNum (maxNodeNum) {
-      return Math.pow(2, (32 - maxNodeNum))
-    }
+    loadNodeIPNum(maxNodeNum) {
+      return Math.pow(2, 32 - maxNodeNum)
+    },
   },
   created() {
     this.dialogDetailVisible = true

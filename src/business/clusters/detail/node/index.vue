@@ -297,6 +297,7 @@ export default {
       operationType: "",
 
       // node delete
+      currentNode: {},
       dialogDeleteVisible: false,
       isForce: false,
       deleteRow: null,
@@ -613,6 +614,7 @@ export default {
         this.operationType = "add-worker"
       }
       this.dialogLogVisible = true
+      this.currentNode = row
       this.nodeName = row.name
     },
     onRetry(id, prestatus) {

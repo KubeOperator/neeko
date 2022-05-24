@@ -125,17 +125,6 @@ const Cluster = {
           }
         },
         {
-          path: "f5",
-          name: "ClusterF5",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/f5"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
           path: "security",
           name: "ClusterSecurity",
           hidden: true,

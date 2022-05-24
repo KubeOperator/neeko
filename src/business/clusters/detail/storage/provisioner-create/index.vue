@@ -37,12 +37,12 @@
             </div>
             <div v-if="createType === 'external-ceph-rbd'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name" disabled></el-input>
+                <el-input v-model="form.name"></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph-fs'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name" disabled></el-input>
+                <el-input v-model="form.name"></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
