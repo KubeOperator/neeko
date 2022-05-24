@@ -1022,7 +1022,9 @@ const message = {
         filterDN: "User Filtering DN",
         filterRule: "User Filtering Rules",
         status: "Status",
-        ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!"
+        ldapHelper: "Note: Users without mailboxes will not be synchronized, and those with the same login name as local users will not be synchronized!",
+        ldap_mapping: "User Attribute Mapping",
+        ldap_mapping_helper: "User attribute mapping represents how to map user attributes in LDAP to KubeOperator users, name, email are the attributes required by KubeOperator users",
       },
       license: {
         title: "Import license",

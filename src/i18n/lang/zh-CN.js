@@ -1027,7 +1027,9 @@ const message = {
         filterDN: "用户过滤 DN",
         filterRule: "用户过滤规则",
         status: "状态",
-        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登录名重复的也不会被同步!"
+        ldapHelper: " 注意：没有邮箱的用户不会被同步，与本地用户登录名重复的也不会被同步!",
+        ldap_mapping: "用户属性映射",
+        ldap_mapping_helper:"用户属性映射代表怎样将LDAP中用户属性映射到KubeOperator用户上，name,email 是KubeOperator的用户需要属性"
       },
       license: {
         title: "导入许可证",
