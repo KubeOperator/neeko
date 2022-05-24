@@ -12,11 +12,10 @@
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/tool'">{{$t('cluster.detail.tag.tool')}}</el-menu-item>
         <el-menu-item v-if="arch === 'amd64'" :index="'/clusters/detail/'+project+'/'+name+'/istio'">Istio</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.tag.backup')}}</el-menu-item>
-        <el-menu-item v-if="hasLicense" :index="'/clusters/detail/'+project+'/'+name+'/f5'">F5</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/security'">
           {{$t('cluster.detail.tag.security')}}
         </el-menu-item>
-        <el-menu-item v-if="hasLicense" :index="'/clusters/detail/'+project+'/'+name+'/grade'">{{$t('cluster.detail.tag.grade')}}
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/grade'">{{$t('cluster.detail.tag.grade')}}
         </el-menu-item>
       </el-menu>
       <br />
