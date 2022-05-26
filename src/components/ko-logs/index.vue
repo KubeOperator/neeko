@@ -284,12 +284,8 @@ export default {
       return formatMsgs
     },
     isJson(str) {
-      try {
-        if (typeof JSON.parse(str) === "object") {
-          return true
-        }
-      } catch (e) {
-        console.log(e)
+      if (typeof JSON.parse(str) === "object") {
+        return true
       }
       return false
     },

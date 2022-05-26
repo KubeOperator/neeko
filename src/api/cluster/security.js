@@ -9,7 +9,6 @@ export function listCisByPage(clusterName, page, size) {
 }
 
 export function cisCreate(clusterName, data) {
-  console.log(data)
   return post(url.replace("{cluster_name}", clusterName), data)
 }
 

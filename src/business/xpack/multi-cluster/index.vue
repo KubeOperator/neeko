@@ -8,7 +8,7 @@
                               :message="errorMessage"></repository-error-message>
 
 
-    <complex-table :data="data" local-key="multi_cluster_columns" :search-config="searchConfig"
+    <complex-table :data="data" local-key="multi_cluster_columns" :search-config="searchConfig" :selects.sync="selects"
                    :pagination-config="paginationConfig" @search="search">
       <template #toolbar>
         <el-button-group>
@@ -132,9 +132,6 @@
       }
     },
     methods: {
-      select(selection) {
-        console.log(selection)
-      },
       showErrorMessage(item) {
         this.errorMessage = item.message
         this.repositoryErrorMessageOpened = true

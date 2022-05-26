@@ -86,9 +86,6 @@
       }
     },
     methods: {
-      select(selection) {
-        console.log(selection)
-      },
       showSyncDetail(item) {
         this.logId = item.id
         this.detailOpened = true;

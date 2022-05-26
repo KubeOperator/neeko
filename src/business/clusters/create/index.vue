@@ -1087,7 +1087,6 @@ export default {
       })
     },
     changeWorkNum() {
-      console.log(this.form.workerAmount)
       if (this.form.workerAmount === 0) {
         this.scheduleType = true
         this.form.masterScheduleType = "enable"

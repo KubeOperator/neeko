@@ -23,7 +23,6 @@ export default {
   methods: {
     clickOutside(i) {
       return () => {
-        console.log("触发 " + i + " 的Click Outside")
       }
     }
   }
