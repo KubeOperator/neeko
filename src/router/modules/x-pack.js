@@ -122,18 +122,6 @@ const XPack = {
       ]
     },
     {
-      path: "ldap",
-      name: "LDAP",
-      props: true,
-      component: () => import('@/business/xpack/ldap'),
-      meta: {
-        requireLicense: true,
-        title: "route.ldap",
-        activeMenu: "/xpack/ldap",
-        roles: ['ADMIN']
-      }
-    },
-    {
       path: "theme",
       name: "Theme",
       props: true,

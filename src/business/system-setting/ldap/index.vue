@@ -13,16 +13,19 @@
               <el-input v-model="form.vars['ldap_port']"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.username')" required>
-              <el-input v-model="form.vars['ldap_username']"></el-input>
+              <el-input v-model="form.vars['ldap_username']" :placeholder="'cn=Manager'"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.password')" required>
               <el-input type="password" show-password  :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars['ldap_password']"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterDN')" required>
-              <el-input v-model="form.vars['ldap_dn']"></el-input>
+              <el-input v-model="form.vars['ldap_dn']" :placeholder="'ou=users,dc=ko,dc=com'"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterRule')" required>
-              <el-input v-model="form.vars['ldap_filter']"></el-input>
+              <el-input v-model="form.vars['ldap_filter']" :placeholder="'(&(objectClass=organizationalPerson))'"></el-input>
+            </el-form-item>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.ldap_mapping')" required>
+              <el-input v-model="form.vars['ldap_mapping']" :placeholder="$t('setting.table.ldap.ldap_mapping_helper')" ></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.status')" required>
               <el-switch
@@ -70,7 +73,9 @@ export default {
   data() {
     return {
       form: {
-        vars: {},
+        vars: {
+          ldap_mapping: "{\"Name\":\"cn\",\"Email\":\"mail\"}"
+        },
         tab: ''
       },
       rules: {
@@ -113,7 +118,7 @@ export default {
         this.loading = false
         this.$message({
           type: 'success',
-          message: this.$t('commons.msg.verify_success')
+          message: this.$t('commons.msg.sync_success')
         });
       }).finally(() => {
         this.loading = false
@@ -133,6 +138,9 @@ export default {
   created() {
     getSetting('LDAP').then( data => {
       this.form = data
+      if (this.form.vars.ldap_mapping === undefined || this.form.vars.ldap_mapping === "" ) {
+        this.form.vars.ldap_mapping = "{\"Name\":\"cn\",\"Email\":\"mail\"}"
+      }
     })
   }
 }

@@ -62,6 +62,16 @@ const SystemSetting = {
           }
         },
         {
+          path: "ldap",
+          name: "LDAP",
+          props: true,
+          component: () => import('@/business/system-setting/ldap'),
+          meta: {
+            activeMenu: "/setting",
+            roles: ['ADMIN']
+          }
+        },
+        {
           path: "email",
           name: "EMail",
           hidden: true,
