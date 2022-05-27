@@ -184,7 +184,7 @@
     </el-dialog>
 
     <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('cluster.condition.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
-      <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="dialogLogVisible = false" />
+      <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="cancleLog()" />
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
@@ -626,6 +626,10 @@ export default {
           nodeBatchOperation(this.clusterName, { operation: "delete", nodes: [this.currentNode.name] })
           break
       }
+    },
+    cancleLog() {
+      this.searchForPolling()
+      this.dialogLogVisible = false
     },
 
     polling() {

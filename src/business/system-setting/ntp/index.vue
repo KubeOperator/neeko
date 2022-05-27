@@ -11,17 +11,10 @@
       </template>
       <el-table-column type="selection" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" prop="name" fix />
-      <el-table-column :label="$t('commons.table.name')" prop="address" fix />
-      <el-table-column :label="$t('commons.table.name')" prop="status">
+      <el-table-column :label="$t('setting.address')" prop="address" fix />
+      <el-table-column :label="$t('commons.table.status')" prop="status">
         <template v-slot:default="{row}">
-          <div v-if="row.status ==='enable'">
-            <span class="iconfont iconduihao" style="color: #32B350" />
-            {{ $t('cluster.creation.enable') }}
-          </div>
-          <div v-if="row.status === 'disable'">
-            <span class="iconfont iconerror" style="color: #FA4147" />
-            {{ $t('cluster.creation.disable') }}
-          </div>
+          <el-switch @change="changeStatus(row)" v-model="row.status" active-value="enable" inactive-value="disable" />
         </template>
       </el-table-column>
       <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt" :show="false" width="150px">
@@ -41,11 +34,6 @@
         <el-form-item :label="$t('setting.address')" prop="address">
           <el-input v-model="form.address"></el-input>
         </el-form-item>
-        <el-form-item :label="$t('commons.table.status')">
-          <template>
-            <el-switch v-model="form.status" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-          </template>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogCreateVisible = false">{{ $t("commons.button.cancel") }}</el-button>
@@ -60,11 +48,6 @@
         </el-form-item>
         <el-form-item :label="$t('setting.address')" prop="address">
           <el-input v-model="form.address"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('commons.table.status')">
-          <template>
-            <el-switch v-model="form.status" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-          </template>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -134,6 +117,15 @@ export default {
         } else {
           return false
         }
+      })
+    },
+    changeStatus(row) {
+      this.form.name = row.name
+      this.form.status = row.status
+      this.form.address = row.address
+      updateNtp(this.form.name, this.form).then(() => {
+        this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
+        this.search()
       })
     },
     onSubmitEdit() {

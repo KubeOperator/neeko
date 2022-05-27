@@ -24,7 +24,7 @@
               <label>admin</label>
             </el-form-item>
             <el-form-item style="width: 100%" :label="$t('login.password')" prop="nexusPassword">
-              <el-input type="password" show-password @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword"></el-input>
+              <el-input type="password" @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword"></el-input>
             </el-form-item>
             <div class="registry-collapse">
               <el-collapse accordion>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { getRegistry, updateRegistry, changePassword, testConnection } from "@/api/system-setting"
+import { getRegistry, updateRegistry, testConnection } from "@/api/system-setting"
 import LayoutContent from "@/components/layout/LayoutContent"
 import Rule from "@/utils/rules"
 
@@ -95,7 +95,6 @@ export default {
         hostname: [Rule.IpRule],
         architecture: [Rule.RequiredRule],
         protocol: [Rule.RequiredRule],
-        nexusPassword: [Rule.RequiredRule],
       },
       protocolOptions: [{ value: "http" }, { value: "https" }],
       loading: false,
@@ -171,24 +170,6 @@ export default {
             message: this.$t("setting.conn_successful"),
           })
           this.attachable = true
-        })
-      })
-    },
-    submit(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (!valid) {
-          return false
-        }
-        changePassword({
-          id: this.form.id,
-          original: this.form.original,
-          password: this.form.password,
-        }).then(() => {
-          this.$message({
-            type: "success",
-            message: this.$t("commons.msg.save_success"),
-          })
-          this.dialogVisible = false
         })
       })
     },

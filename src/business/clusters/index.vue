@@ -111,7 +111,7 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column width="110px" fix>
+      <el-table-column width="120px" fix>
         <template v-slot:default="{row}">
           <el-button style="font-weight: bold;" :disabled="row.status !== 'Running'" type="primary" size="mini" @click="getDashboardUrl(row)">Dashboard</el-button>
         </template>

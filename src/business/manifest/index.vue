@@ -206,7 +206,6 @@ export default {
       this.currentVersion = tab.name;
     },
     onDetail(detail) {
-      console.log("onDetail:",detail)
       this.manifestDetail = detail
       this.dialogVisible = true
     }

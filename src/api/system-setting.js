@@ -33,10 +33,6 @@ export function updateRegistry(arch, data) {
   return patch(`${settingUrl}/registry/${arch}`,data)
 }
 
-export function changePassword(data) {
-  return post(`${settingUrl}/registry/change/password`,data)
-}
-
 export function testConnection(data) {
   return post(`${settingUrl}/registry/check/conn`, data)
 }

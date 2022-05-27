@@ -386,8 +386,6 @@ export default {
           }
         })
 
-        console.log(data)
-
         this.oNodeList = this.deepCopy(data.cisReport.Controls)
         this.nodeList = this.deepCopy(data.cisReport.Controls)
         let {clusterName, clusterVersion, createdAt, policy, id} = data

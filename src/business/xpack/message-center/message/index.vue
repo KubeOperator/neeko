@@ -205,7 +205,6 @@ export default {
       searchMessages(currentPage, pageSize,condition).then((data) => {
         this.loading = false
         this.data = data.items
-        console.log(123,data)
         this.paginationConfig.total = data.total
       })
     },
