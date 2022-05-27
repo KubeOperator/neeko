@@ -102,11 +102,21 @@ export default {
         this.conditionLoading = true
       }
       this.log.phase = "Waiting"
-      if (this.operation == "add-worker") {
-        let id = this.log.id
-        this.$emit("retry", id, prePhase)
-      } else {
-        this.$emit("retry", "", prePhase)
+      switch (this.operation) {
+        case "add-worker":
+          this.$emit("retry", this.log.id, prePhase)
+          break
+        case "terminal-node":
+          this.log.phase = "Terminating"
+          this.log.prePhase = "Failed"
+          this.$emit("retry", "", prePhase)
+          break
+        case "create-cluster":
+          this.$emit("retry", prePhase)
+          break
+        case "update-cluster":
+          this.$emit("retry", prePhase)
+          break
       }
     },
     getStatus() {
@@ -159,7 +169,7 @@ export default {
         }
       }
     },
-    // 直接拉取node
+    // 缩容
     dialogPolling2() {
       this.timer2 = setInterval(() => {
         if (this.log.conditions.length !== 0 || this.log.phase === "Failed") {
@@ -284,10 +294,13 @@ export default {
       return formatMsgs
     },
     isJson(str) {
-      if (typeof JSON.parse(str) === "object") {
-        return true
+      try {
+        if (typeof JSON.parse(str) === "object") {
+          return true
+        }
+      } catch {
+        return false
       }
-      return false
     },
   },
   created() {
