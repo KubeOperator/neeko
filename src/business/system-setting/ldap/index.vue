@@ -13,7 +13,7 @@
               <el-input v-model="form.vars['ldap_port']"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.username')" required>
-              <el-input v-model="form.vars['ldap_username']" :placeholder="'cn=Manager'"></el-input>
+              <el-input v-model="form.vars['ldap_username']" :placeholder="'cn=Manager,dc=ko,dc=com or Manager@ko.com'"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.password')" required>
               <el-input type="password" show-password  :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars['ldap_password']"></el-input>
@@ -118,7 +118,7 @@ export default {
         this.loading = false
         this.$message({
           type: 'success',
-          message: this.$t('commons.msg.sync_success')
+          message: this.$t('setting.table.ldap.sync_success')
         });
       }).finally(() => {
         this.loading = false
