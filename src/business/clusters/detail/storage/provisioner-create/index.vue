@@ -8,9 +8,9 @@
             <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
+                <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
                 <el-option value="external-ceph-block" label="external-ceph-block">external-ceph-block</el-option>
                 <el-option value="external-cephfs" label="external-cephfs">external-cephfs</el-option>
-                <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
                 <el-option value="glusterfs" label="glusterfs">glusterfs</el-option>
                 <el-option value="vsphere" label="vsphere">vsphere</el-option>
                 <el-option value="cinder" label="cinder">cinder</el-option>
@@ -37,12 +37,12 @@
             </div>
             <div v-if="createType === 'external-ceph-rbd'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-cephfs'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
@@ -244,7 +244,7 @@ export default {
           this.form.name = "external-cephfs"
           break
         case "rook-ceph":
-          this.form.name = "rook-ceph.rbd.csi.ceph.com"
+          this.form.name = "rook-ceph.csi.ceph.com"
           break
         case "cinder":
           this.form.name = "cinder.csi.openstack.org"
