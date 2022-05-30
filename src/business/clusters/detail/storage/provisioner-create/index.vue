@@ -8,8 +8,8 @@
             <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
-                <el-option value="external-ceph-rbd" label="external-ceph-rbd">external-ceph-rbd</el-option>
-                <el-option value="external-ceph-fs" label="external-ceph-fs">external-ceph-fs</el-option>
+                <el-option value="external-ceph-block" label="external-ceph-block">external-ceph-block</el-option>
+                <el-option value="external-ceph-cephfs" label="external-ceph-cephfs">external-ceph-cephfs</el-option>
                 <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
                 <el-option value="glusterfs" label="glusterfs">glusterfs</el-option>
                 <el-option value="vsphere" label="vsphere">vsphere</el-option>
