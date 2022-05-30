@@ -29,7 +29,7 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-rbd'">
+            <div v-if="createType === 'external-ceph-block'">
               <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
