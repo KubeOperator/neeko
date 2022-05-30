@@ -24,8 +24,8 @@
               </el-form-item>
               <el-form-item label="Version" prop="vars.storage_nfs_server_version" :rules="requiredRules">
                 <el-select style="width: 100%" v-model="form.vars['storage_nfs_server_version']" clearable>
-                  <el-option value='3' label='3'>3</el-option>
-                  <el-option value='4' label='4'>4</el-option>
+                  <el-option value='v3' label='v3' />
+                  <el-option value='v4' label='v4' />
                 </el-select>
               </el-form-item>
               <el-form-item label="Server" prop="vars.storage_nfs_server" :rules="requiredRules">
@@ -265,7 +265,7 @@ export default {
           break
         case "nfs":
           this.form.vars = {
-            storage_nfs_server_version: "4",
+            storage_nfs_server_version: "v4",
           }
           break
       }
