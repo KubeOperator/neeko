@@ -46,9 +46,11 @@
           {{ $t("automatic.zone.initializing") }}
         </div>
         <div v-if="row.status === 'UPLOADIMAGERROR'">
-          <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-          {{ $t("automatic.zone.uploadImageError") }}
-          <el-button type="text" @click="uploadTemplate(row.name)">{{ $t("commons.button.retry") }}</el-button>
+          <span class="iconfont iconerror2" style="color: #FA4147"></span>
+          <el-button type="text" @click="openErrMsgPage(row)">{{ $t("automatic.zone.uploadImageError") }}</el-button>
+<!--          <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;-->
+<!--          {{ $t("automatic.zone.uploadImageError") }}-->
+<!--          <el-button type="text" @click="uploadTemplate(row.name)">{{ $t("commons.button.retry") }}</el-button>-->
         </div>
       </el-table-column>
       <el-table-column :label="$t('commons.table.create_time')">
@@ -56,6 +58,15 @@
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
     </complex-table>
+    <el-dialog :title="$t('automatic.detail')" :visible.sync="openErrorMsg">
+      <div style="text-align: center;">
+        <span>{{row.message}}</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="openErrorMsg = false">{{ $t("commons.button.cancel") }}</el-button>
+          <el-button type="primary" @click="uploadTemplate(row.name)">{{ $t("commons.button.retry") }}</el-button>
+      </span>
+    </el-dialog>
     <el-dialog :title="$t('automatic.detail')" :visible.sync="openDetail">
       <div style=" text-align: center;">
         <div align="center" style="margin-top: 15px">
@@ -268,6 +279,8 @@ export default {
         provider: ""
       },
       timer: null,
+      openErrorMsg: false,
+      row: {},
     }
   },
   methods: {
@@ -358,12 +371,16 @@ export default {
       }, 10000)
     },
     uploadTemplate (name) {
-      this.loading = true
+      this.openErrorMsg = false
       uploadImage({ name: name }).then(() => {
       }).finally(() => {
-        this.loading = false
+        this.search()
       })
     },
+    openErrMsgPage(row) {
+      this.row = row
+      this.openErrorMsg = true
+    }
   },
   created () {
     this.search()
