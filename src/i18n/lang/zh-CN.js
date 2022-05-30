@@ -917,6 +917,7 @@ const message = {
     },
     ip_pool: {
       name: "IP池",
+      config: "IP池配置",
       subnet: "子网",
       ip_usage: "使用情况",
       gateway: "网关",
@@ -940,7 +941,7 @@ const message = {
       dns2_help: "114.114.114.114",
     },
     template_config: {
-      name: "模版配置",
+      name: "自定义模版配置",
       qcow2_path: "qcow2文件位置",
       vmdk_path: "vmdk文件位置",
       ovf_path: "ovf文件位置",

@@ -913,6 +913,7 @@ const message = {
     },
     ip_pool: {
       name: "IP Pool",
+      config: "IP Pool Config",
       subnet: "Subnet",
       ip_usage: "Usage",
       gateway: "Gateway",
