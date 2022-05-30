@@ -121,7 +121,7 @@
 
     <el-dialog @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" destroy-on-close
                width="70%" :visible.sync="dialogLogVisible">
-      <ko-logs :operation="operationType" :clusterName="clusterName" @retry="onRetry"
+      <ko-logs :key="isRefresh" :operation="operationType" :clusterName="clusterName" @retry="onRetry"
                @cancle="dialogLogVisible = false"/>
     </el-dialog>
 
@@ -297,6 +297,7 @@ export default {
       // cluster logs
       dialogLogVisible: false,
       operationType: "",
+      isRefresh: false,
 
       // cluster delete
       isForce: false,
@@ -528,6 +529,7 @@ export default {
     },
 
     getStatus(row) {
+      this.isRefresh = !this.isRefresh
       this.operationType = (row.status.indexOf("NotReady") !== -1) ? "not-ready" : "create-cluster"
       this.dialogLogVisible = true
       this.clusterName = row.name
