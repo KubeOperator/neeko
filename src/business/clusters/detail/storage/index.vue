@@ -91,8 +91,8 @@
                     {{ $t("commons.status.running") }}
                   </div>
                   <div v-if="row.status == 'NotReady'">
-                    <span class="iconfont iconerror" style="color: #FA4147"></span>
-                    {{ $t("commons.status.not_ready") }}
+                    <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+                    <el-link type="info" @click="openXterm(row)">{{ $t("commons.status.not_ready") }}</el-link>
                   </div>
                   <div v-if="row.status === 'Synchronizing'">
                     <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
