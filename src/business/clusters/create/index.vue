@@ -642,7 +642,6 @@ export default {
         helmVersion: [Rule.RequiredRule],
         ingressControllerType: [Rule.RequiredRule],
         plan: [Rule.RequiredRule],
-        workerAmount: [Rule.NumberWithZeroRule],
         masters: [Rule.RequiredRule],
         lbMode: [Rule.RequiredRule],
         lbKubeApiserverIp: [Rule.IpRule],
