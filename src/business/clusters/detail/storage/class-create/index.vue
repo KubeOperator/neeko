@@ -262,9 +262,10 @@ export default {
       })
     },
     addStorageClass() {
-      if (this.form.parameters["storagePolicyType"]) {
+      if (this.form.parameters["storagePolicyType"] !== undefined) {
         delete this.form.parameters["storagePolicyType"]
       }
+      console.log(this.form)
       createStorageClass(this.clusterName, this.form)
         .then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
