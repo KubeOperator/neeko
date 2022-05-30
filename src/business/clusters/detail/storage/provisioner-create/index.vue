@@ -35,7 +35,7 @@
                 <el-input v-model="form.vars['storage_nfs_server_path']" placeholder="/data/nfs" clearable></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-rbd'">
+            <div v-if="createType === 'external-ceph-block'">
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
@@ -237,8 +237,8 @@ export default {
       this.form.vars = {}
       this.form.name = ""
       switch (this.createType) {
-        case "external-ceph-rbd":
-          this.form.name = "external-ceph-rbd"
+        case "external-ceph-block":
+          this.form.name = "external-ceph-block"
           break
         case "external-cephfs":
           this.form.name = "external-cephfs"
