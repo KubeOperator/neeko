@@ -262,7 +262,7 @@ export default {
       })
     },
     addStorageClass() {
-      if (this.form.parameters["storagePolicyType"]) {
+      if (this.form.parameters["storagePolicyType"] !== undefined) {
         delete this.form.parameters["storagePolicyType"]
       }
       createStorageClass(this.clusterName, this.form)

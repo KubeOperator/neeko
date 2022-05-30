@@ -102,41 +102,11 @@ const Automatic = {
       }
     },
     {
-      path: "vmconfigs",
-      component: () => import("@/business/automatic/vm-configs"),
-      name: "VmConfigList",
-      meta: {
-        title: "automatic.vm_config.name",
-        roles: ["ADMIN", "PROJECT_MANAGER"]
-      }
-    },
-    {
-      path: "vmconfigs/create",
-      component: () => import("@/business/automatic/vm-configs/create"),
-      name: "VmConfigCreate",
-      hidden: true,
-      meta: {
-        activeMenu: "/automatic/vmconfigs",
-        roles: ["ADMIN"]
-      }
-    },
-    {
-      path: "vmconfigs/edit/:name",
-      props: true,
-      component: () => import("@/business/automatic/vm-configs/edit"),
-      name: "VmConfigEdit",
-      hidden: true,
-      meta: {
-        activeMenu: "/automatic/vmconfigs",
-        roles: ["ADMIN"]
-      }
-    },
-    {
       path: "ippools",
       component: () => import("@/business/automatic/ip-pools"),
       name: "IpPoolList",
       meta: {
-        title: "automatic.ip_pool.name",
+        title: "automatic.ip_pool.config",
         roles: ["ADMIN"]
       }
     },
@@ -169,6 +139,36 @@ const Automatic = {
       name: "IpCreate",
       meta: {
         activeMenu: "ippools/:name/ips",
+        roles: ["ADMIN"]
+      }
+    },
+    {
+      path: "vmconfigs",
+      component: () => import("@/business/automatic/vm-configs"),
+      name: "VmConfigList",
+      meta: {
+        title: "automatic.vm_config.name",
+        roles: ["ADMIN", "PROJECT_MANAGER"]
+      }
+    },
+    {
+      path: "vmconfigs/create",
+      component: () => import("@/business/automatic/vm-configs/create"),
+      name: "VmConfigCreate",
+      hidden: true,
+      meta: {
+        activeMenu: "/automatic/vmconfigs",
+        roles: ["ADMIN"]
+      }
+    },
+    {
+      path: "vmconfigs/edit/:name",
+      props: true,
+      component: () => import("@/business/automatic/vm-configs/edit"),
+      name: "VmConfigEdit",
+      hidden: true,
+      meta: {
+        activeMenu: "/automatic/vmconfigs",
         roles: ["ADMIN"]
       }
     },
