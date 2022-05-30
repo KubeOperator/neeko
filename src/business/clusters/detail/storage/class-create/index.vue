@@ -14,6 +14,10 @@
                 <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
+            <el-form-item v-if="provisioner.type==='rook-ceph'" :label="$t('commons.table.type')" :rules="requiredRules">
+              <el-radio v-model="rookCephType" @change="changeRookCephType" label="ceph-block">ceph-block</el-radio>
+              <el-radio v-model="rookCephType" @change="changeRookCephType" label="cephfs">cephfs</el-radio>
+            </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.reclaim_policy')" prop="reclaimPolicy" :rules="requiredRules">
               <el-select style="width: 100%" size="small" v-model="form.reclaimPolicy" clearable>
                 <el-option v-for="item of reclaimPolicyList" :key="item" :label="item" :value="item"></el-option>
@@ -219,6 +223,7 @@ export default {
       nameRules: [Rule.CommonNameRule],
       requiredRules: [Rule.RequiredRule],
       passwordRules: [Rule.RequiredRule],
+      rookCephType: "ceph-block"
     }
   },
   methods: {
@@ -283,19 +288,7 @@ export default {
       this.form.provisioner = this.provisioner.name
       switch (this.createType) {
         case "rook-ceph":
-          this.form.parameters = {
-            clusterID: "rook-ceph",
-            pool: "replicapool",
-            imageFormat: "2",
-            imageFeatures: "layering",
-            "csi.storage.k8s.io/provisioner-secret-name": "rook-csi-rbd-provisioner",
-            "csi.storage.k8s.io/provisioner-secret-namespace": "rook-ceph",
-            "csi.storage.k8s.io/controller-expand-secret-name": "rook-csi-rbd-provisioner",
-            "csi.storage.k8s.io/controller-expand-secret-namespace": "rook-ceph",
-            "csi.storage.k8s.io/node-stage-secret-name": "rook-csi-rbd-node",
-            "csi.storage.k8s.io/node-stage-secret-namespace": "rook-ceph",
-            "csi.storage.k8s.io/fstype": "ext4",
-          }
+          this.changeRookCephType(this.rookCephType)
           break
         case "vsphere":
           this.form.parameters = {
@@ -316,6 +309,38 @@ export default {
         case "cinder":
           this.form = {
             allowVolumeExpansion: true,
+          }
+          break
+      }
+    },
+    changeRookCephType(type){
+      switch (type) {
+        case "ceph-block":
+          this.form.parameters = {
+            clusterID: "rook-ceph",
+            pool: "replicapool",
+            imageFormat: "2",
+            imageFeatures: "layering",
+            "csi.storage.k8s.io/provisioner-secret-name": "rook-csi-rbd-provisioner",
+            "csi.storage.k8s.io/provisioner-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/controller-expand-secret-name": "rook-csi-rbd-provisioner",
+            "csi.storage.k8s.io/controller-expand-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/node-stage-secret-name": "rook-csi-rbd-node",
+            "csi.storage.k8s.io/node-stage-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/fstype": "ext4",
+          }
+          break
+        case "cephfs":
+          this.form.parameters = {
+            clusterID: "rook-ceph",
+            fsName: "myfs",
+            pool: " myfs-replicated",
+            "csi.storage.k8s.io/provisioner-secret-name": "rook-csi-cephfs-provisioner",
+            "csi.storage.k8s.io/provisioner-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/controller-expand-secret-name": "rook-csi-cephfs-provisioner",
+            "csi.storage.k8s.io/controller-expand-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/node-stage-secret-name": "rook-csi-cephfs-node",
+            "csi.storage.k8s.io/node-stage-secret-namespace": "rook-ceph",
           }
           break
       }
