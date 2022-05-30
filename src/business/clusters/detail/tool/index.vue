@@ -190,10 +190,10 @@
 
         <div v-if="toolForm.name === 'grafana'">
           <el-form-item :label="$t('cluster.detail.tool.password')" prop="vars.adminPassword" :rules="passwordRules">
-            <el-input @blur="checkPassword" type="password" style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
+            <el-input @blur="checkPassword" type="password" show-password style="width: 80%" v-model="toolForm.vars['adminPassword']" clearable></el-input>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.password_re')" prop="vars.adminPasswordRe" :rules="passwordRules">
-            <el-input @blur="checkPassword" type="password" style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
+            <el-input @blur="checkPassword" type="password" show-password style="width: 80%" v-model="toolForm.vars['adminPasswordRe']" clearable></el-input>
             <div v-if="!isPasswordValid"><span class="input-error">{{$t('cluster.detail.tool.grafana_password_help')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
