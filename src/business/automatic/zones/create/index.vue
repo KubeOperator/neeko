@@ -527,12 +527,12 @@ export default {
     return {
       templateTypes: [
         {
-          label: this.$t("automatic.zone.default"),
-          value: defaultValue
-        },
-        {
           label: this.$t("automatic.zone.customize"),
           value: customizeValue
+        },
+        {
+          label: this.$t("automatic.zone.default"),
+          value: defaultValue
         },
         {
           label: this.$t("automatic.zone.template_config"),
@@ -545,7 +545,7 @@ export default {
         regionName: "",
         cloudVars: {
           datastoreType: "value",
-          templateType: "default",
+          templateType: "customize",
           resourceType: "resourcePool",
           cluster: "",
           imageName: "",
