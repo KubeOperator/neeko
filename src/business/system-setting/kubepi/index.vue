@@ -58,7 +58,7 @@ export default {
         testKubepiConn(data).then(() => {
           this.$message({
             type: "success",
-            message: this.$t("setting.conn_successful"),
+            message: this.$t("setting.kubepi_conn_successful"),
           })
           this.attachable = true
         })

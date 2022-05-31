@@ -646,7 +646,7 @@ export default {
         if (item.name === row.deployment.metadata.name) {
           this.$message({
             type: "error",
-            message: this.$t("setting.conn_successful"),
+            message: this.$t("cluster.detail.storage.provisioner_exist"),
           })
           row.deployment = {}
           return
