@@ -650,6 +650,7 @@ export default {
             }
             this.loading = false
           })
+          this.changeTemplateType(this.form.cloudVars.templateType)
         }
       })
     },
