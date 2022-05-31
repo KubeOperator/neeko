@@ -25,7 +25,7 @@
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
@@ -84,12 +84,12 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'cinder'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'vsphere'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.class.storage_policy_type')">
@@ -112,7 +112,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'glusterfs'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="resturl" prop="parameters.resturl" :rules="requiredRules">
@@ -144,7 +144,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="volumeType" prop="parameters.volumeType" :rules="requiredRules">
