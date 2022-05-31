@@ -29,8 +29,8 @@
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-rbd'">
-              <el-form-item :label="$t('commons.table.name')" required>
+            <div v-if="createType === 'external-ceph-block'">
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
@@ -61,8 +61,8 @@
                 <el-input v-model="form.parameters['imageFormat']" placeholder=" 2" clearable></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-fs'">
-              <el-form-item :label="$t('commons.table.name')" required>
+            <div v-if="createType === 'external-cephfs'">
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
@@ -79,7 +79,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item label="provisioner" required>
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
@@ -316,6 +316,7 @@ export default {
     changeRookCephType(type){
       switch (type) {
         case "ceph-block":
+          this.form.provisioner = "rook-ceph.rbd.csi.ceph.com"
           this.form.parameters = {
             clusterID: "rook-ceph",
             pool: "replicapool",
@@ -331,6 +332,7 @@ export default {
           }
           break
         case "cephfs":
+          this.form.provisioner = "rook-ceph.cephfs.csi.ceph.com"
           this.form.parameters = {
             clusterID: "rook-ceph",
             fsName: "myfs",

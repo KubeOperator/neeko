@@ -258,7 +258,7 @@ export default {
       this.dialogDetailVisible = val
     },
     detailShow(row) {
-      return row.type !== 'gfs' && row.type !== 'external-ceph-fs' && row.type !== 'external-ceph-rbd'
+      return row.type !== 'gfs' && row.type !== 'external-cephfs' && row.type !== 'external-ceph-block'
     },
     getDetailInfo(val) {
       this.dialogDetailVisible = true

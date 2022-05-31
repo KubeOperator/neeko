@@ -8,9 +8,9 @@
             <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" size="small" @change="changeSelection()" v-model="createType">
                 <el-option value="nfs" label="nfs">nfs</el-option>
-                <el-option value="external-ceph-block" label="external-ceph-block">external-ceph-block</el-option>
-                <el-option value="external-ceph-cephfs" label="external-ceph-cephfs">external-ceph-cephfs</el-option>
                 <el-option value="rook-ceph" label="rook-ceph">rook-ceph</el-option>
+                <el-option value="external-ceph-block" label="external-ceph-block">external-ceph-block</el-option>
+                <el-option value="external-cephfs" label="external-cephfs">external-cephfs</el-option>
                 <el-option value="glusterfs" label="glusterfs">glusterfs</el-option>
                 <el-option value="vsphere" label="vsphere">vsphere</el-option>
                 <el-option value="cinder" label="cinder">cinder</el-option>
@@ -35,14 +35,14 @@
                 <el-input v-model="form.vars['storage_nfs_server_path']" placeholder="/data/nfs" clearable></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-rbd'">
+            <div v-if="createType === 'external-ceph-block'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
             </div>
-            <div v-if="createType === 'external-ceph-fs'">
+            <div v-if="createType === 'external-cephfs'">
               <el-form-item :label="$t('commons.table.name')">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
@@ -237,14 +237,14 @@ export default {
       this.form.vars = {}
       this.form.name = ""
       switch (this.createType) {
-        case "external-ceph-rbd":
-          this.form.name = "external-ceph-rbd"
+        case "external-ceph-block":
+          this.form.name = "external-ceph-block"
           break
-        case "external-ceph-fs":
-          this.form.name = "external-ceph-fs"
+        case "external-cephfs":
+          this.form.name = "external-cephfs"
           break
         case "rook-ceph":
-          this.form.name = "rook-ceph.rbd.csi.ceph.com"
+          this.form.name = "rook-ceph.csi.ceph.com"
           break
         case "cinder":
           this.form.name = "cinder.csi.openstack.org"
