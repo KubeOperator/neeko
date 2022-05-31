@@ -14,7 +14,7 @@
                 <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-if="provisioner.type==='rook-ceph'" :label="$t('commons.table.type')" :rules="requiredRules">
+            <el-form-item v-if="provisioner.type==='rook-ceph'" :label="$t('commons.table.type')" prop="rookCephType">
               <el-radio v-model="rookCephType" @change="changeRookCephType" label="ceph-block">ceph-block</el-radio>
               <el-radio v-model="rookCephType" @change="changeRookCephType" label="cephfs">cephfs</el-radio>
             </el-form-item>
@@ -25,7 +25,7 @@
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')">
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
@@ -84,12 +84,12 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'cinder'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'vsphere'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.class.storage_policy_type')">
@@ -112,7 +112,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'glusterfs'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="resturl" prop="parameters.resturl" :rules="requiredRules">
@@ -144,7 +144,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')">
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="volumeType" prop="parameters.volumeType" :rules="requiredRules">
