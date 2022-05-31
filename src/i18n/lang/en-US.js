@@ -825,9 +825,9 @@ const message = {
     datacenter: "DataCenter",
     basic: "Basic Information",
     detail: "Detail",
-    kubepi_project_help: "This is the user identity of the project KubeOperator user to access Dashboard(KubePi). The identity of the specified cluster KubePi depends on the cluster.",
-    kubepi_cluster_help: "This is the user identity of the cluster user to log in to The Dashboard(KubePi).",
-    kubepi_admin_help: "Note This parameter is the admin user id of Dashboard(KubePi). You can perform subsequent project or cluster user configuration only after completing this parameter.",
+    kubepi_project_help: "The list for the cluster Dashboard project administrator user login credentials. If the cluster is specified, the cluster is used.",
+    kubepi_cluster_help: "The list for the cluster Dashboard cluster administrator user login credentials.",
+    kubepi_admin_help: "The list for the cluster Dashboard administrator user login credentials. This parameter must be the same as the password set in Dashboard user management.",
     region: {
       name: "Region",
       basic: "Basic Information",
