@@ -7,25 +7,25 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
 
 
-            <el-form-item :label="$t('commons.table.name')" prop="name" required>
+            <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('cluster.creation.name_help')}}</span></div>
             </el-form-item>
 
-            <el-form-item :label="$t('multi_cluster.address')" prop="source" required>
+            <el-form-item :label="$t('multi_cluster.address')" prop="source">
               <el-input v-model="form.source"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('multi_cluster.branch')" prop="branch" required>
+            <el-form-item :label="$t('multi_cluster.branch')" prop="branch">
               <el-input v-model="form.branch"></el-input>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.auth')">
               <el-switch v-model="requireAuth" @change="onRequireAuthChange"></el-switch>
             </el-form-item>
 
-            <el-form-item v-if="requireAuth" :label="$t('multi_cluster.username')" required>
+            <el-form-item v-if="requireAuth" :label="$t('multi_cluster.username')">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
-            <el-form-item v-if="requireAuth" :label="$t('multi_cluster.password')" required>
+            <el-form-item v-if="requireAuth" :label="$t('multi_cluster.password')">
               <el-input type="password" show-password v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.sync_interval')">

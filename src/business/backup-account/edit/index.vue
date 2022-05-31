@@ -4,32 +4,32 @@
       <el-col :span="4"><br /></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="100px">
-            <el-form-item :label="$t('commons.table.name')" aria-readonly="true" required>
+          <el-form ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="100px">
+            <el-form-item :label="$t('commons.table.name')" aria-readonly="true">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.type')" aria-readonly="true" required>
+            <el-form-item :label="$t('commons.table.type')" aria-readonly="true">
               <el-input v-model="form.type" disabled></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey" required>
+            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="AccessKey">
               <el-input v-model="form.credentialVars['accessKey']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="SecretKey" required>
+            <el-form-item v-if="form.type === 'OSS' || form.type === 'S3'" label="SecretKey">
               <el-input type="password" show-password v-model="form.credentialVars['secretKey']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')" required>
+            <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountName')">
               <el-input v-model="form.credentialVars['accountName']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountKey')" required>
+            <el-form-item v-if="form.type === 'AZURE'" :label="$t('backup_account.table.accountKey')">
               <el-input type="password" show-password v-model="form.credentialVars['accountKey']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type === 'S3'" :label="$t('backup_account.table.region')" required>
+            <el-form-item v-if="form.type === 'S3'" :label="$t('backup_account.table.region')">
               <el-input v-model="form.credentialVars['region']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.endpoint')" required>
+            <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.endpoint')">
               <el-input v-model="form.credentialVars['endpoint']"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.bucket')" required>
+            <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.bucket')">
               <el-select style="width: 100%" v-model="form.bucket" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in buckets" :key="item" :value="item">
                 </el-option>
@@ -37,19 +37,19 @@
             </el-form-item>
             <!-- SFTP Option start-->
             <div v-if="form.type === 'SFTP'">
-              <el-form-item :label="$t('backup_account.table.address')" required>
+              <el-form-item :label="$t('backup_account.table.address')">
                 <el-input v-model="form.credentialVars['address']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('backup_account.table.port')" required>
+              <el-form-item :label="$t('backup_account.table.port')">
                 <el-input-number v-model="form.credentialVars['port']" :min="0" :max="65535"></el-input-number>
               </el-form-item>
-              <el-form-item :label="$t('backup_account.table.username')" required>
+              <el-form-item :label="$t('backup_account.table.username')">
                 <el-input v-model="form.credentialVars['username']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('backup_account.table.password')" required>
+              <el-form-item :label="$t('backup_account.table.password')">
                 <el-input type="password" show-password v-model="form.credentialVars['password']"></el-input>
               </el-form-item>
-              <el-form-item :label="$t('backup_account.table.path')" required>
+              <el-form-item :label="$t('backup_account.table.path')">
                 <el-input v-model="form.bucket"></el-input>
               </el-form-item>
             </div>
@@ -73,6 +73,7 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { listBuckets, updateBackupAccounts, getBackupAccountByName } from "@/api/backup-account"
+import Rule from "@/utils/rules"
 export default {
   components: {
     LayoutContent,
@@ -89,6 +90,23 @@ export default {
         credentialVars: {},
         projects: "",
         clusters: "",
+      },
+      rules: {
+        name: [Rule.NameRule],
+        bucket: [Rule.RequiredRule],
+        projects: [Rule.SelectRequiredRule],
+        credentialVars: {
+          accessKey: [Rule.RequiredRule],
+          secretKey: [Rule.RequiredRule],
+          accountName: [Rule.RequiredRule],
+          accountKey: [Rule.RequiredRule],
+          region: [Rule.RequiredRule],
+          endpoint: [Rule.RequiredRule],
+          port: [Rule.RequiredRule],
+          username: [Rule.RequiredRule],
+          address: [Rule.RequiredRule],
+          password: [Rule.RequiredRule],
+        },
       },
       buckets: [],
       loading: false,

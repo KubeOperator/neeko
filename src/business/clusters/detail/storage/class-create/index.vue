@@ -9,7 +9,7 @@
               <el-input size="small" v-model="form.metadata.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.common_name_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('cluster.detail.storage.provisioner_short')" required>
+            <el-form-item :label="$t('cluster.detail.storage.provisioner_short')">
               <el-select style="width: 100%" size="small" @change="changeClassType()" v-model="provisioner" value-key="name" clearable>
                 <el-option v-for="item of provisioners" :disabled="item.status !== 'Running'" :key="item.name" :label="'['+item.type+']'+item.name" :value="item">[{{item.type}}]{{item.name}}</el-option>
               </el-select>
@@ -25,12 +25,12 @@
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
-              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')" required>
+              <el-form-item :label="$t('cluster.detail.storage.provisioner_name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'external-ceph-block'">
-              <el-form-item label="provisioner" required>
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
@@ -62,7 +62,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'external-cephfs'">
-              <el-form-item label="provisioner" required>
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="Monitor" prop="parameters.monitors" :rules="requiredRules">
@@ -79,17 +79,17 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
-              <el-form-item label="provisioner" required>
+              <el-form-item label="provisioner">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'cinder'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'vsphere'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item :label="$t('cluster.detail.storage.class.storage_policy_type')">
@@ -112,7 +112,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'glusterfs'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="resturl" prop="parameters.resturl" :rules="requiredRules">
@@ -144,7 +144,7 @@
               </el-form-item>
             </div>
             <div v-if="createType === 'oceanstor'">
-              <el-form-item :label="$t('commons.table.name')" required>
+              <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.provisioner" disabled></el-input>
               </el-form-item>
               <el-form-item label="volumeType" prop="parameters.volumeType" :rules="requiredRules">

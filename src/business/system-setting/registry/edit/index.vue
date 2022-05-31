@@ -5,19 +5,19 @@
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading" :rules="rules" :model="form" label-width="140px">
-            <el-form-item :label="$t('setting.table.registry.arch')" prop="architecture" required>
+            <el-form-item :label="$t('setting.table.registry.arch')" prop="architecture">
               <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in architectureOptions" :key="item.value" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol" required>
+            <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol">
               <el-select style="width: 100%" @change="attachable = false" v-model="form.protocol" placeholder="请选择">
                 <el-option v-for="item in protocolOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname" required>
+            <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname">
               <el-input @input="attachable = false" @blur="attachable = false" v-model="form.hostname"></el-input>
             </el-form-item>
             <el-form-item style="width: 100%" :label="$t('login.username')">
@@ -33,17 +33,17 @@
                     {{$t('multi_cluster.senior_setting')}}
                   </template>
                   <div>
-                    <el-form-item label="RepoPort" prop="repoPort" required>
+                    <el-form-item label="RepoPort" prop="repoPort">
                       <el-input-number @input="attachable = false" v-model="form.repoPort" :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_port_help')}}</span></div>
                     </el-form-item>
 
-                    <el-form-item label="RegistryPort" prop="registryPort" required>
+                    <el-form-item label="RegistryPort" prop="registryPort">
                       <el-input-number v-model="form.registryPort" :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_registry_port_help')}}</span></div>
                     </el-form-item>
 
-                    <el-form-item label="RegistryHostedPort" prop="registryHostedPort" required>
+                    <el-form-item label="RegistryHostedPort" prop="registryHostedPort">
                       <el-input-number v-model="form.registryHostedPort" :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_registry_hosted_port_help')}}</span></div>
                     </el-form-item>

@@ -9,7 +9,7 @@
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('commons.table.type')" required>
+            <el-form-item :label="$t('commons.table.type')">
               <el-select style="width: 100%" v-model="form.type" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in typeOptions" :key="item.value" :value="item.value" :label="item.label" :disabled="item.disabled">
                 </el-option>
@@ -58,7 +58,7 @@
               </el-form-item>
             </div>
             <!-- SFTP Option end-->
-            <el-form-item :label="$t('host.project_auth')" prop="projects" required>
+            <el-form-item :label="$t('host.project_auth')" prop="projects">
               <el-select v-model="form.projects" multiple style="width:100%" filterable @change="getClusters" reserve-keyword>
                 <el-option v-for="(item,index) in projects" :key="index" :label="item.name" :value="item.name">
                 </el-option>
@@ -113,6 +113,7 @@ export default {
       rules: {
         name: [Rule.NameRule],
         bucket: [Rule.RequiredRule],
+        projects: [Rule.SelectRequiredRule],
         credentialVars: {
           accessKey: [Rule.RequiredRule],
           secretKey: [Rule.RequiredRule],

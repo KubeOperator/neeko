@@ -35,7 +35,7 @@
               <div><span class="input-help">{{$t('host.cluster_auth_help')}}</span></div>
             </el-form-item>
 
-            <el-form-item :label="$t('credential.type')" required>
+            <el-form-item :label="$t('credential.type')">
               <el-radio-group v-model="credentialType" @change="updateCredentialType">
                 <el-radio label="exists">{{$t('host.exists_credential')}}</el-radio>
                 <el-radio label="new">{{$t('host.new_credential')}}</el-radio>
@@ -54,7 +54,7 @@
               <el-form-item :label="$t('credential.username')" prop="credential.username">
                 <el-input v-model="form.credential.username" clearable></el-input>
               </el-form-item>
-              <el-form-item :label="$t('host.credential_type')" prop="credential.type" required>
+              <el-form-item :label="$t('host.credential_type')" prop="credential.type">
                 <el-radio-group v-model="form.credential.type">
                   <el-radio label="password">{{$t('credential.password')}}</el-radio>
                   <el-radio label="privateKey">{{$t('credential.privateKey')}}</el-radio>

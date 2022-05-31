@@ -20,7 +20,7 @@
             <el-form-item  style="width: 100%" :label="$t('setting.table.mail.testUser')"  prop="vars.SMTP_TEST_USER">
               <el-input v-model="form.vars.SMTP_TEST_USER"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.status')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.mail.status')">
               <el-switch
                 v-model="form.vars.EMAIL_STATUS"
                 active-value="ENABLE"
