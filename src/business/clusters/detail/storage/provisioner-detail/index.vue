@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog :visible.sync="dialogDetailVisible" :title="$t('cluster.detail.storage.provisioner')" :before-close="onCancel" width="20%" :close-on-click-modal="false">
+    <el-dialog :visible.sync="dialogDetailVisible" :title="$t('cluster.detail.storage.provisioner')" :before-close="onCancel" width="30%" :close-on-click-modal="false">
       <el-row style="margin-top: 20px">
-        <el-col :span="4"><br /></el-col>
+        <el-col :span="2"><br /></el-col>
         <el-col :span="20">
           <el-form label-position='left' label-width="120px">
             <div v-if="provioner.type === 'nfs'">
