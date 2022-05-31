@@ -32,7 +32,7 @@
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item :label="$t('setting.address')" prop="address">
-          <el-input v-model="form.address"></el-input>
+          <el-input v-model.trim="form.address"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -109,6 +109,7 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.form.address = this.form.address.replace(/ /g, "")
           createNtp(this.form).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.create_success") })
             this.dialogCreateVisible = false
@@ -131,6 +132,7 @@ export default {
     onSubmitEdit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          this.form.address = this.form.address.replace(/ /g, "")
           updateNtp(this.form.name, this.form).then(() => {
             this.$message({ type: "success", message: this.$t("commons.msg.update_success") })
             this.dialogEditVisible = false

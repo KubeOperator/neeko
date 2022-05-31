@@ -828,9 +828,9 @@ const message = {
     datacenter: "数据中心",
     basic: "基本信息",
     detail: "详情",
-    kubepi_project_help: "此处为该项目用户进入 Dashboard(KubePi) 的用户身份，指定集群 KubePi 身份则以集群为准。",
-    kubepi_cluster_help: "此处为该集群用户进入 Dashboard(KubePi) 的用户身份。",
-    kubepi_admin_help: "此处为 Dashboard(KubePi) 的 admin 用户身份信息，填写完成后，才可以进行后续项目或集群用户配置。",
+    kubepi_project_help: "此处为该项目 Dashboard 的项目管理员用户登陆凭据。指定集群身份则以集群为准。",
+    kubepi_cluster_help: "此处为该集群 Dashboard 的集群管理员用户登陆凭据。",
+    kubepi_admin_help: "此处为集群列表 Dashboard 的 admin 用户登录凭据，需要和 Dashboard 用户管理中设置的密码保持一致。",
     region: {
       name: "区域",
       basic: "基本信息",
