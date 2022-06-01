@@ -590,7 +590,7 @@ export default {
     },
     onSubmit() {
       for (const pro of this.form.clusterInfo.nfsProvisioners) {
-        if (pro.vars.storage_nfs_server_version === "") {
+        if (!pro.vars.storage_nfs_server_version || pro.vars.storage_nfs_server_version === "") {
           this.$message({ type: "info", message: this.$t("cluster.import.nfs_version_rule") })
           return
         }
@@ -675,7 +675,7 @@ export default {
       getClusterInfo(data)
         .then((res) => {
           this.form.clusterInfo = res
-          this.form.clusterInfo.nfsProvisioners = res.nfsProvisioners
+          this.form.clusterInfo.nfsProvisioners = res.nfsProvisioners ? res.nfsProvisioners : []
           this.form.clusterInfo.provisioners = []
           let i = 0
           for (const node of this.form.clusterInfo.nodes) {
