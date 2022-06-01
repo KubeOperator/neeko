@@ -5,23 +5,23 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="80px">
-            <el-form-item :label="$t('credential.name')" required>
+            <el-form-item :label="$t('credential.name')">
               <el-input v-model="form.name" disabled></el-input>
               <span></span>
             </el-form-item>
-            <el-form-item :label="$t('credential.username')" required>
+            <el-form-item :label="$t('credential.username')">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('credential.type')" required>
+            <el-form-item :label="$t('credential.type')">
               <el-radio-group v-model="form.type">
                 <el-radio label="password">{{$t('credential.password')}}</el-radio>
                 <el-radio label="privateKey">{{$t('credential.privateKey')}}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="form.type==='password'" :label="$t('credential.password')" required>
+            <el-form-item v-if="form.type==='password'" :label="$t('credential.password')">
               <el-input type="password" show-password :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')" required>
+            <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')">
               <el-input type="textarea" v-model="form.privateKey"></el-input>
             </el-form-item>
             <div style="float: right">

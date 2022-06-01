@@ -5,7 +5,7 @@
       <el-col :span="16">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item :label="$t('commons.table.name')" required>
+            <el-form-item :label="$t('commons.table.name')">
               <el-input v-model="form.name" disabled></el-input>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.sync_interval')">

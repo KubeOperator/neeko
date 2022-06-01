@@ -5,20 +5,20 @@
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" :model="form" :rules="rules" label-width="150px" label-position="left">
-            <el-form-item :label="$t('commons.table.name')" prop="name" required>
+            <el-form-item :label="$t('commons.table.name')" prop="name">
               <el-input v-model="form.name"></el-input>
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
-            <el-form-item :label="$t('user.email')" prop="email" required>
+            <el-form-item :label="$t('user.email')" prop="email">
               <el-input type="email" v-model="form.email"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('user.password')" prop="password" required>
+            <el-form-item :label="$t('user.password')" prop="password">
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('user.confirm_password')" prop="confirmPassword" required>
+            <el-form-item :label="$t('user.confirm_password')" prop="confirmPassword">
               <el-input type="password" v-model="form.confirmPassword"></el-input>
             </el-form-item>
-            <el-form-item v-if="currentUser.isSuper" :label="$t('user.role')" required prop="role">
+            <el-form-item v-if="currentUser.isSuper" :label="$t('user.role')" prop="role">
               <el-radio-group v-model="form.role">
                 <el-radio label="admin">{{ $t("commons.role.admin") }}</el-radio>
                 <el-radio label="user">{{ $t("commons.role.user") }}</el-radio>

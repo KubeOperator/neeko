@@ -24,16 +24,16 @@
             :title="$t('commons.personal.change_password')"
             :visible.sync="dialogVisible"
             width="30%">
-      <el-form ref="form" label-position="left" :model="form" label-width="100px">
-        <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" required>
+      <el-form ref="form" label-position="left" :model="form" :rules="rules" label-width="100px">
+        <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" prop="original">
           <el-input type="password" v-model="form.original"></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%" :rules="rules.password" :label="$t('commons.personal.new_password')"
-                      prop="password" required>
+        <el-form-item style="width: 100%" :label="$t('commons.personal.new_password')"
+                      prop="password">
           <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%" :rules="rules.confirmPassword" :label="$t('commons.personal.confirm_password')"
-                      prop="password" required>
+        <el-form-item style="width: 100%" :label="$t('commons.personal.confirm_password')"
+                      prop="password">
           <el-input type="password" v-model="confirmPassword"></el-input>
         </el-form-item>
       </el-form>
@@ -103,6 +103,7 @@ export default {
       },
       confirmPassword: "",
       rules: {
+        original: [Rule.RequiredRule,Rule.PasswordRule],
         password: [Rule.RequiredRule,Rule.PasswordRule],
         confirmPassword: [Rule.RequiredRule,Rule.PasswordRule, {
           validator: this.checkPassword, trigger: "blur"

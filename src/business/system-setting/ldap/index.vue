@@ -12,22 +12,22 @@
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.port')" prop="vars.ldap_port">
               <el-input v-model="form.vars['ldap_port']"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.username')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.username')" prop="vars.ldap_username">
               <el-input v-model="form.vars['ldap_username']" :placeholder="'cn=Manager,dc=ko,dc=com or Manager@ko.com'"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.password')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.password')" prop="vars.ldap_password">
               <el-input type="password" show-password  :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.vars['ldap_password']"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterDN')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterDN')" prop="vars.ldap_dn">
               <el-input v-model="form.vars['ldap_dn']" :placeholder="'ou=users,dc=ko,dc=com'"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterRule')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.filterRule')" prop="vars.ldap_filter">
               <el-input v-model="form.vars['ldap_filter']" :placeholder="'(&(objectClass=organizationalPerson))'"></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.ldap_mapping')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.ldap_mapping')" prop="vars.ldap_mapping">
               <el-input v-model="form.vars['ldap_mapping']" :placeholder="$t('setting.table.ldap.ldap_mapping_helper')" ></el-input>
             </el-form-item>
-            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.status')" required>
+            <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.status')" prop="vars.ldap_status">
               <el-switch
                 v-model="form.vars['ldap_status']"
                 active-value="ENABLE"
@@ -82,6 +82,12 @@ export default {
         vars: {
           ldap_address: [Rule.RequiredRule],
           ldap_port: [Rule.RequiredRule],
+          ldap_username: [Rule.RequiredRule],
+          ldap_password: [Rule.RequiredRule],
+          ldap_dn: [Rule.RequiredRule],
+          ldap_filter: [Rule.RequiredRule],
+          ldap_mapping: [Rule.RequiredRule],
+          ldap_status: [Rule.RequiredRule],
         }
       },
       loading: false
