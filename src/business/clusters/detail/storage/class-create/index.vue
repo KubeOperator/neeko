@@ -74,8 +74,8 @@
               <el-form-item label="Admin Secret Name" prop="parameters.adminSecretName" :rules="requiredRules">
                 <el-input v-model="form.parameters['adminSecretName']" placeholder=" secret" clearable></el-input>
               </el-form-item>
-              <el-form-item label="Admin Secret Namespace" prop="parameters.adminSecretName" :rules="requiredRules">
-                <el-input v-model="form.parameters['adminSecretNamespace']" placeholder=" kube-system" clearable></el-input>
+              <el-form-item label="Admin Secret Namespace" prop="parameters.adminSecretName" :rules="requiredRules" >
+                <el-input v-model="form.parameters['adminSecretNamespace']" placeholder=" kube-system" disabled></el-input>
               </el-form-item>
             </div>
             <div v-if="createType === 'rook-ceph'">
@@ -311,6 +311,9 @@ export default {
             allowVolumeExpansion: true,
           }
           break
+        case "external-cephfs":
+          this.form.parameters["adminSecretNamespace"] = "kube-system"
+          break
       }
     },
     changeRookCephType(type){
@@ -342,7 +345,7 @@ export default {
             "csi.storage.k8s.io/controller-expand-secret-name": "rook-csi-cephfs-provisioner",
             "csi.storage.k8s.io/controller-expand-secret-namespace": "rook-ceph",
             "csi.storage.k8s.io/node-stage-secret-name": "rook-csi-cephfs-node",
-            "csi.storage.k8s.io/node-stage-secret-namespace": "rook-ceph",
+            "csi.storage.k8s.io/node-stage-secret-namespace": "rook-ceph"
           }
           break
       }
