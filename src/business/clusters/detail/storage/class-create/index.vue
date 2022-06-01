@@ -336,7 +336,7 @@ export default {
           this.form.parameters = {
             clusterID: "rook-ceph",
             fsName: "myfs",
-            pool: " myfs-replicated",
+            pool: "myfs-replicated",
             "csi.storage.k8s.io/provisioner-secret-name": "rook-csi-cephfs-provisioner",
             "csi.storage.k8s.io/provisioner-secret-namespace": "rook-ceph",
             "csi.storage.k8s.io/controller-expand-secret-name": "rook-csi-cephfs-provisioner",
