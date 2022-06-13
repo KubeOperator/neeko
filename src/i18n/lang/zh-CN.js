@@ -162,6 +162,7 @@ const message = {
       disable_scheduling: "禁用调度",
       enable: "已启用",
       disable: "未启用",
+      bind: "已绑定",
     },
     role: {
       super_admin: "超级管理员",
@@ -828,9 +829,9 @@ const message = {
     datacenter: "数据中心",
     basic: "基本信息",
     detail: "详情",
-    kubepi_project_help: "此处为该项目 Dashboard 的项目管理员用户登陆凭据。指定集群身份则以集群为准。",
-    kubepi_cluster_help: "此处为该集群 Dashboard 的集群管理员用户登陆凭据。",
-    kubepi_admin_help: "此处为集群列表 Dashboard 的 admin 用户登录凭据，需要和 Dashboard 用户管理中设置的密码保持一致。",
+    kubepi_project_help: "此处为项目管理员登录凭据（若项目 - 集群存在绑定用户，则集群管理员绑定用户优先）。",
+    kubepi_cluster_help: "此处为集群管理员登录凭据。",
+    kubepi_admin_help: "此处为 admin 用户登录凭据，需要和 Dashboard 用户管理中设置的密码保持一致。",
     region: {
       name: "区域",
       basic: "基本信息",

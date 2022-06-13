@@ -161,6 +161,7 @@ const message = {
       disable_scheduling: "Disable scheduling",
       enable: "Enable",
       disable: "Disable",
+      bind: "Is binding",
     },
     role: {
       super_admin: "Super admin",
@@ -825,9 +826,9 @@ const message = {
     datacenter: "DataCenter",
     basic: "Basic Information",
     detail: "Detail",
-    kubepi_project_help: "The list for the cluster Dashboard project administrator user login credentials. If the cluster is specified, the cluster is used.",
-    kubepi_cluster_help: "The list for the cluster Dashboard cluster administrator user login credentials.",
-    kubepi_admin_help: "The list for the cluster Dashboard administrator user login credentials. This parameter must be the same as the password set in Dashboard user management.",
+    kubepi_project_help: "This is the login credential of the project administrator. If a user is bound to the project and cluster, the user bound to the cluster administrator is preferred.",
+    kubepi_cluster_help: "This is the cluster administrator login credentials.",
+    kubepi_admin_help: "The password must be the same as the password configured in Dashboard user management.",
     region: {
       name: "Region",
       basic: "Basic Information",
