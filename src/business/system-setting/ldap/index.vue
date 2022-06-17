@@ -12,6 +12,15 @@
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.port')" prop="vars.ldap_port">
               <el-input v-model="form.vars['ldap_port']"></el-input>
             </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.ldap.ldap_tls')" prop="tls">
+              <el-switch
+                      v-model="form.vars['ldap_tls']"
+                      active-value="ENABLE"
+                      inactive-value="DISABLE"
+                      :active-text="$t('commons.form.yes')"
+                      :inactive-text="$t('commons.form.no')">
+              </el-switch>
+            </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.username')" prop="vars.ldap_username">
               <el-input v-model="form.vars['ldap_username']" :placeholder="'cn=Manager,dc=ko,dc=com or Manager@ko.com'"></el-input>
             </el-form-item>
@@ -25,7 +34,13 @@
               <el-input v-model="form.vars['ldap_filter']" :placeholder="'(&(objectClass=organizationalPerson))'"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.ldap_mapping')" prop="vars.ldap_mapping">
-              <el-input v-model="form.vars['ldap_mapping']" :placeholder="$t('setting.table.ldap.ldap_mapping_helper')" ></el-input>
+              <codemirror ref="editor" class="yaml-editor"  v-model="form.vars['ldap_mapping']" :options="options"></codemirror>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.ldap.time_limit')" prop="vars.time_limit">
+              <el-input v-model="form.vars['time_limit']" :placeholder="'30'" type="number"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.ldap.size_limit')" prop="vars.size_limit">
+              <el-input v-model="form.vars['size_limit']" :placeholder="'1000'" type="number"></el-input>
             </el-form-item>
             <el-form-item  style="width: 100%" :label="$t('setting.table.ldap.status')" prop="vars.ldap_status">
               <el-switch
@@ -47,6 +62,10 @@
 
             <div style="float: right">
               <el-form-item>
+                <el-button @click="connectTest" :disabled="loading">{{
+                    $t("setting.table.ldap.ldap_test")
+                  }}
+                </el-button>
                 <el-button @click="sync" :disabled="!btnSlect">{{$t('commons.button.sync')}}</el-button>
                 <el-button type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
@@ -61,9 +80,12 @@
 </template>
 
 <script>
-import {createLDAP, getSetting, syncLDAP} from "@/api/system-setting";
+import {createLDAP, getSetting, syncLDAP, testConnect} from "@/api/system-setting"
 import LayoutContent from "@/components/layout/LayoutContent"
 import Rule from "@/utils/rules";
+import "codemirror/lib/codemirror.css"
+import "codemirror/theme/ayu-dark.css"
+import "codemirror/mode/javascript/javascript"
 
 export default {
   name: "LDAP",
@@ -74,7 +96,12 @@ export default {
     return {
       form: {
         vars: {
-          ldap_mapping: "{\"Name\":\"cn\",\"Email\":\"mail\"}"
+          ldap_mapping: "{\n" +
+            "   \"Name\":\"cn\",\n" +
+            "   \"Email\":\"mail\"\n" +
+            "}",
+          size_limit: 1000,
+          time_limit: 30,
         },
         tab: ''
       },
@@ -88,9 +115,20 @@ export default {
           ldap_filter: [Rule.RequiredRule],
           ldap_mapping: [Rule.RequiredRule],
           ldap_status: [Rule.RequiredRule],
+          time_limit: [Rule.RequiredRule],
+          size_limit: [Rule.RequiredRule],
         }
       },
-      loading: false
+      loading: false,
+      options: {
+        value: "",
+          mode: "application/json",
+          theme: "ayu-dark",
+          lineNumbers: true,
+          tabSize: 2,
+          lineWrapping: true,
+          gutters: ["CodeMirror-lint-markers"],
+      },
     }
   },
   methods: {
@@ -129,6 +167,26 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    connectTest() {
+      let isFormReady = false
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          isFormReady = true
+        }
+      })
+      if (!isFormReady) {
+        return
+      }
+      this.loading = true
+      testConnect(this.form).then(res => {
+        this.$message({
+          type: "success",
+          message: this.$t("setting.table.ldap.test_result", { count: res.data })
+        })
+      }).finally(() => {
+        this.loading = false
+      })
     }
   },
   computed: {
@@ -145,7 +203,10 @@ export default {
     getSetting('LDAP').then( data => {
       this.form = data
       if (this.form.vars.ldap_mapping === undefined || this.form.vars.ldap_mapping === "" ) {
-        this.form.vars.ldap_mapping = "{\"Name\":\"cn\",\"Email\":\"mail\"}"
+        this.form.vars.ldap_mapping = "{\n" +
+          "   \"Name\":\"cn\",\n" +
+          "   \"Email\":\"mail\"\n" +
+          "}"
       }
     })
   }
@@ -153,5 +214,13 @@ export default {
 </script>
 
 <style scoped>
+    .yaml-editor {
+        height: 100%;
+        position: relative;
+    }
 
+    .yaml-editor >>> .CodeMirror {
+        height: auto;
+        min-height: 100px;
+    }
 </style>

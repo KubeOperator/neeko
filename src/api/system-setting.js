@@ -87,6 +87,10 @@ export function createLDAP(data) {
   return post(`/api/v1/ldap/`,data)
 }
 
+export function testConnect(data) {
+  return post(`/api/v1/ldap/test/connect`,data)
+}
+
 // kubepi
 export function bindUser(data) {
   return post(`/api/v1/dashboard/bind`,data)
