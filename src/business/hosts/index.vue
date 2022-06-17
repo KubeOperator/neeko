@@ -183,9 +183,6 @@ export default {
           click: (row) => {
             this.$router.push({ name: "HostEdit", params: { name: row.name } })
           },
-          disabled: (row) => {
-            return (row.clusterName.length !== 0) || (row.status !== "Running" && row.status !== "Failed")
-          },
         },
         {
           label: this.$t("commons.button.delete"),

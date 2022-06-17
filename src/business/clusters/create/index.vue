@@ -331,13 +331,13 @@
                     </el-form-item>
                     <el-form-item label="Masters" prop="masters">
                       <el-select multiple filterable style="width: 100%" @change="toggle('master')" v-model="form.masters" clearable>
-                        <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
+                        <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                       <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
                     </el-form-item>
                     <el-form-item label="Workers" prop="workers">
                       <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
-                        <el-option v-for="item of hosts" :key="item" :value="item">{{item}}</el-option>
+                        <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
                       </el-select>
                       <div v-if="isNodeNumExceed()">
                         <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
@@ -729,7 +729,7 @@ export default {
         if (data.items !== null) {
           for (const h of data.items) {
             if (h.status === "Running" && !h.clusterId) {
-              this.allHosts.push({ name: h.name, architecture: h.architecture })
+              this.allHosts.push({ name: h.name, architecture: h.architecture, ip: h.ip })
             }
           }
         }
@@ -987,7 +987,7 @@ export default {
         case "amd64":
           for (const h of this.allHosts) {
             if (h.architecture === "x86_64") {
-              this.hosts.push(h.name)
+              this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
             }
           }
           for (const repo of this.repoList) {
@@ -1001,7 +1001,7 @@ export default {
         case "arm64":
           for (const h of this.allHosts) {
             if (h.architecture === "aarch64") {
-              this.hosts.push(h.name)
+              this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
             }
           }
           for (const repo of this.repoList) {
@@ -1014,7 +1014,7 @@ export default {
           break
         case "all":
           for (const h of this.allHosts) {
-            this.hosts.push(h.name)
+            this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
           }
           for (const repo of this.repoList) {
             if (repo.architecture === "x86_64") {

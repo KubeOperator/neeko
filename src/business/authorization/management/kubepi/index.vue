@@ -3,12 +3,16 @@
     <el-alert v-if="authObj.type === 'PROJECT'" :title="$t('automatic.kubepi_project_help')" type="info" />
     <el-alert v-if="authObj.type === 'CLUSTER'" :title="$t('automatic.kubepi_cluster_help')" type="info" />
     <el-form style="margin-top:20px" ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
-      <el-form-item style="width: 30%" :label="$t('login.username') " prop="bindUser">
+      <el-form-item style="width: 30%; float: left" :label="$t('login.username') " prop="bindUser">
         <el-select style="width: 100%" @change="attachable = false" v-model="form.bindUser">
           <el-option v-for="(item,index) in nameList" :key="index" :label="item" :value="item">
           </el-option>
         </el-select>
       </el-form-item>
+      <div v-if="form.bindUser">
+        <i style="margin-top: 9px;color: #67C23A" class="el-icon-circle-check" />
+        <span style="margin-top: 8px;float: left; font-size: 15px;margin-left: 20px;color: #67C23A">{{ $t("commons.status.bind") }}</span>
+      </div>
       <el-form-item style="width: 30%" :label="$t('login.password')" prop="bindPassword">
         <el-input @input="attachable = false" type="password" show-password v-model="form.bindPassword"></el-input>
       </el-form-item>
