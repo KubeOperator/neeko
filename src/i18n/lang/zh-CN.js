@@ -1054,6 +1054,7 @@ const message = {
         time_limit: "连接超时时间",
         size_limit: "搜索分页数量",
         ldap_tls: "tls",
+        ldap_helper: "注意：无法获取到 Name 映射属性的用户不会匹配",
       },
       license: {
         title: "导入许可证",
