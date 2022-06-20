@@ -75,15 +75,13 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
-
-      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
       <el-form label-position='left' :model="createForm" ref="createForm" :rules="rules" label-width="110px">
         <el-form-item v-if="provider === 'plan'" prop="increase" :label="$t('cluster.detail.node.increment')">
           <el-input-number :max="maxNodeNum" style="width: 80%" v-model.number="createForm.increase" clearable />
-          <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [currentCluster.spec.maxNodeNum - data.length])}}</span></div>
+          <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [currentCluster.specConf.maxNodeNum - data.length])}}</span></div>
         </el-form-item>
 
         <span v-if="provider === 'bareMetal'">{{$t ('cluster.creation.node_help')}}</span>
@@ -92,9 +90,6 @@
             <el-option v-for="item of hosts" :key="item.name" :value="item.name">{{item.name}}({{item.ip}})</el-option>
           </el-select>
           <div><span class="input-help">{{$t('cluster.detail.node.node_expand_help', [maxNodeNum])}}</span></div>
-        </el-form-item>
-        <el-form-item v-if="supportGpu === 'disable' && !gpuExist" prop="supportGpu" :label="$t ('cluster.creation.support_gpu')">
-          <el-switch style="width: 80%" active-value="enable" inactive-value="disable" v-model="createForm.supportGpu" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -226,7 +221,6 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 
-import { listNamespace } from "@/api/cluster/namespace"
 import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCreate } from "@/api/cluster/node"
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName } from "@/api/cluster"
@@ -241,25 +235,12 @@ export default {
     return {
       loading: false,
       submitLoading: false,
-      buttons: [
-        {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          click: (row) => {
-            this.onDelete(row)
-          },
-          disabled: (row) => {
-            return this.provider === "" || this.buttonDisabled(row)
-          },
-        },
-      ],
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,
         total: 0,
       },
       dialogCreateVisible: false,
-      gpuExist: false,
       clusterName: "",
       selects: [],
       data: [],
@@ -268,9 +249,7 @@ export default {
         nodes: [],
         increase: 1,
         statusId: "",
-        supportGpu: "",
       },
-      supportGpu: "",
       deleteForm: {
         nodes: "",
       },
@@ -309,7 +288,6 @@ export default {
       provider: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
-      namespaces: [],
       timer: null,
     }
   },
@@ -332,19 +310,6 @@ export default {
             }
           })
           this.paginationConfig.total = data.total
-        })
-        .catch(() => {
-          this.loading = false
-        })
-      listNamespace(this.clusterName)
-        .then((data) => {
-          for (var names of data.items) {
-            if (names.metadata.name === "gpu-operator-resources") {
-              this.gpuExist = true
-            }
-          }
-          this.namespaces = data.items
-          this.loading = false
         })
         .catch(() => {
           this.loading = false
@@ -388,7 +353,7 @@ export default {
           })
         })
       }
-      this.maxNodeNum = this.currentCluster.spec.maxNodeNum - this.data.length
+      this.maxNodeNum = this.currentCluster.specConf.maxNodeNum - this.data.length
     },
     getDetailInfo(row) {
       this.detaiInfo = row.info
@@ -597,32 +562,23 @@ export default {
     getCluster() {
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
-        this.provider = this.currentCluster.spec.provider
-        this.supportGpu = this.currentCluster.spec.supportGpu
+        this.provider = this.currentCluster.provider
       })
     },
 
     // cluster logs
     getStatus(row) {
-      if (row.status.indexOf("Terminating") !== -1) {
-        this.operationType = "terminal-node"
-      }
-      if (row.status.indexOf("Failed") !== -1) {
-        this.operationType = row.preStatus === "Initializing" ? "add-worker" : "terminal-node"
-      }
-      if (row.status.indexOf("Initializing") !== -1) {
-        this.operationType = "add-worker"
-      }
+      this.operationType = "waiting-poll"
       this.dialogLogVisible = true
       this.currentNode = row
       this.nodeName = row.name
     },
-    onRetry(id, prestatus) {
-      switch (prestatus) {
-        case "Initializing":
+    onRetry(operation, id) {
+      switch (operation) {
+        case "CLUSTER_NODE_EXTEND":
           nodeReCreate(this.clusterName, { statusID: id })
           break
-        case "Terminating":
+        case "CLUSTER_NODE_SHRINK":
           nodeBatchOperation(this.clusterName, { operation: "delete", nodes: [this.currentNode.name] })
           break
       }

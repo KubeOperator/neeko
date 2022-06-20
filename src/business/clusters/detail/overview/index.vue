@@ -23,16 +23,16 @@
               </el-col>
               <el-col :span="12">
                 <ul>{{currentCluster.name}}</ul>
-                <ul>{{currentCluster.spec.version}}</ul>
-                <ul>{{currentCluster.spec.architectures}}</ul>
-                <ul>{{currentCluster.spec.networkType}}</ul>
+                <ul>{{currentCluster.version}}</ul>
+                <ul>{{currentCluster.architectures}}</ul>
+                <ul>{{currentCluster.specNetwork.networkType}}</ul>
                 <div v-if="currentCluster.source === 'local'">
-                  <ul v-if="currentCluster.spec.networkType === 'flannel'">{{currentCluster.spec.flannelBackend}}</ul>
-                  <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'off'">bgp</ul>
-                  <ul v-if="currentCluster.spec.networkType === 'calico' && currentCluster.spec.calicoIpv4PoolIpip === 'Always'">ipip</ul>
-                  <ul>{{currentCluster.spec.kubeProxyMode}}</ul>
+                  <ul v-if="currentCluster.specNetwork.networkType === 'flannel'">{{currentCluster.specNetwork.flannelBackend}}</ul>
+                  <ul v-if="currentCluster.specNetwork.networkType === 'calico' && currentCluster.specNetwork.calicoIpv4PoolIpip === 'off'">bgp</ul>
+                  <ul v-if="currentCluster.specNetwork.networkType === 'calico' && currentCluster.specNetwork.calicoIpv4PoolIpip === 'Always'">ipip</ul>
+                  <ul>{{currentCluster.specConf.kubeProxyMode}}</ul>
                 </div>
-                <ul>{{currentCluster.spec.runtimeType}}</ul>
+                <ul>{{currentCluster.specRuntime.runtimeType}}</ul>
                 <ul>{{currentCluster.source}}</ul>
               </el-col>
             </div>
@@ -133,14 +133,18 @@ export default {
       clusterName: "",
       currentCluster: {
         name: "",
-        spec: {
-          version: "",
-          architectures: "",
+        version: "",
+        architectures: "",
+        specConf: {},
+        specNetwork: {
           networkType: "",
           kubeProxyMode: "",
           runtimeType: "",
           flannelBackend: "",
           calicoIpv4PoolIpip: "",
+        },
+        specRuntime: {
+          runtimeType: "",
         },
         source: "",
       },

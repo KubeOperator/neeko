@@ -81,11 +81,11 @@ const Cluster = {
           }
         },
         {
-          path: "namespace",
-          name: "ClusterNamespace",
+          path: "component",
+          name: "Component",
           hidden: true,
           props: true,
-          component: () => import("@/business/clusters/detail/namespace"),
+          component: () => import("@/business/clusters/detail/component"),
           meta: {
             activeMenu: "/clusters",
             roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
@@ -136,39 +136,6 @@ const Cluster = {
           }
         },
         {
-          path: "log",
-          name: "ClusterLogs",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/log"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "istio",
-          name: "ClusterIstio",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/istio"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "event",
-          name: "ClusterEvent",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/event"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
           path: "storage",
           name: "ClusterStorage",
           hidden: true,
@@ -185,28 +152,6 @@ const Cluster = {
           hidden: true,
           props: true,
           component: () => import("@/business/clusters/detail/storage/provisioner-create"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "storage-class-create",
-          name: "ClusterStorageClassCreate",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/storage/class-create"),
-          meta: {
-            activeMenu: "/clusters",
-            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "pv-create",
-          name: "ClusterStoragePvCreate",
-          hidden: true,
-          props: true,
-          component: () => import("@/business/clusters/detail/storage/pv-create"),
           meta: {
             activeMenu: "/clusters",
             roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]

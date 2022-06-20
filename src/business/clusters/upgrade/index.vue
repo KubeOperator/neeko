@@ -31,12 +31,12 @@
                     <td style="width: 30%">{{ getVersion("etcd", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("etcd", newManifest.coreVars) }}</td>
                   </tr>
-                  <tr v-if="currentCluster.spec.runtimeType=='docker'&& getVersion('docker', oldManifest.coreVars)!==getVersion('docker', newManifest.coreVars)">
+                  <tr v-if="currentCluster.specRuntime.runtimeType=='docker'&& getVersion('docker', oldManifest.coreVars)!==getVersion('docker', newManifest.coreVars)">
                     <td style="width: 40%">Docker</td>
                     <td style="width: 30%">{{ getVersion("docker", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("docker", newManifest.coreVars) }}</td>
                   </tr>
-                  <tr v-if="currentCluster.spec.runtimeType=='containerd'&& getVersion('containerd', oldManifest.coreVars)!==getVersion('containerd', newManifest.coreVars)">
+                  <tr v-if="currentCluster.specRuntime.runtimeType=='containerd'&& getVersion('containerd', oldManifest.coreVars)!==getVersion('containerd', newManifest.coreVars)">
                     <td style="width: 40%">Containerd</td>
                     <td style="width: 30%">{{ getVersion("containerd", oldManifest.coreVars) }}</td>
                     <td style="width: 30%">{{ getVersion("containerd", newManifest.coreVars) }}</td>
@@ -106,7 +106,7 @@ export default {
       getClusterByName(clusterName).then((data) => {
         this.currentCluster = data
         this.form.clusterName = data.name
-        const currentVersion = data.spec.version
+        const currentVersion = data.version
         const currentVersions = currentVersion.split(".")
         const version1 = currentVersions[0]
         const version2 = currentVersions[1]
@@ -143,7 +143,7 @@ export default {
     },
     changeUpgradeVersions() {
       for (const m of this.manifestList) {
-        if (m.name.indexOf(this.currentCluster.spec.version) !== -1) {
+        if (m.name.indexOf(this.currentCluster.version) !== -1) {
           this.oldManifest = m
         }
         if (m.name === this.form.version) {

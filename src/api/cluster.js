@@ -1,6 +1,8 @@
 import {get, post, del} from "@/plugins/request"
 
 const clusterUrl = "/api/v1/clusters"
+const taskUrl = "/api/v1/tasks"
+const componentUrl = "/api/v1/components"
 const clusterLoggerUrl = "/api/v1/clusters/logger/{cluster_name}"
 const clusterNodeLoggerUrl = "/api/v1/clusters/node/logger/{cluster_name}/{node_name}"
 const storageProvisionerLoggerUrl = "/api/v1/clusters/provisioner/log/{cluster_name}/{log_id}"
@@ -103,4 +105,16 @@ export function handleGpu(clusterName, handle) {
 
 export function getGpuStatu(clusterName) {
   return get(`${clusterUrl}/gpu/${clusterName}`)
+}
+
+export function getTasks(page, size, cluster, logtype) {
+  return post(`${taskUrl}?cluster=${cluster}&logtype=${logtype}&pageNum=${page}&pageSize=${size}`)
+}
+
+export function getComponents(cluster) {
+  return get(`${componentUrl}?cluster=${cluster}`)
+}
+
+export function createComponent(data) {
+  return post(`${componentUrl}`, data)
 }

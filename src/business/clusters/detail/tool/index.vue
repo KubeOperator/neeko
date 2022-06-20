@@ -395,7 +395,7 @@ export default {
           }
           break
         case "loki":
-          if (this.currentCluster.spec.architectures === "amd64") {
+          if (this.currentCluster.architectures === "amd64") {
             for (const tool of this.tools) {
               if (tool.name === "logging") {
                 this.conditions = tool.status === "Waiting" ? "" : this.$t("cluster.detail.tool.log_err_msg")
@@ -452,7 +452,7 @@ export default {
     },
     getFlexIp() {
       getFlex(this.clusterName).then((res) => {
-        this.flexStatus = res === this.currentCluster.spec.kubeRouter ? "enable" : "disable"
+        this.flexStatus = res === this.currentCluster.specConf.kubeRouter ? "enable" : "disable"
       })
     },
     checkPassword() {
@@ -614,7 +614,7 @@ export default {
             loki_persistence_enabled: false,
             loki_persistence_size: 8,
             loki_persistence_storageClassName: "",
-            promtail_dockerPath: this.currentCluster.spec.dockerStorageDir,
+            promtail_dockerPath: this.currentCluster.specRuntime.dockerStorageDir,
           }
           break
         case "grafana":
