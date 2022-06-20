@@ -442,6 +442,7 @@ const message = {
         log: "Log",
         tool: "Tool",
         component: "Component",
+        task: "task",
         backup: "Backup",
         security: "CIS Scan",
         grade: "Cluster Scoring",

@@ -1,7 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout";
 
 const SystemLog = {
-  sort: 9,
+  sort: 10,
   path: '/system-log',
   component: Layout,
   name: 'SystemLog',

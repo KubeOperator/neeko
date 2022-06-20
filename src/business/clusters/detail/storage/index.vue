@@ -3,32 +3,6 @@
     <el-alert v-if="provider === ''" :title="$t('cluster.detail.storage.operator_help')" type="info" />
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
-        <el-tab-pane :label="$t('cluster.detail.storage.pv')" name="pv">
-          <el-card>
-            <template>
-              <el-button-group>
-                <el-button size="small" @click="pvCreate()">{{$t('commons.button.create')}}</el-button>
-                <el-button size="small" :disabled="pvSelection.length < 1" @click="onBatchDelete('pv')">{{$t('commons.button.delete')}}</el-button>
-              </el-button-group>
-            </template>
-            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="pvSelection" :data="pvDatas">
-              <el-table-column type="selection" fix></el-table-column>
-              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-              <el-table-column :label="$t('cluster.detail.storage.capacity')" min-width="100" prop="spec.capacity.storage" fix />
-              <el-table-column label="Access Modes" min-width="100" prop="spec.accessModes" fix />
-              <el-table-column :label="$t('cluster.detail.storage.source')" min-width="100" prop="spec.storageClassName" fix />
-              <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status.phase" fix />
-              <el-table-column :label="$t('commons.table.create_time')">
-                <template v-slot:default="{row}">
-                  {{ row.metadata.creationTimestamp | datetimeFormat }}
-                </template>
-              </el-table-column>
-              <fu-table-operations :buttons="buttons_pv" :label="$t('commons.table.action')" fix />
-            </complex-table>
-
-            <k8s-page @pageChange="pvPageChange" :nextToken="pvPage.nextToken" />
-          </el-card>
-        </el-tab-pane>
         <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" name="storage_class">
           <el-card>
             <template>
@@ -150,22 +124,13 @@ import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
 import { openLoggerWithID } from "@/api/cluster"
 import ClusterStorageProvionerDetail from "./provisioner-detail"
-import { listProvisioner, listPersistentVolumes, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass, deletePersistentVolume } from "@/api/cluster/storage"
+import { listProvisioner, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
   components: { ComplexTable, K8sPage, ClusterStorageProvionerDetail },
   data() {
     return {
-      buttons_pv: [
-        {
-          label: this.$t("commons.button.delete"),
-          icon: "el-icon-delete",
-          click: (row) => {
-            this.onDelete(row, "pv", false)
-          },
-        },
-      ],
       buttons_class: [
         {
           label: this.$t("commons.button.delete"),
@@ -187,10 +152,6 @@ export default {
           },
         },
       ],
-      pvPage: {
-        continueToken: "",
-        nextToken: "",
-      },
       classPage: {
         continueToken: "",
         nextToken: "",
@@ -199,17 +160,15 @@ export default {
       loading: false,
       isDeleteButtonDisable: true,
       provisionerDatas: [],
-      pvDatas: [],
       storageClassDatas: [],
       clusterName: "",
-      pvSelection: [],
       classSelection: [],
       provisionerSelection: [],
       dialogDeleteVisible: false,
       dialogSyncVisible: false,
       dialogErrorVisible: false,
       errMsg: "",
-      activeName: "pv",
+      activeName: "storageclass",
       timer: null,
 
       dialogDetailVisible: false,
@@ -222,17 +181,7 @@ export default {
     },
     search() {
       this.loading = true
-      if (this.activeName === "pv") {
-        listPersistentVolumes(this.clusterName, this.pvPage.continueToken)
-          .then((data) => {
-            this.loading = false
-            this.pvDatas = data.items
-            this.pvPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      } else if (this.activeName === "storage_class") {
+      if (this.activeName === "storage_class") {
         listStorageClass(this.clusterName, this.classPage.continueToken, false)
           .then((data) => {
             this.loading = false
@@ -242,7 +191,7 @@ export default {
           .catch(() => {
             this.loading = false
           })
-      } else if (this.activeName === "provisioner") {
+      } else {
         this.$refs.provisionerData?.clearSelection()
         listProvisioner(this.clusterName)
           .then((data) => {
@@ -266,7 +215,7 @@ export default {
     },
     getCluster() {
       getClusterByName(this.clusterName).then((data) => {
-        this.provider = data.spec.provider
+        this.provider = data.provider
       })
     },
     getErrorInfo(row) {
@@ -277,16 +226,9 @@ export default {
       this.classPage.continueToken = continueToken.token
       this.search()
     },
-    pvPageChange(continueToken) {
-      this.pvPage.continueToken = continueToken.token
-      this.search()
-    },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
       this.search()
-    },
-    pvCreate() {
-      this.$router.push({ name: "ClusterStoragePvCreate" })
     },
     classCreate() {
       this.$router.push({ name: "ClusterStorageClassCreate" })
@@ -354,12 +296,6 @@ export default {
             this.deleteClass(row.metadata.name)
           }
           break
-        case "pv":
-          deletePersistentVolume(this.clusterName, row.metadata.name).then(() => {
-            this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
-            this.search()
-          })
-          break
       }
     },
     onBatchDelete(type) {
@@ -369,11 +305,6 @@ export default {
         type: "warning",
       }).then(() => {
         switch (type) {
-          case "pv":
-            this.pvSelection.forEach((item) => {
-              this.onDelete(item, "pv", true)
-            })
-            break
           case "class":
             this.classSelection.forEach((item) => {
               this.onDelete(item, "class", true)

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="dialog" v-loading="conditionLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
+    <div class="dialog" v-loading="detailLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
       <el-scrollbar style="height:90%">
-        <span v-if="log.conditions&&log.conditions.length === 0">{{ log.message | errorFormat }}</span>
+        <span v-if="log.details&&log.details.length === 0">{{ log.message | errorFormat }}</span>
         <div>
           <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
-            <el-step v-for="condition in log.conditions" :key="condition.name" :title="$t('cluster.condition.' +condition.name)">
-              <i :class="loadStepIcon(condition.status)" slot="icon"></i>
-              <el-collapse v-if="condition.status === 'False'" accordion slot="description" v-model="activeCollapse">
-                <el-collapse-item :title="item.name" :name="index" v-for="(item, index) in condition.formatMsgs" :key="index">
+            <el-step v-for="detail in log.details" :key="detail.name" :title="$t('cluster.condition.' +detail.task)">
+              <i :class="loadStepIcon(detail.status)" slot="icon"></i>
+              <el-collapse v-if="detail.status === 'False'" accordion slot="description" v-model="activeCollapse">
+                <el-collapse-item :title="item.name" :name="index" v-for="(item, index) in detail.formatMsgs" :key="index">
                   <template slot="title">
                     <div v-if="item.failed">{{item.name}}</div>
                     <div v-if="!item.failed">{{item.name}}</div>
@@ -44,8 +44,8 @@
           </el-steps>
         </div>
       </el-scrollbar>
-      <div style="float:right" v-if="!conditionLoading">
-        <el-button size="small" v-if="log.phase === 'Failed'" @click="onRetry()">{{ $t("commons.button.retry") }}</el-button>
+      <div style="float:right" v-if="!detailLoading">
+        <el-button size="small" v-if="log.phase === 'FAILED'" @click="onRetry()">{{ $t("commons.button.retry") }}</el-button>
         <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
       </div>
     </div>
@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import { getNodeStatus, getNodeByName } from "@/api/cluster/node"
+import { getNodeByName } from "@/api/cluster/node"
 import { getClusterStatus } from "@/api/cluster"
-import { openLogger } from "@/api/cluster"
+import { openLoggerWithID } from "@/api/cluster"
 
 export default {
   name: "KoLogs",
@@ -63,17 +63,18 @@ export default {
     operation: String, // create-cluster || add-worker || terminal-node || terminal-cluster || not-ready
     clusterName: String,
     nodeName: String,
+    errMsg: String,
   },
   data() {
     return {
       timer: null,
       timer2: null,
-      conditionLoading: true,
+      detailLoading: true,
       log: {
+        type: "",
         phase: "",
-        prePhase: "",
         message: "",
-        conditions: [],
+        details: [],
       },
       activeName: 1,
       activeCollapse: 0,
@@ -92,50 +93,37 @@ export default {
       }
     },
     goForLogs() {
-      openLogger(this.clusterName)
+      openLoggerWithID(this.clusterName, this.log.id)
     },
     onRetry() {
-      let prePhase = this.log.prePhase
-      if (this.log.conditions.length !== 0) {
-        this.log.conditions[this.log.conditions.length - 1].status = "Unknown"
+      if (this.log.details.length !== 0) {
+        this.log.details[this.log.details.length - 1].status = "Unknown"
       } else {
-        this.conditionLoading = true
+        this.detailLoading = true
       }
       this.log.phase = "Waiting"
-      switch (this.operation) {
-        case "add-worker":
-          this.$emit("retry", this.log.id, prePhase)
+      switch (this.log.type) {
+        case "CLUSTER_NODE_EXTEND":
+          this.$emit("retry", this.log.type, this.log.id)
           break
-        case "terminal-node":
-          this.log.phase = "Terminating"
-          this.log.prePhase = "Failed"
-          this.$emit("retry", "", prePhase)
+        case "CLUSTER_NODE_SHRINK":
+          this.$emit("retry", this.log.type)
           break
-        case "create-cluster":
-          this.$emit("retry", prePhase)
+        case "CLUSTER_CREATE":
+          this.$emit("retry", this.log.type)
           break
-        case "update-cluster":
-          this.$emit("retry", prePhase)
+        case "CLUSTER_UPGRADE":
+          this.$emit("retry", this.log.type)
           break
       }
     },
     getStatus() {
       this.dialogHeight = "330px"
       switch (this.operation) {
-        case "create-cluster":
+        case "waiting-poll":
           getClusterStatus(this.clusterName).then((data) => {
-            if (data.conditions.length !== 0) {
-              this.conditionLoading = false
-            }
-            this.handleResponse(data)
-            this.dialogPolling()
-          })
-          break
-        case "add-worker":
-          getNodeStatus(this.clusterName, this.nodeName).then((data) => {
-            this.log.id = data.id
-            if (data.conditions.length !== 0) {
-              this.conditionLoading = false
+            if (data.details.length !== 0) {
+              this.detailLoading = false
             }
             this.handleResponse(data)
             this.dialogPolling()
@@ -143,51 +131,32 @@ export default {
           break
         case "not-ready": {
           this.dialogHeight = "200px"
-          getClusterStatus(this.clusterName).then((data) => {
-            this.conditionLoading = false
-            if (data.phase === "NotReady") {
-              this.log = {
-                phase: "NotReady",
-                message: data.message,
-                conditions: [{ name: "CheckAPIStatus", formatMsgs: [{ name: this.clusterName, info: data.message, type: "unFormat", failed: true }], status: "False", message: data.message }],
-              }
-            } else {
-              this.$emit("cancle")
-            }
-          })
-          break
-        }
-        case "terminal-node": {
-          this.dialogHeight = "200px"
-          this.conditionLoading = false
+          this.detailLoading = false
           this.log = {
-            phase: "Terminating",
-            message: "",
-            conditions: [{ name: "DeleteNode", status: "Unknown", message: "" }],
+            phase: "NotReady",
+            message: this.errMsg,
+            details: [{ task: "CheckAPIStatus", formatMsgs: [{ name: this.clusterName, info: this.errMsg, type: "unFormat", failed: true }], status: "False", message: this.errMsg }],
           }
-          this.dialogPolling2()
+          break
         }
       }
     },
     // 缩容
     dialogPolling2() {
       this.timer2 = setInterval(() => {
-        if (this.log.conditions.length !== 0 || this.log.phase === "Failed") {
-          this.conditionLoading = false
+        if (this.log.details.length !== 0 || this.log.phase === "Failed") {
+          this.detailLoading = false
         }
         if (this.log.phase === "Terminating") {
           getNodeByName(this.clusterName, this.nodeName)
             .then((data) => {
+              this.log = data
               if (this.log.phase !== data.status) {
                 this.log.phase = data.status
-              }
-              if (this.log.prePhase !== data.preStatus) {
-                this.log.prePhase = data.preStatus
               }
               if (data.status === "Failed") {
                 this.dialogHeight = "330px"
                 this.log.message = data.message
-                this.log.conditions = [{ name: "DeleteNode", formatMsgs: this.handleErrMsg(data.message), status: "False", message: data.message }]
               }
             })
             .catch(() => {
@@ -201,58 +170,34 @@ export default {
     // 拉取clusterStatus
     dialogPolling() {
       this.timer = setInterval(() => {
-        if (this.log.conditions.length !== 0 || this.log.phase === "Failed") {
-          this.conditionLoading = false
+        if (this.log.details.length !== 0 || this.log.phase === "FAILED") {
+          this.detailLoading = false
         }
-        let isConditionNotOK = true
-        if (this.log.conditions.length !== 0) {
-          let lastCondition = this.log.conditions[this.log.conditions.length - 1]
-          isConditionNotOK = lastCondition.status !== "True" && lastCondition.status !== "False"
+        if ((this.log.phase !== "FAILED" && this.log.phase !== "SUCCESS")) {
+          getClusterStatus(this.clusterName)
+            .then((data) => {
+              this.handleResponse(data)
+            })
+            .catch(() => {
+              clearInterval(this.timer)
+              this.timer = null
+              this.$emit("cancle")
+            })
         } else {
-          isConditionNotOK = false
-        }
-        if ((this.log.phase !== "Running" && this.log.phase !== "Failed") || isConditionNotOK) {
-          if (this.operation == "add-worker") {
-            getNodeStatus(this.clusterName, this.nodeName)
-              .then((data) => {
-                this.handleResponse(data)
-              })
-              .catch(() => {
-                clearInterval(this.timer)
-                this.timer = null
-                this.$emit("cancle")
-              })
-          } else {
-            getClusterStatus(this.clusterName)
-              .then((data) => {
-                this.handleResponse(data)
-              })
-              .catch(() => {
-                clearInterval(this.timer)
-                this.timer = null
-                this.$emit("cancle")
-              })
-          }
-        } else {
-          this.activeName = this.log.conditions.length + 1
+          this.activeName = this.log.details.length + 1
         }
       }, 5000)
     },
     handleResponse(data) {
-      this.activeName = data.conditions.length + 1
-      this.log.id = data.id
-      this.log.conditions = data.conditions
+      this.log = data
+      this.activeName = data.details.length + 1
       if (this.log.phase !== data.phase) {
         this.log.phase = data.phase
       }
-      this.log.message = data.message
-      if (this.log.prePhase !== data.prePhase) {
-        this.log.prePhase = data.prePhase
-      }
-      for (const condition of this.log.conditions) {
-        condition.formatMsgs = []
-        if (condition.status === "False") {
-          condition.formatMsgs = this.handleErrMsg(condition.message)
+      for (const detail of this.log.details) {
+        detail.formatMsgs = []
+        if (detail.status === "False") {
+          detail.formatMsgs = this.handleErrMsg(detail.message)
         }
       }
     },
