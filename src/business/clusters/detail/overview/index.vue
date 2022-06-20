@@ -49,6 +49,8 @@
                   <el-progress :stroke-width="20" type="circle" :width="140" :percentage="cpuUsagePercent"></el-progress>
                   <br>
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.cpu')}}</span>
+                  <br>
+                  <span style="font-size: 12px">({{cpuUsage.toFixed(2)}} / {{cpuTotal.toFixed(2)}})</span>
                 </div>
               </el-col>
               <el-col :span="8">
@@ -56,6 +58,10 @@
                   <el-progress :stroke-width="20" type="circle" :width="140" :percentage="memUsagePercent"></el-progress>
                   <br>
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.memory')}}</span>
+                  <br>
+                  <span style="font-size: 12px">
+                    ({{(memUsage / 1048576).toFixed(2)}} / {{(memTotal / 1048576).toFixed(2)}}) Gb
+                    </span>
                 </div>
               </el-col>
               <el-col :span="8">
@@ -63,6 +69,8 @@
                   <el-progress :stroke-width="20" type="circle" :width="140" :percentage="podUsagePercent"></el-progress>
                   <br>
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.docker')}}</span>
+                  <br>
+                  <span style="font-size: 12px">({{podLength}} / {{podLimit}})</span>
                 </div>
               </el-col>
             </el-row>
@@ -155,6 +163,7 @@ export default {
       memTotal: 0,
       memUsage: 0,
       memUsagePercent: 0.0,
+      podLength: 0,
       podLimit: 0,
       podUsagePercent: 0.0,
       opened: false,
@@ -204,6 +213,7 @@ export default {
     loadPods() {
       listPod(this.clusterName).then((data) => {
         this.pods = data.items
+        this.podLength = this.pods.length
         this.pods.forEach((pod) => {
           this.containerNumber = this.containerNumber + pod.spec.containers.length
         })

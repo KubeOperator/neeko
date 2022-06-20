@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('cluster.cluster_detail')" :back-to="{ name: 'ClusterList' }">
+  <layout-content :header="$t('cluster.cluster_detail') + '  -  ' + clusterName" :back-to="{ name: 'ClusterList' }">
     <div v-loading="loading">
       <el-menu @select="search" router :default-active="$route.path" mode="horizontal">
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
@@ -39,6 +39,7 @@ export default {
       hasLicense: null,
       arch: null,
       loading: false,
+      clusterName: "",
     }
   },
   methods: {
@@ -60,6 +61,7 @@ export default {
     this.$store.dispatch("license/getLicense").then((data) => {
       this.hasLicense = data.status === "valid"
     })
+    this.clusterName = this.$route.params.name
     this.search()
   },
 }
