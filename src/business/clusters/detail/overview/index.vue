@@ -50,7 +50,7 @@
                   <br>
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.cpu')}}</span>
                   <br>
-                  <span style="font-size: 12px">({{cpuUsage.toFixed(2)}} / {{cpuTotal.toFixed(2)}})</span>
+                  <span style="font-size: 12px">({{cpuUsage.toFixed(2)}} / {{cpuTotal.toFixed(2)}}) Core</span>
                 </div>
               </el-col>
               <el-col :span="8">
@@ -60,7 +60,7 @@
                   <span style="font-size: 24px">{{$t('cluster.detail.overview.memory')}}</span>
                   <br>
                   <span style="font-size: 12px">
-                    ({{(memUsage / 1048576).toFixed(2)}} / {{(memTotal / 1048576).toFixed(2)}}) Gb
+                    ({{(memUsage / 1048576).toFixed(2)}} / {{(memTotal / 1048576).toFixed(2)}}) GiB
                     </span>
                 </div>
               </el-col>

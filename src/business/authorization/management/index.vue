@@ -12,16 +12,16 @@
           <el-alert v-if="authObj.type === 'PROJECT'" :title="$t('automatic.kubepi_project_help')" type="info" />
           <el-alert v-if="authObj.type === 'CLUSTER'" :title="$t('automatic.kubepi_cluster_help')" type="info" />
           <el-form style="margin-top:20px" ref="form" v-loading="loading" label-position="left" :rules="rules" :model="form" label-width="120px">
-            <el-form-item style="width: 30%; float: left" :label="$t('login.username') " prop="bindUser">
+            <el-form-item style="width: 30%" :label="$t('login.username')" prop="bindUser">
               <el-select style="width: 100%" @change="attachable = false" v-model="form.bindUser">
-                <el-option v-for="(item,index) in nameList" :key="index" :label="item" :value="item">
-                </el-option>
+                <el-option v-for="(item,index) in nameList" :key="index" :label="item" :value="item" />
               </el-select>
+              <div v-if="isUserBind">
+                <i style="margin-top: 9px;color: #67C23A; float: left" class="el-icon-circle-check" />
+                <span style="color: #67C23A">{{ $t("commons.status.bind") }}</span>
+              </div>
             </el-form-item>
-            <div v-if="form.bindUser">
-              <i style="margin-top: 9px;color: #67C23A" class="el-icon-circle-check" />
-              <span style="margin-top: 8px;float: left; font-size: 15px;margin-left: 20px;color: #67C23A">{{ $t("commons.status.bind") }}</span>
-            </div>
+
             <el-form-item style="width: 30%" :label="$t('login.password')" prop="bindPassword">
               <el-input @input="attachable = false" type="password" show-password v-model="form.bindPassword"></el-input>
             </el-form-item>
@@ -39,7 +39,6 @@
 <script>
 import MemberList from "@/business/authorization/management/members"
 import ResourceList from "@/business/authorization/management/resources"
-// import Kubepi from "@/business/authorization/management/kubepi"
 import { bindUser, getBindInfo, getUser, testKubepiConn } from "@/api/system-setting"
 import Rule from "@/utils/rules"
 
@@ -64,6 +63,7 @@ export default {
         bindUser: [Rule.RequiredRule],
         bindPassword: [Rule.RequiredRule],
       },
+      isUserBind: false,
       nameList: [],
     }
   },
@@ -80,6 +80,7 @@ export default {
       this.form.bindPassword = ""
       getBindInfo({ sourceType: this.authObj.type, project: this.authObj.projectName, cluster: this.authObj.clusterName }).then((data) => {
         this.form.bindUser = data.bindUser
+        this.isUserBind = data.bindUser ? true : false
       })
     },
     getUsers() {
@@ -122,6 +123,7 @@ export default {
         bindUser(this.form)
           .then(() => {
             this.loading = false
+            this.loadInfo()
             this.$message({
               type: "success",
               message: this.$t("commons.msg.save_success"),
