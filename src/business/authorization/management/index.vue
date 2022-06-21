@@ -46,6 +46,11 @@ export default {
   name: "Management",
   components: { ResourceList, MemberList },
   props: ["authObj"],
+  watch: {
+    authObj() {
+      this.loadInfo()
+    },
+  },
   data() {
     return {
       active: "member",
