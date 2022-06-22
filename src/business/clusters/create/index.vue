@@ -32,7 +32,7 @@
                         <div v-if="form.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
                       </el-form-item>
                       <el-form-item :label="$t('project.project')" prop="projectName">
-                        <el-select filterable style="width: 100%" @change="loadProjectResource" v-model.number="form.projectName" clearable>
+                        <el-select filterable style="width: 100%" v-model.number="form.projectName" clearable>
                           <el-option v-for="item of projects" :key="item.name" :value="item.name">{{item.name}}</el-option>
                         </el-select>
                       </el-form-item>
@@ -715,7 +715,6 @@ export default {
         this.projects = data.items
         if (data.items !== null && data.items.length > 0) {
           this.form.projectName = data.items[0].name
-          this.loadProjectResource()
         }
       })
     },
@@ -751,6 +750,9 @@ export default {
       })
     },
     beforeLeave(step, isNext) {
+      if (step.id === "component-setting") {
+        this.loadProjectResource()
+      }
       if (!isNext) {
         return
       }

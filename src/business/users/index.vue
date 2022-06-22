@@ -25,14 +25,14 @@
         <template v-slot:default="{row}">
           <el-row>
             <el-col>
-              {{ row.email | emailFormat }}
+              {{ row.email }}
             </el-col>
           </el-row>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
-          <ko-status :status="row.status"></ko-status>
+          <el-switch @change="changeStatus(row)" v-model="row.status" active-value="active" inactive-value="passive" />
         </template>
       </el-table-column>
       <el-table-column :label="$t('user.type')">
@@ -60,13 +60,12 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import {searchUsers, deleteUser, updateUser} from "@/api/user"
 import ComplexTable from "@/components/complex-table"
-import KoStatus from "@/components/ko-status"
 import {getSession} from "@/api/auth"
 
 
 export default {
   name: "UserList",
-  components: { KoStatus, ComplexTable, LayoutContent },
+  components: { ComplexTable, LayoutContent },
   data () {
     return {
       buttons: [
@@ -75,13 +74,6 @@ export default {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
           }, disabled: (row) => {
             return  row.type === "LDAP"
-          }
-        },
-        {
-          label: this.$t("commons.button.lock"), icon: "el-icon-lock", click: (row) => {
-            this.update(row)
-          }, disabled: (row) => {
-            return this.currentUser.user.name === row.name || row.name === "admin" || row.type === "LDAP"
           }
         },
         {
@@ -177,12 +169,7 @@ export default {
         }
       })
     },
-    update (row) {
-      if (row.status === "active") {
-        row.status = "passive"
-      } else {
-        row.status = "active"
-      }
+    changeStatus (row) {
       updateUser(row.name, row).then(() => {
         this.$message({
           type: "success",
