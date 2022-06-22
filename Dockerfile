@@ -1,10 +1,8 @@
-FROM node:14-alpine as stage-build
+FROM node:14-alpine3.15 as stage-build
 
 WORKDIR /data
 
-RUN echo > /etc/apk/repositories && \
-    echo -e "https://dl-cdn.alpinelinux.org/alpine/v3.15/main\nhttps://dl-cdn.alpinelinux.org/alpine/v3.15/community" >> /etc/apk/repositories && \
-    apk update && \
+RUN apk update && \
     apk upgrade && \
     apk add python2 make gcc g++
 
