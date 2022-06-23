@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
-          <el-switch @change="changeStatus(row)" v-model="row.status" active-value="active" inactive-value="passive" />
+          <el-switch :disabled="currentUser.user.name === row.name || row.name === 'admin'" @change="changeStatus(row)" v-model="row.status" active-value="active" inactive-value="passive" />
         </template>
       </el-table-column>
       <el-table-column :label="$t('user.type')">

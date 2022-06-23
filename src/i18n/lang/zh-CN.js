@@ -112,6 +112,7 @@ const message = {
     },
     personal: {
       change_password: "修改密码",
+      sync_password: "同步密码",
       help_documentation: "帮助文档",
       exit_system: "退出系统",
       new_password: "新密码",

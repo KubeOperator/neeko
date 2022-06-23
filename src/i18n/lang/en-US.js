@@ -111,6 +111,7 @@ const message = {
     },
     personal: {
       change_password: "Change Password",
+      sync_password: "Sync Password",
       help_documentation: "Help Document",
       exit_system: "Exit System",
       new_password: "New Password",
