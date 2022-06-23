@@ -993,6 +993,7 @@ const message = {
   setting: {
     registry: "仓库",
     tips: "默认仓库为部署机Nexus，管理端口为:",
+    nexus_passwd: "该操作是将 nexus 仓库登录凭据同步到 KubeOperator",
     address: "地址",
     username: "账号",
     password: "密码",

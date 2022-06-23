@@ -62,7 +62,7 @@
     </el-row>
     <el-dialog :title="$t('commons.personal.sync_password')" :close-on-click-modal="false" :visible.sync="dialogChangePasswdVisible" width="30%">
       <i class="el-icon-info"></i>
-      <span style="margin-left: 6px">该操作是将 nexus 仓库登录凭据同步到 KubeOperator</span>
+      <span style="margin-left: 6px">{{$t('setting.nexus_passwd')}}</span>
       <el-form style="margin-top:20px" ref="passwordForm" label-position="left" :rules="rules" :model="passwordForm" label-width="100px">
         <el-form-item style="width: 100%" :label="$t('login.username')" prop="nexusUser">
           <el-input @input="attachable = false" @blur="attachable = false" v-model="passwordForm.nexusUser" placeholder="admin"></el-input>

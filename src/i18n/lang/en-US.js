@@ -988,6 +988,7 @@ const message = {
   setting: {
     registry: "Registry",
     tips: "The default repo is nexus, and the management port is 8081",
+    nexus_passwd: "This is to synchronize the Nexus repository login credentials to KubeOperator",
     address: "Address",
     username: "Username",
     password: "Password",
