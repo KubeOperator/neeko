@@ -21,7 +21,7 @@
               <el-input v-model="form.hostname"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="onChange" size="mini" icon="el-icon-edit">{{$t("setting.change_nexus_password")}}</el-button>
+              <el-button @click="onChange" size="mini" icon="el-icon-edit">{{$t("setting.sync_nexus_password")}}</el-button>
             </el-form-item>
             <div class="registry-collapse">
               <el-collapse accordion>

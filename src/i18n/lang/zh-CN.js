@@ -999,7 +999,7 @@ const message = {
     password: "密码",
     kubepi_conn_successful: "Kubepi 连接性检测成功！",
     conn_successful: "仓库连接性检测成功！",
-    change_nexus_password: "修改 Nexus 密码",
+    sync_nexus_password: "同步 Nexus 密码",
     password_help: "admin 用户默认密码为 admin123",
     ntp: "NTP",
     email: "邮箱",

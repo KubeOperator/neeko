@@ -992,7 +992,7 @@ const message = {
     address: "Address",
     username: "Username",
     password: "Password",
-    change_nexus_password: "Change Nexus password",
+    sync_nexus_password: "Sync Nexus password",
     kubepi_conn_successful: "Kubepi connectivity check successful!",
     conn_successful: "Repo connectivity check successful!",
     password_help: "Admin login password. The default value is admin123",
