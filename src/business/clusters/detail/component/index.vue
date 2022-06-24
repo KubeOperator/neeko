@@ -2,6 +2,11 @@
   <div>
     <el-alert :title="$t('cluster.detail.component.operator_help')" type="info" />
     <complex-table style="margin-top: 20px" ref="nsData" :row-key="getRowKeys" :selects.sync="selects" :data="data">
+      <template #header>
+        <el-button-group>
+          <el-button size="small" :disabled="selects.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
+        </el-button-group>
+      </template>
 
       <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" prop="name" fix />
@@ -35,6 +40,10 @@
           <div v-if="row.status ==='Terminating'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
             <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.terminating") }}</el-link>
+          </div>
+          <div v-if="row.status ==='Synchronizing'">
+            <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
+            <span>{{ $t("commons.status.synchronizing") }}</span>
           </div>
         </template>
       </el-table-column>
@@ -78,7 +87,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { getComponents, createComponent, deleteComponent } from "@/api/cluster"
+import { getComponents, createComponent, deleteComponent, syncComponents } from "@/api/cluster"
 import { openLoggerWithID } from "@/api/cluster"
 import IstioComponent from "./istio/index.vue"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
@@ -125,7 +134,19 @@ export default {
         openLoggerWithID(this.clusterName, row.id + " (enable)")
       }
     },
-    onSync() {},
+    onSync() {
+      let names = []
+      for (const c of this.selects) {
+        names.push(c.name)
+      }
+      let data = {
+        clusterName: this.clusterName,
+        names: names,
+      }
+      syncComponents(data).then(() => {
+        this.search()
+      })
+    },
     submitIstio() {
       this.component.vars = this.component.vars === "" ? {} : this.component.vars
       this.$refs.istio_component.gatherVars(this.component.vars)

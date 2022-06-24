@@ -115,6 +115,10 @@ export function getComponents(cluster) {
   return get(`${componentUrl}?cluster=${cluster}`)
 }
 
+export function syncComponents(data) {
+  return post(`${componentUrl}/sync`, data)
+}
+
 export function createComponent(data) {
   return post(`${componentUrl}`, data)
 }
