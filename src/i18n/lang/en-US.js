@@ -111,6 +111,7 @@ const message = {
     },
     personal: {
       change_password: "Change Password",
+      sync_password: "Sync Password",
       help_documentation: "Help Document",
       exit_system: "Exit System",
       new_password: "New Password",
@@ -988,10 +989,11 @@ const message = {
   setting: {
     registry: "Registry",
     tips: "The default repo is nexus, and the management port is 8081",
+    nexus_passwd: "This is to synchronize the Nexus repository login credentials to KubeOperator",
     address: "Address",
     username: "Username",
     password: "Password",
-    change_nexus_password: "Change Nexus password",
+    sync_nexus_password: "Sync Nexus password",
     kubepi_conn_successful: "Kubepi connectivity check successful!",
     conn_successful: "Repo connectivity check successful!",
     password_help: "Admin login password. The default value is admin123",

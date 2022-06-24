@@ -112,6 +112,7 @@ const message = {
     },
     personal: {
       change_password: "修改密码",
+      sync_password: "同步密码",
       help_documentation: "帮助文档",
       exit_system: "退出系统",
       new_password: "新密码",
@@ -993,12 +994,13 @@ const message = {
   setting: {
     registry: "仓库",
     tips: "默认仓库为部署机Nexus，管理端口为:",
+    nexus_passwd: "该操作是将 nexus 仓库登录凭据同步到 KubeOperator",
     address: "地址",
     username: "账号",
     password: "密码",
     kubepi_conn_successful: "Kubepi 连接性检测成功！",
     conn_successful: "仓库连接性检测成功！",
-    change_nexus_password: "修改 Nexus 密码",
+    sync_nexus_password: "同步 Nexus 密码",
     password_help: "admin 用户默认密码为 admin123",
     ntp: "NTP",
     email: "邮箱",

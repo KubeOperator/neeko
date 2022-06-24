@@ -14,7 +14,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-checkbox :disabled="disable" v-model="enableFlexIp">{{$t("host.enable_flex_ip")}}</el-checkbox>
+              <el-checkbox v-model="enableFlexIp">{{$t("host.enable_flex_ip")}}</el-checkbox>
             </el-form-item>
 
             <el-form-item v-if="enableFlexIp" :label="$t('host.flex_ip')" prop="flexIp">

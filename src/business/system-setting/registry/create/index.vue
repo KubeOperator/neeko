@@ -22,7 +22,7 @@
               <div><span class="input-help">{{$t('setting.table.registry.hostname_help')}}</span></div>
             </el-form-item>
             <el-form-item style="width: 100%" :label="$t('login.username')">
-              <label>admin</label>
+              <el-input @input="attachable = false" @blur="attachable = false" v-model="form.nexusUser" placeholder="admin"></el-input>
             </el-form-item>
             <el-form-item :label="$t('setting.password')" prop="nexusPassword">
               <el-input @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword" :placeholder="$t('setting.password_help')" type="password" show-password></el-input>
@@ -80,13 +80,14 @@ export default {
   data() {
     return {
       form: {
-        architecture: "",
+        architecture: "x86_64",
         hostname: "",
-        protocol: "",
-        repoPort: "",
-        registryPort: "",
-        registryHostedPort: "",
-        nexusPassword: "admin123",
+        protocol: "http",
+        repoPort: 8081,
+        registryPort: 8082,
+        registryHostedPort: 8083,
+        nexusUser: "admin",
+        nexusPassword: "",
       },
       rules: {
         hostname: [Rule.IpRule],
@@ -97,7 +98,6 @@ export default {
       },
       architectureOptions: [{ value: "x86_64" }, { value: "aarch64" }],
       protocolOptions: [{ value: "http" }, { value: "https" }],
-      formLabelWidth: "120px",
       loading: false,
       attachable: false,
     }
@@ -109,15 +109,7 @@ export default {
           return false
         }
         this.loading = true
-        createRegistry({
-          architecture: this.form.architecture,
-          hostname: this.form.hostname,
-          protocol: this.form.protocol,
-          repoPort: this.form.repoPort,
-          registryPort: this.form.registryPort,
-          registryHostedPort: this.form.registryHostedPort,
-          nexusPassword: this.form.nexusPassword,
-        })
+        createRegistry(this.form)
           .then(() => {
             this.loading = false
             this.$message({
@@ -136,13 +128,7 @@ export default {
         if (!valid) {
           return false
         }
-        let data = {
-          protocol: this.form.protocol,
-          hostname: this.form.hostname,
-          repoPort: this.form.repoPort,
-          username: "admin",
-          password: this.form.nexusPassword,
-        }
+        let data = this.form
         testConnection(data).then(() => {
           this.$message({
             type: "success",
@@ -155,13 +141,6 @@ export default {
     onCancel() {
       this.$router.push({ name: "Registry" })
     },
-  },
-  created() {
-    this.form.architecture = "x86_64"
-    this.form.protocol = "http"
-    this.form.repoPort = 8081
-    this.form.registryPort = 8082
-    this.form.registryHostedPort = 8083
   },
   computed: {
     validateCommit() {

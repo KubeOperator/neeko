@@ -1,8 +1,10 @@
-FROM node:14-alpine as stage-build
+FROM node:14-alpine3.15 as stage-build
+
 WORKDIR /data
 
-
-RUN apk add python2 make gcc g++
+RUN apk update && \
+    apk upgrade && \
+    apk add python2 make gcc g++
 
 COPY ./package.json /data/package.json
 COPY ./package-lock.json /data/package-lock.json

@@ -29,6 +29,10 @@ export function createRegistry(data) {
   return post(`${settingUrl}/registry`,data)
 }
 
+export function changePassword(data) {
+  return post(`${settingUrl}/registry/change/password`,data)
+}
+
 export function updateRegistry(arch, data) {
   return patch(`${settingUrl}/registry/${arch}`,data)
 }
