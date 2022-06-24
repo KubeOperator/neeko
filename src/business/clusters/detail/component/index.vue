@@ -16,10 +16,10 @@
       <el-table-column sortable :label="$t('commons.table.action')" prop="status.phase" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status ==='enable'">
-            <el-button size="mini" icon="el-icon-video-pause" @click="stopComponent(row)">{{ $t("commons.button.disable") }}</el-button>
+            <el-button size="mini" icon="el-icon-video-pause" @click="stopComponent(row, false)">{{ $t("commons.button.disable") }}</el-button>
           </div>
           <div v-if="row.status ==='disable'">
-            <el-button size="mini" :disabled="row.disabled" icon="el-icon-video-play" @click="startComponent(row)">{{ $t("commons.button.enable") }}</el-button>
+            <el-button size="mini" :disabled="row.disabled" icon="el-icon-video-play" @click="startComponent(row, false)">{{ $t("commons.button.enable") }}</el-button>
           </div>
           <div v-if="row.status === 'Waiting'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
@@ -80,6 +80,8 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button size="small" @click="startComponent(component, true)">{{ $t("commons.button.re_enable") }}</el-button>
+        <el-button size="small" @click="stopComponent(component, true)">{{ $t("commons.button.disable") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -162,10 +164,23 @@ export default {
       })
       this.dialogIstioVisible = false
     },
-    startComponent(row) {
+    startComponent(row, force) {
       this.component = row
       if (row.name === "istio") {
         this.dialogIstioVisible = true
+        return
+      }
+      let data = {
+        clusterName: this.clusterName,
+        name: row.name,
+        type: row.type,
+        version: row.version,
+      }
+      if (force) {
+        createComponent(data).then(() => {
+          this.dialogVisible = false
+          this.search()
+        })
         return
       }
       this.$confirm(this.$t("commons.confirm_message.enable_component", [row.name]), this.$t("commons.message_box.prompt"), {
@@ -173,33 +188,31 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        let data = {
-          clusterName: this.clusterName,
-          name: row.name,
-          type: row.type,
-          version: row.version,
-        }
         createComponent(data).then(() => {
           this.search()
         })
       })
     },
-    stopComponent(row) {
+    stopComponent(row, force) {
+      if (force) {
+        deleteComponent(this.clusterName, row.name).then(() => {
+          this.dialogVisible = false
+          this.search()
+        })
+        return
+      }
       this.$confirm(this.$t("commons.confirm_message.disable_component", [row.name]), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
-        deleteComponent(this.clusterName, row.name)
-          .then(() => {
-            this.search()
-          })
-          .catch(() => {
-            this.loading = false
-          })
+        deleteComponent(this.clusterName, row.name).then(() => {
+          this.search()
+        })
       })
     },
     getStatus(row) {
+      this.component = row
       this.formatMsgs = ansibleErrFormat(row.message)[0]
       this.dialogVisible = true
     },

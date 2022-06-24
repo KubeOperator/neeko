@@ -53,6 +53,7 @@ const message = {
       retry: "Retry",
       history: "History",
       error_msg: "Error",
+      re_enable: "ReEnable",
       lock: "Enable/Disable",
       relation: "Associate",
       active: "Active",

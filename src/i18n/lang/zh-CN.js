@@ -55,6 +55,7 @@ const message = {
       retry: "重试",
       history: "日志",
       error_msg: "错误",
+      re_enable: "重新启用",
       lock: "启用/禁用",
       relation: "关联",
       active: "激活",
