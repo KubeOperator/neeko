@@ -892,6 +892,7 @@ const message = {
       initializing: "Initializing",
       port: "port",
       resource_type: "Resource Type",
+      portgroup: "PortGroup"
     },
     plan: {
       name: "Plan",

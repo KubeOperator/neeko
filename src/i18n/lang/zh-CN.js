@@ -895,7 +895,8 @@ const message = {
       initializing: "初始化中",
       port: "端口",
       resource_type: "资源类型",
-      host: "主机"
+      host: "主机",
+      portgroup: "端口组"
     },
     plan: {
       name: "部署计划",
