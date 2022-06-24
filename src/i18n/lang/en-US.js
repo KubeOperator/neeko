@@ -487,6 +487,9 @@ const message = {
       namespace: {
         before_delete: "The deletion failed, the tool already exists in the namespace：",
       },
+      component: {
+        operator_help: "Components of the same type cannot be enabled at the same time. To switch components of the same type, disable existing components.",
+      },
       storage: {
         type: "Type",
         pv: "Persistent Volume",

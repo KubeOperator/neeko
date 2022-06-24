@@ -118,3 +118,7 @@ export function getComponents(cluster) {
 export function createComponent(data) {
   return post(`${componentUrl}`, data)
 }
+
+export function deleteComponent(cluster, name) {
+  return del(`${componentUrl}/${cluster}/${name}`)
+}

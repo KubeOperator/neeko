@@ -1,21 +1,28 @@
 <template>
   <div>
-    <complex-table ref="nsData" v-loading="loading" :data="data">
+    <el-alert :title="$t('cluster.detail.component.operator_help')" type="info" />
+    <complex-table style="margin-top: 20px" ref="nsData" :row-key="getRowKeys" :selects.sync="selects" :data="data">
+
+      <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column :label="$t('commons.table.name')" prop="name" fix />
       <el-table-column :label="$t('cluster.version')" prop="version" fix />
+      <el-table-column :label="$t('commons.table.description')" prop="type" fix />
       <el-table-column :label="$t('commons.table.description')" min-width="300" prop="describe" fix />
       <el-table-column sortable :label="$t('commons.table.action')" prop="status.phase" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status ==='enable'">
-            <span class="iconfont iconduihao" style="color: #32B350"></span>
-            {{ $t("commons.status.enable") }}
+            <el-button size="mini" icon="el-icon-video-pause" @click="stopComponent(row)">{{ $t("commons.button.disable") }}</el-button>
           </div>
           <div v-if="row.status ==='disable'">
-            <el-button type="text" @click="startComponent(row)">{{$t("commons.button.enable")}}</el-button>
+            <el-button size="mini" :disabled="row.disabled" icon="el-icon-video-play" @click="startComponent(row)">{{ $t("commons.button.enable") }}</el-button>
           </div>
           <div v-if="row.status === 'Waiting'">
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
             <span>{{ $t("commons.status.waiting") }}</span>
+          </div>
+          <div v-if="row.status === 'Failed'">
+            <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.failed") }}</el-link>
           </div>
           <div v-if="row.status ==='NotReady'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
@@ -32,40 +39,114 @@
         </template>
       </el-table-column>
     </complex-table>
+
+    <el-dialog title="Istio" width="50%" :visible.sync="dialogIstioVisible">
+      <istio-component ref="istio_component"></istio-component>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogIstioVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button size="small" @click="submitIstio">{{ $t("commons.button.submit") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('commons.button.error_msg')" width="50%" :visible.sync="dialogVisible">
+      <template slot="title">
+        <div v-if="formatMsgs.failed">{{formatMsgs.name}}</div>
+      </template>
+      <div v-if="formatMsgs.type !== 'unFormat'">
+        <el-collapse v-model="activeNames">
+          <el-collapse-item v-if="formatMsgs.info.msg" title="message" name="1">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{ formatMsgs.info.msg }}</span></div>
+          </el-collapse-item>
+          <el-collapse-item v-if="formatMsgs.info.stderr" title="stderr" name="2">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{formatMsgs.info.stderr }}</span></div>
+          </el-collapse-item>
+          <el-collapse-item v-if="formatMsgs.info.stdout" title="stdout" name="3">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{formatMsgs.info.stdout }}</span></div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+      <div v-else>
+        <div><span style="font-weight: bold">info</span></div>
+        <div><span style="white-space: pre-wrap;">{{formatMsgs.info | errorFormat }}</span></div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { getComponents, createComponent } from "@/api/cluster"
+import { getComponents, createComponent, deleteComponent } from "@/api/cluster"
 import { openLoggerWithID } from "@/api/cluster"
+import IstioComponent from "./istio/index.vue"
+import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
 export default {
   name: "ClusterNamespace",
-  components: { ComplexTable },
+  components: { ComplexTable, IstioComponent },
   data() {
     return {
-      loading: false,
       clusterName: "",
       data: [],
+      selects: [],
+      formatMsgs: {
+        name: "",
+        info: {},
+        failed: false,
+      },
+      component: {
+        name: "",
+        clusterName: "",
+        type: "",
+        version: "",
+        vars: {},
+      },
+      dialogVisible: false,
+      dialogIstioVisible: false,
+      activeNames: ["1", "2", "3"],
     }
   },
   methods: {
+    getRowKeys(row) {
+      return row.name
+    },
     search() {
-      this.loading = true
-      getComponents(this.clusterName)
-        .then((data) => {
-          this.data = data
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
+      getComponents(this.clusterName).then((data) => {
+        this.data = data
+      })
     },
     openXterm(row) {
-      openLoggerWithID(this.clusterName, row.id)
+      if (row.status === "Terminating") {
+        openLoggerWithID(this.clusterName, row.id + " (disable)")
+      }
+      if (row.status === "Initializing") {
+        openLoggerWithID(this.clusterName, row.id + " (enable)")
+      }
+    },
+    onSync() {},
+    submitIstio() {
+      this.component.vars = this.component.vars === "" ? {} : this.component.vars
+      this.$refs.istio_component.gatherVars(this.component.vars)
+      let data = {
+        clusterName: this.clusterName,
+        name: this.component.name,
+        type: this.component.type,
+        version: this.component.version,
+        vars: this.component.vars,
+      }
+      createComponent(data).then(() => {
+        this.search()
+      })
+      this.dialogIstioVisible = false
     },
     startComponent(row) {
+      this.component = row
+      if (row.name === "istio") {
+        this.dialogIstioVisible = true
+        return
+      }
       this.$confirm(this.$t("commons.confirm_message.enable_component", [row.name]), this.$t("commons.message_box.prompt"), {
         confirmButtonText: this.$t("commons.button.confirm"),
         cancelButtonText: this.$t("commons.button.cancel"),
@@ -74,9 +155,21 @@ export default {
         let data = {
           clusterName: this.clusterName,
           name: row.name,
+          type: row.type,
           version: row.version,
         }
-        createComponent(data)
+        createComponent(data).then(() => {
+          this.search()
+        })
+      })
+    },
+    stopComponent(row) {
+      this.$confirm(this.$t("commons.confirm_message.disable_component", [row.name]), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        deleteComponent(this.clusterName, row.name)
           .then(() => {
             this.search()
           })
@@ -84,6 +177,10 @@ export default {
             this.loading = false
           })
       })
+    },
+    getStatus(row) {
+      this.formatMsgs = ansibleErrFormat(row.message)[0]
+      this.dialogVisible = true
     },
     polling() {
       this.timer = setInterval(() => {
@@ -104,6 +201,7 @@ export default {
   created() {
     this.clusterName = this.$route.params.name
     this.search()
+    this.polling()
   },
   destroyed() {
     clearInterval(this.timer)

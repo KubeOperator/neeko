@@ -486,6 +486,9 @@ const message = {
         node_shrink: "集群缩容",
         node_expand_help: "当前配置下，集群内最多可扩容 {0} 个节点",
       },
+      component: {
+        operator_help: "同类型组件无法同时启用，如需切换需要先禁用已有的同类型组件。",
+      },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
       },
