@@ -166,7 +166,7 @@ const message = {
       bind: "Is binding",
       True: "Success",
       False: "Failed",
-      Unknow: "Running",
+      Unknown: "Running",
     },
     role: {
       super_admin: "Super admin",

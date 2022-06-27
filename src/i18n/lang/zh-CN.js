@@ -171,7 +171,7 @@ const message = {
       bind: "已绑定",
       True: "成功",
       False: "失败",
-      Unknow: "运行中",
+      Unknown: "运行中",
     },
     role: {
       super_admin: "超级管理员",

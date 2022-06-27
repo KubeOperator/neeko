@@ -18,19 +18,20 @@
                 <span size="small">{{ $t(`commons.status.${row.status}`) }}</span>
               </template>
             </el-table-column>
-            <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt" min-width="100">
+            <el-table-column sortable :label="$t('commons.search.time_start')" prop="startTime" min-width="100">
               <template v-slot:default="{row}">
-                {{ row.createdAt | datetimeFormat }}
+                {{ row.startTime | timeStampFormat }}
               </template>
             </el-table-column>
-            <el-table-column sortable :label="$t('commons.table.create_time')" prop="updatedAt" min-width="100">
+            <el-table-column sortable :label="$t('commons.search.time_end')" prop="endTime" min-width="100">
               <template v-slot:default="{row}">
-                {{ row.updatedAt | datetimeFormat }}
+                <span v-if="row.endTime === 0"> - </span>
+                <span v-else>{{ row.endTime | timeStampFormat }}</span>
               </template>
             </el-table-column>
             <el-table-column sortable :label="$t('commons.table.spend_time')" min-width="100">
               <template v-slot:default="{row}">
-                {{ loadTimeSpend(row.createdAt, row.updatedAt) }}
+                {{ loadTimeSpend(row.startTime, row.endTime) }}
               </template>
             </el-table-column>
           </el-table>
@@ -52,22 +53,25 @@
             <span class="iconfont iconduihao" style="color: #32B350"></span> &nbsp; &nbsp; &nbsp;
             {{ $t("commons.status.success") }}
           </div>
-          <span v-if="row.tasklogs.phase === 'FAILED' && row.tasklogs.phase === 'SUCCESS'" size="small">{{ $t(`commons.status.${row.tasklogs.phase}`) }}</span>
+          <span v-if="row.tasklogs.phase === 'RUNNING'">
+            <i class="el-icon-loading" />{{ $t("commons.status.Unknown") }}
+          </span>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt" min-width="100">
+      <el-table-column sortable :label="$t('commons.search.time_start')" prop="tasklogs.startTime" min-width="100">
         <template v-slot:default="{row}">
-          {{ row.tasklogs.createdAt | datetimeFormat }}
+          {{ row.tasklogs.startTime | timeStampFormat }}
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.create_time')" prop="updatedAt" min-width="100">
+      <el-table-column sortable :label="$t('commons.search.time_end')" prop="tasklogs.endTime" min-width="100">
         <template v-slot:default="{row}">
-          {{ row.tasklogs.updatedAt | datetimeFormat }}
+          <span v-if="row.tasklogs.endTime === 0"> - </span>
+          <span v-else>{{ row.tasklogs.endTime | timeStampFormat }}</span>
         </template>
       </el-table-column>
       <el-table-column sortable :label="$t('commons.table.spend_time')" min-width="100">
         <template v-slot:default="{row}">
-          {{ loadTimeSpend(row.tasklogs.createdAt, row.tasklogs.updatedAt) }}
+          {{ loadTimeSpend(row.tasklogs.startTime, row.tasklogs.endTime) }}
         </template>
       </el-table-column>
       <fu-table-operations fixed="right" :buttons="buttons" :label="$t('commons.table.action')" fix />
@@ -103,9 +107,9 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { getTasks } from "@/api/cluster"
+import { getTasks } from "@/api/tasks"
 import ComplexTable from "@/components/complex-table"
-import { openLoggerWithID } from "@/api/cluster"
+import { openLoggerWithID } from "@/api/tasks"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
 export default {
@@ -148,7 +152,7 @@ export default {
       this.$router.push({ name: "UserCreate" })
     },
     openXterm(row) {
-      openLoggerWithID(row.name, row.id)
+      openLoggerWithID(row.tasklogs.clusterID, row.tasklogs.id)
     },
     search(type) {
       this.searchForm.logtype = type ? type : "single-task"
@@ -165,9 +169,11 @@ export default {
       this.formatMsgs = ansibleErrFormat(row.tasklogs.message)[0]
       this.dialogVisible = true
     },
-    loadTimeSpend(createAt, endAt) {
-      let diff = new Date(endAt) - new Date(createAt)
-      return diff / 1000 + " S"
+    loadTimeSpend(start, end) {
+      if (end == 0) {
+        return "-"
+      }
+      return end - start + " S"
     },
   },
   created() {

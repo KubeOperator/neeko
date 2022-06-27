@@ -90,7 +90,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import { getComponents, createComponent, deleteComponent, syncComponents } from "@/api/cluster"
-import { openLoggerWithID } from "@/api/cluster"
+import { openLoggerWithName } from "@/api/tasks"
 import IstioComponent from "./istio/index.vue"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
@@ -130,10 +130,10 @@ export default {
     },
     openXterm(row) {
       if (row.status === "Terminating") {
-        openLoggerWithID(this.clusterName, row.id + " (disable)")
+        openLoggerWithName(this.clusterName, row.id + " (disable)")
       }
       if (row.status === "Initializing") {
-        openLoggerWithID(this.clusterName, row.id + " (enable)")
+        openLoggerWithName(this.clusterName, row.id + " (enable)")
       }
     },
     onSync() {

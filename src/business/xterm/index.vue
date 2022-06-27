@@ -13,7 +13,7 @@
 <script>
 import "xterm/css/xterm.css"
 import { Terminal } from "xterm"
-import { getProvisionerLog, getClusterLog } from "@/api/cluster"
+import { getLogById, getLogByName } from "@/api/tasks"
 
 export default {
   name: "xTerm",
@@ -41,44 +41,46 @@ export default {
       setTimeout(() => {
         this.term.clear()
       }, 3000)
+      const clusterId = this.$route.query.clusterId
       const clusterName = this.$route.query.clusterName
       const logId = this.$route.query.logId
       this.timer = setInterval(() => {
         if (this.isRun) {
-          if (logId !== undefined) {
-            getProvisionerLog(clusterName, logId)
-              .then((data) => {
-                this.term.clear()
-                const text = data.msg.replace(/\n/g, "\r\n")
-                this.term.write(text)
-                setTimeout(() => {
-                  this.term.scrollToBottom()
-                }, 100)
-              })
-              .catch((error) => {
-                if (error.toString() === "Error: Request failed with status code 400") {
-                  this.isRun = false
-                } else {
-                  this.term.write("no log to show" + error)
-                }
-              })
-          } else {
-            getClusterLog(clusterName)
-              .then((data) => {
-                this.term.clear()
-                const text = data.msg.replace(/\n/g, "\r\n")
-                this.term.write(text)
-                setTimeout(() => {
-                  this.term.scrollToBottom()
-                }, 100)
-              })
-              .catch((error) => {
-                if (error.toString() === "Error: Request failed with status code 400") {
-                  this.isRun = false
-                } else {
-                  this.term.write("no log to show" + error)
-                }
-              })
+          if (clusterId) {
+          getLogById(clusterId, logId)
+            .then((data) => {
+              this.term.clear()
+              const text = data.msg.replace(/\n/g, "\r\n")
+              this.term.write(text)
+              setTimeout(() => {
+                this.term.scrollToBottom()
+              }, 100)
+            })
+            .catch((error) => {
+              if (error.toString() === "Error: Request failed with status code 400") {
+                this.isRun = false
+              } else {
+                this.term.write("no log to show" + error)
+              }
+            })
+          }
+          if (clusterName) {
+            getLogByName(clusterName, logId)
+             .then((data) => {
+              this.term.clear()
+              const text = data.msg.replace(/\n/g, "\r\n")
+              this.term.write(text)
+              setTimeout(() => {
+                this.term.scrollToBottom()
+              }, 100)
+            })
+            .catch((error) => {
+              if (error.toString() === "Error: Request failed with status code 400") {
+                this.isRun = false
+              } else {
+                this.term.write("no log to show" + error)
+              }
+            })
           }
         }
       }, 5000)

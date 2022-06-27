@@ -55,7 +55,7 @@
 <script>
 import { getNodeByName } from "@/api/cluster/node"
 import { getClusterStatus } from "@/api/cluster"
-import { openLoggerWithID } from "@/api/cluster"
+import { openLoggerWithName } from "@/api/tasks"
 
 export default {
   name: "KoLogs",
@@ -70,6 +70,7 @@ export default {
       timer: null,
       timer2: null,
       detailLoading: true,
+      clusterId: "",
       log: {
         type: "",
         phase: "",
@@ -93,7 +94,7 @@ export default {
       }
     },
     goForLogs() {
-      openLoggerWithID(this.clusterName, this.log.id)
+      openLoggerWithName(this.clusterName, this.log.id)
     },
     onRetry() {
       if (this.log.details.length !== 0) {
@@ -122,10 +123,10 @@ export default {
       switch (this.operation) {
         case "waiting-poll":
           getClusterStatus(this.clusterName).then((data) => {
-            if (data.details.length !== 0) {
+            if (data.tasklogs.details.length !== 0) {
               this.detailLoading = false
             }
-            this.handleResponse(data)
+            this.handleResponse(data.tasklogs)
             this.dialogPolling()
           })
           break
@@ -176,7 +177,7 @@ export default {
         if ((this.log.phase !== "FAILED" && this.log.phase !== "SUCCESS")) {
           getClusterStatus(this.clusterName)
             .then((data) => {
-              this.handleResponse(data)
+              this.handleResponse(data.tasklogs)
             })
             .catch(() => {
               clearInterval(this.timer)

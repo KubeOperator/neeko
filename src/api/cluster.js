@@ -1,11 +1,7 @@
 import {get, post, del} from "@/plugins/request"
 
 const clusterUrl = "/api/v1/clusters"
-const taskUrl = "/api/v1/tasks"
 const componentUrl = "/api/v1/components"
-const clusterLoggerUrl = "/api/v1/clusters/logger/{cluster_name}"
-const clusterNodeLoggerUrl = "/api/v1/clusters/node/logger/{cluster_name}/{node_name}"
-const storageProvisionerLoggerUrl = "/api/v1/clusters/provisioner/log/{cluster_name}/{log_id}"
 
 export function getClusterByName(clusterName) {
   return get(`${clusterUrl}/${clusterName}`)
@@ -71,26 +67,6 @@ export function getClusterStatus(clusterName) {
   return get(`${clusterUrl}/status/${clusterName}`)
 }
 
-export function getClusterLog(clusterName) {
-  return get(clusterLoggerUrl.replace("{cluster_name}", clusterName))
-}
-
-export function getClusterNodeLog(clusterName, nodeName) {
-  return get(clusterNodeLoggerUrl.replace("{cluster_name}", clusterName).replace("{node_name}", nodeName))
-}
-
-export function getProvisionerLog(clusterName, logId) {
-  return get(storageProvisionerLoggerUrl.replace("{cluster_name}", clusterName).replace("{log_id}", logId))
-}
-
-export function openLogger(clusterName) {
-  window.open(`/ui/#/logger?clusterName=${clusterName}`, "_blank", "height=865, width=800, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
-}
-
-export function openLoggerWithID(clusterName, logId) {
-  window.open(`/ui/#/logger?clusterName=${clusterName}&logId=${logId}`, "_blank", "height=865, width=800, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no")
-}
-
 export function getSecret(clusterName) {
   return get(`${clusterUrl}/secret/${clusterName}`)
 }
@@ -105,10 +81,6 @@ export function handleGpu(clusterName, handle) {
 
 export function getGpuStatu(clusterName) {
   return get(`${clusterUrl}/gpu/${clusterName}`)
-}
-
-export function getTasks(page, size, cluster, logtype) {
-  return post(`${taskUrl}?cluster=${cluster}&logtype=${logtype}&pageNum=${page}&pageSize=${size}`)
 }
 
 export function getComponents(cluster) {

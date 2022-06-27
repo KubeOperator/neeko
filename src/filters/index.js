@@ -29,9 +29,14 @@ export function emailFormat(value) {
   return result;
 }
 
+export function timeStampFormat(value) {
+  return datetimeFormat(new Date(value * 1000))
+}
+
 const filters = {
   "dateFormat": dateFormat,
   "datetimeFormat": datetimeFormat,
+  "timeStampFormat": timeStampFormat,
   "errorFormat": errorFormat,
   "emailFormat": emailFormat,
 };
