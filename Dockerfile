@@ -3,7 +3,7 @@ FROM node:14-alpine3.15 as stage-build
 WORKDIR /data
 
 RUN apk update && \
-    apk upgrade && \
+    apk upgrade
 
 COPY ./package.json /data/package.json
 COPY ./package-lock.json /data/package-lock.json
