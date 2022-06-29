@@ -1135,7 +1135,7 @@ export default {
   ul {
     height: 20px;
   }
-  /deep/ .el-scrollbar__wrap {
+  ::v-deep .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;
   }

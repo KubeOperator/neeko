@@ -317,7 +317,7 @@ export default {
 
 <style lang="scss" scoped>
 .dialog {
-  /deep/ .el-scrollbar__wrap {
+  ::v-deep .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;
   }
