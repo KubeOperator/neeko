@@ -86,7 +86,7 @@
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
 
-    <el-dialog @close="searchForPolling()" :title="$t('cluster.condition.condition_detail')" destroy-on-close
+    <el-dialog @close="searchForPolling()" :title="$t('task.condition_detail')" destroy-on-close
                width="70%" :visible.sync="dialogLogVisible">
       <ko-logs :key="isRefresh" :operation="operationType" :clusterName="clusterName" :errMsg="errMsg" @retry="onRetry"
                @cancle="dialogLogVisible = false"/>

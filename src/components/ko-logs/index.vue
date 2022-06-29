@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="dialog" v-loading="detailLoading" :element-loading-text="$t('cluster.condition.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
+    <div class="dialog" v-loading="detailLoading" :element-loading-text="$t('task.condition_loading')" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 1)" :style="{height: dialogHeight}">
       <el-scrollbar style="height:90%">
         <span v-if="log.details&&log.details.length === 0">{{ log.message | errorFormat }}</span>
         <div>
           <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
-            <el-step v-for="detail in log.details" :key="detail.name" :title="$t('cluster.condition.' +detail.task)">
+            <el-step v-for="detail in log.details" :key="detail.name" :title="$t('task.' +detail.task)">
               <i :class="loadStepIcon(detail.status)" slot="icon"></i>
               <el-collapse v-if="detail.status === 'False'" accordion slot="description" v-model="activeCollapse">
                 <el-collapse-item :title="item.name" :name="index" v-for="(item, index) in detail.formatMsgs" :key="index">
@@ -85,11 +85,11 @@ export default {
   methods: {
     loadStepIcon(status) {
       switch (status) {
-        case "True":
+        case "SUCCESS":
           return "el-icon-check"
-        case "False":
+        case "FAILED":
           return "el-icon-close"
-        case "Unknown":
+        case "RUNNING":
           return "el-icon-loading"
       }
     },

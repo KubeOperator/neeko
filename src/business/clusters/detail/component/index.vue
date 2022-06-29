@@ -4,7 +4,7 @@
     <complex-table style="margin-top: 20px" ref="nsData" :row-key="getRowKeys" :selects.sync="selects" :data="data">
       <template #header>
         <el-button-group>
-          <el-button size="small" :disabled="selects.length < 1" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
+          <el-button size="small" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
         </el-button-group>
       </template>
 
@@ -54,6 +54,17 @@
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogIstioVisible = false">{{ $t("commons.button.cancel") }}</el-button>
         <el-button size="small" @click="submitIstio">{{ $t("commons.button.submit") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
+      <span>{{ $t("cluster.detail.component.ensure_component_sync") }}</span>
+      <ul style="margin-left: 5%;" :key="component.name" v-for="component of selects">
+        <li>{{ component.name }} ({{ component.version }})</li>
+      </ul>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button type="primary" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -116,6 +127,7 @@ export default {
       },
       dialogVisible: false,
       dialogIstioVisible: false,
+      dialogSyncVisible: false,
       activeNames: ["1", "2", "3"],
     }
   },
@@ -137,6 +149,20 @@ export default {
       }
     },
     onSync() {
+      if (this.selects.length === 0) {
+        this.$confirm(this.$t("commons.confirm_message.enable_component_select"), this.$t("commons.message_box.prompt"), {
+          confirmButtonText: this.$t("commons.button.confirm"),
+          cancelButtonText: this.$t("commons.button.cancel"),
+          type: "warning",
+        }).then(() => {
+          this.selects = this.data
+          this.submitSync()
+        })
+      } else {
+        this.dialogSyncVisible = true
+      }
+    },
+    submitSync() {
       let names = []
       for (const c of this.selects) {
         names.push(c.name)
@@ -219,7 +245,7 @@ export default {
     polling() {
       this.timer = setInterval(() => {
         let flag = false
-        const needPolling = ["Initializing", "Terminating", "Waiting"]
+        const needPolling = ["Initializing", "Terminating", "Waiting", "Synchronizing"]
         for (const item of this.data) {
           if (needPolling.indexOf(item.status) !== -1) {
             flag = true

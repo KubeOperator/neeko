@@ -13,7 +13,7 @@ const Cluster = {
       name: "TaskList",
       meta: {
         title: "route.task",
-        icon: "iconfont iconcluster",
+        icon: "iconfont iconrenwuzhongxin-fabuneirong",
         roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
       },
     },

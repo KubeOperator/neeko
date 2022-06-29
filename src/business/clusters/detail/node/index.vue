@@ -178,7 +178,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('cluster.condition.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
+    <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('task.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
       <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="cancleLog()" />
     </el-dialog>
 

@@ -10,7 +10,7 @@
           <el-table :show-header="false" :data="props.row.tasklogs.details" style="width: 100%">
             <el-table-column :label="$t('cluster.detail.tag.task')">
               <template v-slot:default="{row}">
-                <span size="small">{{ $t(`cluster.condition.${row.task}`) }}</span>
+                <span size="small">{{ $t(`task.${row.task}`) }}</span>
               </template>
             </el-table-column>
             <el-table-column :label="$t('commons.table.status')">
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column :label="$t('cluster.detail.tag.task')">
         <template v-slot:default="{row}">
-          <span v-if="searchForm.logtype === 'single-task'" size="small">{{ $t(`cluster.condition.${row.tasklogs.type}`) }}</span>
+          <span v-if="searchForm.logtype === 'single-task'" size="small">{{ $t(`task.${row.tasklogs.type}`) }}</span>
           <span v-else size="small">{{ row.tasklogs.type }}</span>
         </template>
       </el-table-column>
@@ -47,14 +47,14 @@
         <template v-slot:default="{row}">
           <div v-if="row.tasklogs.phase === 'FAILED'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.failed") }}</el-link>
+            <el-link type="info" @click="getStatus(row)">{{ $t("commons.status.FAILED") }}</el-link>
           </div>
           <div v-if="row.tasklogs.phase === 'SUCCESS'">
             <span class="iconfont iconduihao" style="color: #32B350"></span> &nbsp; &nbsp; &nbsp;
-            {{ $t("commons.status.success") }}
+            {{ $t("commons.status.SUCCESS") }}
           </div>
           <span v-if="row.tasklogs.phase === 'RUNNING'">
-            <i class="el-icon-loading" />{{ $t("commons.status.Unknown") }}
+            <i class="el-icon-loading" />{{ $t("commons.status.RUNNING") }}
           </span>
         </template>
       </el-table-column>
@@ -152,6 +152,10 @@ export default {
       this.$router.push({ name: "UserCreate" })
     },
     openXterm(row) {
+      if (row.tasklogs.type.indexOf(" (enable)") !== -1) {
+        openLoggerWithID(row.tasklogs.clusterID, row.tasklogs.id+ " (enable)")
+        return
+      }
       openLoggerWithID(row.tasklogs.clusterID, row.tasklogs.id)
     },
     search(type) {
