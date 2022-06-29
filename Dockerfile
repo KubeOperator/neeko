@@ -4,7 +4,6 @@ WORKDIR /data
 
 RUN apk update && \
     apk upgrade && \
-    apk add python2 make gcc g++
 
 COPY ./package.json /data/package.json
 COPY ./package-lock.json /data/package-lock.json
