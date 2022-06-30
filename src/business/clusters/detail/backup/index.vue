@@ -171,7 +171,7 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { openLoggerWithName } from "@/api/tasks"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestore, getBackupLog, listBackupAccounts, startRestore, deleteBackupFile } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 import VeleroBackup from "@/business/clusters/detail/backup/velero_backup"

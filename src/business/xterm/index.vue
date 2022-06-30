@@ -13,7 +13,7 @@
 <script>
 import "xterm/css/xterm.css"
 import { Terminal } from "xterm"
-import { getLogById, getLogByName } from "@/api/tasks"
+import { getLogById, getLogByName } from "@/api/cluster/tasks"
 
 export default {
   name: "xTerm",

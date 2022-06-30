@@ -55,7 +55,7 @@
 <script>
 import { getNodeByName } from "@/api/cluster/node"
 import { getClusterStatus } from "@/api/cluster"
-import { openLoggerWithName } from "@/api/tasks"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 
 export default {
   name: "KoLogs",
@@ -263,7 +263,7 @@ export default {
 
 <style lang="scss" scoped>
 .dialog {
-  /deep/ .el-scrollbar__wrap {
+  ::v-deep .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;
   }

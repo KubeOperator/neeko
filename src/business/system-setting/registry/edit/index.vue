@@ -12,19 +12,16 @@
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol">
-              <el-select style="width: 100%" @change="attachable = false" v-model="form.protocol" placeholder="请选择">
+              <el-select style="width: 100%" v-model="form.protocol" placeholder="请选择">
                 <el-option v-for="item in protocolOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="$t('setting.table.registry.hostname')" prop="hostname">
-              <el-input @input="attachable = false" @blur="attachable = false" v-model="form.hostname"></el-input>
+              <el-input v-model="form.hostname"></el-input>
             </el-form-item>
-            <el-form-item style="width: 100%" :label="$t('login.username')">
-              <label>admin</label>
-            </el-form-item>
-            <el-form-item style="width: 100%" :label="$t('login.password')" prop="nexusPassword">
-              <el-input type="password" @input="attachable = false" @blur="attachable = false" v-model="form.nexusPassword"></el-input>
+            <el-form-item>
+              <el-button @click="onChange" size="mini" icon="el-icon-edit">{{$t("setting.sync_nexus_password")}}</el-button>
             </el-form-item>
             <div class="registry-collapse">
               <el-collapse accordion>
@@ -34,7 +31,7 @@
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort">
-                      <el-input-number @input="attachable = false" v-model="form.repoPort" :min="0" :max="65535"></el-input-number>
+                      <el-input-number v-model="form.repoPort" :min="0" :max="65535"></el-input-number>
                       <div><span class="input-help">{{$t('setting.table.registry.repo_port_help')}}</span></div>
                     </el-form-item>
 
@@ -55,8 +52,7 @@
             <div style="float: right">
               <el-form-item>
                 <el-button @click="onCancel()">{{$t('commons.button.cancel')}}</el-button>
-                <el-button v-if="!attachable" @click="testConnection">{{ $t("commons.button.test_connection") }}</el-button>
-                <el-button v-if="attachable" type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
+                <el-button type="primary" @click="onSubmit" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
               </el-form-item>
             </div>
           </el-form>
@@ -64,11 +60,28 @@
       </el-col>
       <el-col :span="4"><br /></el-col>
     </el-row>
+    <el-dialog :title="$t('commons.personal.sync_password')" :close-on-click-modal="false" :visible.sync="dialogChangePasswdVisible" width="30%">
+      <i class="el-icon-info"></i>
+      <span style="margin-left: 6px">{{$t('setting.nexus_passwd')}}</span>
+      <el-form style="margin-top:20px" ref="passwordForm" label-position="left" :rules="rules" :model="passwordForm" label-width="100px">
+        <el-form-item style="width: 100%" :label="$t('login.username')" prop="nexusUser">
+          <el-input @input="attachable = false" @blur="attachable = false" v-model="passwordForm.nexusUser" placeholder="admin"></el-input>
+        </el-form-item>
+        <el-form-item style="width: 100%" :label="$t('login.password')" prop="nexusPassword">
+          <el-input type="password" @input="attachable = false" @blur="attachable = false" v-model="passwordForm.nexusPassword"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogChangePasswdVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button v-if="!attachable" @click="testConnection">{{ $t("commons.button.test_connection") }}</el-button>
+        <el-button v-if="attachable" type="primary" @click="changePasswd('passwordForm')" v-preventReClick>{{$t('commons.button.submit')}}</el-button>
+      </span>
+    </el-dialog>
   </layout-content>
 </template>
 
 <script>
-import { getRegistry, updateRegistry, testConnection } from "@/api/system-setting"
+import { getRegistry, updateRegistry, testConnection, changePassword } from "@/api/system-setting"
 import LayoutContent from "@/components/layout/LayoutContent"
 import Rule from "@/utils/rules"
 
@@ -88,13 +101,20 @@ export default {
         repoPort: "",
         registryPort: "",
         registryHostedPort: "",
-        nexusPassword: "",
       },
       architectureOptions: [{ value: "x86_64" }, { value: "aarch64" }],
       rules: {
         hostname: [Rule.IpRule],
         architecture: [Rule.RequiredRule],
         protocol: [Rule.RequiredRule],
+        nexusUser: [Rule.RequiredRule],
+        nexusPassword: [Rule.RequiredRule],
+      },
+      dialogChangePasswdVisible: false,
+      passwordForm: {
+        id: "",
+        nexusUser: "",
+        nexusPassword: "",
       },
       protocolOptions: [{ value: "http" }, { value: "https" }],
       loading: false,
@@ -129,16 +149,7 @@ export default {
           return false
         }
         this.loading = true
-        updateRegistry(this.form.architecture, {
-          architecture: this.form.architecture,
-          hostname: this.form.hostname,
-          protocol: this.form.protocol,
-          id: this.form.id,
-          repoPort: this.form.repoPort,
-          registryPort: this.form.registryPort,
-          registryHostedPort: this.form.registryHostedPort,
-          nexusPassword: this.form.nexusPassword,
-        })
+        updateRegistry(this.form.architecture, this.form)
           .then(() => {
             this.loading = false
             this.$message({
@@ -161,8 +172,8 @@ export default {
           protocol: this.form.protocol,
           hostname: this.form.hostname,
           repoPort: this.form.repoPort,
-          username: "admin",
-          password: this.form.nexusPassword,
+          nexusUser: this.passwordForm.nexusUser,
+          nexusPassword: this.passwordForm.nexusPassword,
         }
         testConnection(data).then(() => {
           this.$message({
@@ -170,6 +181,26 @@ export default {
             message: this.$t("setting.conn_successful"),
           })
           this.attachable = true
+        })
+      })
+    },
+    onChange() {
+      this.passwordForm.password = ""
+      this.passwordForm.id = this.form.id
+      this.passwordForm.nexusUser = this.form.nexusUser
+      this.dialogChangePasswdVisible = true
+    },
+    changePasswd(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        changePassword(this.passwordForm).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.save_success"),
+          })
+          this.dialogChangePasswdVisible = false
         })
       })
     },

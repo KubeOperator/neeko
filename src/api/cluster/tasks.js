@@ -1,7 +1,7 @@
 import {get, post} from "@/plugins/request"
 
 const taskUrl = "/api/v1/tasks"
-const taskLoggerUrl = "/api/v1/tasks/"
+const taskLoggerUrl = "/api/v1/tasks"
 
 export function getTasks(page, size, cluster, logtype) {
     return post(`${taskUrl}?cluster=${cluster}&logtype=${logtype}&pageNum=${page}&pageSize=${size}`)
@@ -17,6 +17,10 @@ export function openLoggerWithName(clusterName, logId) {
 
 export function getLogById(clusterId, logId) {
     return get(`${taskLoggerUrl}/log1/${clusterId}/${logId}`)
+}
+
+export function getDetailById(logId) {
+    return get(`${taskLoggerUrl}/detail/${logId}`)
 }
 
 export function getLogByName(clusterName, logId) {

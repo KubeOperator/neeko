@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('cluster.cluster_detail')" :back-to="{ name: 'ClusterList' }">
+  <layout-content :header="$t('cluster.cluster_detail') + '  -  ' + clusterName" :back-to="{ name: 'ClusterList' }">
     <div v-loading="loading">
       <el-menu @select="search" router :default-active="$route.path" mode="horizontal">
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
@@ -9,6 +9,7 @@
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/monitor'">{{$t('cluster.detail.tag.monitor')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/log'">{{$t('cluster.detail.tag.log')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/tool'">{{$t('cluster.detail.tag.tool')}}</el-menu-item>
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/task'">{{$t('cluster.detail.tag.task')}}</el-menu-item>
         <el-menu-item v-if="arch === 'amd64'" :index="'/clusters/detail/'+project+'/'+name+'/istio'">Istio</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.tag.backup')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/security'">
@@ -38,6 +39,7 @@ export default {
       hasLicense: null,
       arch: null,
       loading: false,
+      clusterName: "",
     }
   },
   methods: {
@@ -59,6 +61,7 @@ export default {
     this.$store.dispatch("license/getLicense").then((data) => {
       this.hasLicense = data.status === "valid"
     })
+    this.clusterName = this.$route.params.name
     this.search()
   },
 }

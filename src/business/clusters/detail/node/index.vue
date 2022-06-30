@@ -63,7 +63,7 @@
             <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
             <span>{{ $t("commons.status.waiting") }}</span>
           </div>
-          
+
           <div v-if="row.status === 'NotReady'">
             <span class="iconfont iconping" style="color: #FA4147"></span>
             {{ $t("commons.status.not_ready") }}
@@ -621,7 +621,7 @@ export default {
 <style lang="scss" scoped>
 .dialog {
   height: 450px;
-  /deep/ .el-scrollbar__wrap {
+  ::v-deep .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;
   }

@@ -440,7 +440,7 @@ export default {
 .dialog {
   height: 450px;
 
-  /deep/ .el-scrollbar__wrap {
+  ::v-deep .el-scrollbar__wrap {
     height: 100%;
     overflow-x: hidden;
   }

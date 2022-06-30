@@ -29,6 +29,10 @@ export function createRegistry(data) {
   return post(`${settingUrl}/registry`,data)
 }
 
+export function changePassword(data) {
+  return post(`${settingUrl}/registry/change/password`,data)
+}
+
 export function updateRegistry(arch, data) {
   return patch(`${settingUrl}/registry/${arch}`,data)
 }
@@ -79,12 +83,24 @@ export function createMessageSetting(tabName,data) {
 }
 
 // LDAP
-export function syncLDAP(data){
-  return post(`/api/v1/ldap/sync`,data)
+export function sync(){
+  return get(`/api/v1/ldap/sync`)
 }
 
 export function createLDAP(data) {
   return post(`/api/v1/ldap/`,data)
+}
+
+export function testConnect(data) {
+  return post(`/api/v1/ldap/test/connect`,data)
+}
+
+export function testLogin(data) {
+  return post(`/api/v1/ldap/test/login`,data)
+}
+
+export function importUsers(data) {
+  return post(`/api/v1/ldap/import/users`,data)
 }
 
 // kubepi

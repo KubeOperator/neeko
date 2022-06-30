@@ -21,7 +21,8 @@ import plugins from "./plugins";
 import directives from "./directive";
 import filters from "./filters";
 import "./permission"
-
+import VueCodemirror from 'vue-codemirror';
+import 'codemirror/lib/codemirror.css';
 Vue.config.productionTip = false
 
 import echarts from "echarts";
@@ -43,6 +44,7 @@ Vue.use(icons);
 Vue.use(plugins);
 Vue.use(directives);
 Vue.use(filters);
+Vue.use(VueCodemirror)
 
 Vue.directive("preventReClick", {
   inserted(el, binding) {

@@ -122,7 +122,7 @@
 import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
-import { openLoggerWithName } from "@/api/tasks"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 import ClusterStorageProvionerDetail from "./provisioner-detail"
 import { listProvisioner, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass } from "@/api/cluster/storage"
 

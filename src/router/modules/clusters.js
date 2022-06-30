@@ -103,6 +103,28 @@ const Cluster = {
           }
         },
         {
+          path: "task",
+          name: "ClusterTask",
+          hidden: false,
+          props: true,
+          component: () => import("@/business/clusters/detail/task"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        },
+        {
+          path: "task/:id",
+          name: "ClusterTaskDetail",
+          hidden: true,
+          props: true,
+          component: () => import("@/business/clusters/detail/task/detail"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        },
+        {
           path: "monitor",
           name: "ClusterMonitor",
           hidden: true,

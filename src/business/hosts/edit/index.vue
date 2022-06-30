@@ -10,7 +10,7 @@
               <div><span class="input-help">{{$t('commons.validate.name_help')}}</span></div>
             </el-form-item>
             <el-form-item label="IP" prop="ip">
-              <el-input v-model="form.ip" clearable></el-input>
+              <el-input :disabled="disable" v-model="form.ip" clearable></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -82,6 +82,7 @@ export default {
     return {
       credentialType: "exists",
       enableFlexIp: false,
+      disable: false,
       form: {
         name: "",
         ip: "",
@@ -149,6 +150,7 @@ export default {
       this.form.flexIp = data.flexIp
       this.form.port = data.port
       this.form.credentialId = data.credentialId
+      this.disable = (data.clusterName.length !== 0) || (data.status !== "Running" && data.status !== "Failed")
     })
   }
 }

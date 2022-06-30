@@ -101,7 +101,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import { getComponents, createComponent, deleteComponent, syncComponents } from "@/api/cluster"
-import { openLoggerWithName } from "@/api/tasks"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 import IstioComponent from "./istio/index.vue"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
