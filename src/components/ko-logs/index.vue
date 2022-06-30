@@ -56,6 +56,7 @@
 import { getNodeByName } from "@/api/cluster/node"
 import { getClusterStatus } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
+import {isJson} from '@/utils/validate'
 
 export default {
   name: "KoLogs",
@@ -205,14 +206,14 @@ export default {
     // 错误处理
     handleErrMsg(str) {
       let formatMsgs = []
-      if (!this.isJson(str)) {
+      if (!isJson(str)) {
         return [{ name: "Error Message", info: str, failed: false, type: "unFormat" }]
       }
       var json1 = JSON.parse(str)
       for (const key in json1) {
         var itemMsg = { name: "", info: {}, failed: false }
         itemMsg.name = key
-        if (this.isJson(json1[key])) {
+        if (isJson(json1[key])) {
           var json2 = JSON.parse(json1[key])
           itemMsg.info = json2
           if (itemMsg.info.msg) {
@@ -238,15 +239,6 @@ export default {
         }
       }
       return formatMsgs
-    },
-    isJson(str) {
-      try {
-        if (typeof JSON.parse(str) === "object") {
-          return true
-        }
-      } catch {
-        return false
-      }
     },
   },
   created() {

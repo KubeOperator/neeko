@@ -73,8 +73,8 @@ export default {
     return {
       loading: false,
       form: {
-        username: "admin",
-        password: "kubeoperator@admin123",
+        username: "",
+        password: "",
         captchaId: "",
         code: "",
       },

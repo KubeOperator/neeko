@@ -446,6 +446,13 @@ const message = {
       component: {
         ensure_component_sync: "是否确认同步下列组件？",
         operator_help: "同类型组件无法同时启用，如需切换需要先禁用已有的同类型组件。",
+        METRICS_SERVER_HELPER: "将在集群内启用 metric-server 服务，用于提供集群核心监控数据。",
+        TRAEFIK_HELPER: "将在集群内启用 traefik 服务，用于为集群提供更简单的 HTTP 反向代理和负载均衡器。",
+        NGINX_HELPER: "将在集群内启用 nginx 服务，用于为集群提供高性能的 HTTP 和反向代理WEB服务器。",
+        GPU_HELPER: "将在集群内启用 gpu 服务，用于为集群提供 gpu 能力",
+        DNS_CACHE_HELPER: "将在集群内启用 dns-cache 服务，用于为集群提供 DNS 解析记录缓存。",
+        ISTIO_HELPER: "将在集群内启用 istio 服务，用于为集群提供一种简单的方式来为已部署的服务建立网络，该网络具有负载均衡、服务间认证、监控等功能。",
+        NPD_HELPER: "将在集群内启用 npd(node-problem-detector) 服务，用于为集群收集节点问题，并使它们对上游层可见。",
       },
       namespace: {
         before_delete: "删除失败,该命名空间下已存在工具：",
@@ -593,9 +600,6 @@ const message = {
         memory_request: "Memory 预留(Mb)",
         trace: "跟踪抽样比例(%)",
         gateways_type: "网关服务类型",
-        disable_istio: "禁用 Istio",
-        resave: "重新保存",
-        ensure_disable_istio: "是否确认禁用集群 Istio？",
       },
       backup: {
         backup_strategy: "备份策略",
@@ -737,6 +741,11 @@ const message = {
     EnsureAddWorkerNetwork: "初始化网络",
     EnsureAddWorkerPost: "配置集群",
     EnsureAddWorkerStorage: "初始化存储提供商",
+    
+    cluster_task: "集群级任务",
+    cluster_task_help: "需要单独执行的任务，如集群创建、扩缩容、升级备份等...",
+    component_task: "组件级任务",
+    component_task_help: "允许多个任务同时执行，相互之间不影响，如组件、存储提供商启用...",
   },
   host: {
     detail: "详情",

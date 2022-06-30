@@ -103,6 +103,17 @@ const Cluster = {
           }
         },
         {
+          path: "log",
+          name: "ClusterLogs",
+          hidden: true,
+          props: true,
+          component: () => import("@/business/clusters/detail/log"),
+          meta: {
+            activeMenu: "/clusters",
+            roles: ["ADMIN","PROJECT_MANAGER","CLUSTER_MANAGER"]
+          }
+        },
+        {
           path: "task",
           name: "ClusterTask",
           hidden: false,

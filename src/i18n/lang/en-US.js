@@ -450,6 +450,13 @@ const message = {
       component: {
         ensure_component_sync: "Are you sure to synchronize the following components?",
         operator_help: "Components of the same type cannot be enabled at the same time. To switch components of the same type, disable existing components.",
+        METRICS_SERVER_HELPER: "The metric-Server service will be enabled within the cluster to provide cluster core monitoring data.",
+        TRAEFIK_HELPER: "The Traefik service will be enabled within the cluster to provide a simpler HTTP reverse proxy and load balancer for the cluster.",
+        NGINX_HELPER: "Nginx services will be enabled within the cluster to provide high-performance HTTP and reverse proxy WEB servers for the cluster.",
+        GPU_HELPER: "The GPU service will be enabled within the cluster to provide GPU capabilities for the cluster",
+        DNS_CACHE_HELPER: "The DNS-cache service is enabled in the cluster to cache DNS resolution records for the cluster.",
+        ISTIO_HELPER: "The ISTIO service will be enabled within the cluster to provide a simple way for the cluster to establish a network for the deployed services with load balancing, inter-service authentication, monitoring, and other functions.",
+        NPD_HELPER: "The Node-problem-Detector (NPD) service will be enabled within the cluster to collect node problems for the cluster and make them visible to the upstream tier.",
       },
       storage: {
         type: "Type",
@@ -593,9 +600,6 @@ const message = {
         memory_request: "Memory request (Mb)",
         trace: "Trace (%)",
         gateways_type: "Gateway type",
-        disable_istio: "Disable Istio",
-        resave: "Resave",
-        ensure_disable_istio: "Are you sure to disable cluster Istio?",
       },
       backup: {
         backup_strategy: "Backup Strategy",
@@ -731,6 +735,10 @@ const message = {
     DeleteNode: "Delete Node",
 
     CheckAPIStatus: "Check API status",
+    cluster_task: "Cluster-level task",
+    cluster_task_help: "Tasks that need to be performed independently, such as cluster creation, capacity expansion, and backup upgrade.",
+    component_task: "Component-level task",
+    component_task_help: "Allows multiple tasks to be executed simultaneously without affecting each other, such as components, storage provider enablement...",
   },
   host: {
     detail: "Detail",

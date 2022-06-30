@@ -9,14 +9,20 @@
       </template>
 
       <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" prop="name" fix />
+      <el-table-column :label="$t('commons.table.name')" prop="name" fix>
+        <template v-slot:default="{row}">
+          <span v-if="row.name !== 'istio' || row.status !== 'enable'">{{ row.name }}</span>
+          <el-link v-else type="info" @click="showIstioDetail(row)">{{ row.name }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('cluster.version')" prop="version" fix />
-      <el-table-column :label="$t('commons.table.description')" prop="type" fix />
-      <el-table-column :label="$t('commons.table.description')" min-width="300" prop="describe" fix />
-      <el-table-column sortable :label="$t('commons.table.action')" prop="status.phase" fix>
+      <el-table-column :label="$t('commons.table.description')" min-width="300" prop="describe" fix>
+        <template v-slot:default="{row}">{{ $t('cluster.detail.component.' + row.describe) }}</template>
+      </el-table-column>
+      <el-table-column :label="$t('commons.table.action')" prop="status.phase" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status ==='enable'">
-            <el-button size="mini" icon="el-icon-video-pause" @click="stopComponent(row, false)">{{ $t("commons.button.disable") }}</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-video-pause" @click="stopComponent(row, false)">{{ $t("commons.button.disable") }}</el-button>
           </div>
           <div v-if="row.status ==='disable'">
             <el-button size="mini" :disabled="row.disabled" icon="el-icon-video-play" @click="startComponent(row, false)">{{ $t("commons.button.enable") }}</el-button>
@@ -54,6 +60,13 @@
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogIstioVisible = false">{{ $t("commons.button.cancel") }}</el-button>
         <el-button size="small" @click="submitIstio">{{ $t("commons.button.submit") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="Istio" width="50%" :visible.sync="dialogIstioDetailVisible">
+      <istio-detail :istioVars="istioVars"></istio-detail>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogIstioDetailVisible = false">{{ $t("commons.button.cancel") }}</el-button>
       </div>
     </el-dialog>
 
@@ -103,11 +116,12 @@ import ComplexTable from "@/components/complex-table"
 import { getComponents, createComponent, deleteComponent, syncComponents } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
 import IstioComponent from "./istio/index.vue"
+import IstioDetail from "./istio/detail.vue"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
 export default {
   name: "ClusterNamespace",
-  components: { ComplexTable, IstioComponent },
+  components: { ComplexTable, IstioComponent, IstioDetail },
   data() {
     return {
       clusterName: "",
@@ -127,6 +141,8 @@ export default {
       },
       dialogVisible: false,
       dialogIstioVisible: false,
+      dialogIstioDetailVisible: false,
+      istioVars: {},
       dialogSyncVisible: false,
       activeNames: ["1", "2", "3"],
     }
@@ -173,22 +189,27 @@ export default {
       }
       syncComponents(data).then(() => {
         this.search()
+        this.dialogSyncVisible = false
       })
+    },
+    showIstioDetail(row) {
+      this.istioVars = row.vars
+      this.dialogIstioDetailVisible = true
     },
     submitIstio() {
       this.component.vars = this.component.vars === "" ? {} : this.component.vars
-      this.$refs.istio_component.gatherVars(this.component.vars)
       let data = {
         clusterName: this.clusterName,
         name: this.component.name,
         type: this.component.type,
         version: this.component.version,
-        vars: this.component.vars,
+        vars: this.$refs.istio_component.gatherVars(this.component.vars),
       }
       createComponent(data).then(() => {
+        this.dialogIstioVisible = false
+        this.dialogVisible = false
         this.search()
       })
-      this.dialogIstioVisible = false
     },
     startComponent(row, force) {
       this.component = row

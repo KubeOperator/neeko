@@ -1,14 +1,18 @@
 <template>
   <layout-content>
     <el-button-group>
-      <el-button icon="el-icon-tickets" @click="search('single-task')">Single-Task</el-button>
-      <el-button icon="el-icon-document-copy" @click="search('multi-task')">Multi-Task</el-button>
+      <el-tooltip class="item" effect="dark" :content="$t('task.cluster_task_help')" placement="bottom-start">
+        <el-button icon="el-icon-tickets" @click="search('cluster')">{{ $t('task.cluster_task') }}</el-button>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" :content="$t('task.component_task_help')" placement="bottom-start">
+        <el-button icon="el-icon-document-copy" @click="search('component')">{{ $t('task.component_task') }}</el-button>
+      </el-tooltip>
     </el-button-group>
     <complex-table :key="refresh" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading" :fit="true">
       <el-table-column :label="$t('cluster.detail.tag.task')">
         <template v-slot:default="{row}">
-          <el-link v-if="searchForm.logtype === 'single-task'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ $t(`task.${row.tasklogs.type}`) }}</el-link>
-          <span v-else size="small">{{ row.tasklogs.type }}</span>
+          <el-link v-if="searchForm.logtype === 'cluster'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ $t(`task.${row.tasklogs.type}`) }}</el-link>
+          <el-link v-if="searchForm.logtype !== 'cluster'" style="font-size: 12px" type="info" @click="openXterm(row)">{{ row.tasklogs.type }}</el-link>
         </template>
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')">
@@ -43,6 +47,32 @@
         </template>
       </el-table-column>
     </complex-table>
+
+    <el-dialog :title="$t('commons.button.error_msg')" width="50%" :visible.sync="dialogVisible">
+      <template slot="title">
+        <div v-if="formatMsgs.failed">{{formatMsgs.name}}</div>
+      </template>
+      <div v-if="formatMsgs.type !== 'unFormat'">
+        <el-collapse v-model="activeNames">
+          <el-collapse-item v-if="formatMsgs.info.msg" title="message" name="1">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{ formatMsgs.info.msg }}</span></div>
+          </el-collapse-item>
+          <el-collapse-item v-if="formatMsgs.info.stderr" title="stderr" name="2">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{formatMsgs.info.stderr }}</span></div>
+          </el-collapse-item>
+          <el-collapse-item v-if="formatMsgs.info.stdout" title="stdout" name="3">
+            <div style="margin-top: 10px"><span style="white-space: pre-wrap;">{{formatMsgs.info.stdout }}</span></div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+      <div v-else>
+        <div><span style="font-weight: bold">info</span></div>
+        <div><span style="white-space: pre-wrap;">{{formatMsgs.info | errorFormat }}</span></div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+      </div>
+    </el-dialog>
   </layout-content>
 </template>
 
@@ -50,6 +80,8 @@
 import LayoutContent from "@/components/layout/LayoutContent"
 import { getTasks } from "@/api/cluster/tasks"
 import ComplexTable from "@/components/complex-table"
+import { openLoggerWithID } from "@/api/cluster/tasks"
+import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
 export default {
   name: "ClusterTask",
@@ -63,16 +95,23 @@ export default {
       },
       clusterName: "",
       searchForm: {
-        logtype: "single-task",
+        logtype: "cluster",
       },
       data: [],
       loading: false,
       refresh: false,
+      dialogVisible: false,
+      formatMsgs: {
+        name: "",
+        info: {},
+        failed: false,
+      },
+      activeNames: ["1", "2", "3"],
     }
   },
   methods: {
     search(type) {
-      this.searchForm.logtype = type ? type : "single-task"
+      this.searchForm.logtype = type ? type : "cluster"
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       getTasks(currentPage, pageSize, this.clusterName, this.searchForm.logtype).then((data) => {
@@ -81,6 +120,17 @@ export default {
         this.paginationConfig.total = data.total
         this.refresh = !this.refresh
       })
+    },
+    openXterm(row) {
+      if (row.tasklogs.type.indexOf(" (enable)") !== -1) {
+        openLoggerWithID(row.tasklogs.clusterID, row.tasklogs.id + " (enable)")
+        return
+      }
+      openLoggerWithID(row.tasklogs.clusterID, row.tasklogs.id)
+    },
+    getStatus(row) {
+      this.formatMsgs = ansibleErrFormat(row.tasklogs.message)[0]
+      this.dialogVisible = true
     },
     getDetailInfo(row) {
       this.$router.push({ name: "ClusterTaskDetail", params: { id: row.tasklogs.id } })

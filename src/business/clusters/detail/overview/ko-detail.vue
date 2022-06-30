@@ -48,29 +48,25 @@
               <span>{{loadNodeIPNum(clusterDetailInfo.specConf.kubeNetworkNodePrefix)}}</span>
             </el-form-item>
           </el-col>
+          <el-col :span="10"><br/></el-col>
+          
+        </el-row>
+        <el-row type="flex" justify="center">
           <el-col :span="10">
             <el-form-item :label="$t ('cluster.creation.pod_cidr') + ': '">
               <span>{{clusterDetailInfo.specConf.kubePodSubnet}}</span>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col :span="10">
             <el-form-item :label="$t ('cluster.creation.service_cidr') + ': '">
               <span>{{clusterDetailInfo.specConf.kubeServiceSubnet}}</span>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item :label="$t ('cluster.creation.proxy_mode') + ': '">
-              <span>{{clusterDetailInfo.specConf.kubeProxyMode}}</span>
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-row type="flex" justify="center">
           <el-col :span="10">
-            <el-form-item :label="$t ('cluster.creation.dns_cache') + ': '">
-              <span v-if="clusterDetailInfo.specConf.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</span>
-              <span v-if="clusterDetailInfo.specConf.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</span>
+            <el-form-item :label="$t ('cluster.creation.proxy_mode') + ': '">
+              <span>{{clusterDetailInfo.specConf.kubeProxyMode}}</span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -177,21 +173,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item :label="$t ('cluster.creation.ingress_type') + ': '">
-              <span>{{clusterDetailInfo.specConf.ingressControllerType}}</span>
-            </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row type="flex" justify="center">
-          <el-col :span="10">
-            <el-form-item :label="$t ('cluster.creation.support_gpu') + ': '">
-              <span v-if="clusterDetailInfo.spec.supportGpu === 'enable'">{{$t ('commons.button.enable')}}</span>
-              <span v-if="clusterDetailInfo.spec.supportGpu === 'disable'">{{$t ('commons.button.disable')}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-          </el-col>
-        </el-row> -->
 
         <el-divider v-if="clusterDetailInfo.specConf.lbMode === 'external'" content-position="left">{{$t ('cluster.creation.step6_of_bare_metal')}}</el-divider>
         <el-row v-if="clusterDetailInfo.specConf.lbMode === 'external'" type="flex" justify="center">

@@ -84,6 +84,7 @@
 
 <script>
 import Rule from "@/utils/rules"
+import {isJson} from '@/utils/validate'
 
 export default {
   name: "IstioComponent",
@@ -118,15 +119,22 @@ export default {
   },
   methods: {
     gatherVars(vars) {
+      let itemVars = {}
+      if (isJson(vars)) {
+        itemVars = JSON.parse(vars)
+      } else {
+        itemVars = vars
+      }
       for (const key in this.istioVars) {
         if (key.indexOf("cpu") !== -1) {
-          vars[key] = this.istioVars[key] + "m"
+          itemVars[key] = this.istioVars[key] + "m"
         } else if (key.indexOf("memory") !== -1) {
-          vars[key] = this.istioVars[key] + "Mi"
+          itemVars[key] = this.istioVars[key] + "Mi"
         } else {
-          vars[key] = this.istioVars[key] + ""
+          itemVars[key] = this.istioVars[key] + ""
         }
       }
+      return itemVars
     },
   },
 }
