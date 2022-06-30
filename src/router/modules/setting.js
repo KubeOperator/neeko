@@ -72,17 +72,6 @@ const SystemSetting = {
           }
         },
         {
-          path: "email",
-          name: "EMail",
-          hidden: true,
-          props: true,
-          component: () => import('@/business/system-setting/email'),
-          meta: {
-            activeMenu: "/setting",
-            roles: ['ADMIN']
-          }
-        },
-        {
           path: "kubepi",
           name: "kubepi",
           hidden: true,
