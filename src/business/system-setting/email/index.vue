@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import {check, createSetting, getSetting} from "@/api/system-setting";
+import {check, createSetting, getMsgAccount} from "@/api/system-setting"
 import Rule from "@/utils/rules";
 export default {
   name: "EMail",
@@ -71,6 +71,7 @@ export default {
           SMTP_USERNAME: [Rule.EmailRule, Rule.RequiredRule],
         },
       },
+      type: "EMAIL"
     }
   },
   methods: {
@@ -117,6 +118,15 @@ export default {
         this.loading = false
       })
     })
+    },
+
+    list() {
+      getMsgAccount(this.type).then( data => {
+        if (data.tab !== "") {
+          this.form.tab = data.tab
+          this.form.vars = data.vars
+        }
+      })
     }
   },
   computed: {
@@ -130,12 +140,7 @@ export default {
     }
   },
   created() {
-    getSetting('EMAIL').then( data => {
-      if (data.tab !== "") {
-        this.form.tab = data.tab
-        this.form.vars = data.vars
-      }
-    })
+    this.list()
   }
 }
 </script>

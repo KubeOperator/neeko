@@ -1073,7 +1073,7 @@ const message = {
         testUser: "Test User",
         status: "Status",
         webhookAddress: "Webhook Address",
-        dingTalkConcept: "Basic concepts of DingTalk",
+        dingTalkConcept: "DingTalk Robot Message Sending Settings",
         dingTalkLimit: "DingTalk message frequency limit",
         wechatConcept: "Basic Concepts of Enterprise WeChat",
         wechatLimit: "Enterprise WeChat message frequency limit",

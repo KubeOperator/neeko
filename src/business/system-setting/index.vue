@@ -7,7 +7,7 @@
       <el-menu-item :index="'/setting/kubepi'">Dashboard</el-menu-item>
       <el-menu-item :index="'/setting/ldap'">LDAP</el-menu-item>
       <el-menu-item :index="'/setting/email'">{{$t('setting.email')}}</el-menu-item>
-      <el-menu-item v-if="hasLicense" :index="'/setting/message'">{{$t('setting.message')}}</el-menu-item>
+      <el-menu-item :index="'/setting/message'">{{$t('setting.message')}}</el-menu-item>
       <el-menu-item :index="'/setting/license'">{{$t('setting.license')}}</el-menu-item>
     </el-menu>
     <br/>

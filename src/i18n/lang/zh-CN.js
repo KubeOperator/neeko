@@ -1078,7 +1078,7 @@ const message = {
         testUser: "测试用户",
         status: "状态",
         webhookAddress: "webhook地址",
-        dingTalkConcept: "钉钉基本概念",
+        dingTalkConcept: "钉钉机器人消息发送设置",
         dingTalkLimit: "钉钉消息频率限制",
         wechatConcept: "企业微信基本概念",
         wechatLimit: "企业微信消息频率限制",
