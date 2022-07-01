@@ -134,7 +134,7 @@
                         </el-select>
                       </el-form-item>
 
-                      <div class="registry-collapse">
+                      <div>
                         <el-collapse accordion>
                           <el-collapse-item>
                             <template slot="title">
@@ -143,9 +143,6 @@
                             <div>
                               <el-form-item label="DnsDomain" prop="kubeDnsDomain">
                                 <el-input placeholder="cluster.local" v-model="form.kubeDnsDomain" clearable></el-input>
-                              </el-form-item>
-                              <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
-                                <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                               </el-form-item>
                               <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
                                 <el-switch v-model="form.kubernetesAudit" active-value="yes" inactive-value="no" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
@@ -174,21 +171,26 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="runtimeType">
-                    <el-select style="width: 100%" v-model="form.runtimeType" clearable>
-                      <el-option value="docker">docker</el-option>
-                      <el-option value="containerd">containerd</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
-                    <el-input v-model="form.dockerStorageDir" clearable></el-input>
-                  </el-form-item>
-                  <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="containerdStorageDir">
-                    <el-input v-model="form.containerdStorageDir" clearable></el-input>
-                  </el-form-item>
-                  <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="dockerSubnet">
-                    <el-input v-model="form.dockerSubnet" clearable></el-input>
-                  </el-form-item>
+                  <el-row>
+                    <el-col :span="20">
+                      <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="runtimeType">
+                        <el-select style="width: 100%" v-model="form.runtimeType" clearable>
+                          <el-option value="docker">docker</el-option>
+                          <el-option value="containerd">containerd</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
+                        <el-input v-model="form.dockerStorageDir" clearable></el-input>
+                      </el-form-item>
+                      <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="containerdStorageDir">
+                        <el-input v-model="form.containerdStorageDir" clearable></el-input>
+                      </el-form-item>
+                      <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="dockerSubnet">
+                        <el-input v-model="form.dockerSubnet" clearable></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="4"><br /></el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -197,100 +199,104 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.network_type')" prop="networkType">
-                    <el-select @change="getDefaultFlannelBackend" style="width: 100%" v-model="form.networkType" clearable>
-                      <el-option value="flannel">flannel</el-option>
-                      <el-option value="calico">calico</el-option>
-                      <el-option v-if="form.architectures === 'amd64'" value="cilium">cilium</el-option>
-                    </el-select>
-                    <div v-if="form.networkType==='cilium'"><span class="input-help">{{$t('cluster.creation.cilium_help')}}</span></div>
-                  </el-form-item>
+                  <el-row>
+                    <el-col :span="20">
+                      <el-form-item :label="$t ('cluster.creation.network_type')" prop="networkType">
+                        <el-select @change="getDefaultFlannelBackend" style="width: 100%" v-model="form.networkType" clearable>
+                          <el-option value="flannel">flannel</el-option>
+                          <el-option value="calico">calico</el-option>
+                          <el-option v-if="form.architectures === 'amd64'" value="cilium">cilium</el-option>
+                        </el-select>
+                        <div v-if="form.networkType==='cilium'"><span class="input-help">{{$t('cluster.creation.cilium_help')}}</span></div>
+                      </el-form-item>
 
-                  <div v-if="form.networkType === 'flannel'">
-                    <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
-                      <el-select style="width: 100%" v-model="form.flannelBackend" clearable>
-                        <el-option value="host-gw">host-gw</el-option>
-                        <el-option value="vxlan">vxlan</el-option>
-                      </el-select>
-                      <div v-if="form.flannelBackend === 'host-gw'">
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      <div v-if="form.networkType === 'flannel'">
+                        <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
+                          <el-select style="width: 100%" v-model="form.flannelBackend" clearable>
+                            <el-option value="host-gw">host-gw</el-option>
+                            <el-option value="vxlan">vxlan</el-option>
+                          </el-select>
+                          <div v-if="form.flannelBackend === 'host-gw'">
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                          </div>
+                          <div v-if="form.flannelBackend === 'vxlan'">
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                          </div>
+                        </el-form-item>
+
+                        <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                          <el-switch v-model="multi_network" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                          <div><span class="input-help">{{$t('cluster.creation.network_interface_fannel_help')}}</span></div>
+                        </el-form-item>
+
+                        <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
+                          <el-input v-model="form.networkInterface" clearable></el-input>
+                        </el-form-item>
                       </div>
-                      <div v-if="form.flannelBackend === 'vxlan'">
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+
+                      <div v-if="form.networkType === 'calico'">
+                        <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
+                          <el-select style="width: 100%" v-model="form.calicoIpv4PoolIpip" clearable>
+                            <el-option value="off" label="bgp">bgp</el-option>
+                            <el-option value="Always" label="ipip">ipip</el-option>
+                          </el-select>
+                          <div v-if="form.calicoIpv4PoolIpip === 'off'">
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                          </div>
+                          <div v-if="form.calicoIpv4PoolIpip === 'Always'">
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
+                            <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
+                          </div>
+                        </el-form-item>
+                        <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
+                          <el-select style="width: 100%" v-model="multi_network" clearable>
+                            <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
+                            <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
+                            <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
+                          </el-select>
+                          <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
+                        </el-form-item>
+
+                        <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
+                          <el-input v-model="form.networkInterface" clearable></el-input>
+                        </el-form-item>
+                        <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="networkCidr">
+                          <el-input v-model="form.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>
+                          <div><span class="input-help">{{$t('cluster.creation.network_cidr_help')}}</span></div>
+                        </el-form-item>
                       </div>
-                    </el-form-item>
 
-                    <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
-                      <el-switch v-model="multi_network" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                      <div><span class="input-help">{{$t('cluster.creation.network_interface_fannel_help')}}</span></div>
-                    </el-form-item>
-
-                    <el-form-item v-if="multi_network === 'enable'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
-                      <el-input v-model="form.networkInterface" clearable></el-input>
-                    </el-form-item>
-                  </div>
-
-                  <div v-if="form.networkType === 'calico'">
-                    <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="calicoIpv4PoolIpip">
-                      <el-select style="width: 100%" v-model="form.calicoIpv4PoolIpip" clearable>
-                        <el-option value="off" label="bgp">bgp</el-option>
-                        <el-option value="Always" label="ipip">ipip</el-option>
-                      </el-select>
-                      <div v-if="form.calicoIpv4PoolIpip === 'off'">
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_base')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_advantage')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_route_inferiority')}}</span></div>
+                      <div v-if="form.networkType === 'cilium'">
+                        <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
+                          <el-select @change="getDefaultTunnelMode()" style="width: 100%" v-model="form.flannelBackend" clearable>
+                            <el-option value="Overlay">Overlay</el-option>
+                            <el-option value="Native Routing">Native Routing</el-option>
+                          </el-select>
+                          <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help')}}</span></div>
+                          <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help_more')}}</span></div>
+                          <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help')}}</span></div>
+                          <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help_more')}}</span></div>
+                        </el-form-item>
+                        <el-form-item v-if="form.flannelBackend === 'Overlay'" :label="$t('cluster.creation.tunnel_name')" prop="ciliumTunnelMode">
+                          <el-select style="width: 100%" v-model="form.ciliumTunnelMode" clearable>
+                            <el-option value="vxlan" label="vxlan">vxlan</el-option>
+                            <el-option value="geneve" label="geneve">geneve</el-option>
+                          </el-select>
+                        </el-form-item>
+                        <el-form-item v-if="form.flannelBackend === 'Native Routing'" :label="$t('cluster.creation.native_routing')" prop="ciliumNativeRoutingCidr">
+                          <el-input v-model="form.ciliumNativeRoutingCidr" clearable></el-input>
+                        </el-form-item>
                       </div>
-                      <div v-if="form.calicoIpv4PoolIpip === 'Always'">
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_base')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_advantage')}}</span></div>
-                        <div><span class="input-help">{{$t('cluster.creation.flannel_backend_help_channel_inferiority')}}</span></div>
-                      </div>
-                    </el-form-item>
-                    <el-form-item :label="$t('cluster.creation.multi_network')" prop="multi_network">
-                      <el-select style="width: 100%" v-model="multi_network" clearable>
-                        <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
-                        <el-option value="name" :label="$t('cluster.creation.network_name')">{{$t('cluster.creation.network_name')}}</el-option>
-                        <el-option value="cidr" :label="$t('cluster.creation.network_cidr')">{{$t('cluster.creation.network_cidr')}}</el-option>
-                      </el-select>
-                      <div><span class="input-help">{{$t('cluster.creation.network_interface_help')}}</span></div>
-                    </el-form-item>
-
-                    <el-form-item v-if="multi_network === 'name'" :label="$t ('cluster.creation.network_interface')" prop="networkInterface">
-                      <el-input v-model="form.networkInterface" clearable></el-input>
-                    </el-form-item>
-                    <el-form-item v-if="multi_network === 'cidr'" :label="$t ('cluster.creation.network_cidr')" prop="networkCidr">
-                      <el-input v-model="form.networkCidr" clearable placeholder="10.0.1.0/24,10.0.2.0/24"></el-input>
-                      <div><span class="input-help">{{$t('cluster.creation.network_cidr_help')}}</span></div>
-                    </el-form-item>
-                  </div>
-
-                  <div v-if="form.networkType === 'cilium'">
-                    <el-form-item :label="$t('cluster.creation.flannel_backend')" prop="flannelBackend">
-                      <el-select @change="getDefaultTunnelMode()" style="width: 100%" v-model="form.flannelBackend" clearable>
-                        <el-option value="Overlay">Overlay</el-option>
-                        <el-option value="Native Routing">Native Routing</el-option>
-                      </el-select>
-                      <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help')}}</span></div>
-                      <div v-if="form.flannelBackend==='Overlay'"><span class="input-help">{{$t('cluster.creation.cilium_overlay_help_more')}}</span></div>
-                      <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help')}}</span></div>
-                      <div v-if="form.flannelBackend==='Native Routing'"><span class="input-help">{{$t('cluster.creation.cilium_native_help_more')}}</span></div>
-                    </el-form-item>
-                    <el-form-item v-if="form.flannelBackend === 'Overlay'" :label="$t('cluster.creation.tunnel_name')" prop="ciliumTunnelMode">
-                      <el-select style="width: 100%" v-model="form.ciliumTunnelMode" clearable>
-                        <el-option value="vxlan" label="vxlan">vxlan</el-option>
-                        <el-option value="geneve" label="geneve">geneve</el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item v-if="form.flannelBackend === 'Native Routing'" :label="$t('cluster.creation.native_routing')" prop="ciliumNativeRoutingCidr">
-                      <el-input v-model="form.ciliumNativeRoutingCidr" clearable></el-input>
-                    </el-form-item>
-
-                  </div>
+                    </el-col>
+                    <el-col :span="4"><br /></el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -299,21 +305,58 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item label="helm:" prop="helmVersion">
-                    <el-select style="width: 100%" v-model="form.helmVersion" clearable>
-                      <el-option value="v3">v3</el-option>
-                      <el-option value="v2">v2</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
-                    <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
-                      <el-option value="nginx">nginx</el-option>
-                      <el-option v-if="versionHigher206() || form.enableDnsCache === 'disable'" value="traefik">traefik</el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
-                    <el-switch v-model="form.supportGpu" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                  </el-form-item>
+                  <el-row>
+                    <el-col :span="20">
+                      <el-form-item label="helm:" prop="helmVersion">
+                        <el-select style="width: 100%" v-model="form.helmVersion" clearable>
+                          <el-option value="v3">v3</el-option>
+                          <el-option value="v2">v2</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="ingressControllerType">
+                        <el-select style="width: 100%" v-model="form.ingressControllerType" clearable>
+                          <el-option value="nginx">nginx</el-option>
+                          <el-option v-if="versionHigher206() || form.enableDnsCache === 'disable'" value="traefik">traefik</el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item :label="$t('cluster.creation.dns_cache')" prop="enableDnsCache">
+                        <el-switch v-model="form.enableDnsCache" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                      <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="supportGpu">
+                        <el-switch v-model="form.supportGpu" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                      <div>
+                        <el-collapse accordion>
+                          <el-collapse-item>
+                            <template slot="title">
+                              ETCD {{$t('multi_cluster.senior_setting')}}
+                            </template>
+                            <div>
+                              <el-form-item :label="$t('cluster.creation.etcd_data_dir')" prop="etcdDataDir">
+                                <el-input v-model="form.etcdDataDir" clearable></el-input>
+                              </el-form-item>
+                              <el-form-item :label="$t('cluster.creation.etcd_snapshot_count')" prop="etcdSnapshotCount">
+                                <el-input-number :min="0" v-model.number="form.etcdSnapshotCount"></el-input-number>
+                                <span class="input-help">{{$t('cluster.creation.etcd_snapshot_count_help')}}</span>
+                              </el-form-item>
+                              <el-form-item :label="$t('cluster.creation.etcd_compaction_retention')" prop="etcdCompactionRetention">
+                                <el-input-number :min="0" v-model.number="form.etcdCompactionRetention"></el-input-number>
+                                <span class="input-help">{{$t('cluster.creation.etcd_compaction_retention_help')}}</span>
+                              </el-form-item>
+                              <el-form-item :label="$t('cluster.creation.etcd_max_request')" prop="etcdMaxRequest">
+                                <el-input-number :min="0" v-model.number="form.etcdMaxRequest"></el-input-number>
+                                <span class="input-help">{{$t('cluster.creation.etcd_max_request_help')}}</span>
+                              </el-form-item>
+                              <el-form-item :label="$t('cluster.creation.etcd_quota_backend')" prop="etcdQuotaBackend">
+                                <el-input-number :min="0" v-model.number="form.etcdQuotaBackend"></el-input-number>
+                              </el-form-item>
+                            </div>
+                          </el-collapse-item>
+                        </el-collapse>
+                      </div>
+                    </el-col>
+                    <el-col :span="4"><br /></el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -322,78 +365,83 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType">
-                    <el-switch v-model="form.masterScheduleType" :disabled="scheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
-                  </el-form-item>
-                  <div v-if="form.provider === 'bareMetal'">
-                    <el-form-item>
-                      <span>{{$t ('cluster.creation.node_help')}}</span>
-                    </el-form-item>
-                    <el-form-item label="Masters" prop="masters">
-                      <el-select multiple filterable style="width: 100%" @change="toggle('master')" v-model="form.masters" clearable>
-                        <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
-                      </el-select>
-                      <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
-                    </el-form-item>
-                    <el-form-item label="Workers" prop="workers">
-                      <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
-                        <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
-                      </el-select>
-                      <div v-if="isNodeNumExceed()">
-                        <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
+                  <el-row>
+                    <el-col :span="20">
+                      <el-form-item :label="$t ('cluster.creation.master_schedule_type')" prop="masterScheduleType">
+                        <el-switch v-model="form.masterScheduleType" :disabled="scheduleType" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                      <div v-if="form.provider === 'bareMetal'">
+                        <el-form-item>
+                          <span>{{$t ('cluster.creation.node_help')}}</span>
+                        </el-form-item>
+                        <el-form-item label="Masters" prop="masters">
+                          <el-select multiple filterable style="width: 100%" @change="toggle('master')" v-model="form.masters" clearable>
+                            <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <div><span class="input-help">{{$t('cluster.creation.master_select_help')}}</span></div>
+                        </el-form-item>
+                        <el-form-item label="Workers" prop="workers">
+                          <el-select multiple filterable style="width: 100%" @change="toggle('worker')" v-model="form.workers" clearable>
+                            <el-option v-for="item of hosts" :key="item.label" :label="item.label" :value="item.value"></el-option>
+                          </el-select>
+                          <div v-if="isNodeNumExceed()">
+                            <span class="input-error">{{$t('cluster.creation.node_number_help', [form.maxNodeNum])}}</span>
+                          </div>
+                        </el-form-item>
+                        <div v-if="isMultiMaster()">
+                          <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                            <el-radio-group v-model="form.lbMode">
+                              <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                              <el-radio label="external">VIP</el-radio>
+                            </el-radio-group>
+                            <div v-if="form.lbMode === 'internal'">
+                              <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                            </div>
+                            <div v-if="form.lbMode === 'external'">
+                              <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                            </div>
+                          </el-form-item>
+                          <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                            <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                          </el-form-item>
+                          <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                            <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiServerPort" clearable></el-input-number>
+                          </el-form-item>
+                        </div>
                       </div>
-                    </el-form-item>
-                    <div v-if="isMultiMaster()">
-                      <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
-                        <el-radio-group v-model="form.lbMode">
-                          <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
-                          <el-radio label="external">VIP</el-radio>
-                        </el-radio-group>
-                        <div v-if="form.lbMode === 'internal'">
-                          <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                      <div v-if="form.provider === 'plan'">
+                        <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="plan">
+                          <el-select filterable style="width: 100%" v-model="form.plan" clearable>
+                            <el-option v-for="item of plans" :key="item.name" :value="item.name">{{item.name}}</el-option>
+                          </el-select>
+                        </el-form-item>
+                        <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
+                          <el-input-number :min="0" :max="form.maxNodeNum" @change="changeWorkNum" v-model.number="form.workerAmount" clearable></el-input-number>
+                        </el-form-item>
+                        <div v-if="isMultiMaster()">
+                          <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
+                            <el-radio-group v-model="form.lbMode">
+                              <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
+                              <el-radio label="external">VIP</el-radio>
+                            </el-radio-group>
+                            <div v-if="form.lbMode === 'internal'">
+                              <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
+                            </div>
+                            <div v-if="form.lbMode === 'external'">
+                              <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
+                            </div>
+                          </el-form-item>
+                          <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
+                            <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
+                          </el-form-item>
+                          <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                            <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
+                          </el-form-item>
                         </div>
-                        <div v-if="form.lbMode === 'external'">
-                          <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
-                        </div>
-                      </el-form-item>
-                      <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
-                        <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
-                      </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                        <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiServerPort" clearable></el-input-number>
-                      </el-form-item>
-                    </div>
-                  </div>
-                  <div v-if="form.provider === 'plan'">
-                    <el-form-item :label="$t ('cluster.creation.step6_of_plan')" prop="plan">
-                      <el-select filterable style="width: 100%" v-model="form.plan" clearable>
-                        <el-option v-for="item of plans" :key="item.name" :value="item.name">{{item.name}}</el-option>
-                      </el-select>
-                    </el-form-item>
-                    <el-form-item :label="$t ('cluster.creation.worker_num')" prop="workerAmount">
-                      <el-input-number :min="0" :max="form.maxNodeNum" @change="changeWorkNum" v-model.number="form.workerAmount" clearable></el-input-number>
-                    </el-form-item>
-                    <div v-if="isMultiMaster()">
-                      <el-form-item :label="$t ('cluster.creation.cluster_high_availability')" prop="lbMode">
-                        <el-radio-group v-model="form.lbMode">
-                          <el-radio label="internal">{{$t('cluster.creation.default')}}</el-radio>
-                          <el-radio label="external">VIP</el-radio>
-                        </el-radio-group>
-                        <div v-if="form.lbMode === 'internal'">
-                          <span class="input-help">{{$t('cluster.creation.default_help')}}</span>
-                        </div>
-                        <div v-if="form.lbMode === 'external'">
-                          <span class="input-help">{{$t('cluster.creation.vip_help')}}</span>
-                        </div>
-                      </el-form-item>
-                      <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
-                        <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
-                      </el-form-item>
-                      <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                        <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
-                      </el-form-item>
-                    </div>
-                  </div>
+                      </div>
+                    </el-col>
+                    <el-col :span="4"><br /></el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -494,12 +542,22 @@
                       <ul>helm</ul>
                       <ul>{{$t ('cluster.creation.ingress_type')}}</ul>
                       <ul>{{$t ('cluster.creation.support_gpu')}}</ul>
+                      <ul>ETCD {{$t ('cluster.creation.etcd_data_dir')}}</ul>
+                      <ul>ETCD {{$t ('cluster.creation.etcd_snapshot_count')}}</ul>
+                      <ul>ETCD {{$t ('cluster.creation.etcd_compaction_retention')}}</ul>
+                      <ul>ETCD {{$t ('cluster.creation.etcd_max_request')}}</ul>
+                      <ul>ETCD {{$t ('cluster.creation.etcd_quota_backend')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.helmVersion}}</ul>
                       <ul>{{form.ingressControllerType}}</ul>
                       <ul v-if="form.supportGpu === 'enable'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.supportGpu === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul>{{form.etcdDataDir}}</ul>
+                      <ul>{{form.etcdSnapshotCount}}</ul>
+                      <ul>{{form.etcdCompactionRetention}} {{$t ('cluster.detail.monitor.hour')}}</ul>
+                      <ul>{{form.etcdMaxRequest}} MiB</ul>
+                      <ul>{{form.etcdQuotaBackend}} GB</ul>
                     </el-col>
                   </el-row>
 
@@ -581,8 +639,6 @@ export default {
         kubeServiceNodePortRange: "",
         kubeServiceNodePortRange1: 30000,
         kubeServiceNodePortRange2: 32767,
-        enableDnsCache: "disable",
-        dnsCacheVersion: "1.17.0",
         kubeDnsDomain: "cluster.local",
         kubernetesAudit: "no",
         kubePodSubnet: "10.10.0.0/16",
@@ -603,8 +659,15 @@ export default {
         ciliumTunnelMode: "",
 
         helmVersion: "v3",
-        supportGpu: "disable",
         ingressControllerType: "nginx",
+        enableDnsCache: "disable",
+        dnsCacheVersion: "1.17.0",
+        supportGpu: "disable",
+        etcdDataDir: "/var/lib/etcd",
+        etcdSnapshotCount: 50000,
+        etcdCompactionRetention: 1,
+        etcdMaxRequest: 10,
+        etcdQuotaBackend: 8,
 
         masterScheduleType: "enable",
         masters: [],
@@ -646,6 +709,11 @@ export default {
         lbMode: [Rule.RequiredRule],
         lbKubeApiserverIp: [Rule.IpRule],
         kubeApiServerPort: [Rule.NumberRule],
+        etcdDataDir: [Rule.RequiredRule],
+        etcdSnapshotCount: [Rule.NumberRule],
+        etcdCompactionRetention: [Rule.NumberRule],
+        etcdMaxRequest: [Rule.NumberRule],
+        etcdQuotaBackend: [Rule.NumberRule],
       },
       versions: ["1.18.16", "1.20.10"],
       nameValid: true,
@@ -989,7 +1057,7 @@ export default {
         case "amd64":
           for (const h of this.allHosts) {
             if (h.architecture === "x86_64") {
-              this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
+              this.hosts.push({ label: h.name + "(" + h.ip + ")", value: h.name })
             }
           }
           for (const repo of this.repoList) {
@@ -1003,7 +1071,7 @@ export default {
         case "arm64":
           for (const h of this.allHosts) {
             if (h.architecture === "aarch64") {
-              this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
+              this.hosts.push({ label: h.name + "(" + h.ip + ")", value: h.name })
             }
           }
           for (const repo of this.repoList) {
@@ -1016,7 +1084,7 @@ export default {
           break
         case "all":
           for (const h of this.allHosts) {
-            this.hosts.push({label: h.name+"("+ h.ip + ")", value: h.name})
+            this.hosts.push({ label: h.name + "(" + h.ip + ")", value: h.name })
           }
           for (const repo of this.repoList) {
             if (repo.architecture === "x86_64") {

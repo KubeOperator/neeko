@@ -31,7 +31,7 @@
               <el-collapse accordion>
                 <el-collapse-item>
                   <template slot="title">
-                    {{$t('multi_cluster.senior_setting')}}
+                    {{$t('multi_cluster.port_setting')}}
                   </template>
                   <div>
                     <el-form-item label="RepoPort" prop="repoPort">

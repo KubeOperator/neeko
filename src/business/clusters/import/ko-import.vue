@@ -66,9 +66,6 @@
                         <div v-if="form.clusterInfo.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.yum_repo')" prop="clusterInfo.yumOperate">
                         <el-select style="width: 100%" v-model="form.clusterInfo.yumOperate" clearable>
@@ -78,6 +75,9 @@
                         </el-select>
                       </el-form-item>
                     </el-col>
+                  </el-row>
+
+                  <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="clusterInfo.kubeProxyMode">
                         <fu-select-rw-switch v-model="form.clusterInfo.kubeProxyMode">
@@ -90,20 +90,10 @@
                         </fu-select-rw-switch>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.node_ip_num')" prop="clusterInfo.maxNodePodNum">
                         <fu-read-write-switch :data="form.clusterInfo.maxNodePodNum" v-model="editAble.maxNodePodNum">
                           <el-input v-model="form.clusterInfo.maxNodePodNum" @blur="editAble.maxNodePodNum = false" />
-                        </fu-read-write-switch>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item label="DnsDomain" prop="clusterInfo.kubeDnsDomain">
-                        <fu-read-write-switch :data="form.clusterInfo.kubeDnsDomain" v-model="editAble.kubeDnsDomain">
-                          <el-input v-model="form.clusterInfo.kubeDnsDomain" @blur="editAble.kubeDnsDomain = false" />
                         </fu-read-write-switch>
                       </el-form-item>
                     </el-col>
@@ -126,15 +116,10 @@
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :span="12">
-                      <el-form-item :label="$t('cluster.creation.dns_cache')" prop="clusterInfo.enableDnsCache">
-                        <fu-select-rw-switch v-model="form.clusterInfo.enableDnsCache">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.enableDnsCache === 'enable'">{{$t('cluster.creation.enable')}}</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.enableDnsCache === 'disable'">{{$t('cluster.creation.disable')}}</el-tag>
-                          </template>
-                          <el-option key="enable" :label="$t('cluster.creation.enable')" value="enable" />
-                          <el-option key="disable" :label="$t('cluster.creation.disable')" value="disable" />
-                        </fu-select-rw-switch>
+                      <el-form-item label="DnsDomain" prop="clusterInfo.kubeDnsDomain">
+                        <fu-read-write-switch :data="form.clusterInfo.kubeDnsDomain" v-model="editAble.kubeDnsDomain">
+                          <el-input v-model="form.clusterInfo.kubeDnsDomain" @blur="editAble.kubeDnsDomain = false" />
+                        </fu-read-write-switch>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -171,77 +156,44 @@
             </div>
           </fu-step>
 
-          <fu-step id="provisioner" :title="$t('cluster.detail.storage.provisioner')">
+          <fu-step id="runtime-setting" :title="$t ('cluster.detail.tag.component')">
             <div class="example">
-            <el-alert :title="$t('cluster.import.provisioner_help')" type="info" />
-              <el-row>
-                <el-col :span="12">
-                  <el-card>
-                    <div style="font-size: 20px;">
-                      <span>external-cephfs</span>
-                      <div v-if="form.clusterInfo.cephFsStatus === 'Running'" style="float:right;color: #67C23A">
-                        <span>{{$t('commons.status.running')}}</span>
-                        <i class="el-icon-circle-check"></i>
-                      </div>
-                      <div v-if="form.clusterInfo.cephFsStatus === 'NotReady'" style="float:right;color: #909399">
-                        <span>{{$t('commons.status.not_ready')}}</span>
-                        <i class="el-icon-warning-outline"></i>
-                      </div>
-                      <div v-if="form.clusterInfo.cephFsStatus === 'disable'" style="float:right;color: #909399">
-                        <span>{{$t('commons.status.disable')}}</span>
-                        <i class="el-icon-warning-outline"></i>
-                      </div>
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :span="12">
-                  <el-card>
-                    <div style="font-size: 20px;">
-                      <span>external-ceph-block</span>
-                      <div v-if="form.clusterInfo.cephBlockStatus === 'Running'" style="float:right;color: #67C23A">
-                        <span>{{$t('commons.status.running')}}</span>
-                        <i class="el-icon-circle-check"></i>
-                      </div>
-                      <div v-if="form.clusterInfo.cephBlockStatus === 'NotReady'" style="float:right;color: #909399">
-                        <span>{{$t('commons.status.not_ready')}}</span>
-                        <i class="el-icon-warning-outline"></i>
-                      </div>
-                      <div v-if="form.clusterInfo.cephBlockStatus === 'disable'" style="float:right;color: #909399">
-                        <span>{{$t('commons.status.disable')}}</span>
-                        <i class="el-icon-warning-outline"></i>
-                      </div>
-                    </div>
-                  </el-card>
-                </el-col>
-              </el-row>
-              <el-scrollbar style="height:100%;overflow-x: hidden">
+              <el-scrollbar style="height:100%">
                 <el-card>
-                  <div style="font-size: 20px;margin-bottom: 10px">
-                    <span>nfs</span>
-                  </div>
-                  <complex-table :data="form.clusterInfo.nfsProvisioners" style="width: 100%">
-                    <el-table-column prop="name" :label="$t('commons.table.name')" />
-                    <el-table-column :label="$t('commons.table.status')" prop="status" fix />
-                    <el-table-column :label="$t('commons.table.status')" fix>
-                      <template v-slot:default="{row}">
-                        {{row.vars.storage_nfs_server}}
-                      </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('commons.table.status')" fix>
-                      <template v-slot:default="{row}">
-                        {{row.vars.storage_nfs_server_path}}
-                      </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('commons.personal.version')" min-width="45">
-                      <template v-slot:default="{row}">
-                        <span v-if="row.type !== 'nfs'">-</span>
-                        <el-select v-else v-model="row.vars.storage_nfs_server_version">
-                          <el-option value="v3" label="v3" />
-                          <el-option value="v4" label="v4" />
-                        </el-select>
-                      </template>
-                    </el-table-column>
-                  </complex-table>
+                  <div style="font-weight: 500; margin-bottom: 5px"><span>ETCD</span></div>
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.etcd_data_dir')" prop="clusterInfo.etcdDataDir">
+                        <el-input placeholder="/var/lib/etcd" v-model="form.clusterInfo.etcdDataDir" clearable></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12"><br /></el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.etcd_snapshot_count')" prop="clusterInfo.etcdSnapshotCount">
+                        <el-input-number placeholder="50000" :min="0" v-model.number="form.clusterInfo.etcdSnapshotCount"></el-input-number>
+                        <span class="input-help">{{$t('cluster.creation.etcd_snapshot_count_help')}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.etcd_compaction_retention')" prop="clusterInfo.etcdCompactionRetention">
+                        <el-input-number placeholder="1" :min="0" v-model.number="form.clusterInfo.etcdCompactionRetention"></el-input-number>
+                        <span class="input-help">{{$t('cluster.creation.etcd_compaction_retention_help')}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.etcd_max_request')" prop="clusterInfo.etcdMaxRequest">
+                        <el-input-number placeholder="10" :min="0" v-model.number="form.clusterInfo.etcdMaxRequest"></el-input-number>
+                        <span class="input-help">{{$t('cluster.creation.etcd_max_request_help')}}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.etcd_quota_backend')" prop="clusterInfo.etcdQuotaBackend">
+                        <el-input-number placeholder="8" :min="0" v-model.number="form.clusterInfo.etcdQuotaBackend"></el-input-number>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
                 </el-card>
               </el-scrollbar>
             </div>
@@ -375,34 +327,6 @@
                       </el-col>
                     </el-row>
                   </div>
-                  <div class="blockBorder">
-                    <el-row :gutter="20">
-                      <el-col :span="12">
-                        <el-form-item :label="$t ('cluster.creation.ingress_type')" prop="clusterInfo.ingressControllerType">
-                          <fu-select-rw-switch v-model="form.clusterInfo.ingressControllerType">
-                            <template #read>
-                              <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'nginx'">nginx</el-tag>
-                              <el-tag disable-transitions v-if="form.clusterInfo.ingressControllerType === 'traefik'">traefik</el-tag>
-                            </template>
-                            <el-option key="nginx" label="nginx" value="nginx" />
-                            <el-option key="traefik" v-if="form.clusterInfo.enableDnsCache === 'disable'" label="traefik" value="traefik" />
-                          </fu-select-rw-switch>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item :label="$t ('cluster.creation.support_gpu')" prop="clusterInfo.supportGpu">
-                          <fu-select-rw-switch v-model="form.clusterInfo.supportGpu">
-                            <template #read>
-                              <el-tag disable-transitions v-if="form.clusterInfo.supportGpu === 'enable'">{{$t('cluster.creation.enable')}}</el-tag>
-                              <el-tag disable-transitions v-if="form.clusterInfo.supportGpu === 'disable'">{{$t('cluster.creation.disable')}}</el-tag>
-                            </template>
-                            <el-option value="enable" :label="$t('cluster.creation.enable')">{{$t('cluster.creation.enable')}}</el-option>
-                            <el-option value="disable" :label="$t('cluster.creation.disable')">{{$t('cluster.creation.disable')}}</el-option>
-                          </fu-select-rw-switch>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                  </div>
                   <div v-if="duoMaster" class="blockBorder">
                     <el-row :gutter="20">
                       <el-col :span="12">
@@ -439,7 +363,6 @@
               </el-scrollbar>
             </div>
           </fu-step>
-
         </fu-steps>
       </el-form>
     </el-dialog>
@@ -489,8 +412,6 @@ export default {
           kubeProxyMode: "",
           nodeportAddress: "",
           kubeServiceNodePortRange: "",
-          enableDnsCache: "",
-          dnsCacheVersion: "1.17.0",
           kubeDnsDomain: "",
           kubernetesAudit: "",
           kubePodSubnet: "",
@@ -511,16 +432,14 @@ export default {
           ciliumNativeRoutingCidr: "",
           ciliumTunnelMode: "",
 
-          ingressControllerType: "",
           helmVersion: "v3",
-          supportGpu: "disable",
+          etcdDataDir: "",
+          etcdSnapshotCount: "",
+          etcdCompactionRetention: "",
+          etcdMaxRequest: "",
+          etcdQuotaBackend: "",
 
           nodes: [],
-
-          cephFsStatus: "disable",
-          cephBlockStatus: "disable",
-          nfsProvisioners: [],
-          provisioners: [],
         },
       },
 
@@ -541,7 +460,12 @@ export default {
           flannelBackend: [Rule.SelectRequiredRule],
           calicoIpv4PoolIpip: [Rule.RequiredRule],
           ciliumTunnelMode: [Rule.RequiredRule],
-          ingressControllerType: [Rule.RequiredRule],
+
+          etcdDataDir: [Rule.RequiredRule],
+          etcdSnapshotCount: [Rule.NumberRule],
+          etcdCompactionRetention: [Rule.NumberRule],
+          etcdMaxRequest: [Rule.NumberRule],
+          etcdQuotaBackend: [Rule.NumberRule],
         },
       },
       editAble: {
@@ -550,8 +474,6 @@ export default {
         kubeProxyMode: false,
         nodeportAddress: false,
         kubeServiceNodePortRange: false,
-        enableDnsCache: false,
-        dnsCacheVersion: false,
         kubeDnsDomain: false,
         kubernetesAudit: false,
         kubePodSubnet: false,
@@ -593,14 +515,6 @@ export default {
           }
         }
       }
-      if (step.index === 2) {
-        for (const pro of this.form.clusterInfo.nfsProvisioners) {
-          if (!pro.vars.storage_nfs_server_version || pro.vars.storage_nfs_server_version === "") {
-            this.$message({ type: "info", message: this.$t("cluster.import.nfs_version_rule") })
-            return false
-          }
-        }
-      }
       let bool
       this.$refs["form"].validate((valid) => {
         if (valid) {
@@ -618,14 +532,12 @@ export default {
           for (const node of this.form.clusterInfo.nodes) {
             node.port = Number(node.port)
           }
-          this.loadProvisioner()
           this.form.clusterInfo.kubeApiServerPort = Number(this.form.clusterInfo.kubeApiServerPort)
           this.form.clusterInfo.kubeMaxPods = Number(this.form.clusterInfo.kubeMaxPods)
           this.form.clusterInfo.maxNodeNum = Number(this.form.clusterInfo.maxNodeNum)
           this.form.clusterInfo.maxNodePodNum = Number(this.form.clusterInfo.maxNodePodNum)
           this.form.clusterInfo.helmVersion = "v3"
           this.form.clusterInfo.ciliumVersion = "v1.9.5"
-          this.form.clusterInfo.dnsCacheVersion = "1.17.0"
           importCluster(this.form)
             .then(() => {
               this.loading = false
@@ -638,34 +550,6 @@ export default {
           return false
         }
       })
-    },
-
-    loadProvisioner() {
-      this.form.clusterInfo.provisioners = []
-      if (this.form.clusterInfo.cephFsStatus !== "disable") {
-        this.form.clusterInfo.provisioners.push({
-          name: "external-cephfs",
-          type: "external-cephfs",
-          status: this.form.clusterInfo.cephFsStatus,
-          vars: {},
-        })
-      }
-      if (this.form.clusterInfo.cephBlockStatus !== "disable") {
-        this.form.clusterInfo.provisioners.push({
-          name: "external-ceph-block",
-          type: "external-ceph-block",
-          status: this.form.clusterInfo.cephBlockStatus,
-          vars: {},
-        })
-      }
-      for (const nfs of this.form.clusterInfo.nfsProvisioners) {
-        this.form.clusterInfo.provisioners.push({
-          name: nfs.name,
-          type: "nfs",
-          status: nfs.status,
-          vars: nfs.vars,
-        })
-      }
     },
 
     getCredentials() {
@@ -692,8 +576,6 @@ export default {
       getClusterInfo(data)
         .then((res) => {
           this.form.clusterInfo = res
-          this.form.clusterInfo.nfsProvisioners = res.nfsProvisioners ? res.nfsProvisioners : []
-          this.form.clusterInfo.provisioners = []
           let i = 0
           for (const node of this.form.clusterInfo.nodes) {
             if (node.role === "master") {

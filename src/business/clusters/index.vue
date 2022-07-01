@@ -19,9 +19,6 @@
                      @click="onHealthCheck()">
             {{ $t("commons.button.check") }}
           </el-button>
-          <el-button size="small" :disabled="clusterSelection.length < 1 || isDeleteButtonDisable" @click="onDelete()">
-            {{ $t("commons.button.delete") }}
-          </el-button>
         </el-button-group>
       </template>
 

@@ -48,8 +48,8 @@
               <span>{{loadNodeIPNum(clusterDetailInfo.specConf.kubeNetworkNodePrefix)}}</span>
             </el-form-item>
           </el-col>
-          <el-col :span="10"><br/></el-col>
-          
+          <el-col :span="10"><br /></el-col>
+
         </el-row>
         <el-row type="flex" justify="center">
           <el-col :span="10">
@@ -168,11 +168,34 @@
         <el-divider content-position="left">{{$t ('cluster.creation.step5')}}</el-divider>
         <el-row type="flex" justify="center">
           <el-col :span="10">
-            <el-form-item label="helm:">
-              <span>{{clusterDetailInfo.specRuntime.helmVersion}}</span>
+            <el-form-item :label="'ETCD' + $t('cluster.creation.etcd_data_dir')">
+              <span>{{ clusterDetailInfo.specConf.etcdDataDir }}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10"><br /></el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-col :span="10">
+            <el-form-item :label="'ETCD' + $t('cluster.creation.etcd_snapshot_count')">
+              <span>{{ clusterDetailInfo.specConf.etcdSnapshotCount }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
+            <el-form-item :label="'ETCD' + $t('cluster.creation.etcd_compaction_retention')">
+              <span>{{ clusterDetailInfo.specConf.etcdCompactionRetention }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-col :span="10">
+            <el-form-item :label="'ETCD' + $t('cluster.creation.etcd_max_request')">
+              <span>{{ clusterDetailInfo.specConf.etcdMaxRequest }}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item :label="'ETCD' + $t('cluster.creation.etcd_quota_backend')">
+              <span>{{ clusterDetailInfo.specConf.etcdQuotaBackend }}</span>
+            </el-form-item>
           </el-col>
         </el-row>
 
