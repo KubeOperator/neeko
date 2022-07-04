@@ -7,6 +7,7 @@
       <template #toolbar>
         <el-button-group>
           <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
+          <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
           <el-button size="small" :disabled="selects.length===0" @click="del()">{{ $t("commons.button.delete") }}
           </el-button>
         </el-button-group>
@@ -72,8 +73,6 @@ export default {
         {
           label: this.$t("commons.button.edit"), icon: "el-icon-edit", click: (row) => {
             this.$router.push({ name: "UserEdit", params: { name: row.name } })
-          }, disabled: (row) => {
-            return  row.type === "LDAP"
           }
         },
         {
@@ -130,6 +129,9 @@ export default {
   methods: {
     create () {
       this.$router.push({ name: "UserCreate" })
+    },
+    onGrant() {
+      this.$router.push({ name: "ProjectAuthorizationList" })
     },
     search (condition) {
       this.loading = true

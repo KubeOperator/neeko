@@ -2,15 +2,26 @@
   <layout-content :header="$t('host.host')">
     <complex-table :data="data" ref="hostData" :row-key="getRowKeys" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
-        <el-button-group v-permission="['ADMIN']">
-          <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
-          <el-button size="small" @click="onImport()">{{ $t("commons.button.batch_import") }}</el-button>
-          <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
-          <el-button :disabled="isDeleteButtonDisable" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
-          <el-button :disabled="isDeleteButtonDisable" size="small" @click="onDelete()">
-            {{ $t("commons.button.delete") }}
-          </el-button>
-        </el-button-group>
+        <div>
+          <el-button-group v-permission="['ADMIN']">
+            <el-button size="small" @click="create()">{{ $t("commons.button.create") }}</el-button>
+            <el-button size="small" @click="onImport()">{{ $t("commons.button.import") }}</el-button>
+            <el-button size="small" @click="onGrant()">{{ $t("commons.button.authorize") }}</el-button>
+            <el-button :disabled="isDeleteButtonDisable" size="small" @click="sync()">{{ $t("commons.button.sync") }}</el-button>
+            <el-button :disabled="isDeleteButtonDisable" size="small" @click="onDelete()">
+              {{ $t("commons.button.delete") }}
+            </el-button>
+          </el-button-group>
+          <el-dropdown @command="handleCommand">
+            <el-button size="small">
+              {{ $t("host.batch") }}<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="port">{{ $t("host.batch_port_operation") }}</el-dropdown-item>
+              <el-dropdown-item command="credential">{{ $t("host.batch_credential_operation") }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </template>
       <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" prop="name" show-overflow-tooltip min-width="120" fix>
@@ -22,12 +33,12 @@
       <el-table-column sortable :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column sortable :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
       <el-table-column sortable label="IP" min-width="120px" prop="ip" />
-      <el-table-column sortable :label="$t('host.flex_ip')" min-width="120px" prop="flexIp" :show="false"/>
+      <el-table-column sortable :label="$t('host.flex_ip')" min-width="120px" prop="flexIp" :show="false" />
       <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
       <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
       <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
       <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
-      <el-table-column :label="$t('host.os')"  show-overflow-tooltip min-width="120px">
+      <el-table-column :label="$t('host.os')" show-overflow-tooltip min-width="120px">
         <template v-slot:default="{row}">
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
@@ -53,7 +64,7 @@
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
       </el-table-column>
-      <el-table-column sortable  :label="$t('commons.table.create_time')" prop="createdAt" :show="false" width="150px">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt" :show="false" width="150px">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>
@@ -70,6 +81,21 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSyncVisible = false">{{ $t("commons.button.cancel") }}</el-button>
         <el-button type="primary" @click="submitSync()">{{ $t("commons.button.ok") }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :title="$t('host.batch')" width="30%" :visible.sync="dialogBatchVisible">
+      <span>{{ $t("host.batch_list", [$t('host.' + operation)]) }}</span>
+      <ul style="margin-left: 5%" :key="host.name" v-for="host of hostSelections">
+        <li>{{ host.name }} ({{ host.ip }})</li>
+      </ul>
+      <el-input-number style="margin-left: 10%; width: 60%;" :max="65536" :min="0" v-if="operation === 'port'" v-model="port" clearable />
+      <el-select style="margin-left: 10%; width: 60%;" v-else v-model="credentialID" clearable filterable>
+        <el-option v-for="cre in credentialList" :key="cre.id" :value="cre.id" :label="cre.name" />
+      </el-select>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogBatchVisible = false">{{ $t("commons.button.cancel") }}</el-button>
+        <el-button type="primary" @click="submitBatchOperation()">{{ $t("commons.button.ok") }}</el-button>
       </div>
     </el-dialog>
 
@@ -165,11 +191,12 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { deleteHost, searchHosts, syncHosts, importHosts } from "@/api/hosts"
+import { deleteHost, searchHosts, syncHosts, importHosts, batchHosts } from "@/api/hosts"
 import ComplexTable from "@/components/complex-table"
 import KoStatus from "@/components/ko-status"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
+import { listCredentialAll } from "@/api/credentials"
 
 export default {
   name: "HostList",
@@ -223,6 +250,11 @@ export default {
       loading: false,
       isAdmin: checkPermission("ADMIN"),
       timer: null,
+      dialogBatchVisible: false,
+      operation: "port",
+      port: 22,
+      credentialID: "",
+      credentialList: [],
     }
   },
   methods: {
@@ -287,6 +319,34 @@ export default {
     getDetailInfo(row) {
       this.dialogDetailVisible = true
       this.currentHost = row
+    },
+    handleCommand(operation) {
+      this.operation = operation
+      if (this.hostSelections.length === 0) {
+        this.$message({ type: "error", message: this.$t("host.batch_length_error") })
+        return
+      }
+      this.dialogBatchVisible = true
+    },
+    submitBatchOperation() {
+      if (this.operation === "port") {
+        for (const host of this.hostSelections) {
+          host.port = Number(this.port)
+        }
+      } else {
+        for (const credential of this.hostSelections) {
+          credential.credentialId = this.credentialID
+        }
+      }
+      let data = {
+        operation: this.operation,
+        items: this.hostSelections,
+      }
+      batchHosts(data).then(() => {
+        this.$message({ type: "success", message: this.$t("commons.msg.import_success") })
+        this.search()
+        this.dialogBatchVisible = false
+      })
     },
     onUploadFile() {
       const startIndex = this.file.name.lastIndexOf(".")
@@ -359,6 +419,11 @@ export default {
           })
       })
     },
+    loadCredentials() {
+      listCredentialAll().then((data) => {
+        this.credentialList = data.items
+      })
+    },
     onGrant() {
       this.$router.push({ name: "ProjectAuthorizationList" })
     },
@@ -399,6 +464,7 @@ export default {
   mounted() {
     this.search()
     this.polling()
+    this.loadCredentials()
   },
   beforeDestroy() {
     clearInterval(this.timer)

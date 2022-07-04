@@ -35,3 +35,8 @@ export function importHosts(file) {
   const itemUrl = `${hostUrl}/upload`
   return post(itemUrl, file)
 }
+
+export function batchHosts(data) {
+  const itemUrl = `${hostUrl}/batch`
+  return post(itemUrl, data)
+}
