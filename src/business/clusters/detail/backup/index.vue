@@ -117,53 +117,7 @@
       </el-tab-pane>
 
       <el-tab-pane :label="$t('cluster.detail.backup.backup_log')" :name="$t('cluster.detail.backup.backup_log')">
-        <complex-table :header="$t('cluster.detail.backup.backup_list')" :data="logs" :loading="logLoading">
-          <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix>
-            <template v-slot:default="{row}">
-              {{ $t("cluster.detail.backup." + row.type) }}
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
-            <template v-slot:default="{row}">
-              {{ row.startTime | datetimeFormat }}
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('cluster.detail.security.end_time')" min-width="100" prop="endTime" fix>
-            <template v-slot:default="{row}">
-              <span v-if="row.status ==='FAILED' || row.status ==='SUCCESS'">{{ row.endTime | datetimeFormat }}</span>
-              <span v-if="row.status !=='FAILED' && row.status !=='SUCCESS'">-</span>
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
-            <template v-slot:default="{row}">
-              <div v-if="row.status === 'FAILED'">
-                <el-popover placement="left-start" :title="$t('cluster.detail.backup.detail')" width="200" trigger="click" :content="row.message">
-                  <div slot="reference">
-                    <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
-                    <el-link type="info">{{ $t("commons.status.failed") }}</el-link>
-                  </div>
-                </el-popover>
-              </div>
-              <div v-if="row.status === 'Waiting'">
-                <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                <span>{{ $t("commons.status.waiting") }}</span>
-              </div>
-              <div v-if="row.status === 'Running'">
-                <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
-                <el-link type="info" @click="openXterm(row)"> {{ $t("commons.status.running") }}</el-link>
-              </div>
-              <div v-if="row.status ==='SUCCESS'">
-                <span class="iconfont iconduihao" style="color: #32B350"></span>
-                {{ $t("commons.status.success") }}
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column :label="$t('cluster.detail.log.time')">
-            <template v-slot:default="{row}">
-              {{ row.createdAt | datetimeFormat }}
-            </template>
-          </el-table-column>
-        </complex-table>
+        <backup-logs></backup-logs>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -171,15 +125,16 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import { openLoggerWithName } from "@/api/cluster/tasks"
-import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestore, getBackupLog, listBackupAccounts, startRestore, deleteBackupFile } from "@/api/cluster/backup"
+import { openLoggerWithName, getBackupLogs } from "@/api/cluster/tasks"
+import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestore, listBackupAccounts, startRestore, deleteBackupFile } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 import VeleroBackup from "@/business/clusters/detail/backup/velero_backup"
 import VeleroConfig from "@/business/clusters/detail/backup/velero_config"
+import BackupLogs from "@/business/clusters/detail/backup/logs"
 
 export default {
   name: "ClusterBackup",
-  components: { VeleroConfig, VeleroBackup, ComplexTable },
+  components: { VeleroConfig, VeleroBackup, ComplexTable, BackupLogs },
   data() {
     return {
       loading: false,
@@ -209,7 +164,6 @@ export default {
         total: 0,
       },
       backupAccounts: [],
-      logs: [],
       selects: [],
       timer: null,
       buttons: [
@@ -242,7 +196,7 @@ export default {
         })
       } else if (this.activeName === this.$t("cluster.detail.backup.backup_log")) {
         this.logLoading = true
-        getBackupLog(this.clusterName)
+        getBackupLogs(this.clusterName)
           .then((data) => {
             if (data) {
               this.logs = data
@@ -393,13 +347,18 @@ export default {
   },
   created() {
     this.clusterName = this.$route.params.name
-    this.search()
     listBackupAccounts(this.clusterName).then((res) => {
-      this.backupAccounts = res
+      this.backupAccounts = []
+      for (const ba of res) {
+        if (ba.type === "OSS" || ba.type === "S3" || ba.type === "MINIO") {
+          this.backupAccounts.push(ba)
+        }
+      }
     })
     if (localStorage.getItem("backup_active_name")) {
       this.activeName = localStorage.getItem("backup_active_name")
     }
+    this.search()
     this.getBackupStrategy()
     this.polling()
   },

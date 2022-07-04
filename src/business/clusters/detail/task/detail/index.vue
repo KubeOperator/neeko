@@ -8,7 +8,8 @@
             <span>{{ $t(`task.${form.type}`)}}</span>
           </el-form-item>
           <el-form-item :label="$t('task.task_id')" prop="type">
-            <el-link style="font-size: 12px" type="info" @click="openXterm()">{{ form.id }}</el-link>
+            <span v-if="form.type === 'CLUSTER_VELERO_BACKUP' || form.type === 'CLUSTER_VELERO_RESTORE'">{{ form.id }}</span>
+            <el-link v-else style="font-size: 12px" type="info" @click="openXterm()">{{ form.id }}</el-link>
           </el-form-item>
           <el-form-item :label="$t('commons.search.time_start')" prop="type">
             <span>{{ form.startTime | timeStampFormat  }}</span>
@@ -22,7 +23,7 @@
           <el-form-item :label="$t('commons.table.status')" prop="type">
             <span>{{ $t(`commons.status.${form.phase}`)}}</span>
           </el-form-item>
-          <el-form-item :label="$t('task.message')" prop="type">
+          <el-form-item :label="$t('cluster.detail.event.msg_info')" prop="type">
             <el-card v-if="form.message">
               <div v-if="formatMsgs.failed" slot="header">
                 <span>{{formatMsgs.name}}</span>
@@ -104,7 +105,7 @@ export default {
         type: "",
         startTime: "",
         endTime: "",
-        phase: "",
+        phase: "SUCCESS",
         message: "",
         details: [],
       },

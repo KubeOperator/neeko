@@ -26,3 +26,8 @@ export function getDetailById(logId) {
 export function getLogByName(clusterName, logId) {
     return get(`${taskLoggerUrl}/log2/${clusterName}/${logId}`)
 }
+
+export function getBackupLogs(page, size, clusterName) {
+    return get(`${taskLoggerUrl}/backup/logs/${clusterName}?pageNum=${page}&pageSize=${size}`)
+}
+

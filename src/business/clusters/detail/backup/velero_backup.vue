@@ -288,7 +288,7 @@ export default {
       this.loading = true
       getVeleroBackups(this.clusterName)
         .then((res) => {
-          if (res.items) {
+          if (res?.items) {
             this.items = res.items
           }
         })
@@ -337,6 +337,7 @@ export default {
     },
     onCreate() {
       this.form = {
+        cluster: this.clusterName,
         includeClusterResources: true,
         includeNamespaces: [],
         excludeNamespaces: [],
