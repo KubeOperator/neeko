@@ -345,15 +345,10 @@ export default {
     clearInterval(this.timer)
     this.timer = null
   },
-  created() {
+  mounted() {
     this.clusterName = this.$route.params.name
     listBackupAccounts(this.clusterName).then((res) => {
-      this.backupAccounts = []
-      for (const ba of res) {
-        if (ba.type === "OSS" || ba.type === "S3" || ba.type === "MINIO") {
-          this.backupAccounts.push(ba)
-        }
-      }
+      this.backupAccounts = res
     })
     if (localStorage.getItem("backup_active_name")) {
       this.activeName = localStorage.getItem("backup_active_name")

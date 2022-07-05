@@ -33,6 +33,7 @@
             <template>
               <el-button-group>
                 <el-button size="small" :disabled="provider === ''" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" :disabled="provider === ''" @click="provisionerCreateExist()">{{$t('commons.button.import_exist')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
@@ -207,7 +208,7 @@ export default {
       this.dialogDetailVisible = val
     },
     detailShow(row) {
-      return row.type !== 'glusterfs' && row.type !== 'external-cephfs' && row.type !== 'external-ceph-block'
+      return row.type !== "glusterfs" && row.type !== "external-cephfs" && row.type !== "external-ceph-block"
     },
     getDetailInfo(val) {
       this.dialogDetailVisible = true
@@ -234,7 +235,10 @@ export default {
       this.$router.push({ name: "ClusterStorageClassCreate" })
     },
     provisionerCreate() {
-      this.$router.push({ name: "ClusterStorageProvionerCreate" })
+      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { isExist: false } })
+    },
+    provisionerCreateExist() {
+      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { isExist: true } })
     },
     selectChange() {
       let isOk = true

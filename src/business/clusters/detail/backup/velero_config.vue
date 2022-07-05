@@ -3,12 +3,12 @@
     <el-row v-loading="loading">
       <el-form ref="form" label-position="left" :model="form" label-width="180px" :rules="rules" v-loading="submitLoading">
         <el-form-item :label="$t('cluster.detail.backup.backup_account')" prop="backupAccountName">
-          <el-select style="width:100%" size="small" allow-create filterable
-                     v-model="form.backupAccountName">
+          <el-select style="width:100%" size="small" allow-create filterable v-model="form.backupAccountName">
             <el-option v-for="b in backupAccounts" :key="b.name" :label="b.name" :value="b.name">
               {{ b.name }}({{ b.bucket }})
             </el-option>
           </el-select>
+          <div><span class="input-help">{{ $t('cluster.detail.backup.backup_account_rule') }}</span></div>
         </el-form-item>
         <el-row>
           <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="requests.cpu" :rules="numberRules">
@@ -44,32 +44,27 @@
 </template>
 
 <script>
-import {
-  getVeleroConfig,
-  listBackupAccounts,
-  veleroInstall,
-  veleroUninstall
-} from "@/api/cluster/backup"
+import { getVeleroConfig, listBackupAccounts, veleroInstall, veleroUninstall } from "@/api/cluster/backup"
 import Rule from "@/utils/rules"
 
 export default {
   name: "VeleroConfig",
   components: {},
   props: {},
-  data () {
+  data() {
     return {
       form: {
-        requests:{
-          cpu:1000,
-          memory:512,
+        requests: {
+          cpu: 1000,
+          memory: 512,
         },
         limits: {
-          cpu:1000,
-          memory:512,
-        }
+          cpu: 1000,
+          memory: 512,
+        },
       },
       rules: {
-        backupAccountName: [Rule.RequiredRule]
+        backupAccountName: [Rule.RequiredRule],
       },
       numberRules: [Rule.NumberRule],
       backupAccounts: [],
@@ -79,26 +74,30 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
       this.submitLoading = true
-      veleroInstall(this.clusterName, this.form).then(() => {
-        this.$message({
-          type: "success",
-          message: this.$t("commons.msg.create_success"),
+      veleroInstall(this.clusterName, this.form)
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.create_success"),
+          })
         })
-      }).finally(() => {
-        this.submitLoading = false
-      })
+        .finally(() => {
+          this.submitLoading = false
+        })
     },
-    getConfig () {
+    getConfig() {
       this.loading = true
-      getVeleroConfig(this.clusterName).then(res => {
-        if (res.id !== "") {
-          this.form = res
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      getVeleroConfig(this.clusterName)
+        .then((res) => {
+          if (res.id !== "") {
+            this.form = res
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     onDelete() {
       this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
@@ -114,18 +113,22 @@ export default {
           this.getConfig()
         })
       })
-    }
+    },
   },
-  created () {
+  created() {
     this.clusterName = this.$route.params.name
     listBackupAccounts(this.clusterName).then((res) => {
-      this.backupAccounts = res
+      this.backupAccounts = []
+      for (const ba of res) {
+        if (ba.type === "OSS" || ba.type === "S3" || ba.type === "MINIO") {
+          this.backupAccounts.push(ba)
+        }
+      }
     })
     this.getConfig()
-  }
+  },
 }
 </script>
 
 <style scoped>
-
 </style>

@@ -9,6 +9,9 @@
               <el-form-item :label="$t('commons.table.name')">
                 <span>{{provioner.name}}</span>
               </el-form-item>
+              <el-form-item label="namespace">
+                <span>{{provioner.namespace}}</span>
+              </el-form-item>
               <el-form-item label="Version">
                 <span>{{provioner.vars['storage_nfs_server_version']}}</span>
               </el-form-item>

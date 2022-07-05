@@ -16,6 +16,23 @@
                 <el-option value="cinder" label="cinder">cinder</el-option>
                 <el-option value="oceanstor" label="oceanstor">oceanstor</el-option>
               </el-select>
+              <div v-if="createType === 'vsphere'"><span class="input-help">{{$t('cluster.detail.storage.vsphere_select_help')}}</span></div>
+            </el-form-item>
+
+            <el-form-item label="Namespace" prop="namespace" :rules="requiredRules">
+              <el-select style="width: 100%" @change="changeNamespace" v-model="form.namespace">
+                <el-option v-for="item of namespaces" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="isExist && createType !== '' && createType !== 'vsphere' && createType !== 'cinder'" label="Deployments">
+              <el-select @change="changeDeployment" style="width: 100%" v-model="deploymentName" clearable>
+                <el-option v-for="item of deployments" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="isExist && createType === 'vsphere' || createType === 'cinder'" label="StatefulSet">
+              <el-select @change="changeDeployment" style="width: 100%" v-model="statefulSetName" clearable>
+                <el-option v-for="item of statefulSets" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
+              </el-select>
             </el-form-item>
 
             <div v-if="createType === 'nfs'">
@@ -92,9 +109,6 @@
               </div>
             </div>
             <div v-if="createType === 'vsphere'">
-              <el-form-item>
-                <div><span class="input-help">{{$t('cluster.detail.storage.vsphere_select_help')}}</span></div>
-              </el-form-item>
               <el-form-item :label="$t('commons.table.name')">
                 <el-input v-model="form.name" disabled></el-input>
               </el-form-item>
@@ -186,10 +200,13 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { createProvisioner } from "@/api/cluster/storage"
+import { listDeployment, listStatefulSet } from "@/api/cluster/cluster"
+import { listNamespace } from "@/api/cluster/namespace"
 import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterStorageProvionerCreate",
+  props: ["isExist"],
   components: { LayoutContent },
   data() {
     return {
@@ -197,6 +214,7 @@ export default {
       createType: "",
       form: {
         name: "",
+        namespace: "kube-system",
         type: "",
         vars: {},
       },
@@ -204,6 +222,11 @@ export default {
       requiredRules: [Rule.RequiredRule],
       passwordRules: [Rule.PasswordRule],
       enableBlockStorage: "disable",
+      deployments: [],
+      deploymentName: {},
+      statefulSets: [],
+      statefulSetName: {},
+      namespaces: [],
     }
   },
   methods: {
@@ -212,6 +235,7 @@ export default {
         if (valid) {
           this.submitLoading = true
           this.form.type = this.createType
+          this.form.isInCluster = this.isExist === "true"
           if (this.form.type === "conder") {
             this.form.vars["enable_blockstorage"] = this.enableBlockStorage
           }
@@ -232,7 +256,191 @@ export default {
     onCancel() {
       this.$router.push({ name: "ClusterStorage" })
     },
+    loadDeployments() {
+      if (this.form.namespace) {
+        listDeployment(this.clusterName, this.form.namespace).then((data) => {
+          this.deployments = data.items
+        })
+      }
+    },
+    changeDeployment() {
+      if (this.deploymentName === "") {
+        this.form = {
+          name: "",
+          namespace: this.form.namespace,
+          vars: {},
+        }
+        return
+      }
+      let deployment = {}
+      for (const de of this.deployments) {
+        if (this.deploymentName == de.metadata.name) {
+          deployment = de
+          break
+        }
+      }
+      switch (this.createType) {
+        case "nfs":
+          this.nfsProvisioner(deployment)
+          break
+        case "external-cephfs":
+          this.cephFsProvisioner(deployment)
+          break
+        case "external-ceph-block":
+          this.cephBlockProvisioner(deployment)
+          break
+        case "oceanstor":
+          this.oceanstorProvisioner(deployment)
+          break
+        case "rook-ceph":
+          this.rookProvisioner(deployment)
+          break
+      }
+    },
+    changeStatefulSet() {
+      if (this.statefulSetName === "") {
+        this.form = {
+          name: "",
+          namespace: this.form.namespace,
+          vars: {},
+        }
+        return
+      }
+      let statefulSet = {}
+      for (const st of this.statefulSets) {
+        if (this.statefulSetName == st.metadata.name) {
+          statefulSet = st
+        }
+      }
+      switch (this.createType) {
+        case "vsphere":
+          this.vsphereProvisioner(statefulSet)
+          break
+        case "cinder":
+          this.cinderProvisioner(statefulSet)
+          break
+      }
+    },
+    nfsProvisioner(deployment) {
+      if (deployment?.spec?.template?.spec?.containers[0]?.env) {
+        this.form.name = deployment.metadata.name
+        this.form.vars = {}
+        let container = deployment.spec.template.spec.containers[0]
+        let kk = 0
+        for (const env of container.env) {
+          if (env.name == "NFS_PATH") {
+            kk++
+            this.form.vars["storage_nfs_server_path"] = env.value
+          }
+          if (env.name == "NFS_SERVER") {
+            kk++
+            this.form.vars["storage_nfs_server"] = env.value
+          }
+        }
+        if (kk !== 2) {
+          this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+          return
+        }
+        if (deployment?.metadata.labels?.nfsVersion) {
+          this.form.vars["storage_nfs_server_version"] = deployment.metadata.labels.nfsVersion
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    cephFsProvisioner(deployment) {
+      if (deployment?.metadata?.labels?.app && deployment.metadata.labels.app === "fs-provisioner") {
+        this.form = {
+          name: deployment.metadata.name,
+          namespace: this.form.namespace,
+          type: "external-cephfs",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    cephBlockProvisioner(deployment) {
+      if (deployment?.metadata?.labels?.app && deployment.metadata.labels.app === "rbd-provisioner") {
+        this.form = {
+          name: deployment.metadata.name,
+          namespace: this.form.namespace,
+          type: "external-ceph-block",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    oceanstorProvisioner(deployment) {
+      if (deployment?.metadata?.name && deployment.metadata.name === "huawei-csi-controller") {
+        this.form = {
+          name: deployment.metadata.name,
+          namespace: this.form.namespace,
+          type: "oceanstor",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    rookProvisioner(deployment) {
+      if (deployment?.metadata?.name && deployment.metadata.name === "rook-ceph-operator") {
+        this.form = {
+          name: deployment.metadata.name,
+          namespace: this.form.namespace,
+          type: "rook-ceph",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    vsphereProvisioner(statefulSets) {
+      if (statefulSets?.metadata?.name && statefulSets.metadata.name === "vsphere-csi-controller") {
+        this.form = {
+          name: statefulSets.metadata.name,
+          namespace: this.form.namespace,
+          type: "vsphere",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    cinderProvisioner(statefulSets) {
+      if (statefulSets?.metadata?.name && statefulSets.metadata.name === "csi-cinder-controllerplugin") {
+        this.form = {
+          name: statefulSets.metadata.name,
+          namespace: this.form.namespace,
+          type: "cinder",
+          vars: {},
+        }
+      } else {
+        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
+      }
+    },
+    loadStatefulSets() {
+      if (this.form.namespace) {
+        listStatefulSet(this.clusterName, this.form.namespace).then((data) => {
+          this.statefulSets = data.items
+        })
+      }
+    },
+    changeNamespace() {
+      if (this.isExist) {
+        this.loadDeployments()
+        this.loadStatefulSets()
+      }
+    },
+    loadNamespaces() {
+      listNamespace(this.clusterName).then((data) => {
+        this.namespaces = data.items
+      })
+    },
     changeSelection() {
+      this.deploymentName = ""
+      this.statefulSetName = ""
       this.$refs["form"].clearValidate()
       this.form.vars = {}
       this.form.name = ""
@@ -273,6 +481,11 @@ export default {
   },
   created() {
     this.clusterName = this.$route.params.name
+    this.loadNamespaces()
+    if (this.isExist) {
+      this.loadDeployments()
+      this.loadStatefulSets()
+    }
   },
 }
 </script>

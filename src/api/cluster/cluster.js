@@ -8,7 +8,6 @@ const namespaceServiceUrl = "api/v1/namespaces/{namespace}/services"
 const deploymentUrl = "apis/apps/v1/deployments"
 const namespaceDeploymentUrl = "apis/apps/v1/namespaces/{namespace}/deployments"
 const daemonSetUrl = "apis/apps/v1/daemonsets/"
-const statefulSetUrl = "apis/apps/v1/statefulsets/"
 const namespaceStatefulSet = "apis/apps/v1/namespaces/{namespace}/statefulsets/"
 const namespaceDaemonSetUrl = "apis/apps/v1/namespaces/{namespace}/daemonsets/"
 const cornJobUrl = "apis/batch/v1beta1/cronjobs"
@@ -26,7 +25,7 @@ const namespacePodUrl = "api/v1/namespaces/{namespace}/pods/"
 const eventByNamespaceUrl = "api/v1/namespaces/{namespace}/events"
 const eventsUrl = "api/v1/events"
 
-export function listDeployment(clusterName, continueToken, namespace) {
+export function listDeployment(clusterName, namespace) {
   let url = proxyUrl.replace("{cluster_name}", clusterName)
   if (namespace !== undefined && namespace !== null) {
     url = url.replace("{resource_url}", namespaceDeploymentUrl).replace("{namespace}", namespace)
@@ -50,17 +49,8 @@ export function listDaemonSet(clusterName, continueToken, namespace) {
   return get(url)
 }
 
-export function listStatefulSet(clusterName, continueToken, namespace) {
-  let url = proxyUrl.replace("{cluster_name}", clusterName)
-  url += "?limit=" + limit
-  if (continueToken !== undefined && continueToken !== null) {
-    url += "&continue=" + continueToken
-  }
-  if (namespace !== undefined && namespace !== null) {
-    url = url.replace("{resource_url}", namespaceStatefulSet).replace("{namespace}", namespace)
-  } else {
-    url = url.replace("{resource_url}", statefulSetUrl)
-  }
+export function listStatefulSet(clusterName, namespace) {
+  let url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", namespaceStatefulSet).replace("{namespace}", namespace)
   return get(url)
 }
 
