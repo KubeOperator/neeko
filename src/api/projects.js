@@ -10,6 +10,10 @@ export function listProjects (currentPage, pageSize) {
   return get(`${projectUrl}?pageNum=${currentPage}&pageSize=${pageSize}`)
 }
 
+export function getProjectsHasClusters() {
+  return get(`${projectUrl}/clusters`)
+}
+
 export function getProject (name) {
   return get(`${projectUrl}/${name}`)
 }

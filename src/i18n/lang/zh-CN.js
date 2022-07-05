@@ -766,6 +766,8 @@ const message = {
     mail: "邮件",
     work_wechat: "企业微信",
     dingTalk: "钉钉",
+    message_system: "系统消息",
+    message_cluster: "集群消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
@@ -778,6 +780,8 @@ const message = {
       CLUSTER_DELETE: "集群删除",
       CLUSTER_SCALE: "集群伸缩",
       CLUSTER_RESTORE: "集群恢复",
+      LICENSE_EXPIRE: "License 到期",
+      CLUSTER_OPERATOR: "集群操作"
     },
     detail: {
       basicInformation: "基本信息",
