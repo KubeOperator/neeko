@@ -735,7 +735,7 @@ const message = {
     EnsureAddWorkerNetwork: "初始化网络",
     EnsureAddWorkerPost: "配置集群",
     EnsureAddWorkerStorage: "初始化存储提供商",
-    
+
     cluster_task: "集群级任务",
     cluster_task_help: "需要单独执行的任务，如集群创建、扩缩容、升级备份等...",
     component_task: "组件级任务",
@@ -852,7 +852,7 @@ const message = {
     component: "组件",
     version: "版本",
     see_documentation: "参阅文档",
-    manifest_help: "离线包中 Kubernetes 默认只携带最新的两个版本。如果当前是离线环境，需要执行脚本生成旧版本Kubernetes离线包，并推送至nexus仓库。"
+    manifest_help: "离线包中默认携带一个最新的 Kubernetes 版本。如果当前是离线环境，则需要手动执行脚本来生成目标版本的 Kubernetes 离线包，并将其推送至 nexus 仓库。"
   },
   system_log: {
     title: "系统日志",
