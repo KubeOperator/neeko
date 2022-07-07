@@ -125,7 +125,8 @@ const message = {
       talk: "参与讨论",
       star: "点亮 Star",
       version: "版本",
-      ko_introduction: "是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。"
+      ko_introduction: "是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。",
+      setting: "个人设置"
     },
     help: {
       help: "帮助",
@@ -768,6 +769,7 @@ const message = {
     dingTalk: "钉钉",
     message_system: "系统消息",
     message_cluster: "集群消息",
+    receive_setting: "接收设置",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
