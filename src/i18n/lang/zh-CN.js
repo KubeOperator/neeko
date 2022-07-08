@@ -13,7 +13,6 @@ const message = {
     },
     confirm_message: {
       delete: "此操作不可撤销, 是否继续?",
-      force_delete: "强制删除，将忽略脚本执行过程中的错误信息，强制删除数据",
       uncordon: "此操作将恢复节点为可调度状态, 是否继续?",
       enable_component_select: "当前尚未选择同步组件，是否同步所有?",
       enable_component: "此操作将启用集群 {0} 组件，是否继续?",
@@ -373,9 +372,12 @@ const message = {
     },
     delete: {
       delete_cluster: "集群删除",
-      is_force: "是否强制",
-      is_uninstall: "是否卸载",
-      sure_uninstall: "为导入的 KO集群，是否卸载？",
+      delete_cluster_help: "此操作无法撤消，这将永久删除 {0} 集群",
+      is_uninstall: "卸载集群",
+      sure_uninstall: "将执行集群卸载脚本。",
+      is_force: "强制删除",
+      force_delete: "强制删除，将忽略集群卸载脚本在执行过程中的错误信息，最终删除集群元数据。",
+      submit_delete_input: "请输入 {0} 进行删除确认",
     },
     health_check: {
       health_check: "健康检查",

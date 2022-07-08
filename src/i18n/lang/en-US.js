@@ -13,7 +13,6 @@ const message = {
     },
     confirm_message: {
       delete: "This operation cannot be undone, do you want to continue?",
-      force_delete: "The error information during script execution is ignored and data is forcibly deleted",
       uncordon: "This operation will restore the node to a schedulable state. Do you want to continue?",
       enable_component_select: "No synchronization components have been selected. Do you want to synchronize all?",
       enable_component: "This operation will enable the cluster {0} component. Continue?",
@@ -370,9 +369,12 @@ const message = {
     },
     delete: {
       delete_cluster: "Cluster Delete",
-      is_force: "Is it mandatory",
-      is_uninstall: "Is uninstall",
-      sure_uninstall: "is an imported KO cluster. Determine whether to uninstall it?",
+      delete_cluster_help: "This action cannot be undone. This will permanently delete the {0} cluster.",
+      is_uninstall: "Uninstall the cluster",
+      sure_uninstall: "The cluster uninstallation script will be executed.",
+      is_force: "Mandatory delete",
+      force_delete: "The error information in the cluster uninstallation script is ignored and the cluster metadata is deleted.",
+      submit_delete_input: "Please enter {0} to confirm.",
     },
     health_check: {
       health_check: "health examination",

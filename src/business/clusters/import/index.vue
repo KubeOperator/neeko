@@ -48,6 +48,9 @@
               </el-form-item>
             </div>
             <div v-if="form.authenticationMode==='certificate'">
+              <el-form-item label="apiServer" prop="apiServer">
+                <el-input style="width: 100%" v-model="form.apiServer" :placeholder="$t('cluster.import.api_server_help')" clearable></el-input>
+              </el-form-item>
               <el-form-item label="Certificate" prop="certDataStr">
                 <el-input :autosize="{ minRows: 5, maxRows: 10}" type="textarea" v-model="form.certDataStr" clearable></el-input>
               </el-form-item>
@@ -102,19 +105,17 @@ export default {
       hostDatas: [],
       dialogKoImportVisible: false,
       form: {
-        name: "xx",
-        apiServer: "https://172.16.10.118:8443",
+        name: "",
+        apiServer: "",
         token: "",
-        router: "172.16.10.118",
+        router: "",
         projectName: "kubeoperator",
         architectures: "amd64",
         isKoCluster: false,
 
         authenticationMode: "bearer",
-        certDataStr: "-----BEGIN CERTIFICATE-----\n" +
-            "-----END CERTIFICATE-----",
-        keyDataStr: "-----BEGIN RSA PRIVATE KEY-----\n" +
-            "-----END RSA PRIVATE KEY-----",
+        certDataStr: "-----BEGIN CERTIFICATE-----\n" + "-----END CERTIFICATE-----",
+        keyDataStr: "-----BEGIN RSA PRIVATE KEY-----\n" + "-----END RSA PRIVATE KEY-----",
         configContent: "",
       },
       rules: {
