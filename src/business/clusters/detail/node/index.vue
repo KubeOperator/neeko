@@ -424,7 +424,7 @@ export default {
       }
       nodeBatchOperation(this.clusterName, delForm)
         .then(() => {
-          this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+          this.$message({ type: "success", message: this.$t("commons.msg.restart_after_delete") })
           this.selects = []
           this.search()
           this.dialogDeleteVisible = false

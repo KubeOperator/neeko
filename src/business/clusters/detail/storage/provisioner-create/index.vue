@@ -24,14 +24,9 @@
                 <el-option v-for="item of namespaces" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-if="isExist && createType !== '' && createType !== 'vsphere' && createType !== 'cinder'" label="Deployments">
+            <el-form-item v-if="isExist && createType === 'nfs'" label="Deployments">
               <el-select @change="changeDeployment" style="width: 100%" v-model="deploymentName" clearable>
                 <el-option v-for="item of deployments" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item v-if="isExist && createType === 'vsphere' || createType === 'cinder'" label="StatefulSet">
-              <el-select @change="changeDeployment" style="width: 100%" v-model="statefulSetName" clearable>
-                <el-option v-for="item of statefulSets" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
               </el-select>
             </el-form-item>
 
@@ -200,8 +195,8 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import { createProvisioner } from "@/api/cluster/storage"
-import { listDeployment, listStatefulSet } from "@/api/cluster/cluster"
-import { listNamespace } from "@/api/cluster/namespace"
+import { listDeployment } from "@/api/cluster/cluster"
+import { listNamespace } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
 export default {
@@ -279,47 +274,7 @@ export default {
           break
         }
       }
-      switch (this.createType) {
-        case "nfs":
-          this.nfsProvisioner(deployment)
-          break
-        case "external-cephfs":
-          this.cephFsProvisioner(deployment)
-          break
-        case "external-ceph-block":
-          this.cephBlockProvisioner(deployment)
-          break
-        case "oceanstor":
-          this.oceanstorProvisioner(deployment)
-          break
-        case "rook-ceph":
-          this.rookProvisioner(deployment)
-          break
-      }
-    },
-    changeStatefulSet() {
-      if (this.statefulSetName === "") {
-        this.form = {
-          name: "",
-          namespace: this.form.namespace,
-          vars: {},
-        }
-        return
-      }
-      let statefulSet = {}
-      for (const st of this.statefulSets) {
-        if (this.statefulSetName == st.metadata.name) {
-          statefulSet = st
-        }
-      }
-      switch (this.createType) {
-        case "vsphere":
-          this.vsphereProvisioner(statefulSet)
-          break
-        case "cinder":
-          this.cinderProvisioner(statefulSet)
-          break
-      }
+      this.nfsProvisioner(deployment)
     },
     nfsProvisioner(deployment) {
       if (deployment?.spec?.template?.spec?.containers[0]?.env) {
@@ -348,89 +303,9 @@ export default {
         this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
       }
     },
-    cephFsProvisioner(deployment) {
-      if (deployment?.metadata?.labels?.app && deployment.metadata.labels.app === "fs-provisioner") {
-        this.form = {
-          name: deployment.metadata.name,
-          namespace: this.form.namespace,
-          type: "external-cephfs",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    cephBlockProvisioner(deployment) {
-      if (deployment?.metadata?.labels?.app && deployment.metadata.labels.app === "rbd-provisioner") {
-        this.form = {
-          name: deployment.metadata.name,
-          namespace: this.form.namespace,
-          type: "external-ceph-block",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    oceanstorProvisioner(deployment) {
-      if (deployment?.metadata?.name && deployment.metadata.name === "huawei-csi-controller") {
-        this.form = {
-          name: deployment.metadata.name,
-          namespace: this.form.namespace,
-          type: "oceanstor",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    rookProvisioner(deployment) {
-      if (deployment?.metadata?.name && deployment.metadata.name === "rook-ceph-operator") {
-        this.form = {
-          name: deployment.metadata.name,
-          namespace: this.form.namespace,
-          type: "rook-ceph",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    vsphereProvisioner(statefulSets) {
-      if (statefulSets?.metadata?.name && statefulSets.metadata.name === "vsphere-csi-controller") {
-        this.form = {
-          name: statefulSets.metadata.name,
-          namespace: this.form.namespace,
-          type: "vsphere",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    cinderProvisioner(statefulSets) {
-      if (statefulSets?.metadata?.name && statefulSets.metadata.name === "csi-cinder-controllerplugin") {
-        this.form = {
-          name: statefulSets.metadata.name,
-          namespace: this.form.namespace,
-          type: "cinder",
-          vars: {},
-        }
-      } else {
-        this.$message({ type: "info", message: this.$t("cluster.detail.storage.provisioner_import_help") })
-      }
-    },
-    loadStatefulSets() {
-      if (this.form.namespace) {
-        listStatefulSet(this.clusterName, this.form.namespace).then((data) => {
-          this.statefulSets = data.items
-        })
-      }
-    },
     changeNamespace() {
       if (this.isExist) {
         this.loadDeployments()
-        this.loadStatefulSets()
       }
     },
     loadNamespaces() {
@@ -484,7 +359,6 @@ export default {
     this.loadNamespaces()
     if (this.isExist) {
       this.loadDeployments()
-      this.loadStatefulSets()
     }
   },
 }

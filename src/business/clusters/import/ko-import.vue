@@ -160,7 +160,9 @@
             <div class="example">
               <el-scrollbar style="height:100%">
                 <el-card>
-                  <div style="font-weight: 500; margin-bottom: 5px"><span>ETCD</span></div>
+                  <div style="font-weight: 500; margin-bottom: 5px">
+                    <el-button type="text" icon="el-icon-edit-outline" @click="autoInputEtcd">{{ $t ('cluster.import.auto_input') }}</el-button>
+                  </div>
                   <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.etcd_data_dir')" prop="clusterInfo.etcdDataDir">
@@ -204,6 +206,9 @@
               <el-scrollbar style="height:100%">
                 <el-card>
                   <div class="blockBorder">
+                    <div style="font-weight: 500; margin-bottom: 5px">
+                      <el-button type="text" icon="el-icon-edit-outline" @click="autoInputDocker">{{ $t ('cluster.import.auto_input') }}</el-button>
+                    </div>
                     <el-row :gutter="20">
                       <el-col :span="12">
                         <el-form-item :label="$t ('cluster.creation.runtime_type')" prop="clusterInfo.runtimeType">
@@ -503,6 +508,9 @@ export default {
       if (!isNext) {
         return
       }
+      if (step.title === "集群设置") {
+        console.log(this.form.clusterInfo)
+      }
       if (step.index === 0) {
         for (const node of this.form.clusterInfo.nodes) {
           if (node.credentialID === null || node.credentialID === "") {
@@ -558,6 +566,22 @@ export default {
       })
     },
 
+    autoInputEtcd() {
+      this.$set(this.form.clusterInfo, "etcdDataDir", "/var/lib/etcd")
+      this.form.clusterInfo.etcdSnapshotCount = 50000
+      this.form.clusterInfo.etcdCompactionRetention = 1
+      this.form.clusterInfo.etcdMaxRequest = 10
+      this.form.clusterInfo.etcdQuotaBackend = 8
+    },
+    autoInputDocker() {
+      if (this.form.clusterInfo.runtimeType === "docker") {
+        this.$set(this.form.clusterInfo, "dockerStorageDir", "/var/lib/docker")
+        this.$set(this.form.clusterInfo, "dockerSubnet", "172.17.0.1/16")
+      } else {
+        this.$set(this.form.clusterInfo, "containerdStorageDir", "/var/lib/containerd")
+      }
+    },
+
     loadClusterInfo() {
       this.loading = true
       this.form.apiServer = this.clusterImportInfo.apiServer
@@ -566,12 +590,20 @@ export default {
       this.form.projectName = this.clusterImportInfo.projectName
       this.form.architectures = this.clusterImportInfo.architectures
       this.form.isKoCluster = this.clusterImportInfo.isKoCluster
+      this.form.authenticationMode = this.clusterImportInfo.authenticationMode
+      this.form.certDataStr = this.clusterImportInfo.certDataStr
+      this.form.keyDataStr = this.clusterImportInfo.keyDataStr
+      this.form.configContent = this.clusterImportInfo.configContent
       let data = {
         name: this.clusterImportInfo.name,
         apiServer: this.clusterImportInfo.apiServer,
         router: this.clusterImportInfo.router,
         token: this.clusterImportInfo.token,
         architectures: this.clusterImportInfo.architectures,
+        authenticationMode: this.clusterImportInfo.authenticationMode,
+        certDataStr: this.clusterImportInfo.certDataStr,
+        keyDataStr: this.clusterImportInfo.keyDataStr,
+        configContent: this.clusterImportInfo.configContent,
       }
       getClusterInfo(data)
         .then((res) => {

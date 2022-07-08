@@ -405,7 +405,7 @@ export default {
           this.search()
           this.$message({
             type: "success",
-            message: this.$t("commons.msg.op_success"),
+            message: this.$t("commons.msg.restart_after_delete"),
           })
           this.dialogDeleteVisible = false
         })

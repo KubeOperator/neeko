@@ -127,7 +127,7 @@
 <script>
 import { listPod, listDeployment, getClusterToken } from "@/api/cluster/cluster"
 import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
-import { listNamespace } from "@/api/cluster/namespace"
+import { listNamespace } from "@/api/cluster/cluster"
 import { getClusterByName } from "@/api/cluster"
 import KoDetail from "./ko-detail.vue"
 

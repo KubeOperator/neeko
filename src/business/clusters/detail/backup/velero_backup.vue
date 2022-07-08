@@ -194,7 +194,7 @@
 <script>
 import ComplexTable from "@/components/complex-table"
 import { createVeleroBackup, deleteVeleroBackup, getVeleroBackupLogs, getVeleroBackups, restore } from "@/api/cluster/backup"
-import { listNamespace } from "@/api/cluster/namespace"
+import { listNamespace } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
 export default {

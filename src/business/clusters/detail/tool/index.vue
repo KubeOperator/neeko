@@ -293,7 +293,7 @@
 <script>
 import { listTool, enableTool, disableTool, getFlex, enableFlex, disableFlex, upgradeTool, getNodePort, syncTool } from "@/api/cluster/tool"
 import { listNodeInCluster } from "@/api/cluster/node"
-import { listNamespace } from "@/api/cluster/namespace"
+import { listNamespace } from "@/api/cluster/cluster"
 import { listStorageClass } from "@/api/cluster/storage"
 import { getClusterByName, getSecret } from "@/api/cluster"
 import { changeUnderLineToPoint } from "@/utils/format_conversion"

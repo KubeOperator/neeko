@@ -33,7 +33,9 @@
             <template>
               <el-button-group>
                 <el-button size="small" :disabled="provider === ''" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
-                <el-button size="small" :disabled="provider === ''" @click="provisionerCreateExist()">{{$t('commons.button.import_exist')}}</el-button>
+                <el-tooltip :content="$t('cluster.detail.storage.provisioner_exist_help')" placement="top-start">
+                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreateExist()">{{$t('commons.button.import_exist')}}</el-button>
+                </el-tooltip>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
