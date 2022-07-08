@@ -846,7 +846,7 @@ const message = {
     component: "Component",
     version: "Version",
     see_documentation: "Documentation",
-    manifest_help: "By default, Kubernetes in the offline package only carries the latest two versions. If the current environment is offline, you need to execute the script to generate the old version of Kubernetes offline package and push it to the nexus warehouse."
+    manifest_help: "An offline package carries the latest version of Kubernetes by default. If you are in an offline environment, you will need to manually execute the script to generate the target version of Kubernetes offline package and push it to the Nexus repository."
   },
   system_log: {
     title: "SystemLog",
