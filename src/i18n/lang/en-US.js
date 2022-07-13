@@ -766,6 +766,7 @@ const message = {
     message_system: "System message",
     message_cluster: "Cluster Message",
     receive_setting: "Receive Setting",
+    user: "User",
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",

@@ -770,6 +770,7 @@ const message = {
     message_system: "系统消息",
     message_cluster: "集群消息",
     receive_setting: "接收设置",
+    user: "接收用户",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",

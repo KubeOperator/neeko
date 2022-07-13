@@ -35,3 +35,7 @@ export function getUserSetting (name) {
 export function updateUserSetting (data) {
   return post(`${userSettingUrl}/update`, data)
 }
+
+export function searchUsersByName (name) {
+  return post(`${userUrl}/search?`, {quick: {field: "quick",value: name} })
+}

@@ -1,5 +1,5 @@
 <template>
-  <layout-content :header="$t('message.message_subscribe')">
+  <layout-content :header="$t('message.message_subscribe')" v-loading="loading">
     <el-tabs v-model="type" @tab-click="changeType">
       <el-tab-pane :label="$t('message.message_system')" name="SYSTEM"></el-tab-pane>
       <el-tab-pane :label="$t('message.message_cluster')" name="CLUSTER"></el-tab-pane>
@@ -14,7 +14,7 @@
         <el-option v-for="item in clusters" :key="item.id" :value="item.name" :label="item.name"></el-option>
       </el-select>
     </div>
-    <complex-table :data="data" v-loading="loading" :pagination-config="paginationConfig" @search="search">
+    <complex-table :data="data" :pagination-config="paginationConfig" @search="search"  ref="multipleTable">
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name" min-width="100">
         <template v-slot:default="{row}">
           <span>{{ $t("message.title." + row.name) }}</span>
@@ -45,15 +45,82 @@
                      @change="changeSubConfig(row)"></el-switch>
         </template>
       </el-table-column>
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix/>
     </complex-table>
+
+
+    <el-dialog :visible.sync="openUserPage" :title="$t('message.user')">
+      <el-button-group>
+        <el-button size="small" @click="addUser()">{{ $t("commons.button.create") }}</el-button>
+        <el-button size="small"  @click="del()">{{ $t("commons.button.delete") }}
+        </el-button>
+      </el-button-group>
+      <el-table
+              ref="multipleTable"
+              v-loading="userLoading"
+              :data="tableUsers.slice((pageConfig.currentPage-1)*pageConfig.pageSize,pageConfig.currentPage*pageConfig.pageSize)"
+              @selection-change="handleSelectionChange">
+        <el-table-column type="selection"></el-table-column>
+        <el-table-column :label="$t('commons.table.name')" prop="name" min-width="100" fix>
+        </el-table-column>
+        <el-table-column :label="$t('setting.email')" prop="email" min-width="100" fix>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+              :current-page.sync="pageConfig.currentPage"
+              :page-size="pageConfig.pageSize"
+              layout="prev, pager, next"
+              :total="tableUsers.length">
+      </el-pagination>
+    </el-dialog>
+    <el-dialog
+            :visible="openAddPage"
+            :title="$t('message.user')"
+            width="30%"
+            @close="closeAddUser">
+      <el-select
+              v-model="form.users"
+              size="medium"
+              multiple
+              filterable
+              remote
+              reserve-keyword
+              :placeholder="$t('project.key_words')"
+              :remote-method="getUsers"
+              value-key="id"
+              :loading="searchUserLoading"
+              style="width:100%"
+              append-to-body>
+        <el-option
+                v-for="item in addUsers"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+        </el-option>
+      </el-select>
+      <template #footer>
+    <span class="dialog-footer">
+      <el-button @click="closeAddUser">{{ $t("commons.button.cancel") }}</el-button>
+      <el-button type="primary" @click="submit" v-preventReClick>{{ $t("commons.button.submit") }}</el-button>
+    </span>
+      </template>
+    </el-dialog>
   </layout-content>
 </template>
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
-import {searchMsgSubscribe, updateMsgSubScribe} from "@/api/msg-subscribe"
+import {
+  addSubscribeUser,
+  deleteSubscribeUser,
+  searchMsgSubscribe,
+  searchMsgSubscribeByName,
+  updateMsgSubScribe
+} from "@/api/msg-subscribe"
 import {getProjectsHasClusters} from "@/api/projects"
+import {searchUsers} from "@/api/cluster-member"
+import {searchUsersByName} from "@/api/user"
 
 export default {
   name: "",
@@ -72,8 +139,33 @@ export default {
       resourceName: "",
       projectName: "",
       projects: [],
-      clusters: []
+      clusters: [],
+      buttons: [
+        {
+          label: this.$t("message.user"), icon: "el-icon-user", click: (row) => {
+            this.openPage(row)
+          }
+        },
+      ],
+      openUserPage: false,
+      users: [],
+      pageConfig: {
+        currentPage: 1,
+        pageSize: 10,
+      },
+      delUsers: [],
+      openAddPage: false,
+      form: {
+        msgSubscribeId: "",
+        users: []
+      },
+      searchUserLoading: false,
+      addUsers: [],
+      subscribeName: "",
+      tableUsers:[],
+      userLoading: false
     }
+
   },
   methods: {
     search () {
@@ -132,6 +224,85 @@ export default {
         this.loading = false
       })
     },
+    openPage (row) {
+      this.form.msgSubscribeId = row.id
+      this.subscribeName = row.name
+      this.tableUsers = row.users
+      this.openUserPage = true
+    },
+    handleSelectionChange (val) {
+      this.delUsers = val
+    },
+    addUser () {
+      this.openAddPage = true
+    },
+    closeAddUser () {
+      this.openAddPage = false
+      this.form.users = []
+    },
+    submit () {
+      this.userLoading = true
+      addSubscribeUser(this.form).then(() => {
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.create_success"),
+        })
+        this.closeAddUser()
+        searchMsgSubscribeByName(this.type, this.resourceName, this.subscribeName).then(res => {
+          this.tableUsers = res.items[0].users
+        })
+      }).finally(() => {
+        this.userLoading = false
+      })
+    },
+    del () {
+      if (this.delUsers.length === 0){
+        return
+      }
+
+      let users = []
+      for (const user of this.delUsers) {
+        users.push(user.id)
+      }
+      const form = {
+        msgSubscribeId: this.form.msgSubscribeId,
+        users: users,
+      }
+      this.userLoading = true
+      deleteSubscribeUser(form).then(() => {
+        this.$message({
+          type: "success",
+          message: this.$t("commons.msg.delete_success"),
+        })
+        searchMsgSubscribeByName(this.type, this.resourceName, this.subscribeName).then(res => {
+          this.tableUsers = res.items[0].users
+        })
+      }).finally(() => {
+        this.userLoading = false
+      })
+    },
+    getUsers (query) {
+      if (query !== "") {
+        this.searchUserLoading = true
+        if (this.type === "SYSTEM") {
+          searchUsersByName(query).then(data => {
+            this.addUsers = data.items
+          }).finally(() => {
+            this.searchUserLoading = false
+          })
+        } else {
+          searchUsers(this.projectName, query).then(data => {
+            this.searchUserLoading = false
+            this.addUsers = data.items
+          }).finally(() => {
+            this.searchUserLoading = false
+          })
+        }
+      }
+    },
+    importAvailable(){
+      return true
+    }
   },
   created () {
     this.search()
