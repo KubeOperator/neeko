@@ -14,7 +14,7 @@
         <el-option v-for="item in clusters" :key="item.id" :value="item.name" :label="item.name"></el-option>
       </el-select>
     </div>
-    <complex-table :data="data" :pagination-config="paginationConfig" @search="search"  ref="multipleTable">
+    <complex-table :data="data" :pagination-config="paginationConfig" @search="search" ref="multipleTable">
       <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name" min-width="100">
         <template v-slot:default="{row}">
           <span>{{ $t("message.title." + row.name) }}</span>
@@ -52,7 +52,7 @@
     <el-dialog :visible.sync="openUserPage" :title="$t('message.user')">
       <el-button-group>
         <el-button size="small" @click="addUser()">{{ $t("commons.button.create") }}</el-button>
-        <el-button size="small"  @click="del()">{{ $t("commons.button.delete") }}
+        <el-button size="small" @click="del()">{{ $t("commons.button.delete") }}
         </el-button>
       </el-button-group>
       <el-table
@@ -119,7 +119,7 @@ import {
   updateMsgSubScribe
 } from "@/api/msg-subscribe"
 import {getProjectsHasClusters} from "@/api/projects"
-import {searchUsers} from "@/api/cluster-member"
+import {searchUsersByProject} from "@/api/cluster-member"
 import {searchUsersByName} from "@/api/user"
 
 export default {
@@ -162,7 +162,7 @@ export default {
       searchUserLoading: false,
       addUsers: [],
       subscribeName: "",
-      tableUsers:[],
+      tableUsers: [],
       userLoading: false
     }
 
@@ -256,7 +256,7 @@ export default {
       })
     },
     del () {
-      if (this.delUsers.length === 0){
+      if (this.delUsers.length === 0) {
         return
       }
 
@@ -283,6 +283,7 @@ export default {
     },
     getUsers (query) {
       if (query !== "") {
+        this.addUsers = []
         this.searchUserLoading = true
         if (this.type === "SYSTEM") {
           searchUsersByName(query).then(data => {
@@ -291,17 +292,13 @@ export default {
             this.searchUserLoading = false
           })
         } else {
-          searchUsers(this.projectName, query).then(data => {
-            this.searchUserLoading = false
+          searchUsersByProject(this.projectName, this.resourceName, query).then(data => {
             this.addUsers = data.items
           }).finally(() => {
             this.searchUserLoading = false
           })
         }
       }
-    },
-    importAvailable(){
-      return true
     }
   },
   created () {
