@@ -8,10 +8,10 @@
 
     <el-drawer :title="$t('message.message_in_station')" :visible.sync="drawer" direction="rtl" size="25%"
                :modal="false" v-loading="loading">
-      <div class="notice-list">
+      <div class="notice-list" v-infinite-scroll="next">
         <div class="notice-item" v-for="(item, index) in messages" :key="index" @mouseover="hover = index"
-             @mouseleave="hover = null">
-          <div class="notice-title" @click="open(item)">
+             @mouseleave="hover = null" @click="open(item)">
+          <div class="notice-title">
             <div class="text">
               <svg v-if="item.readStatus === 'READ'" class="icon svg-icon" aria-hidden="true"
                    :style="{ color: '#969696'}" size="5x">
@@ -31,6 +31,7 @@
             </div>
           </div>
           <div class="notice-content">{{ item.content.title }}</div>
+          <p v-if="loading">加载中...</p>
         </div>
       </div>
     </el-drawer>
@@ -67,7 +68,7 @@ export default {
       hover: null,
       paginationConfig: {
         currentPage: 1,
-        pageSize: 10,
+        pageSize: 8,
         total: 0,
       },
       messages: [],
@@ -87,6 +88,7 @@ export default {
       listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
         this.messages = res.items
         this.count = res.unread
+        this.paginationConfig.total = res.total
       }).finally(() => {
         this.loading = false
       })
@@ -101,6 +103,13 @@ export default {
     open (item) {
       this.openDetail = true
       this.item = item
+    },
+    next () {
+      if (this.paginationConfig.pageSize >= this.paginationConfig.total) {
+        return
+      }
+      this.paginationConfig.pageSize = this.paginationConfig.pageSize + 8
+      this.load()
     }
   },
   created () {
