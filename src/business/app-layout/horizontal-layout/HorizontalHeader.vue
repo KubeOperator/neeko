@@ -8,6 +8,9 @@
         <project-switch/>
       </div>
       <div class="navbar-item">
+        <station-letter></station-letter>
+      </div>
+      <div class="navbar-item">
         <help/>
       </div>
       <div class="navbar-item">
@@ -21,16 +24,17 @@
 </template>
 
 <script>
-  import SidebarToggleButton from "@/components/layout/sidebar/SidebarToggleButton";
-  import LanguageSwitch from "@/business/app-layout/header-components/LanguageSwitch";
-  import PersonalSetting from "@/business/app-layout/header-components/PersonalSetting";
-  import ProjectSwitch from "../header-components/ProjectSwitch";
-  import Help from "@/business/app-layout/header-components/Help";
+import SidebarToggleButton from "@/components/layout/sidebar/SidebarToggleButton"
+import LanguageSwitch from "@/business/app-layout/header-components/LanguageSwitch"
+import PersonalSetting from "@/business/app-layout/header-components/PersonalSetting"
+import ProjectSwitch from "../header-components/ProjectSwitch"
+import Help from "@/business/app-layout/header-components/Help"
+import StationLetter from "@/business/app-layout/header-components/StationLetter"
 
-  export default {
-    name: "HorizontalHeader",
-    components: {ProjectSwitch, PersonalSetting, LanguageSwitch, SidebarToggleButton, Help}
-  }
+export default {
+  name: "HorizontalHeader",
+  components: { StationLetter, ProjectSwitch, PersonalSetting, LanguageSwitch, SidebarToggleButton, Help }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -798,6 +798,11 @@ const message = {
     mail: "Email",
     work_wechat: "Wechat",
     dingTalk: "DingTalk",
+    message_system: "System message",
+    message_cluster: "Cluster Message",
+    receive_setting: "Receive Setting",
+    user: "User",
+    loading: "loading...",
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",
@@ -810,6 +815,8 @@ const message = {
       CLUSTER_DELETE: "Cluster Delete",
       CLUSTER_SCALE: "Cluster Scale",
       CLUSTER_RESTORE: "Cluster Restore ",
+      LICENSE_EXPIRE: "License Expire",
+      CLUSTER_OPERATOR: "Cluster Operator",
     },
     detail: {
       basicInformation: "Information",
@@ -1108,12 +1115,12 @@ const message = {
         testUser: "Test User",
         status: "Status",
         webhookAddress: "Webhook Address",
-        dingTalkConcept: "Basic concepts of DingTalk",
+        dingTalkConcept: "DingTalk Robot Message Sending Settings",
         dingTalkLimit: "DingTalk message frequency limit",
         wechatConcept: "Basic Concepts of Enterprise WeChat",
         wechatLimit: "Enterprise WeChat message frequency limit",
         wechatSetting: "Enterprise WeChat Settings",
-        dingTalkSetting: "DingTalk Settings",
+        dingTalkSetting: "DingTalk Settings"
       }
     },
     option: {

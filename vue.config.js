@@ -20,12 +20,12 @@ module.exports = {
         secure: false
       },
       '/api': {
-        target: 'http://0.0.0.0:8080',
+        target: 'http://127.0.0.1:8080',
         ws: true,
         secure: false,
       },
       '/proxy': {
-        target: 'http://0.0.0.0:8080',
+        target: 'http://127.0.0.1:8080',
         ws: true,
         secure: false,
       },

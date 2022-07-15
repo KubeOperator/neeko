@@ -1,89 +1,151 @@
 <template>
-  <el-tabs tab-position="left">
-    <el-tab-pane  :label="$t('setting.table.message.wechat')">
-      <el-card class="box-card" style="height: 545px">
+  <el-tabs tab-position="left" v-model="type" @tab-click="getAccount">
+    <el-tab-pane :label="$t('setting.email')" name="EMAIL">
+      <el-card class="box-card" style="height: 500px">
         <div slot="header" class="clearfix">
-          <span>{{$t('setting.table.message.wechatSetting')}}</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="getWechat">{{$t('commons.button.refresh')}}</el-button>
+          <span>{{ $t("setting.email") }}</span>
+          <el-button style="float: right; padding: 3px 0" @click="getAccount" type="text">
+            {{ $t("commons.button.refresh") }}
+          </el-button>
         </div>
         <el-col :span="2"><br/></el-col>
-        <el-col :span="15">
-        <el-form ref="form" v-loading="loading" label-position="left" :model="wechat" label-width="120px">
-          <el-form-item  style="width: 100%" label="corpid" required>
-            <el-input v-model="wechat.vars['WORK_WEIXIN_CORP_ID']"></el-input>
-          </el-form-item>
-          <el-form-item  style="width: 100%" label="agentid" required>
-            <el-input v-model="wechat.vars['WORK_WEIXIN_AGENT_ID']"></el-input>
-          </el-form-item>
-          <el-form-item  style="width: 100%" label="secret" required>
-            <el-input type="password" show-password v-model="wechat.vars['WORK_WEIXIN_CORP_SECRET']"></el-input>
-          </el-form-item>
-          <el-form-item  style="width: 100%" :label="$t('setting.table.message.testUser')" required>
-            <el-input v-model="wechat.vars['WORK_WEIXIN_TEST_USER']"></el-input>
-          </el-form-item>
-          <el-form-item  style="width: 100%" :label="$t('setting.table.message.status')" required>
-            <el-switch
-              v-model="wechat.vars['WORK_WEIXIN_STATUS']"
-              active-value="ENABLE"
-              inactive-value="DISABLE"
-              :active-text="$t('commons.button.enable')"
-              :inactive-text="$t('commons.button.disable')">
-              >
-            </el-switch>
-          </el-form-item>
-          <el-form-item>
-            <a href="https://work.weixin.qq.com/api/doc/90000/90135/90665"  target="_blank" class="link-color">{{ $t('setting.table.message.wechatConcept')}}</a><br/>
-            <a href="https://work.weixin.qq.com/api/doc/90000/90139/90312"  target="_blank" class="link-color">{{ $t('setting.table.message.wechatLimit')}}</a>
-            <p style="font-size: 12px;color: #4E5051">{{$t('setting.helpInfo.messageInfo')}}</p>
-          </el-form-item>
-          <div style="float: right">
-            <el-form-item>
-              <el-button @click="wechatVerify" :disabled="btnSelect">{{$t('commons.button.verify')}}</el-button>
-              <el-button type="primary" @click="wechatOnSubmit" :disabled="btn">{{$t('commons.button.submit')}}</el-button>
+        <el-col :span="16">
+          <el-form ref="emailForm" v-loading="loading" label-position="left" :rules="emailRules" :model="form"
+                   label-width="120px">
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.smtp')" prop="config.address">
+              <el-input v-model="form.config.address"></el-input>
             </el-form-item>
-          </div>
-        </el-form>
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.port')" prop="config.port">
+              <el-input type="number" v-model.number="form.config.port"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.username')" prop="config.username">
+              <el-input v-model="form.config.username"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.password')" prop="config.password">
+              <el-input type="password" show-password :placeholder="$t('setting.helpInfo.inputPassword')"
+                        v-model="form.config.password"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.testUser')" prop="config.testUser">
+              <el-input v-model="form.config.testUser"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.mail.status')">
+              <el-switch
+                      v-model="form.status"
+                      active-value="ENABLE"
+                      inactive-value="DISABLE"
+                      :active-text="$t('commons.button.enable')"
+                      :inactive-text="$t('commons.button.disable')">
+              </el-switch>
+            </el-form-item>
+            <div style="float: right">
+              <el-form-item>
+                <el-button @click="verify">{{ $t("commons.button.verify") }}</el-button>
+                <el-button type="primary" @click="onSubmit('emailForm')" v-preventReClick>{{ $t("commons.button.submit") }}
+                </el-button>
+              </el-form-item>
+            </div>
+          </el-form>
         </el-col>
       </el-card>
     </el-tab-pane>
-
-    <el-tab-pane :label="$t('setting.table.message.dingTalk')">
+    <el-tab-pane :label="$t('setting.table.message.wechat')" name="WORK_WEIXIN">
+      <el-card class="box-card" style="height: 545px">
+        <div slot="header" class="clearfix">
+          <span>{{ $t("setting.table.message.wechatSetting") }}</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="getAccount">
+            {{ $t("commons.button.refresh") }}
+          </el-button>
+        </div>
+        <el-col :span="2"><br/></el-col>
+        <el-col :span="15">
+          <el-form ref="weiXinForm" v-loading="loading" label-position="left" :model="form" label-width="120px"
+                   :rules="weiXinRules">
+            <el-form-item style="width: 100%" label="corpId" prop="config.corpId">
+              <el-input v-model="form.config.corpId"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" label="agentid" prop="config.agentId">
+              <el-input v-model="form.config.agentId"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" label="secret" prop="config.corpSecret">
+              <el-input type="password" show-password v-model="form.config.corpSecret"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.message.testUser')" prop="config.testUser">
+              <el-input v-model="form.config.testUser"></el-input>
+            </el-form-item>
+            <el-form-item style="width: 100%" :label="$t('setting.table.message.status')">
+              <el-switch
+                      v-model="form.status"
+                      active-value="ENABLE"
+                      inactive-value="DISABLE"
+                      :active-text="$t('commons.button.enable')"
+                      :inactive-text="$t('commons.button.disable')">
+                >
+              </el-switch>
+            </el-form-item>
+            <el-form-item>
+              <a href="https://work.weixin.qq.com/api/doc/90000/90135/90665" target="_blank"
+                 class="link-color">{{ $t("setting.table.message.wechatConcept") }}</a><br/>
+              <a href="https://work.weixin.qq.com/api/doc/90000/90139/90312" target="_blank"
+                 class="link-color">{{ $t("setting.table.message.wechatLimit") }}</a>
+              <p style="font-size: 12px;color: #4E5051">{{ $t("setting.helpInfo.messageInfo") }}</p>
+            </el-form-item>
+            <div style="float: right">
+              <el-form-item>
+                <el-button @click="verify">{{ $t("commons.button.verify") }}</el-button>
+                <el-button type="primary" @click="onSubmit('weiXinForm')">{{ $t("commons.button.submit") }}
+                </el-button>
+              </el-form-item>
+            </div>
+          </el-form>
+        </el-col>
+      </el-card>
+    </el-tab-pane>
+    <el-tab-pane :label="$t('setting.table.message.dingTalk')" name="DING_TALK">
       <el-card class="box-card" style="height: 500px">
         <div slot="header" class="clearfix">
-          <span>{{$t('setting.table.message.dingTalkSetting')}}</span>
-          <el-button style="float: right; padding: 3px 0" @click="getDingTalk" type="text">{{$t('commons.button.refresh')}}</el-button>
+          <span>{{ $t("setting.table.message.dingTalkSetting") }}</span>
+          <el-button style="float: right; padding: 3px 0" @click="getAccount" type="text">
+            {{ $t("commons.button.refresh") }}
+          </el-button>
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="16">
           <div class="grid-content bg-purple-light">
-            <el-form ref="form" label-position="left" v-loading="loading" :model="dingTalk" label-width="150px">
-              <el-form-item  style="width: 100%" :label="$t('setting.table.message.webhookAddress')" required>
-                <el-input v-model="dingTalk.vars['DING_TALK_WEBHOOK']"></el-input>
+            <el-form ref="dingTalkForm" label-position="left" v-loading="loading" :model="form" label-width="150px"
+                     :rules="dingTalkRules">
+              <el-form-item style="width: 100%" :label="$t('setting.table.message.webhookAddress')"
+                            prop="config.webHook">
+                <el-input v-model="form.config.webHook"></el-input>
               </el-form-item>
-              <el-form-item  style="width: 100%" label="secret" required>
-                <el-input type="password" show-password v-model="dingTalk.vars['DING_TALK_SECRET']"></el-input>
+              <el-form-item style="width: 100%" label="secret" prop="config.secret">
+                <el-input type="password" show-password v-model="form.config.secret"></el-input>
               </el-form-item>
-              <el-form-item  style="width: 100%" :label="$t('setting.table.message.testUser')" required>
-                <el-input v-model="dingTalk.vars['DING_TALK_TEST_USER']"></el-input>
+              <el-form-item style="width: 100%" :label="$t('setting.table.message.testUser')" prop="config.testUser">
+                <el-input v-model="form.config.testUser"></el-input>
               </el-form-item>
-              <el-form-item  style="width: 100%" :label="$t('setting.table.message.status')" required>
+              <el-form-item style="width: 100%" :label="$t('setting.table.message.status')">
                 <el-switch
-                  v-model="dingTalk.vars['DING_TALK_STATUS']"
-                  active-value="ENABLE"
-                  inactive-value="DISABLE"
-                  :active-text="$t('commons.button.enable')"
-                  :inactive-text="$t('commons.button.disable')">
+                        v-model="form.status"
+                        active-value="ENABLE"
+                        inactive-value="DISABLE"
+                        :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')">
                 </el-switch>
               </el-form-item>
               <el-form-item>
-                <a href="https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq/26eaddd5"  target="_blank" class="link-color">{{ $t('setting.table.message.dingTalkConcept')}}</a><br/>
-                <a href="https://ding-doc.dingtalk.com/doc#/faquestions/eovtrt"  target="_blank" class="link-color">{{ $t('setting.table.message.dingTalkLimit')}}</a>
-                <p style="font-size: 12px;color: #4E5051">{{ $t('setting.helpInfo.messageInfo')}}</p>
+                <a href="https://open.dingtalk.com/document/group/assign-a-webhook-url-to-an-internal-chatbot" target="_blank"
+                   class="link-color">{{ $t("setting.table.message.dingTalkConcept") }}</a><br/>
+                <a href="https://ding-doc.dingtalk.com/doc#/faquestions/eovtrt" target="_blank"
+                   class="link-color">{{ $t("setting.table.message.dingTalkLimit") }}</a>
+                <p style="font-size: 12px;color: #4E5051">{{ $t("setting.helpInfo.messageInfo") }}</p>
               </el-form-item>
               <div style="float: right">
                 <el-form-item>
-                  <el-button  @click="dingTalkVerify" :disabled="btnSelectDk">{{$t('commons.button.verify')}}</el-button>
-                  <el-button type="primary" @click="dingTalkOnSubmit" :disabled="btnDk">{{$t('commons.button.submit')}}</el-button>
+                  <el-button @click="verify" :disabled="loading">{{ $t("commons.button.verify") }}
+                  </el-button>
+                  <el-button type="primary" @click="onSubmit('dingTalkForm')">
+                    {{ $t("commons.button.submit") }}
+                  </el-button>
                 </el-form-item>
               </div>
             </el-form>
@@ -96,144 +158,98 @@
 </template>
 
 <script>
-import {checkMessage, createMessageSetting, getMessageSetting} from "@/api/system-setting";
+import {
+  createMsgAccount,
+  getMsgAccount, verifyMsgAccount
+} from "@/api/system-setting"
+import Rule from "@/utils/rules"
 
 export default {
   name: "Message",
-  data() {
+  data () {
     return {
-      wechat: {
-        vars: {},
-        tab: ''
-      },
       dingTalk: {
         vars: {},
-        tab: ''
+        tab: ""
       },
-      btn: false,
-      btnDk: false,
-      loading: false
+      loading: false,
+      emailRules: {
+        config: {
+          address: [Rule.RequiredRule],
+          port: [Rule.RequiredRule],
+          username: [Rule.RequiredRule],
+          password: [Rule.RequiredRule],
+          testUser: [Rule.RequiredRule],
+        },
+        status: [Rule.RequiredRule],
+      },
+      weiXinRules: {
+        config: {
+          corpId: [Rule.RequiredRule],
+          agentId: [Rule.RequiredRule],
+          corpSecret: [Rule.RequiredRule],
+          testUser: [Rule.RequiredRule],
+        },
+        status: [Rule.RequiredRule],
+      },
+      dingTalkRules: {
+        config: {
+          secret: [Rule.RequiredRule],
+          testUser: [Rule.RequiredRule],
+          webHook: [Rule.RequiredRule],
+        },
+        status: [Rule.RequiredRule],
+      },
+      type: "EMAIL",
+      form: {
+        config: {}
+      }
     }
   },
   methods: {
-    wechatOnSubmit() {
+    getAccount () {
+      getMsgAccount(this.type).then(res => {
+        this.form = res
+      })
+    },
+    verify () {
       this.loading = true
-      createMessageSetting("WORK_WEIXIN",{
-        vars: this.wechat.vars,
-        tab: "WORK_WEIXIN"
-      }).then(() => {
-        this.loading = false
+      verifyMsgAccount(this.form).then(() => {
         this.$message({
-          type: 'success',
-          message: this.$t('commons.msg.save_success')
-        });
-        this.$router.push({name: "Message"})
-      }).catch(error => {
-        this.$message({
-          type: "error",
-          message: error.error.msg,
+          type: "success",
+          message: this.$t("commons.msg.verify_success")
         })
       }).finally(() => {
         this.loading = false
       })
     },
-    dingTalkOnSubmit() {
-      this.loading = true
-      createMessageSetting("DING_TALK",{
-        vars: this.dingTalk.vars,
-        tab: "DING_TALK"
-      }).then(() => {
-        this.loading = false
-        this.$message({
-          type: 'success',
-          message: this.$t('commons.msg.save_success')
-        });
-        this.$router.push({name: "Message"})
-      }).catch(error => {
-        this.$message({
-          type: "error",
-          message: error.error.msg,
+    onSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (!valid) {
+          return
+        }
+        this.loading = true
+        createMsgAccount(this.form).then(() => {
+          this.$message({
+            type: "success",
+            message: this.$t("commons.msg.save_success")
+          })
+        }).finally(() => {
+          this.loading = false
         })
-      }).finally(() => {
-        this.loading = false
       })
-    },
-    wechatVerify() {
-      this.loading = true
-      checkMessage("WORK_WEIXIN",{
-        vars: this.wechat.vars,
-        tab: "WORK_WEIXIN"
-      }).then(() => {
-        this.loading = false
-        this.$message({
-          type: 'success',
-          message: this.$t('commons.msg.verify_success')
-        });
-        this.btn = false
-      }).finally(() => {
-        this.loading = false
-      })
-    },
-    dingTalkVerify() {
-      this.loading = true
-      checkMessage("DING_TALK",{
-        vars: this.dingTalk.vars,
-        tab: "DING_TALK"
-      }).then(() => {
-        this.loading = false
-        this.$message({
-          type: 'success',
-          message: this.$t('commons.msg.verify_success')
-        });
-        this.btnDk = false
-      }).finally(() => {
-        this.loading = false
-      })
-    },
-    getWechat() {
-      getMessageSetting("WORK_WEIXIN").then( data => {
-        this.wechat.vars = data.vars
-        this.wechat.tab = data.tab
-      })
-    },
-    getDingTalk() {
-      getMessageSetting("DING_TALK").then( data => {
-        this.dingTalk.vars = data.vars
-        this.dingTalk.tab = data.tab
-      })
-    },
-    refresh(){
-      this.getWechat()
-      this.getDingTalk()
     }
   },
-  computed: {
-    btnSelect(){
-      let status = this.wechat.vars['WORK_WEIXIN_STATUS']
-      if (status == "ENABLE"){
-        return false
-      }else {
-        return true
-      }
-    },
-    btnSelectDk(){
-      let status = this.dingTalk.vars['DING_TALK_STATUS']
-      if (status == "ENABLE"){
-        return false
-      }else {
-        return true
-      }
-    }
-  },
-  created() {
-    this.refresh()
+  computed: {},
+  created () {
+    this.getAccount()
   }
 }
 </script>
 
 <style scoped>
-.link-color{
-  color: #447DF7;
-  font-size: 10px;
-}
+    .link-color {
+        color: #447DF7;
+        font-size: 10px;
+    }
 </style>

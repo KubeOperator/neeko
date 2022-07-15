@@ -128,7 +128,8 @@ const message = {
       talk: "参与讨论",
       star: "点亮 Star",
       version: "版本",
-      ko_introduction: "是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。"
+      ko_introduction: "是一个开源的轻量级 Kubernetes 发行版，专注于帮助企业规划、部署和运营生产级别的 Kubernetes 集群。",
+      setting: "个人设置"
     },
     help: {
       help: "帮助",
@@ -810,6 +811,11 @@ const message = {
     mail: "邮件",
     work_wechat: "企业微信",
     dingTalk: "钉钉",
+    message_system: "系统消息",
+    message_cluster: "集群消息",
+    receive_setting: "接收设置",
+    user: "接收用户",
+    loading: "加载中...",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
@@ -822,6 +828,8 @@ const message = {
       CLUSTER_DELETE: "集群删除",
       CLUSTER_SCALE: "集群伸缩",
       CLUSTER_RESTORE: "集群恢复",
+      LICENSE_EXPIRE: "License 到期",
+      CLUSTER_OPERATOR: "集群操作"
     },
     detail: {
       basicInformation: "基本信息",
@@ -1122,7 +1130,7 @@ const message = {
         testUser: "测试用户",
         status: "状态",
         webhookAddress: "webhook地址",
-        dingTalkConcept: "钉钉基本概念",
+        dingTalkConcept: "钉钉机器人消息发送设置",
         dingTalkLimit: "钉钉消息频率限制",
         wechatConcept: "企业微信基本概念",
         wechatLimit: "企业微信消息频率限制",
