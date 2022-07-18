@@ -331,7 +331,11 @@ export default {
       })
     },
     openXterm(row) {
-      openLoggerWithName(this.clusterName, row.id)
+      if (row.status === "Terminating") {
+        openLoggerWithName(this.clusterName, row.id + " (disable)")
+      } else{
+        openLoggerWithName(this.clusterName, row.id + " (enable)")
+      }
     },
     onSync() {
       this.dialogSyncVisible = true
