@@ -2,7 +2,7 @@ import Layout from "@/business/app-layout/horizontal-layout"
 
 const XPack = {
   path: "/xpack",
-  sort: 8,
+  sort: 9,
   name: "XPack",
   component: Layout,
   meta: {

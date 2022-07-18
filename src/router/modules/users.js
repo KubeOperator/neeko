@@ -1,7 +1,7 @@
 import Layout from "@/business/app-layout/horizontal-layout"
 
 const Users = {
-  sort: 7,
+  sort: 8,
   path: "/users",
   component: Layout,
   name: "User",
