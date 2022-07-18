@@ -227,6 +227,7 @@ import { getClusterByName } from "@/api/cluster"
 import KoLogs from "@/components/ko-logs/index.vue"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 
 export default {
   name: "ClusterNode",
@@ -568,6 +569,10 @@ export default {
 
     // cluster logs
     getStatus(row) {
+      if (row.status === "Terminating") {
+        openLoggerWithName(row.name, row.currentTaskID)
+        return
+      }
       this.operationType = "waiting-poll"
       this.dialogLogVisible = true
       this.currentNode = row

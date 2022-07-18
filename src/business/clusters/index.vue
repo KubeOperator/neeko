@@ -162,6 +162,7 @@ import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
 import { jumpTo } from "../../api/system-setting"
 import Rule from "@/utils/rules"
+import { openLoggerWithName } from "@/api/cluster/tasks"
 
 export default {
   name: "ClusterList",
@@ -422,6 +423,10 @@ export default {
     },
 
     getStatus(row) {
+      if (row.status === "Terminating") {
+        openLoggerWithName(row.name, row.currentTaskID)
+        return
+      }
       this.isRefresh = !this.isRefresh
       this.operationType = row.status.indexOf("NotReady") !== -1 ? "not-ready" : "waiting-poll"
       this.dialogLogVisible = true
