@@ -36,7 +36,7 @@
       </div>
     </el-drawer>
     <el-dialog :visible.sync="openDetail" :title="item.content.title" width="30%">
-      <div>
+      <div v-if="item.msg.name !== 'LICENSE_EXPIRE'">
         <el-descriptions :title="$t('message.detail.detail')" :column="1" :size="''">
           <el-descriptions-item :label="$t('cluster.project')">{{ item.content.projectName }}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.clusterName')">{{ item.content.resourceName }}
@@ -47,6 +47,14 @@
           </el-descriptions-item>
         </el-descriptions>
       </div>
+      <div v-else>
+        <el-descriptions :title="$t('message.detail.detail')" :column="1" :size="''">
+          <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.message }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt | datetimeFormat }}
+          </el-descriptions-item>
+        </el-descriptions>
+      </div>
+
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="markAsRead(item)">{{ $t("message.mark_as_read") }}</el-button>
       </span>
@@ -75,7 +83,8 @@ export default {
       loading: false,
       openDetail: false,
       item: {
-        content: {}
+        content: {},
+        msg: {}
       }
     }
   },

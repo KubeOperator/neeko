@@ -113,13 +113,12 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import {
   addSubscribeUser,
-  deleteSubscribeUser,
+  deleteSubscribeUser, getAddSubscribeUsers,
   searchMsgSubscribe,
   searchMsgSubscribeByName,
   updateMsgSubScribe
 } from "@/api/msg-subscribe"
 import {getProjectsHasClusters} from "@/api/projects"
-import {searchUsersByProject} from "@/api/cluster-member"
 import {searchUsersByName} from "@/api/user"
 
 export default {
@@ -292,7 +291,7 @@ export default {
             this.searchUserLoading = false
           })
         } else {
-          searchUsersByProject(this.projectName, this.resourceName, query).then(data => {
+          getAddSubscribeUsers(query, this.resourceName).then(data => {
             this.addUsers = data.items
           }).finally(() => {
             this.searchUserLoading = false
