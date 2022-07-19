@@ -1,8 +1,8 @@
 <template>
   <layout-content :header="$t('message.message_subscribe')" v-loading="loading">
     <el-tabs v-model="type" @tab-click="changeType">
-      <el-tab-pane :label="$t('message.message_system')" name="SYSTEM"></el-tab-pane>
       <el-tab-pane :label="$t('message.message_cluster')" name="CLUSTER"></el-tab-pane>
+      <el-tab-pane :label="$t('message.message_system')" v-permission="['ADMIN']" name="SYSTEM"></el-tab-pane>
     </el-tabs>
     <div v-if="type === 'CLUSTER'">
       {{ $t("cluster.project") }}:
@@ -134,7 +134,7 @@ export default {
         pageSize: 10,
         total: 0,
       },
-      type: "SYSTEM",
+      type: "CLUSTER",
       resourceName: "",
       projectName: "",
       projects: [],
@@ -301,7 +301,14 @@ export default {
     }
   },
   created () {
-    this.search()
+    getProjectsHasClusters().then(res => {
+      this.data = []
+      this.projects = res
+      if (this.projects.length > 0) {
+        this.projectName = this.projects[0].name
+        this.changeProject(this.projectName)
+      }
+    })
   }
 }
 </script>
