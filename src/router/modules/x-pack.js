@@ -71,57 +71,6 @@ const XPack = {
       ],
     },
     {
-      path: "message-center",
-      component: () => import("@/business/xpack/message-center/index"),
-      name: "message-center",
-      meta: {
-        activeMenu: "/xpack/message-center",
-        title: "route.message_center",
-        roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
-      },
-      redirect: to => {
-        return {
-          name: 'Messages',
-          params: to.params,
-        }
-      },
-      children: [
-        {
-          path: "message",
-          component: () => import("@/business/xpack/message-center/message"),
-          name: "Messages",
-          hidden: true,
-          meta: {
-            activeMenu: "/xpack/message-center",
-            title: "message.message",
-            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "receiver",
-          component: () => import("@/business/xpack/message-center/receiver/index"),
-          name: "MessageReceiver",
-          hidden: true,
-          meta: {
-            activeMenu: "/xpack/message-center",
-            title: "message.message_receiver",
-            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
-          }
-        },
-        {
-          path: "subscribe",
-          hidden: true,
-          component: () => import("@/business/xpack/message-center/subscribe/index"),
-          name: "MessageSubscribes",
-          meta: {
-            activeMenu: "/xpack/message-center",
-            title: "message.message_subscribe",
-            roles: ["ADMIN", "PROJECT_MANAGER", "CLUSTER_MANAGER"]
-          }
-        }
-      ]
-    },
-    {
       path: "theme",
       name: "Theme",
       props: true,
