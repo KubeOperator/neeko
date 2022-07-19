@@ -144,6 +144,12 @@
                               <el-form-item label="DnsDomain" prop="kubeDnsDomain">
                                 <el-input placeholder="cluster.local" v-model="form.kubeDnsDomain" clearable></el-input>
                               </el-form-item>
+                              <el-form-item label="CgroupDriver" prop="cgroupDriver">
+                                <el-select style="width: 100%" v-model="form.cgroupDriver">
+                                  <el-option value="systemd">systemd</el-option>
+                                  <el-option value="cgroupfs">cgroupfs</el-option>
+                                </el-select>
+                              </el-form-item>
                               <el-form-item :label="$t('cluster.creation.kubernetes_audit')" prop="kubernetesAudit">
                                 <el-switch v-model="form.kubernetesAudit" active-value="yes" inactive-value="no" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
                               </el-form-item>
@@ -480,6 +486,7 @@
                       <ul>{{$t ('cluster.creation.proxy_mode')}}</ul>
                       <ul>{{$t ('cluster.creation.dns_cache')}}</ul>
                       <ul>DnsDomain</ul>
+                      <ul>CgroupDriver</ul>
                       <ul>{{$t ('cluster.creation.kubernetes_audit')}}</ul>
                       <ul>NodePort {{$t ('cluster.creation.port_range')}}</ul>
                       <ul>NodePort {{$t ('cluster.creation.address')}}</ul>
@@ -492,6 +499,7 @@
                       <ul v-if="form.enableDnsCache === 'enable'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.enableDnsCache === 'disable'">{{$t ('commons.button.disable')}}</ul>
                       <ul>{{form.kubeDnsDomain}}</ul>
+                      <ul>{{form.cgroupDriver}}</ul>
                       <ul v-if="form.kubernetesAudit === 'yes'">{{$t ('commons.button.enable')}}</ul>
                       <ul v-if="form.kubernetesAudit === 'no'">{{$t ('commons.button.disable')}}</ul>
                       <ul>{{form.kubeServiceNodePortRange1}} - {{form.kubeServiceNodePortRange2}}</ul>
@@ -640,6 +648,7 @@ export default {
         kubeServiceNodePortRange1: 30000,
         kubeServiceNodePortRange2: 32767,
         kubeDnsDomain: "cluster.local",
+        cgroupDriver: "systemd",
         kubernetesAudit: "no",
         kubePodSubnet: "10.10.0.0/16",
         kubeServiceSubnet: "192.168.0.0/24",
@@ -695,6 +704,7 @@ export default {
         kubePodSubnet: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
         kubeDnsDomain: [Rule.RequiredRule],
+        cgroupDriver: [Rule.RequiredRule],
         kubeProxyMode: [Rule.RequiredRule],
         kubeServiceNodePortRange1: [Rule.NumberRule],
         kubeServiceNodePortRange2: [Rule.NumberRule],

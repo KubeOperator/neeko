@@ -48,7 +48,11 @@
               <span>{{loadNodeIPNum(clusterDetailInfo.specConf.kubeNetworkNodePrefix)}}</span>
             </el-form-item>
           </el-col>
-          <el-col :span="10"><br /></el-col>
+          <el-col :span="10">
+            <el-form-item label="CgroupDriver: ">
+              {{clusterDetailInfo.specConf.cgroupDriver}}
+            </el-form-item>
+          </el-col>
 
         </el-row>
         <el-row type="flex" justify="center">
