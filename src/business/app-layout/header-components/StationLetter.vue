@@ -43,6 +43,7 @@
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">{{item.content.errMsg}}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt | datetimeFormat }}
           </el-descriptions-item>
         </el-descriptions>
@@ -85,7 +86,8 @@ export default {
       item: {
         content: {},
         msg: {}
-      }
+      },
+      timer:{}
     }
   },
   methods: {
@@ -123,6 +125,10 @@ export default {
   },
   created () {
     this.load()
+    this.timer = setInterval(this.load, 60000);
+  },
+  beforeDestroy(){
+    clearInterval(this.timer);
   }
 }
 </script>
