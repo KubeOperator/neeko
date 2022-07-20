@@ -7,8 +7,8 @@
     </el-badge>
 
     <el-drawer :title="$t('message.message_in_station')" :visible.sync="drawer" direction="rtl" size="25%"
-               :modal="false" v-loading="loading">
-      <div class="notice-list" v-infinite-scroll="next">
+               :modal="false">
+      <div class="notice-list" v-infinite-scroll="next" v-loading="letterLoading">
         <div class="notice-item" v-for="(item, index) in messages" :key="index" @mouseover="hover = index"
              @mouseleave="hover = null" @click="open(item)">
           <div class="notice-title">
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="notice-content">{{ item.content.title }}</div>
-          <p v-if="loading">加载中...</p>
+          <p v-if="letterLoading">加载中...</p>
         </div>
       </div>
     </el-drawer>
@@ -81,7 +81,7 @@ export default {
         total: 0,
       },
       messages: [],
-      loading: false,
+      letterLoading: false,
       openDetail: false,
       item: {
         content: {},
@@ -95,13 +95,13 @@ export default {
       this.drawer = true
     },
     load () {
-      this.loading = true
+      this.letterLoading = true
       listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
         this.messages = res.items
         this.count = res.unread
         this.paginationConfig.total = res.total
       }).finally(() => {
-        this.loading = false
+        this.letterLoading = false
       })
     },
     loadWithOutLoading() {
