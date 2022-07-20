@@ -104,6 +104,13 @@ export default {
         this.loading = false
       })
     },
+    loadWithOutLoading() {
+      listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
+        this.messages = res.items
+        this.count = res.unread
+        this.paginationConfig.total = res.total
+      })
+    },
     markAsRead (item) {
       readUserMessage(item.id).finally(() => {
         this.count--
@@ -125,7 +132,7 @@ export default {
   },
   created () {
     this.load()
-    this.timer = setInterval(this.load, 60000);
+    this.timer = setInterval(this.loadWithOutLoading, 60000);
   },
   beforeDestroy(){
     clearInterval(this.timer);
