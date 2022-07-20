@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="notice-content">{{ item.content.title }}</div>
-          <p v-if="letterLoading">加载中...</p>
+          <p v-if="letterLoading">{{ $t("message.loading") }}</p>
         </div>
       </div>
     </el-drawer>
@@ -43,7 +43,9 @@
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
-          <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">{{item.content.errMsg}}</el-descriptions-item>
+          <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">
+            {{ item.content.errMsg }}
+          </el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt | datetimeFormat }}
           </el-descriptions-item>
         </el-descriptions>
@@ -87,7 +89,7 @@ export default {
         content: {},
         msg: {}
       },
-      timer:{}
+      timer: {}
     }
   },
   methods: {
@@ -104,7 +106,7 @@ export default {
         this.letterLoading = false
       })
     },
-    loadWithOutLoading() {
+    loadWithOutLoading () {
       listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
         this.messages = res.items
         this.count = res.unread
@@ -132,10 +134,10 @@ export default {
   },
   created () {
     this.load()
-    this.timer = setInterval(this.loadWithOutLoading, 60000);
+    this.timer = setInterval(this.loadWithOutLoading, 60000)
   },
-  beforeDestroy(){
-    clearInterval(this.timer);
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
 }
 </script>
