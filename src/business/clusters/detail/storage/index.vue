@@ -237,10 +237,10 @@ export default {
       this.$router.push({ name: "ClusterStorageClassCreate" })
     },
     provisionerCreate() {
-      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { isExist: false } })
+      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { operation: "create" } })
     },
     provisionerCreateExist() {
-      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { isExist: true } })
+      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { operation: "import" } })
     },
     selectChange() {
       let isOk = true

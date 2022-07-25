@@ -508,9 +508,6 @@ export default {
       if (!isNext) {
         return
       }
-      if (step.title === "集群设置") {
-        console.log(this.form.clusterInfo)
-      }
       if (step.index === 0) {
         for (const node of this.form.clusterInfo.nodes) {
           if (node.credentialID === null || node.credentialID === "") {

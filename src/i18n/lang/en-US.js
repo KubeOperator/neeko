@@ -86,6 +86,7 @@ const message = {
     validate: {
       limit: "Length from {0} to {1} characters",
       input: "Please enter {0}",
+      input_error: "Please enter the correct cluster name!",
       cannot_be_empty: "The content cannot be empty!",
       name_not_compliant: "The name does not conform to the naming convention!",
       select: "Please choose",
