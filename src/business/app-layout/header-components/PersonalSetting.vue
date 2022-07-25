@@ -50,9 +50,9 @@
       </div>
     </el-dialog>
     <el-dialog :visible.sync="settingDialogVisible" :show-close="true" :title="$t('commons.personal.setting')">
-      <el-tabs tab-position="left" type="card" v-model="active" @tab-click="handleTabs">
+      <el-tabs tab-position="left" v-model="active" @tab-click="handleTabs">
         <el-tab-pane :label="$t('commons.personal.change_password')" name="password">
-          <el-card class="box-card" style="height: 500px">
+          <el-card class="box-card">
             <el-form ref="form" label-position="left" :model="form" :rules="rules" label-width="100px">
               <el-form-item style="width: 100%" :label="$t('commons.personal.original_password')" prop="original">
                 <el-input type="password" v-model="form.original"></el-input>
@@ -67,6 +67,7 @@
               </el-form-item>
             </el-form>
             <div style="float: right">
+              <el-button @click="closePage">{{ $t("commons.button.cancel") }}</el-button>
               <el-button type="primary"
                          @click="submit('form')" v-preventReClick>{{ $t("commons.button.submit") }}
               </el-button>
@@ -74,8 +75,8 @@
           </el-card>
         </el-tab-pane>
         <el-tab-pane :label="$t('message.message')" name="message">
-          <el-card class="box-card" style="height: 500px" v-loading="loading">
-            <el-row  :gutter="20">
+          <el-card class="box-card" v-loading="loading">
+            <el-row :gutter="20">
               <el-form ref="settingForm" label-position="left" :model="settingForm" :rules="rules" label-width="150px">
                 <el-col :span="12">
                   <el-form-item style="width: 100%" :label="$t('message.dingTalk_phone')" prop="dingTalk.account">
@@ -119,6 +120,7 @@
                 </el-col>
               </el-form>
               <div style="float: right">
+                <el-button @click="closePage">{{ $t("commons.button.cancel") }}</el-button>
                 <el-button type="primary"
                            @click="updateSetting()" v-preventReClick>{{ $t("commons.button.submit") }}
                 </el-button>
@@ -197,7 +199,7 @@ export default {
       }
     },
     handleTabs (tab) {
-     const name = tab.name
+      const name = tab.name
       switch (name) {
         case "password":
           this.getRole()
@@ -266,7 +268,7 @@ export default {
         this.loading = false
       })
     },
-    updateSetting() {
+    updateSetting () {
       this.setting.msgConfig = this.settingForm
       updateUserSetting(this.setting).then(() => {
         this.$message({
@@ -274,6 +276,9 @@ export default {
           message: this.$t("commons.msg.save_success")
         })
       })
+    },
+    closePage () {
+      this.settingDialogVisible = false
     }
   },
   created () {
