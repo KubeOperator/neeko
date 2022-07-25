@@ -4,9 +4,6 @@
       <el-card class="box-card" style="height: 500px">
         <div slot="header" class="clearfix">
           <span>{{ $t("setting.email") }}</span>
-          <el-button style="float: right; padding: 3px 0" @click="getAccount" type="text">
-            {{ $t("commons.button.refresh") }}
-          </el-button>
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="16">
@@ -52,9 +49,6 @@
       <el-card class="box-card" style="height: 545px">
         <div slot="header" class="clearfix">
           <span>{{ $t("setting.table.message.wechatSetting") }}</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="getAccount">
-            {{ $t("commons.button.refresh") }}
-          </el-button>
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="15">
@@ -104,9 +98,6 @@
       <el-card class="box-card" style="height: 500px">
         <div slot="header" class="clearfix">
           <span>{{ $t("setting.table.message.dingTalkSetting") }}</span>
-          <el-button style="float: right; padding: 3px 0" @click="getAccount" type="text">
-            {{ $t("commons.button.refresh") }}
-          </el-button>
         </div>
         <el-col :span="2"><br/></el-col>
         <el-col :span="16">
