@@ -704,6 +704,7 @@ const message = {
     condition_loading: "正在等待执行，请稍候...",
     condition_detail: "状态详情",
     CheckAPIStatus: "检测 API 状态",
+    CreateHost: "自动创建主机",
     DeleteNode: "删除节点",
     EnsureInitTaskStart: "调度任务",
     EnsurePrepareBaseSystemConfig: "准备系统环境",

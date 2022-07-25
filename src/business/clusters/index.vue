@@ -359,6 +359,7 @@ export default {
       this.isUninstall = false
       this.dialogDeleteVisible = true
       this.deleteName = row.name
+      this.delForm.inputName = ""
       switch (row.source) {
         case "local":
           this.isForceShow = true

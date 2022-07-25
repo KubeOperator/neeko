@@ -734,6 +734,7 @@ const message = {
     DeleteNode: "Delete Node",
 
     CheckAPIStatus: "Check API status",
+    CreateHost: "Create Host",
     cluster_task: "Cluster-level task",
     cluster_task_help: "Tasks that need to be performed independently, such as cluster creation, capacity expansion, and backup upgrade.",
     component_task: "Component-level task",
