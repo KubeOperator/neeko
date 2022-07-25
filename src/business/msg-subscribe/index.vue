@@ -49,7 +49,7 @@
     </complex-table>
 
 
-    <el-dialog :visible.sync="openUserPage" :title="$t('message.user')">
+    <el-dialog :visible.sync="openUserPage" :title="$t('message.user')" @close="closeUserListPage">
       <el-button-group>
         <el-button size="small" @click="addUser()">{{ $t("commons.button.create") }}</el-button>
         <el-button size="small" @click="del()">{{ $t("commons.button.delete") }}
@@ -228,6 +228,9 @@ export default {
       this.subscribeName = row.name
       this.tableUsers = row.users
       this.openUserPage = true
+    },
+    closeUserListPage(){
+      this.search()
     },
     handleSelectionChange (val) {
       this.delUsers = val
