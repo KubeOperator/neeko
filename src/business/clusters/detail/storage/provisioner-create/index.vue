@@ -24,7 +24,7 @@
                 <el-option v-for="item of namespaces" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-if="isExist && createType === 'nfs'" label="Deployments">
+            <el-form-item v-if="operation === 'import' && createType === 'nfs'" label="Deployments">
               <el-select @change="changeDeployment" style="width: 100%" v-model="deploymentName" clearable>
                 <el-option v-for="item of deployments" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
               </el-select>
@@ -201,7 +201,7 @@ import Rule from "@/utils/rules"
 
 export default {
   name: "ClusterStorageProvionerCreate",
-  props: ["isExist"],
+  props: ["operation"],
   components: { LayoutContent },
   data() {
     return {
@@ -230,7 +230,7 @@ export default {
         if (valid) {
           this.submitLoading = true
           this.form.type = this.createType
-          this.form.isInCluster = this.isExist === "true"
+          this.form.isInCluster = this.operation === "import"
           if (this.form.type === "conder") {
             this.form.vars["enable_blockstorage"] = this.enableBlockStorage
           }
@@ -304,7 +304,7 @@ export default {
       }
     },
     changeNamespace() {
-      if (this.isExist) {
+      if (this.operation === "import") {
         this.loadDeployments()
       }
     },
@@ -357,7 +357,7 @@ export default {
   created() {
     this.clusterName = this.$route.params.name
     this.loadNamespaces()
-    if (this.isExist) {
+    if (this.operation === "import") {
       this.loadDeployments()
     }
   },

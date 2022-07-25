@@ -375,6 +375,13 @@ export default {
       }
     },
     submitDelete() {
+      if (this.deleteName !== this.delForm.inputName) {
+        this.$message({
+          type: "info",
+          message: this.$t("commons.validate.input_error"),
+        })
+        return
+      }
       this.$refs["delForm"].validate((valid) => {
         if (valid) {
           deleteCluster(this.deleteName, this.isForce, this.isUninstall)

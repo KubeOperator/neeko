@@ -180,7 +180,7 @@ const Cluster = {
           }
         },
         {
-          path: "storage-provisioner-create/:isExist",
+          path: "storage-provisioner-create/:operation",
           name: "ClusterStorageProvionerCreate",
           hidden: true,
           props: true,

@@ -1,10 +1,13 @@
 <template>
   <div>
-    <el-badge :value="count" :max="99" class="item" style="margin-top: 5px">
-      <div style="font-size: 20px;margin-top: -5px;cursor : pointer;">
-        <i class="el-icon-message" style="color: #FA5D50;" @click="openDrawer"></i>
-      </div>
-    </el-badge>
+    <div>
+      <el-badge :value="count" :max="99" style="margin-top: 8px;" size="mini">
+        <div style="margin-top: -12px;margin-right: 8px;cursor : pointer;">
+          <i class="el-icon-message" style="color: #FA5D50;margin-right: 3px"></i>
+            <el-button style="color: #606266;font-size: 14px;" type="text" @click="openDrawer">{{$t('message.message_in_station')}}</el-button>
+        </div>
+      </el-badge>
+    </div>
 
     <el-drawer :title="$t('message.message_in_station')" :visible.sync="drawer" direction="rtl" size="25%"
                :modal="false">
@@ -37,7 +40,7 @@
     </el-drawer>
     <el-dialog :visible.sync="openDetail" :title="item.content.title" width="30%">
       <div v-if="item.msg.name !== 'LICENSE_EXPIRE'">
-        <el-descriptions :title="$t('message.detail.detail')" :column="1" :size="''">
+        <el-descriptions :column="1" :size="'2'">
           <el-descriptions-item :label="$t('cluster.project')">{{ item.content.projectName }}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.clusterName')">{{ item.content.resourceName }}
           </el-descriptions-item>
@@ -51,7 +54,7 @@
         </el-descriptions>
       </div>
       <div v-else>
-        <el-descriptions :title="$t('message.detail.detail')" :column="1" :size="''">
+        <el-descriptions :column="1" :size="'2'">
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.message }}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt | datetimeFormat }}
           </el-descriptions-item>

@@ -87,6 +87,7 @@ const message = {
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
+      input_error: "请输入正确的集群名称！",
       cannot_be_empty: "该内容不能为空!",
       name_not_compliant: "该名称不符合命名规范!",
       select: "请选择",
