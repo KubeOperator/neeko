@@ -30,3 +30,7 @@ export function searchMsgSubscribeByName (type, resourceName, name) {
 export function getAddSubscribeUsers (search, subscribeId, resourceName) {
   return get(`${subscribeUrl}/users?user=${search}&subscribeId=${subscribeId}&resourceName=${resourceName}`)
 }
+
+export function getSubScribeUsers (currentPage, pageSize, subscribeId, conditions) {
+  return post(`${subscribeUrl}/users?subscribeId=${subscribeId}&pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
+}

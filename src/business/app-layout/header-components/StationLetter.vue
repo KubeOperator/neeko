@@ -34,7 +34,7 @@
               </svg>
               {{ item.content.operator }}
             </div>
-            <el-button class="read-button" type="text" v-if="hover === index" @click="markAsRead(item)">
+            <el-button class="read-button" type="text" v-if="hover === index" @click.stop="markAsRead(item)">
               {{ $t("message.mark_as_read") }}
             </el-button>
             <div class="time" v-else>
@@ -65,6 +65,8 @@
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt }}
+          </el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">
             <div v-if="item.itemMsg[0].type === 'unFormat'">
               <div><span style="white-space: pre-wrap;">{{ item.itemMsg[0].info | errorFormat }}</span></div>
@@ -91,8 +93,6 @@
                 </el-card>
               </div>
             </div>
-          </el-descriptions-item>
-          <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt }}
           </el-descriptions-item>
         </el-descriptions>
       </div>
