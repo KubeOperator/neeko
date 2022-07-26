@@ -46,7 +46,7 @@
       </el-scrollbar>
       <div style="float:right" v-if="!detailLoading">
         <el-button size="small" v-if="log.phase === 'FAILED'" @click="onRetry()">{{ $t("commons.button.retry") }}</el-button>
-        <el-button size="small" v-if="log.phase !== 'NotReady'" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
+        <el-button size="small" v-if="log.phase !== 'NotReady' && showLogs" @click="goForLogs()">{{ $t("commons.button.log") }}</el-button>
       </div>
     </div>
   </div>
@@ -56,7 +56,7 @@
 import { getNodeByName } from "@/api/cluster/node"
 import { getClusterStatus } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
-import {isJson} from '@/utils/validate'
+import { isJson } from "@/utils/validate"
 
 export default {
   name: "KoLogs",
@@ -72,6 +72,7 @@ export default {
       timer2: null,
       detailLoading: true,
       clusterId: "",
+      showLogs: true,
       log: {
         type: "",
         phase: "",
@@ -124,6 +125,16 @@ export default {
       switch (this.operation) {
         case "waiting-poll":
           getClusterStatus(this.clusterName).then((data) => {
+            if (!data.tasklogs.details && data.tasklogs.phase === "FAILED") {
+              this.detailLoading = false
+              this.showLogs = false
+              this.log = {
+                phase: "Failed",
+                message: this.errMsg,
+                details: [{ task: "CreateHost", formatMsgs: [{ name: this.clusterName, info: this.errMsg, type: "unFormat", failed: true }], status: "FAILED", message: this.errMsg }],
+              }
+              return
+            }
             if (data.tasklogs.details.length !== 0) {
               this.detailLoading = false
             }
@@ -134,6 +145,7 @@ export default {
         case "not-ready": {
           this.dialogHeight = "200px"
           this.detailLoading = false
+          this.showLogs = false
           this.log = {
             phase: "NotReady",
             message: this.errMsg,
@@ -175,7 +187,7 @@ export default {
         if (this.log.details.length !== 0 || this.log.phase === "FAILED") {
           this.detailLoading = false
         }
-        if ((this.log.phase !== "FAILED" && this.log.phase !== "SUCCESS")) {
+        if (this.log.phase !== "FAILED" && this.log.phase !== "SUCCESS") {
           getClusterStatus(this.clusterName)
             .then((data) => {
               this.handleResponse(data.tasklogs)
