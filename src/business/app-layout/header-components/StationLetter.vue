@@ -54,7 +54,7 @@
       <div v-if="item.msg.name === 'LICENSE_EXPIRE'">
         <el-descriptions :column="1" :size="''">
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.message }}</el-descriptions-item>
-          <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt | datetimeFormat }}
+          <el-descriptions-item :label="$t('message.detail.time')">{{ item.createdAt | datetimeFormat }}
           </el-descriptions-item>
         </el-descriptions>
       </div>
@@ -65,7 +65,7 @@
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
-          <el-descriptions-item :label="$t('message.detail.time')">{{ item.content.createdAt }}
+          <el-descriptions-item :label="$t('message.detail.time')">{{ item.createdAt | datetimeFormat  }}
           </el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">
             <div v-if="item.itemMsg[0].type === 'unFormat'">
