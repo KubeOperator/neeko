@@ -15,7 +15,7 @@
                :modal="false">
       <div slot="title">
         <span style="font-size: 18px">{{ $t("message.message_in_station") }}</span>
-        <el-button class="read-button" type="text" @click.stop="markAsAllRead()" style="float: right;margin-top: 10px">
+        <el-button class="read-button" type="text" @click.stop="markAsAllRead()" style="float: right;margin-top: 10px" v-if="messages.length > 0">
           {{ $t("message.allRead") }}
         </el-button>
       </div>
