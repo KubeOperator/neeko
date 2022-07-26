@@ -162,9 +162,9 @@ export default {
       addUsers: [],
       subscribeName: "",
       tableUsers: [],
-      userLoading: false
+      userLoading: false,
+      subscribe_id: ""
     }
-
   },
   methods: {
     search () {
@@ -236,6 +236,7 @@ export default {
       this.delUsers = val
     },
     addUser () {
+
       this.openAddPage = true
     },
     closeAddUser () {
@@ -294,7 +295,7 @@ export default {
             this.searchUserLoading = false
           })
         } else {
-          getAddSubscribeUsers(query, this.resourceName).then(data => {
+          getAddSubscribeUsers(query, this.form.msgSubscribeId,this.resourceName).then(data => {
             this.addUsers = data.items
           }).finally(() => {
             this.searchUserLoading = false
