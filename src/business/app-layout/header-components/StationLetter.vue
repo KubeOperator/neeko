@@ -44,6 +44,9 @@
           <div class="notice-content">{{ item.content.title }}</div>
           <p v-if="letterLoading">{{ $t("message.loading") }}</p>
         </div>
+        <div style="text-align: center">
+          <span v-if="messages.length === 0 ">{{ $t("message.no_letter") }}</span>
+        </div>
       </div>
     </el-drawer>
     <el-dialog :visible.sync="openDetail" :title="item.content.title" width="30%">

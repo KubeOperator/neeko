@@ -819,6 +819,7 @@ const message = {
     user: "接收用户",
     loading: "加载中...",
     allRead: "全部已读",
+    no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",
