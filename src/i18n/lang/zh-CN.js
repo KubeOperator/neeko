@@ -17,6 +17,7 @@ const message = {
       enable_component_select: "当前尚未选择同步组件，是否同步所有?",
       enable_component: "此操作将启用集群 {0} 组件，是否继续?",
       disable_component: "此操作将禁用集群 {0} 套件，是否继续?",
+      markAsRead: "确定全部标记为已读？"
     },
     button: {
       login: "登录",

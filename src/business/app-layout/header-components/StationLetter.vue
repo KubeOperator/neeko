@@ -159,11 +159,18 @@ export default {
     markAsRead (item) {
       readUserMessage(item.id).finally(() => {
         this.load()
+        this.openDetail = false
       })
     },
     markAsAllRead () {
-      markAllRead().finally(() => {
-        this.load()
+      this.$confirm(this.$t("commons.confirm_message.markAsRead"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning"
+      }).then(()=> {
+        markAllRead().finally(() => {
+          this.load()
+        })
       })
     },
     open (item) {

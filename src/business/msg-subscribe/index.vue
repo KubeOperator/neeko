@@ -55,24 +55,6 @@
         <el-button size="small" @click="del()" :disabled="delUsers.length===0">{{ $t("commons.button.delete") }}
         </el-button>
       </el-button-group>
-      <!--      <el-table-->
-      <!--              ref="multipleTable"-->
-      <!--              v-loading="userLoading"-->
-      <!--              :data="tableUsers.slice((pageConfig.currentPage-1)*pageConfig.pageSize,pageConfig.currentPage*pageConfig.pageSize)"-->
-      <!--              @selection-change="handleSelectionChange">-->
-      <!--        <el-table-column type="selection"></el-table-column>-->
-      <!--        <el-table-column :label="$t('commons.table.name')" prop="name" min-width="100" fix>-->
-      <!--        </el-table-column>-->
-      <!--        <el-table-column :label="$t('setting.email')" prop="email" min-width="100" fix>-->
-      <!--        </el-table-column>-->
-      <!--      </el-table>-->
-      <!--      <el-pagination-->
-      <!--              :current-page.sync="pageConfig.currentPage"-->
-      <!--              :page-size="pageConfig.pageSize"-->
-      <!--              layout="prev, pager, next"-->
-      <!--              :total="tableUsers.length">-->
-      <!--      </el-pagination>-->
-
       <complex-table :data="tableUsers" :pagination-config="userPageConfig" @search="getSubUsers" ref="multipleTable"
                      :selects.sync="delUsers" :loading="userTableLoading">
         <el-table-column type="selection" fix></el-table-column>

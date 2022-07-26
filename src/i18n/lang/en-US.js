@@ -17,6 +17,7 @@ const message = {
       enable_component_select: "No synchronization components have been selected. Do you want to synchronize all?",
       enable_component: "This operation will enable the cluster {0} component. Continue?",
       disable_component: "This operation will disable the cluster {0} component. Continue?",
+      markAsRead: "Make sure to mark all as read？"
     },
     button: {
       login: "Login",
