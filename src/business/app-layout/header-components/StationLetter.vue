@@ -11,6 +11,12 @@
 
     <el-drawer :title="$t('message.message_in_station')" :visible.sync="drawer" direction="rtl" size="25%"
                :modal="false">
+      <div slot="title">
+        <span style="font-size: 18px">{{$t('message.message_in_station')}}</span>
+        <el-button class="read-button" type="text" @click.stop="markAsAllRead()" style="float: right;margin-top: 10px">
+          {{ $t("message.allRead") }}
+        </el-button>
+      </div>
       <div class="notice-list" v-infinite-scroll="next" v-loading="letterLoading">
         <div class="notice-item" v-for="(item, index) in messages" :key="index" @mouseover="hover = index"
              @mouseleave="hover = null" @click="open(item)">
@@ -26,7 +32,7 @@
               </svg>
               {{ item.content.operator }}
             </div>
-            <el-button class="read-button" type="text" v-if="hover === index" @click="markAsRead(item)">
+            <el-button class="read-button" type="text" v-if="hover === index" @click.stop="markAsRead(item)">
               {{ $t("message.mark_as_read") }}
             </el-button>
             <div class="time" v-else>
@@ -70,7 +76,7 @@
 </template>
 
 <script>
-import {listUserMessages, readUserMessage} from "@/api/user-message"
+import {listUserMessages, markAllRead, readUserMessage} from "@/api/user-message"
 
 export default {
   name: "StationLetter",
@@ -104,7 +110,7 @@ export default {
       this.letterLoading = true
       listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
         this.messages = res.items
-        this.count = res.unread
+        this.count = res.total
         this.paginationConfig.total = res.total
       }).finally(() => {
         this.letterLoading = false
@@ -113,15 +119,18 @@ export default {
     loadWithOutLoading () {
       listUserMessages(this.paginationConfig.currentPage, this.paginationConfig.pageSize).then(res => {
         this.messages = res.items
-        this.count = res.unread
+        this.count = res.total
         this.paginationConfig.total = res.total
       })
     },
     markAsRead (item) {
       readUserMessage(item.id).finally(() => {
-        this.count--
-        item.readStatus = "READ"
-        this.openDetail = false
+        this.load()
+      })
+    },
+    markAsAllRead() {
+      markAllRead().finally(() => {
+        this.load()
       })
     },
     open (item) {

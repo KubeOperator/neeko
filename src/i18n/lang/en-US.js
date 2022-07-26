@@ -804,6 +804,7 @@ const message = {
     receive_setting: "Receive Setting",
     user: "User",
     loading: "loading...",
+    allRead: "All Read",
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",
