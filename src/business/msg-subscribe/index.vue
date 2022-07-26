@@ -52,26 +52,16 @@
     <el-dialog :visible.sync="openUserPage" :title="$t('message.user')" @close="closeUserListPage">
       <el-button-group>
         <el-button size="small" @click="addUser()">{{ $t("commons.button.create") }}</el-button>
-        <el-button size="small" @click="del()">{{ $t("commons.button.delete") }}
+        <el-button size="small" @click="del()" :disabled="delUsers.length===0">{{ $t("commons.button.delete") }}
         </el-button>
       </el-button-group>
-      <el-table
-              ref="multipleTable"
-              v-loading="userLoading"
-              :data="tableUsers.slice((pageConfig.currentPage-1)*pageConfig.pageSize,pageConfig.currentPage*pageConfig.pageSize)"
-              @selection-change="handleSelectionChange">
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column :label="$t('commons.table.name')" prop="name" min-width="100" fix>
-        </el-table-column>
-        <el-table-column :label="$t('setting.email')" prop="email" min-width="100" fix>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-              :current-page.sync="pageConfig.currentPage"
-              :page-size="pageConfig.pageSize"
-              layout="prev, pager, next"
-              :total="tableUsers.length">
-      </el-pagination>
+      <complex-table :data="tableUsers" :pagination-config="userPageConfig" @search="getSubUsers" ref="multipleTable"
+                     :selects.sync="delUsers" :loading="userTableLoading">
+        <el-table-column type="selection" fix></el-table-column>
+        <el-table-column :label="$t('commons.table.name')" prop="name" fix/>
+        <el-table-column :label="$t('setting.email')" prop="email" fix/>
+        <fu-table-operations :buttons="userButtons" :label="$t('commons.table.action')" fix/>
+      </complex-table>
     </el-dialog>
     <el-dialog
             :visible="openAddPage"
@@ -113,7 +103,7 @@ import LayoutContent from "@/components/layout/LayoutContent"
 import ComplexTable from "@/components/complex-table"
 import {
   addSubscribeUser,
-  deleteSubscribeUser, getAddSubscribeUsers,
+  deleteSubscribeUser, getAddSubscribeUsers, getSubScribeUsers,
   searchMsgSubscribe,
   searchMsgSubscribeByName,
   updateMsgSubScribe
@@ -162,9 +152,21 @@ export default {
       addUsers: [],
       subscribeName: "",
       tableUsers: [],
-      userLoading: false
+      userLoading: false,
+      subscribe_id: "",
+      userPageConfig: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0,
+      },
+      selects: [],
+      userTableLoading: false,
+      userButtons: [{
+        label: this.$t("commons.button.delete"), icon: "el-icon-delete", click: (row) => {
+          this.del(row.id)
+        }
+      }]
     }
-
   },
   methods: {
     search () {
@@ -226,16 +228,28 @@ export default {
     openPage (row) {
       this.form.msgSubscribeId = row.id
       this.subscribeName = row.name
-      this.tableUsers = row.users
-      this.openUserPage = true
+      this.getSubUsers(row)
     },
-    closeUserListPage(){
+    getSubUsers () {
+      this.userTableLoading = true
+      const { currentPage, pageSize } = this.userPageConfig
+      getSubScribeUsers(currentPage, pageSize, this.form.msgSubscribeId, {}).then(res => {
+        this.tableUsers = res.items
+        this.userPageConfig.total = res.total
+        this.openUserPage = true
+      }).finally(() => {
+        this.userTableLoading = false
+      })
+    },
+
+    closeUserListPage () {
       this.search()
     },
     handleSelectionChange (val) {
       this.delUsers = val
     },
     addUser () {
+
       this.openAddPage = true
     },
     closeAddUser () {
@@ -257,14 +271,18 @@ export default {
         this.userLoading = false
       })
     },
-    del () {
-      if (this.delUsers.length === 0) {
-        return
-      }
-
+    del (userId) {
       let users = []
-      for (const user of this.delUsers) {
-        users.push(user.id)
+      if (userId === null) {
+        if (this.delUsers.length === 0) {
+          return
+        }
+
+        for (const user of this.delUsers) {
+          users.push(user.id)
+        }
+      }else {
+        users.push(userId)
       }
       const form = {
         msgSubscribeId: this.form.msgSubscribeId,
@@ -294,7 +312,7 @@ export default {
             this.searchUserLoading = false
           })
         } else {
-          getAddSubscribeUsers(query, this.resourceName).then(data => {
+          getAddSubscribeUsers(query, this.form.msgSubscribeId, this.resourceName).then(data => {
             this.addUsers = data.items
           }).finally(() => {
             this.searchUserLoading = false

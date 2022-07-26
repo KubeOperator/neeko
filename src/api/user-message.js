@@ -7,3 +7,7 @@ export function listUserMessages (currentPage, pageSize) {
 export function readUserMessage (id) {
   return post(`/api/v1/user/messages/read/${id}`, {})
 }
+
+export function markAllRead() {
+  return post(`/api/v1/user/messages/read/all`, {})
+}

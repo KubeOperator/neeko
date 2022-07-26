@@ -17,6 +17,7 @@ const message = {
       enable_component_select: "No synchronization components have been selected. Do you want to synchronize all?",
       enable_component: "This operation will enable the cluster {0} component. Continue?",
       disable_component: "This operation will disable the cluster {0} component. Continue?",
+      markAsRead: "Make sure to mark all as read？"
     },
     button: {
       login: "Login",
@@ -806,6 +807,8 @@ const message = {
     receive_setting: "Receive Setting",
     user: "User",
     loading: "loading...",
+    allRead: "All Read",
+    no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "Cluster event alarm",
       CLUSTER_INSTALL: "Cluster installation",

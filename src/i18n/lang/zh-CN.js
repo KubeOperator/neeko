@@ -17,6 +17,7 @@ const message = {
       enable_component_select: "当前尚未选择同步组件，是否同步所有?",
       enable_component: "此操作将启用集群 {0} 组件，是否继续?",
       disable_component: "此操作将禁用集群 {0} 套件，是否继续?",
+      markAsRead: "确定全部标记为已读？"
     },
     button: {
       login: "登录",
@@ -818,6 +819,8 @@ const message = {
     receive_setting: "接收设置",
     user: "接收用户",
     loading: "加载中...",
+    allRead: "全部已读",
+    no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
       CLUSTER_INSTALL: "集群安装",

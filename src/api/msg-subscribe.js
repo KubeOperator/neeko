@@ -1,4 +1,4 @@
-import {post,get} from "@/plugins/request"
+import {post, get} from "@/plugins/request"
 
 const subscribeUrl = "/api/v1/msg/subscribes"
 
@@ -19,9 +19,18 @@ export function deleteSubscribeUser (data) {
 }
 
 export function searchMsgSubscribeByName (type, resourceName, name) {
-  return post(`${subscribeUrl}/search?type=${type}&resourceName=${resourceName}`, { quick: { field: "quick", value: name} })
+  return post(`${subscribeUrl}/search?type=${type}&resourceName=${resourceName}`, {
+    quick: {
+      field: "quick",
+      value: name
+    }
+  })
 }
 
-export function getAddSubscribeUsers (search,resourceName) {
-  return get(`${subscribeUrl}/users?user=${search}&resourceName=${resourceName}`)
+export function getAddSubscribeUsers (search, subscribeId, resourceName) {
+  return get(`${subscribeUrl}/users?user=${search}&subscribeId=${subscribeId}&resourceName=${resourceName}`)
+}
+
+export function getSubScribeUsers (currentPage, pageSize, subscribeId, conditions) {
+  return post(`${subscribeUrl}/users?subscribeId=${subscribeId}&pageNum=${currentPage}&pageSize=${pageSize}`, conditions)
 }
