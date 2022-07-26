@@ -4,10 +4,10 @@
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
         <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" name="storage_class">
-          <el-card>
+          <el-card v-if="!classOnCreate">
             <template>
               <el-button-group>
-                <el-button size="small" @click="classCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" @click="classOnCreate = true">{{$t('commons.button.create')}}</el-button>
                 <el-button size="small" :disabled="classSelection.length < 1" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
             </template>
@@ -27,14 +27,15 @@
 
             <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
           </el-card>
+          <class-create v-if="classOnCreate" @backTo="backTo" />
         </el-tab-pane>
         <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" name="provisioner">
-          <el-card>
+          <el-card v-if="!provisionerOnCreate">
             <template>
               <el-button-group>
-                <el-button size="small" :disabled="provider === ''" @click="provisionerCreate()">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('create')">{{$t('commons.button.create')}}</el-button>
                 <el-tooltip :content="$t('cluster.detail.storage.provisioner_exist_help')" placement="top-start">
-                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreateExist()">{{$t('commons.button.import_exist')}}</el-button>
+                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('import')">{{$t('commons.button.import_exist')}}</el-button>
                 </el-tooltip>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
@@ -93,12 +94,13 @@
               <fu-table-operations :buttons="buttons_provisioner" :label="$t('commons.table.action')" fix />
             </complex-table>
           </el-card>
+          <provisioner-create @backTo="backTo" :operation="operation" v-if="provisionerOnCreate" />
         </el-tab-pane>
       </el-tabs>
     </div>
 
     <div v-if="dialogDetailVisible">
-      <cluster-storage-provioner-detail :provioner="currentProvisioner" @changeVisble="changeVisble" :visible="dialogDetailVisible" />
+      <provisioner-detail :provioner="currentProvisioner" @changeVisble="changeVisble" :visible="dialogDetailVisible" />
     </div>
 
     <el-dialog :title="$t('commons.button.sync')" width="30%" :visible.sync="dialogSyncVisible">
@@ -126,12 +128,14 @@ import ComplexTable from "@/components/complex-table"
 import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
-import ClusterStorageProvionerDetail from "./provisioner-detail"
+import ProvisionerDetail from "./provisioner-detail"
+import ProvisionerCreate from "./provisioner-create"
+import ClassCreate from "./class-create"
 import { listProvisioner, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable, K8sPage, ClusterStorageProvionerDetail },
+  components: { ComplexTable, K8sPage, ProvisionerDetail, ProvisionerCreate, ClassCreate },
   data() {
     return {
       buttons_class: [
@@ -162,6 +166,9 @@ export default {
       provider: null,
       loading: false,
       isDeleteButtonDisable: true,
+      provisionerOnCreate: false,
+      operation: "",
+      classOnCreate: false,
       provisionerDatas: [],
       storageClassDatas: [],
       clusterName: "",
@@ -206,6 +213,12 @@ export default {
           })
       }
     },
+    backTo(act) {
+      this.activeName = act
+      this.classOnCreate = false
+      this.provisionerOnCreate = false
+      this.search()
+    },
     changeVisble(val) {
       this.dialogDetailVisible = val
     },
@@ -231,16 +244,13 @@ export default {
     },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
+      this.provisionerOnCreate = false
+      this.classOnCreate = false
       this.search()
     },
-    classCreate() {
-      this.$router.push({ name: "ClusterStorageClassCreate" })
-    },
-    provisionerCreate() {
-      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { operation: "create" } })
-    },
-    provisionerCreateExist() {
-      this.$router.push({ name: "ClusterStorageProvionerCreate", params: { operation: "import" } })
+    provisionerCreate(operation) {
+      this.operation = operation
+      this.provisionerOnCreate = true
     },
     selectChange() {
       let isOk = true

@@ -49,7 +49,7 @@
           <el-descriptions-item :label="$t('message.detail.clusterName')">{{ item.content.resourceName }}
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
-          <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
+          <el-descriptions-item :label="$t('commons.table.name')" v-if="item.content.detailName">{{ item.content.detailName }}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">
             <div v-if="item.itemMsg[0].type === 'unFormat'">
               <div><span style="white-space: pre-wrap;">{{item.itemMsg[0].info | errorFormat }}</span></div>

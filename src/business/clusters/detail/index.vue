@@ -5,7 +5,7 @@
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/overview'">{{$t('cluster.detail.tag.overview')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/node'">{{$t('cluster.detail.tag.node')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/storage'">{{$t('cluster.detail.tag.storage')}}</el-menu-item>
-        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.tag.backup')}}</el-menu-item>
+        <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/backup'">{{$t('cluster.detail.backup.backup_recover')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/component'">{{$t('cluster.detail.tag.component')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/tool'">{{$t('cluster.detail.tag.tool')}}</el-menu-item>
         <el-menu-item :index="'/clusters/detail/'+project+'/'+name+'/monitor'">{{$t('cluster.detail.tag.monitor')}}</el-menu-item>

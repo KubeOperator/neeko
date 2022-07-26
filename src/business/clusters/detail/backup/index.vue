@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;" v-loading="loading">
-      <el-tab-pane :label="'ETCD ' + $t('cluster.detail.backup.backup_recover')" :name="$t('cluster.detail.backup.backup_recover')">
+      <el-tab-pane label="ETCD" :name="$t('cluster.detail.backup.backup_recover')">
         <el-row type="flex">
           <el-col :span="12">
             <el-form :model="strategyForm" ref="strategyForm" :rules="rules" label-width="150px" label-position="left">
@@ -97,7 +97,7 @@
         </complex-table>
       </el-tab-pane>
 
-      <el-tab-pane :label="'Velero ' + $t('cluster.detail.backup.backup_recover')" :name="'Velero ' + $t('cluster.detail.backup.backup_log')">
+      <el-tab-pane label="Velero" :name="'Velero ' + $t('cluster.detail.backup.backup_log')">
         <el-row type="flex">
           <el-col :span="12">
             <el-card style="height: 400px">
@@ -115,10 +115,6 @@
           <velero-backup></velero-backup>
         </el-row>
       </el-tab-pane>
-
-      <el-tab-pane :label="$t('cluster.detail.backup.backup_log')" :name="$t('cluster.detail.backup.backup_log')">
-        <backup-logs></backup-logs>
-      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -130,11 +126,10 @@ import { listBackupByPage, startBackup, createStrategy, getStrategy, localRestor
 import Rule from "@/utils/rules"
 import VeleroBackup from "@/business/clusters/detail/backup/velero_backup"
 import VeleroConfig from "@/business/clusters/detail/backup/velero_config"
-import BackupLogs from "@/business/clusters/detail/backup/logs"
 
 export default {
   name: "ClusterBackup",
-  components: { VeleroConfig, VeleroBackup, ComplexTable, BackupLogs },
+  components: { VeleroConfig, VeleroBackup, ComplexTable },
   data() {
     return {
       loading: false,
