@@ -129,7 +129,8 @@ const message = {
       talk: "Participate in the discussion",
       star: "Star",
       version: "Version",
-      ko_introduction: "is an open source, lightweight Kubernetes distribution that focuses on helping companies plan, deploy, and operate production-level Kubernetes clusters."
+      ko_introduction: "is an open source, lightweight Kubernetes distribution that focuses on helping companies plan, deploy, and operate production-level Kubernetes clusters.",
+      setting: "Personal"
     },
     help: {
       help: "Help",
@@ -464,13 +465,13 @@ const message = {
       component: {
         ensure_component_sync: "Are you sure to synchronize the following components?",
         operator_help: "Components of the same type cannot be enabled at the same time. To switch components of the same type, disable existing components.",
-        METRICS_SERVER_HELPER: "The metric-Server service will be enabled within the cluster to provide cluster core monitoring data.",
-        TRAEFIK_HELPER: "The Traefik service will be enabled within the cluster to provide a simpler HTTP reverse proxy and load balancer for the cluster.",
-        NGINX_HELPER: "Nginx services will be enabled within the cluster to provide high-performance HTTP and reverse proxy WEB servers for the cluster.",
-        GPU_HELPER: "The GPU service will be enabled within the cluster to provide GPU capabilities for the cluster",
-        DNS_CACHE_HELPER: "The DNS-cache service is enabled in the cluster to cache DNS resolution records for the cluster.",
-        ISTIO_HELPER: "The ISTIO service will be enabled within the cluster to provide a simple way for the cluster to establish a network for the deployed services with load balancing, inter-service authentication, monitoring, and other functions.",
-        NPD_HELPER: "The Node-problem-Detector (NPD) service will be enabled within the cluster to collect node problems for the cluster and make them visible to the upstream tier.",
+        METRICS_SERVER_HELPER: "Metrics Server is Kubernetes' scalable, efficient source of container resource Metrics for its built-in auto-scaling pipeline.",
+        TRAEFIK_HELPER: "Traefik is a modern HTTP reverse proxy and load balancer that can easily deploy microservices.",
+        NGINX_HELPER: "Ingress-nginx is an entry controller for Kubernetes that uses Nginx as a reverse proxy and load balancer.",
+        GPU_HELPER: "The GPU Operator allows the administrator of the Kubernetes cluster to manage GPU nodes in the same way as CPU nodes in the cluster.",
+        DNS_CACHE_HELPER: "NodeLocal DNSCache improves cluster DNS performance by running DNS cache proxies as DaemonSet on cluster nodes.",
+        ISTIO_HELPER: "Istio is an open platform for connecting, managing, and securing microservices.",
+        NPD_HELPER: "Node-problem-detector is a daemon that monitors and reports on the health of a node.",
       },
       storage: {
         type: "Type",

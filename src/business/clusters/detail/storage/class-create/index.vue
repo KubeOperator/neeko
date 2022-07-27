@@ -198,7 +198,7 @@ import { listProvisioner, createStorageClass, createSecret } from "@/api/cluster
 import Rule from "@/utils/rules"
 
 export default {
-  name: "ClusterStorageClassCreate",
+  name: "ClassCreate",
   components: { LayoutContent },
   data() {
     return {
@@ -229,7 +229,7 @@ export default {
   methods: {
     getProvisioner() {
       listProvisioner(this.clusterName).then((data) => {
-        this.provisioners = data
+        this.provisioners = data ? data : []
         this.provisioners.push({
           name: "kubernetes.io/no-provisioner",
           type: "local-storage",
@@ -274,14 +274,14 @@ export default {
         .then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
           this.submitLoading = false
-          this.$router.push({ name: "ClusterStorage" })
+          this.$emit("backTo", "storage_class")
         })
         .catch(() => {
           this.submitLoading = false
         })
     },
     onCancel() {
-      this.$router.push({ name: "ClusterStorage" })
+      this.$emit("backTo", "storage_class")
     },
     changeClassType() {
       this.createType = this.provisioner.type
