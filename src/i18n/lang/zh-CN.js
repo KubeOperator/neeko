@@ -245,9 +245,9 @@ const message = {
     creation: {
       step1: "集群信息",
       name_type: "节点命名规则",
-      name_type_default_help: "节点命名将以 {集群名称}-master-1 形式",
-      name_type_ip_help: "节点将直接以 ip 命名",
-      name_type_host_help: "节点将以主机列表中主机名称命名",
+      name_type_default_help: "将以 '集群名称'-master-1 形式命名",
+      name_type_ip_help: "以主机 ip 命名",
+      name_type_host_help: "以主机名称命名",
       name: "名称",
       name_check: "校验中",
       name_help: "最大长度为 50，小写字母开始，数字或字母结束，支持小写字母、数字、以及-",
@@ -825,7 +825,7 @@ const message = {
     no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
-      CLUSTER_INSTALL: "集群安装",
+      CLUSTER_INSTALL: "集群新增",
       CLUSTER_IMPORT: "集群导入",
       CLUSTER_REMOVE_WORKER: "节点删除",
       CLUSTER_ADD_WORKER: "添加节点",
