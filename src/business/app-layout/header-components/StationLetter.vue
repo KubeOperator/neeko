@@ -65,7 +65,6 @@
           </el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.action')">{{ item.content.operator }}</el-descriptions-item>
           <el-descriptions-item :label="$t('commons.table.name')" v-if="item.content.detailName">{{ item.content.detailName }}</el-descriptions-item>
-          <el-descriptions-item :label="$t('commons.table.status')">{{ item.content.title }}</el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.time')">{{ item.createdAt | datetimeFormat  }}
           </el-descriptions-item>
           <el-descriptions-item :label="$t('message.detail.detail')" v-if="item.content.errMsg">
