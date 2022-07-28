@@ -515,6 +515,7 @@ const message = {
         volume_binding_mode: "卷绑定模式",
         capacity: "容量",
         source: "来源",
+        folder_help: "自动模式创建的集群默认为 kubeoperator",
         class: {
           clone_form_help: "可选，格式为存储后端名.原卷名",
           clone_speed_help: "可选，默认值3，支持1~4，4速度最快",

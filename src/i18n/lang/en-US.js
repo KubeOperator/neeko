@@ -511,6 +511,7 @@ const message = {
         volume_binding_mode: "Volume binding mode",
         capacity: "Capacity",
         source: "Source",
+        folder_help: "Clusters created in automatic mode default to kubeoperator",
         class: {
           clone_form_help: "Optional, the format is storage backend name. Original volume name",
           clone_speed_help: "Optional, default value 3, support 1~4, 4 is the fastest",

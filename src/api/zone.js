@@ -22,6 +22,10 @@ export function listDatastores (data) {
   return post(`${zoneUrl}/datastores`, data)
 }
 
+export function listFolders (data) {
+  return post(`${zoneUrl}/folders`, data)
+}
+
 export function listTemplates (data) {
   return post(`${zoneUrl}/templates`, data)
 }
