@@ -104,7 +104,6 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" @click="startComponent(component, true)">{{ $t("commons.button.re_enable") }}</el-button>
         <el-button size="small" @click="stopComponent(component, true)">{{ $t("commons.button.disable") }}</el-button>
       </div>
     </el-dialog>

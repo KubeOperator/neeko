@@ -18,7 +18,7 @@
             <div v-if="createType === 'vsphere'"><span class="input-help">{{$t('cluster.detail.storage.vsphere_select_help')}}</span></div>
           </el-form-item>
 
-          <el-form-item label="Namespace" prop="namespace" :rules="requiredRules">
+          <el-form-item v-if="createType !== 'glusterfs' && createType !== 'rook-ceph'" label="Namespace" prop="namespace" :rules="requiredRules">
             <el-select style="width: 100%" @change="changeNamespace" v-model="form.namespace">
               <el-option v-for="item of namespaces" :key="item.metadata.name" :value="item.metadata.name">{{item.metadata.name}}</el-option>
             </el-select>

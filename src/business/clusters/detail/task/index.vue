@@ -9,13 +9,17 @@
       </el-tooltip>
     </el-button-group>
     <complex-table :key="refresh" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading" :fit="true">
-      <el-table-column :label="$t('cluster.detail.tag.task')">
+      <el-table-column v-if="searchForm.logtype === 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
         <template v-slot:default="{row}">
-          <el-link v-if="searchForm.logtype === 'cluster'" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ $t(`task.${row.tasklogs.type}`) }}</el-link>
-          <el-link v-if="searchForm.logtype !== 'cluster'" style="font-size: 12px" type="info" @click="openXterm(row)">{{ row.tasklogs.type }}</el-link>
+          <el-link style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ $t(`task.${row.tasklogs.type}`) }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')">
+      <el-table-column v-if="searchForm.logtype !== 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
+        <template v-slot:default="{row}">
+          <el-link style="font-size: 12px" type="info" @click="openXterm(row)">{{ loadName(row) }}</el-link>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('commons.table.status')" min-width="60">
         <template v-slot:default="{row}">
           <div v-if="row.tasklogs.phase === 'FAILED'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;
@@ -30,18 +34,18 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.search.time_start')" prop="tasklogs.startTime" min-width="100">
+      <el-table-column sortable :label="$t('commons.search.time_start')" prop="tasklogs.startTime" min-width="80">
         <template v-slot:default="{row}">
           {{ row.tasklogs.startTime | timeStampFormat }}
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.search.time_end')" prop="tasklogs.endTime" min-width="100">
+      <el-table-column sortable :label="$t('commons.search.time_end')" prop="tasklogs.endTime" min-width="80">
         <template v-slot:default="{row}">
           <span v-if="row.tasklogs.endTime === 0"> - </span>
           <span v-else>{{ row.tasklogs.endTime | timeStampFormat }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.spend_time')" min-width="100">
+      <el-table-column sortable :label="$t('commons.table.spend_time')" min-width="60">
         <template v-slot:default="{row}">
           {{ loadTimeSpend(row.tasklogs.startTime, row.tasklogs.endTime) }}
         </template>
@@ -66,7 +70,6 @@
         </el-collapse>
       </div>
       <div v-else>
-        <div><span style="font-weight: bold">info</span></div>
         <div><span style="white-space: pre-wrap;">{{formatMsgs.info | errorFormat }}</span></div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -140,6 +143,21 @@ export default {
         return "-"
       }
       return end - start + " S"
+    },
+    loadName(task) {
+      if (task.tasklogs.type.indexOf("disable") !== -1) {
+        if (task.tasklogs.type.indexOf("storage") !== -1) {
+          return this.$t("message.title.CLUSTER_DISABLE_PROVISIONER") + " ( " + task.name + " )"
+        } else {
+          return this.$t("message.title.CLUSTER_DISABLE_COMPONENT") + " ( " + task.name + " )"
+        }
+      } else {
+        if (task.tasklogs.type.indexOf("storage") !== -1) {
+          return this.$t("message.title.CLUSTER_ENABLE_PROVISIONER") + " ( " + task.name + " )"
+        } else {
+          return this.$t("message.title.CLUSTER_ENABLE_COMPONENT") + " ( " + task.name + " )"
+        }
+      }
     },
   },
   created() {

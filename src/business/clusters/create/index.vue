@@ -691,12 +691,12 @@ export default {
       },
       rules: {
         name: [Rule.ClusterNameRule],
-        version: [Rule.RequiredRule],
-        projectName: [Rule.RequiredRule],
-        provider: [Rule.RequiredRule],
-        architectures: [Rule.RequiredRule],
-        yumOperate: [Rule.RequiredRule],
-        runtimeType: [Rule.RequiredRule],
+        version: [Rule.SelectRequiredRule],
+        projectName: [Rule.SelectRequiredRule],
+        provider: [Rule.SelectRequiredRule],
+        architectures: [Rule.SelectRequiredRule],
+        yumOperate: [Rule.SelectRequiredRule],
+        runtimeType: [Rule.SelectRequiredRule],
         dockerStorageDir: [Rule.RequiredRule],
         containerdStorageDir: [Rule.RequiredRule],
         dockerSubnet: [Rule.RequiredRule],
@@ -704,18 +704,18 @@ export default {
         kubePodSubnet: [Rule.RequiredRule],
         kubeServiceSubnet: [Rule.RequiredRule],
         kubeDnsDomain: [Rule.RequiredRule],
-        cgroupDriver: [Rule.RequiredRule],
-        kubeProxyMode: [Rule.RequiredRule],
+        cgroupDriver: [Rule.SelectRequiredRule],
+        kubeProxyMode: [Rule.SelectRequiredRule],
         kubeServiceNodePortRange1: [Rule.NumberRule],
         kubeServiceNodePortRange2: [Rule.NumberRule],
-        networkType: [Rule.RequiredRule],
-        flannelBackend: [Rule.RequiredRule],
+        networkType: [Rule.SelectRequiredRule],
+        flannelBackend: [Rule.SelectRequiredRule],
         calicoIpv4PoolIpip: [Rule.RequiredRule],
         ciliumTunnelMode: [Rule.RequiredRule],
-        helmVersion: [Rule.RequiredRule],
-        ingressControllerType: [Rule.RequiredRule],
-        plan: [Rule.RequiredRule],
-        masters: [Rule.RequiredRule],
+        helmVersion: [Rule.SelectRequiredRule],
+        ingressControllerType: [Rule.SelectRequiredRule],
+        plan: [Rule.SelectRequiredRule],
+        masters: [Rule.SelectRequiredRule],
         lbMode: [Rule.RequiredRule],
         lbKubeApiserverIp: [Rule.IpRule],
         kubeApiServerPort: [Rule.NumberRule],
@@ -761,6 +761,7 @@ export default {
       let bool
       this.$refs["form"].validate((valid) => {
         if (valid) {
+          console.log(valid)
           if (this.form.masters) {
             const lenMaster = this.form.masters.length
             if (lenMaster !== 0) {

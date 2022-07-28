@@ -122,8 +122,8 @@ export default {
         name: [Rule.RequiredRule],
         apiServer: [Rule.RequiredRule],
         token: [Rule.RequiredRule],
-        projectName: [Rule.RequiredRule],
-        architectures: [Rule.RequiredRule],
+        projectName: [Rule.SelectRequiredRule],
+        architectures: [Rule.SelectRequiredRule],
         router: [Rule.RequiredRule],
       },
     }

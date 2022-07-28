@@ -825,7 +825,7 @@ const message = {
     no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
-      CLUSTER_INSTALL: "集群新增",
+      CLUSTER_INSTALL: "集群安装",
       CLUSTER_IMPORT: "集群导入",
       CLUSTER_REMOVE_WORKER: "节点删除",
       CLUSTER_ADD_WORKER: "添加节点",
