@@ -14,7 +14,7 @@
       <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
       <el-table-column sortable :label="$t('commons.table.name')" show-overflow-tooltip min-width="100" prop="name" fix>
         <template v-slot:default="{row}">
-          <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
+          <el-link v-if="row.status.indexOf('Running') !== -1" type="info" @click="onDetailInfo(row)">{{ row.name }}</el-link>
           <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
         </template>
       </el-table-column>
@@ -75,6 +75,7 @@
           {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
+      <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')" fix />
     </complex-table>
 
     <el-dialog :title="$t('commons.button.create')" width="30%" :visible.sync="dialogCreateVisible">
@@ -99,100 +100,19 @@
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.node_detail')" width="50%" :visible.sync="dialogDetailVisible">
-      <div class="dialog">
-        <el-scrollbar style="height:100%">
-          <div style=" text-align: center;">
-            <span>{{$t ('cluster.detail.node.base_infomation')}}</span>
-            <div align="center" style="margin-top: 15px">
-              <table style="width: 90%" class="myTable">
-                <tbody>
-                  <tr>
-                    <td>Name</td>
-                    <td>{{detaiInfo.metadata.name}}</td>
-                  </tr>
-                  <tr>
-                    <td>Kernel Version</td>
-                    <td>{{detaiInfo.status.nodeInfo.kernelVersion}}</td>
-                  </tr>
-                  <tr>
-                    <td>OS Image</td>
-                    <td>{{detaiInfo.status.nodeInfo.osImage}}</td>
-                  </tr>
-                  <tr>
-                    <td>Container Runtime Version</td>
-                    <td>{{detaiInfo.status.nodeInfo.containerRuntimeVersion}}</td>
-                  </tr>
-                  <tr>
-                    <td>Kubelet Version</td>
-                    <td>{{detaiInfo.status.nodeInfo.kubeletVersion}}</td>
-                  </tr>
-                  <tr>
-                    <td>KubeProxy Version</td>
-                    <td>{{detaiInfo.status.nodeInfo.kubeProxyVersion}}</td>
-                  </tr>
-                  <tr>
-                    <td>Operating System</td>
-                    <td>{{detaiInfo.status.nodeInfo.operatingSystem}}</td>
-                  </tr>
-                  <tr>
-                    <td>Architecture</td>
-                    <td>{{detaiInfo.status.nodeInfo.architecture}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <br>
+      <node-detail :DetaiInfo="currentNode"></node-detail>
+    </el-dialog>
 
-            <span style="margin-top: 30px">{{$t ('cluster.detail.node.label')}}</span>
-            <div align="center" style="margin-top: 15px">
-              <table style="width: 90%" class="myTable">
-                <tbody>
-                  <tr v-for="(value, name) in detaiInfo.metadata.labels" :key="name">
-                    <td>{{name}}</td>
-                    <td>{{value}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <br>
-
-            <span style="margin-top: 30px">{{$t('cluster.detail.node.status')}}</span>
-            <div align="center" style="margin-top: 15px">
-              <el-table :data="detaiInfo.status.conditions" border style="width: 90%">
-                <el-table-column prop="type" min-width="80" show-overflow-tooltip label="Type" />
-                <el-table-column prop="status" min-width="50" label="Status" />
-                <el-table-column prop="lastTransitionTime" min-width="100" label="Time">
-                  <template v-slot:default="{row}">
-                    {{ row.lastTransitionTime | datetimeFormat }}
-                  </template>
-                </el-table-column>
-                <el-table-column prop="reason" show-overflow-tooltip min-width="100" label="Reason" />
-                <el-table-column prop="message" show-overflow-tooltip min-width="100" label="Message" />
-              </el-table>
-            </div>
-          </div>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogDetailVisible = false">{{$t('commons.button.cancel')}}</el-button>
-          </div>
-        </el-scrollbar>
+    <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
+      <batch-delete ref="batchDelete" :deleteLists="deleteLists" @submitDelete="submitDelete" />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogDeleteVisible = false">{{$t('commons.button.cancel')}}</el-button>
+        <el-button type="primary" @click="onSubmitDelete">{{$t('commons.button.submit')}}</el-button>
       </div>
     </el-dialog>
 
     <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('task.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
       <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="cancleLog()" />
-    </el-dialog>
-
-    <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
-      <el-form label-width="120px">
-        <el-checkbox v-model="isForce">{{$t('cluster.delete.is_force')}}</el-checkbox>
-        <div style="margin-top: 5px"><span class="input-help">{{$t('cluster.delete.force_delete')}}</span></div>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" :v-loading="deleteLoadding" @click="submitDelete()">
-          {{ $t("commons.button.submit") }}
-        </el-button>
-      </div>
     </el-dialog>
 
     <el-dialog :title="$t('cluster.detail.node.cordon')" width="50%" :visible.sync="dialogCordonVisible">
@@ -225,15 +145,29 @@ import { listNodesByPage, nodeBatchOperation, cordonNode, evictionNode, nodeReCr
 import { listClusterResourcesAll } from "@/api/cluster-resource"
 import { getClusterByName } from "@/api/cluster"
 import KoLogs from "@/components/ko-logs/index.vue"
+import NodeDetail from "./detail"
+import BatchDelete from "@/components/batch-delete"
 import { listPod } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 import { openLoggerWithName } from "@/api/cluster/tasks"
 
 export default {
   name: "ClusterNode",
-  components: { ComplexTable, KoLogs },
+  components: { ComplexTable, KoLogs, NodeDetail, BatchDelete },
   data() {
     return {
+      buttons: [
+        {
+          label: this.$t("commons.button.delete"),
+          icon: "el-icon-delete",
+          click: (row) => {
+            this.onDelete(row)
+          },
+          disabled: (row) => {
+            return this.provider === "" || this.buttonDisabled(row)
+          },
+        },
+      ],
       loading: false,
       submitLoading: false,
       paginationConfig: {
@@ -275,14 +209,11 @@ export default {
       dialogLogVisible: false,
       nodeName: "",
       operationType: "",
-
-      // node delete
-      currentNode: {},
       dialogDeleteVisible: false,
-      isForce: false,
-      deleteRow: null,
+      deleteLists: [],
       deleteLoadding: false,
 
+      currentNode: {},
       currentCluster: {},
       maxNodeNum: 256,
       hosts: [],
@@ -356,8 +287,8 @@ export default {
       }
       this.maxNodeNum = this.currentCluster.specConf.maxNodeNum - this.data.length
     },
-    getDetailInfo(row) {
-      this.detaiInfo = row.info
+    onDetailInfo(row) {
+      this.currentNode = row.info
       this.dialogDetailVisible = true
     },
     submitCreate() {
@@ -392,37 +323,33 @@ export default {
     },
 
     onDelete(row) {
-      this.isForce = false
-      this.dialogDeleteVisible = true
+      this.deleteLists = []
       if (row) {
-        this.deleteRow = row
-      } else {
-        this.deleteRow = null
-      }
-    },
-    submitDelete() {
-      if (this.deleteRow) {
-        if (this.deleteRow.roles.indexOf("master") !== -1) {
+        if (row.roles.indexOf("master") !== -1) {
           this.$message({ type: "info", message: this.$t("cluster.detail.node.is_master_node") })
           return
         }
+        this.deleteLists.push(row.name)
       } else {
-        for (const item of this.selects) {
-          if (item.roles.indexOf("master") !== -1) {
+        if (this.selects.length === 0) {
+          return
+        }
+        for (const r of this.selects) {
+          if (r.roles.indexOf("master") !== -1) {
             this.$message({ type: "info", message: this.$t("cluster.detail.node.is_master_node") })
             return
           }
+          this.deleteLists.push(r.name)
         }
       }
+      this.dialogDeleteVisible = true
+    },
+    onSubmitDelete() {
+      this.$refs["batchDelete"].submitDelete()
+    },
+    submitDelete(selects, force) {
       this.deleteLoadding = true
-      const delForm = { operation: "delete", isForce: this.isForce, nodes: [] }
-      if (this.deleteRow) {
-        delForm.nodes.push(this.deleteRow.name)
-      } else {
-        for (const node of this.selects) {
-          delForm.nodes.push(node.name)
-        }
-      }
+      const delForm = { operation: "delete", isForce: force, nodes: selects }
       nodeBatchOperation(this.clusterName, delForm)
         .then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.restart_after_delete") })
@@ -434,8 +361,8 @@ export default {
         .catch(() => {
           this.search()
           this.dialogDeleteVisible = false
-          this.deleteLoadding = false
           this.selects = []
+          this.deleteLoadding = false
         })
     },
     onCordon(operation) {
@@ -618,7 +545,7 @@ export default {
   },
   destroyed() {
     clearInterval(this.timer)
-    this.timer =  null
+    this.timer = null
   },
 }
 </script>

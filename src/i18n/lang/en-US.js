@@ -17,7 +17,9 @@ const message = {
       enable_component_select: "No synchronization components have been selected. Do you want to synchronize all?",
       enable_component: "This operation will enable the cluster {0} component. Continue?",
       disable_component: "This operation will disable the cluster {0} component. Continue?",
-      markAsRead: "Make sure to mark all as read？"
+      markAsRead: "Make sure to mark all as read？",
+      operator: "Action object",
+      delete_help: "This action cannot be undone, which permanently deletes the above action object?",
     },
     button: {
       login: "Login",
@@ -87,7 +89,7 @@ const message = {
     validate: {
       limit: "Length from {0} to {1} characters",
       input: "Please enter {0}",
-      input_error: "Please enter the correct cluster name!",
+      input_error: "Please enter the correct content as prompted by the input box to confirm deletion!",
       cannot_be_empty: "The content cannot be empty!",
       name_not_compliant: "The name does not conform to the naming convention!",
       select: "Please choose",
@@ -242,9 +244,9 @@ const message = {
       step1: "Cluster Information",
       name: "Name",
       name_type: "Node naming rules",
-      name_type_default_help: "Nodes will be named as {clusterName}-master-1",
-      name_type_ip_help: "Nodes will be named directly as IP",
-      name_type_host_help: "Nodes will named as the hostname in the host list",
+      name_type_default_help: "The name is in the form of 'cluster-name'-master-1",
+      name_type_ip_help: "It is named by the host IP address",
+      name_type_host_help: "It is named by the host name",
       name_check: "Checking",
       name_help: "Maximum length: 50, start with lowercase letters, end with lowercase letters or numbers, support lowercase letters, numbers and-",
       name_invalid_err: "Invalid cluster name",

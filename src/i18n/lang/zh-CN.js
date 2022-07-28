@@ -17,7 +17,9 @@ const message = {
       enable_component_select: "当前尚未选择同步组件，是否同步所有?",
       enable_component: "此操作将启用集群 {0} 组件，是否继续?",
       disable_component: "此操作将禁用集群 {0} 套件，是否继续?",
-      markAsRead: "确定全部标记为已读？"
+      markAsRead: "确定全部标记为已读？",
+      operator: "操作对象",
+      delete_help: "此操作无法撤消，这将永久删除上述操作对象",
     },
     button: {
       login: "登录",
@@ -88,7 +90,7 @@ const message = {
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
       input: "请输入{0}",
-      input_error: "请输入正确的集群名称！",
+      input_error: "请按输入框提示输入正确的内容确认删除！",
       cannot_be_empty: "该内容不能为空!",
       name_not_compliant: "该名称不符合命名规范!",
       select: "请选择",
@@ -243,9 +245,9 @@ const message = {
     creation: {
       step1: "集群信息",
       name_type: "节点命名规则",
-      name_type_default_help: "节点命名将以 {集群名称}-master-1 形式",
-      name_type_ip_help: "节点将直接以 ip 命名",
-      name_type_host_help: "节点将以主机列表中主机名称命名",
+      name_type_default_help: "将以 '集群名称'-master-1 形式命名",
+      name_type_ip_help: "以主机 ip 命名",
+      name_type_host_help: "以主机名称命名",
       name: "名称",
       name_check: "校验中",
       name_help: "最大长度为 50，小写字母开始，数字或字母结束，支持小写字母、数字、以及-",
