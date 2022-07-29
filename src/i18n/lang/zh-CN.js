@@ -286,6 +286,8 @@ const message = {
 
       step3: "运行时设置",
       runtime_type: "容器运行时",
+      docker_mirror_registry: "启用仓库镜像",
+      docker_remote_api: "启用 Restful API",
       docker_storage_dir: "Docker 数据路径",
       containe_storage_dir: "Containerd 数据路径",
       subnet: "Container 子网",
@@ -358,6 +360,8 @@ const message = {
       import_cluster: "集群导入",
       credential_rules: "请完善主机凭据信息！",
       port_rules: "请完善主机端口信息！",
+      ko_cluster: "KubeOperator 自建集群",
+      ex_cluster: "外部集群",
       is_ko_cluster: "是否为 KubeOperator 自建集群",
       load_ko_cluster_info: "获取集群信息",
       provisioner_help: "当前仅支持 nfs 以及 external-ceph 同步，其他存储提供商后续支持。",
@@ -826,7 +830,7 @@ const message = {
     no_letter: "暂无未读消息",
     title: {
       CLUSTER_EVENT_WARNING: "集群事件告警",
-      CLUSTER_INSTALL: "集群新增",
+      CLUSTER_INSTALL: "集群安装",
       CLUSTER_IMPORT: "集群导入",
       CLUSTER_REMOVE_WORKER: "节点删除",
       CLUSTER_ADD_WORKER: "添加节点",
