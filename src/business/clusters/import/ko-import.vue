@@ -66,6 +66,8 @@
                         <div v-if="form.clusterInfo.nodeNameRule === 'hostname'"><span class="input-help">{{$t('cluster.creation.name_type_host_help')}}</span></div>
                       </el-form-item>
                     </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
                     <el-col :span="12">
                       <el-form-item :label="$t('cluster.creation.yum_repo')" prop="clusterInfo.yumOperate">
                         <el-select style="width: 100%" v-model="form.clusterInfo.yumOperate" clearable>
@@ -73,21 +75,6 @@
                           <el-option value="coexist">coexist</el-option>
                           <el-option value="no">no</el-option>
                         </el-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20">
-                    <el-col :span="12">
-                      <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="clusterInfo.kubeProxyMode">
-                        <fu-select-rw-switch v-model="form.clusterInfo.kubeProxyMode">
-                          <template #read>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'iptables'">Iptables</el-tag>
-                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'ipvs'">ipvs</el-tag>
-                          </template>
-                          <el-option key="Iptables" label="Iptables" value="iptables" />
-                          <el-option key="ipvs" label="ipvs" value="ipvs" />
-                        </fu-select-rw-switch>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -116,10 +103,32 @@
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :span="12">
+                      <el-form-item :label="$t('cluster.creation.proxy_mode')" prop="clusterInfo.kubeProxyMode">
+                        <fu-select-rw-switch v-model="form.clusterInfo.kubeProxyMode">
+                          <template #read>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'iptables'">Iptables</el-tag>
+                            <el-tag disable-transitions v-if="form.clusterInfo.kubeProxyMode === 'ipvs'">ipvs</el-tag>
+                          </template>
+                          <el-option key="Iptables" label="Iptables" value="iptables" />
+                          <el-option key="ipvs" label="ipvs" value="ipvs" />
+                        </fu-select-rw-switch>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
                       <el-form-item label="DnsDomain" prop="clusterInfo.kubeDnsDomain">
                         <fu-read-write-switch :data="form.clusterInfo.kubeDnsDomain" v-model="editAble.kubeDnsDomain">
                           <el-input v-model="form.clusterInfo.kubeDnsDomain" @blur="editAble.kubeDnsDomain = false" />
                         </fu-read-write-switch>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="12">
+                      <el-form-item label="CgroupDriver" prop="clusterInfo.cgroupDriver">
+                        <el-select style="width: 100%" v-model="form.clusterInfo.cgroupDriver" clearable>
+                          <el-option value="systemd">systemd</el-option>
+                          <el-option value="cgroupfs">cgroupfs</el-option>
+                        </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -224,6 +233,22 @@
                       </el-col>
                     </el-row>
                     <el-row :gutter="20">
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t('cluster.creation.docker_mirror_registry')" prop="clusterInfo.dockerMirrorRegistry">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.dockerMirrorRegistry" clearable>
+                            <el-option :label="$t('cluster.creation.enable')" value="enable" />
+                            <el-option :label="$t('cluster.creation.disable')" value="disable" />
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t('cluster.creation.docker_remote_api')" prop="clusterInfo.dockerRemoteApi">
+                          <el-select style="width: 100%" v-model="form.clusterInfo.dockerRemoteApi" clearable>
+                            <el-option :label="$t('cluster.creation.enable')" value="enable" />
+                            <el-option :label="$t('cluster.creation.disable')" value="disable" />
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
                       <el-col :span="12">
                         <el-form-item v-if="form.clusterInfo.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="clusterInfo.dockerStorageDir">
                           <el-input v-model="form.clusterInfo.dockerStorageDir" placeholder="/var/lib/docker" />
@@ -419,11 +444,14 @@ export default {
           kubeServiceNodePortRange: "",
           kubeDnsDomain: "",
           kubernetesAudit: "",
+          cgroupDriver: "",
           kubePodSubnet: "",
           kubeServiceSubnet: "",
           yumOperate: "replace",
 
           runtimeType: "",
+          dockerMirrorRegistry: "",
+          dockerRemoteApi: "",
           dockerStorageDir: "",
           containerdStorageDir: "",
           dockerSubnet: "",
@@ -454,10 +482,13 @@ export default {
           yumOperate: [Rule.SelectRequiredRule],
           runtimeType: [Rule.RequiredRule],
           kubeApiServerPort: [Rule.NumberRule],
+          dockerMirrorRegistry: [Rule.SelectRequiredRule],
+          dockerRemoteApi: [Rule.SelectRequiredRule],
           dockerStorageDir: [Rule.RequiredRule],
           containerdStorageDir: [Rule.RequiredRule],
           dockerSubnet: [Rule.RequiredRule],
           maxNodePodNum: [Rule.RequiredRule],
+          cgroupDriver: [Rule.SelectRequiredRule],
           kubeDnsDomain: [Rule.RequiredRule],
           kubeServiceSubnet: [Rule.RequiredRule],
           kubeProxyMode: [Rule.RequiredRule],
@@ -572,6 +603,8 @@ export default {
     },
     autoInputDocker() {
       if (this.form.clusterInfo.runtimeType === "docker") {
+        this.$set(this.form.clusterInfo, "dockerMirrorRegistry", "enable")
+        this.$set(this.form.clusterInfo, "dockerRemoteApi", "disable")
         this.$set(this.form.clusterInfo, "dockerStorageDir", "/var/lib/docker")
         this.$set(this.form.clusterInfo, "dockerSubnet", "172.17.0.1/16")
       } else {
@@ -634,8 +667,8 @@ export default {
 
 <style lang="scss" scoped>
 .example {
-  height: 375px;
-  margin: 1% 3%;
+  height: 390px;
+  margin: 0 3%;
   ul {
     height: 20px;
   }

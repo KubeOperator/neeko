@@ -100,24 +100,41 @@
               <span>{{clusterDetailInfo.specRuntime.runtimeType}}</span>
             </el-form-item>
           </el-col>
+          <el-col :span="10"><br></el-col>
+        </el-row>
+        <el-row v-if="clusterDetailInfo.specRuntime.runtimeType === 'docker'" type="flex" justify="center">
+          <el-col :span="10">
+            <el-form-item :label="$t ('cluster.creation.docker_mirror_registry') + ': '">
+              <span v-if="clusterDetailInfo.specRuntime.dockerMirrorRegistry === 'enable'">{{$t ('commons.button.enable')}}</span>
+              <span v-if="clusterDetailInfo.specRuntime.dockerMirrorRegistry === 'disable'">{{$t ('commons.button.disable')}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item :label="$t ('cluster.creation.docker_remote_api') + ': '">
+              <span v-if="clusterDetailInfo.specRuntime.dockerRemoteApi === 'enable'">{{$t ('commons.button.enable')}}</span>
+              <span v-if="clusterDetailInfo.specRuntime.dockerRemoteApi === 'disable'">{{$t ('commons.button.disable')}}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row v-if="clusterDetailInfo.specRuntime.runtimeType === 'docker'" type="flex" justify="center">
           <el-col v-if="clusterDetailInfo.specRuntime.runtimeType === 'docker'" :span="10">
             <el-form-item :label="$t ('cluster.creation.docker_storage_dir') + ': '">
               <span>{{clusterDetailInfo.specRuntime.dockerStorageDir}}</span>
             </el-form-item>
           </el-col>
-          <el-col v-if="clusterDetailInfo.specRuntime.runtimeType === 'containerd'" :span="10">
-            <el-form-item :label="$t ('cluster.creation.containe_storage_dir') + ': '">
-              <span>{{clusterDetailInfo.specRuntime.containerdStorageDir}}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
           <el-col v-if="clusterDetailInfo.specRuntime.runtimeType === 'docker'" :span="10">
             <el-form-item :label="$t ('cluster.creation.subnet') + ': '">
               <span>{{clusterDetailInfo.specRuntime.dockerSubnet}}</span>
             </el-form-item>
           </el-col>
-          <el-col :span="10"></el-col>
+        </el-row>
+        <el-row v-if="clusterDetailInfo.specRuntime.runtimeType === 'containerd'" type="flex" justify="center">
+          <el-col v-if="clusterDetailInfo.specRuntime.runtimeType === 'containerd'" :span="10">
+            <el-form-item :label="$t ('cluster.creation.containe_storage_dir') + ': '">
+              <span>{{clusterDetailInfo.specRuntime.containerdStorageDir}}</span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10"><br></el-col>
         </el-row>
 
         <el-divider content-position="left">{{$t ('cluster.creation.step4')}}</el-divider>

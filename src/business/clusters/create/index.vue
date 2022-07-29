@@ -185,6 +185,12 @@
                           <el-option value="containerd">containerd</el-option>
                         </el-select>
                       </el-form-item>
+                      <el-form-item v-if="form.runtimeType === 'docker'" :label="$t('cluster.creation.docker_mirror_registry')" prop="dockerMirrorRegistry">
+                        <el-switch v-model="form.dockerMirrorRegistry" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
+                      <el-form-item v-if="form.runtimeType === 'docker'" :label="$t('cluster.creation.docker_remote_api')" prop="dockerRemoteApi">
+                        <el-switch v-model="form.dockerRemoteApi" active-value="enable" inactive-value="disable" :active-text="$t('cluster.creation.enable')" :inactive-text="$t('cluster.creation.disable')" />
+                      </el-form-item>
                       <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
                         <el-input v-model="form.dockerStorageDir" clearable></el-input>
                       </el-form-item>
@@ -511,12 +517,18 @@
                   <el-row type="flex" justify="center">
                     <el-col :span="6">
                       <ul>{{$t ('cluster.creation.runtime_type')}}</ul>
+                      <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_mirror_registry')}}</ul>
+                      <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_remote_api')}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.subnet')}}</ul>
                       <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.containe_storage_dir')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.runtimeType}}</ul>
+                      <ul v-if="form.runtimeType === 'docker' && form.dockerMirrorRegistry === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.runtimeType === 'docker' && form.dockerMirrorRegistry === 'disable'">{{$t ('commons.button.disable')}}</ul>
+                      <ul v-if="form.runtimeType === 'docker' && form.dockerRemoteApi === 'enable'">{{$t ('commons.button.enable')}}</ul>
+                      <ul v-if="form.runtimeType === 'docker' && form.dockerRemoteApi === 'disable'">{{$t ('commons.button.disable')}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{form.dockerStorageDir}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{form.dockerSubnet}}</ul>
                       <ul v-if="form.runtimeType === 'containerd'">{{form.containerdStorageDir}}</ul>
@@ -654,6 +666,8 @@ export default {
         kubeServiceSubnet: "192.168.0.0/24",
 
         runtimeType: "docker",
+        dockerMirrorRegistry: "enable",
+        dockerRemoteApi: "disable",
         dockerStorageDir: "/var/lib/docker",
         containerdStorageDir: "/var/lib/containerd",
         dockerSubnet: "172.17.0.1/16",
@@ -697,6 +711,8 @@ export default {
         architectures: [Rule.SelectRequiredRule],
         yumOperate: [Rule.SelectRequiredRule],
         runtimeType: [Rule.SelectRequiredRule],
+        dockerMirrorRegistry: [Rule.RequiredRule],
+        dockerRemoteApi: [Rule.RequiredRule],
         dockerStorageDir: [Rule.RequiredRule],
         containerdStorageDir: [Rule.RequiredRule],
         dockerSubnet: [Rule.RequiredRule],
