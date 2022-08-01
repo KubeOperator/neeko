@@ -197,18 +197,21 @@ export default {
     },
     submitIstio() {
       this.component.vars = this.component.vars === "" ? {} : this.component.vars
-      let data = {
-        clusterName: this.clusterName,
-        name: this.component.name,
-        type: this.component.type,
-        version: this.component.version,
-        vars: this.$refs.istio_component.gatherVars(this.component.vars),
+      var vars = this.$refs.istio_component.gatherVars(this.component.vars)
+      if (vars) {
+        let data = {
+          clusterName: this.clusterName,
+          name: this.component.name,
+          type: this.component.type,
+          version: this.component.version,
+          vars: vars,
+        }
+        createComponent(data).then(() => {
+          this.dialogIstioVisible = false
+          this.dialogVisible = false
+          this.search()
+        })
       }
-      createComponent(data).then(() => {
-        this.dialogIstioVisible = false
-        this.dialogVisible = false
-        this.search()
-      })
     },
     startComponent(row, force) {
       this.component = row
