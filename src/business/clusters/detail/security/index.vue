@@ -9,7 +9,7 @@
     </template>
     <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search"
                    :pagination-config="paginationConfig">
-      <el-table-column label="ID" min-width="150" prop="id" fix>
+      <el-table-column label="ID" min-width="150" show-overflow-tooltip prop="id" fix>
         <template v-slot:default="{row}">
           <el-link :disabled="!(row.status==='Success')" type="info" @click="cisDetail(row.id)">{{ row.id }}</el-link>
         </template>
@@ -61,15 +61,9 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
         <template v-slot:default="{row}">
-          <span style="margin: 12px">{{ row.status }}
+          <span>{{ row.status }}
             <i v-if="row.status === 'Running'" class="el-icon-loading"/>
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" prop="createdAt">
-
-        <template v-slot:default="{row}">
-          {{ row.createdAt | datetimeFormat }}
         </template>
       </el-table-column>
 
