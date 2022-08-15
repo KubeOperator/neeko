@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-alert :title="$t('cluster.detail.component.operator_help')" type="info" />
     <complex-table style="margin-top: 20px" ref="nsData" :row-key="getRowKeys" :selects.sync="selects" :data="data">
       <template #header>
@@ -104,7 +104,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" @click="stopComponent(component, true)">{{ $t("commons.button.disable") }}</el-button>
+        <el-button size="small" v-preventReClick @click="stopComponent(component, true)">{{ $t("commons.button.disable") }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -138,6 +138,7 @@ export default {
         version: "",
         vars: {},
       },
+      loading: false,
       dialogVisible: false,
       dialogIstioVisible: false,
       dialogIstioDetailVisible: false,
@@ -159,7 +160,7 @@ export default {
       if (row.status === "Terminating") {
         openLoggerWithName(this.clusterName, row.id + " (disable)")
       }
-      if (row.status === "Initializing") {
+      if (row.status === "Initializing" || row.status === "NotReady") {
         openLoggerWithName(this.clusterName, row.id + " (enable)")
       }
     },
@@ -237,8 +238,12 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
+        this.loading = true
         createComponent(data).then(() => {
           this.search()
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
         })
       })
     },
@@ -255,8 +260,12 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
+        this.loading = true
         deleteComponent(this.clusterName, row.name).then(() => {
           this.search()
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
         })
       })
     },
