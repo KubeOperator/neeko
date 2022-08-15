@@ -2,7 +2,7 @@
   <div>
     <el-collapse v-model="activeNames">
       <el-collapse-item title="Istio-Pilot" name="1">
-        <el-form label-width="200px">
+        <el-form :model="istioVars" ref="istioVars" label-width="200px">
           <el-row type="flex">
             <el-form-item :label="$t('cluster.detail.istio.cpu_request')" prop="pilot_requests_cpu" :rules="numberRules">
               <el-input-number style="width: 100%" :step="1" step-strictly v-model="istioVars.pilot_requests_cpu"></el-input-number>
@@ -84,7 +84,7 @@
 
 <script>
 import Rule from "@/utils/rules"
-import {isJson} from '@/utils/validate'
+import { isJson } from "@/utils/validate"
 
 export default {
   name: "IstioComponent",
@@ -119,6 +119,13 @@ export default {
   },
   methods: {
     gatherVars(vars) {
+      let isValid = false
+      this.$refs["istioVars"].validate((valid) => {
+        isValid = valid
+      })
+      if (!isValid) {
+        return null
+      }
       let itemVars = {}
       if (isJson(vars)) {
         itemVars = JSON.parse(vars)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-alert v-if="provider === ''" :title="$t('cluster.detail.storage.operator_help')" type="info" />
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
@@ -11,7 +11,7 @@
                 <el-button size="small" :disabled="classSelection.length < 1" @click="onBatchDelete('class')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
             </template>
-            <complex-table style="margin-top: 20px" v-loading="loading" :selects.sync="classSelection" :data="storageClassDatas">
+            <complex-table style="margin-top: 20px" :selects.sync="classSelection" :data="storageClassDatas">
               <el-table-column type="selection" fix></el-table-column>
               <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
               <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
@@ -35,13 +35,13 @@
               <el-button-group>
                 <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('create')">{{$t('commons.button.create')}}</el-button>
                 <el-tooltip :content="$t('cluster.detail.storage.provisioner_exist_help')" placement="top-start">
-                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('import')">{{$t('commons.button.import_exist')}}</el-button>
+                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('import')">{{$t('commons.button.import')}}</el-button>
                 </el-tooltip>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
               </el-button-group>
             </template>
-            <complex-table style="margin-top: 20px" ref="provisionerData" :row-key="getRowKeys" v-loading="loading" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
+            <complex-table style="margin-top: 20px" ref="provisionerData" :row-key="getRowKeys" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
               <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
               <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name">
                 <template v-slot:default="{row}">
@@ -281,6 +281,7 @@ export default {
       }
     },
     submitDelete(row, type) {
+      this.loading = true
       switch (type) {
         case "provisioner":
           listStorageClass(this.clusterName).then((data) => {
@@ -292,13 +293,19 @@ export default {
               }
             }
             if (isClassExist) {
+              this.loading = false
               this.$message({ type: "error", message: this.$t("cluster.detail.storage.storage_class_exist") })
             } else {
               deleteProvisioner(this.clusterName, row).then(() => {
-                this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
                 this.search()
+                this.loading = false
+                this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
+              }).catch(() => {
+                this.loading = false
               })
             }
+          }).catch(() => {
+            this.loading = false
           })
           break
         case "class":
@@ -307,8 +314,12 @@ export default {
             const secretName = row.parameters.secretName
             deleteSecret(this.clusterName, namespace, secretName).then(() => {
               this.deleteClass(row.metadata.name)
+              this.loading = false
+            }).catch(() => {
+              this.loading = false
             })
           } else {
+            this.loading = false
             this.deleteClass(row.metadata.name)
           }
           break

@@ -48,7 +48,7 @@
             </el-card>
           </el-form-item>
         </el-form>
-        <el-button style="float: right" @click="onBack">{{ $t('commons.button.return') }}</el-button>
+        <el-button style="float: right" @click="onBack">{{ $t('commons.button.cancel') }}</el-button>
       </el-col>
       <el-col :span="10">
         <div class="block">

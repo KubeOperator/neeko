@@ -82,7 +82,7 @@
             <el-form-item label="UserName" prop="vars.cinder_username" :rules="requiredRules">
               <el-input v-model="form.vars['cinder_username']" placeholder=" admin" clearable></el-input>
             </el-form-item>
-            <el-form-item label="Password" prop="vars.cinder_password" :rules="passwordRules">
+            <el-form-item label="Password" prop="vars.cinder_password" :rules="requiredRules">
               <el-input type="password" show-password v-model="form.vars['cinder_password']" clearable></el-input>
             </el-form-item>
             <el-form-item label="Region" prop="vars.cinder_region" :rules="requiredRules">
@@ -196,7 +196,7 @@
               <el-input v-model="form.vars['oceanstor_user']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.password')" prop="vars.oceanstor_password"
-                          :rules="passwordRules">
+                          :rules="requiredRules">
               <el-input type="password" show-password v-model="form.vars['oceanstor_password']" clearable></el-input>
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.storage.storage_pool')" prop="vars.oceanstor_pools"
@@ -217,7 +217,7 @@
           </div>
           <el-form-item>
             <div style="float: right">
-              <el-button @click="getDatacenter()">{{ $t("automatic.region.get_datacenter") }}</el-button>
+              <el-button v-if="createType === 'vsphere'" @click="getDatacenter()">{{ $t("automatic.region.get_datacenter") }}</el-button>
               <el-button @click="onCancel()">{{ $t("commons.button.cancel") }}</el-button>
               <el-button type="primary" :disabled="!createType || submitLoading" @click="onSubmit" v-preventReClick>
                 {{ $t("commons.button.create") }}
@@ -253,7 +253,6 @@ export default {
       },
       nameRules: [Rule.CommonNameRule],
       requiredRules: [Rule.RequiredRule],
-      passwordRules: [Rule.PasswordRule],
       enableBlockStorage: "disable",
       deployments: [],
       deploymentName: {},

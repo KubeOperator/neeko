@@ -147,15 +147,15 @@ export default {
     loadName(task) {
       if (task.tasklogs.type.indexOf("disable") !== -1) {
         if (task.tasklogs.type.indexOf("storage") !== -1) {
-          return this.$t("message.title.CLUSTER_DISABLE_PROVISIONER") + " ( " + task.name + " )"
+          return this.$t("message.title.CLUSTER_DISABLE_PROVISIONER") + " [ " + task.name + " ]"
         } else {
-          return this.$t("message.title.CLUSTER_DISABLE_COMPONENT") + " ( " + task.name + " )"
+          return this.$t("message.title.CLUSTER_DISABLE_COMPONENT") + " [ " + task.name + " ]"
         }
       } else {
         if (task.tasklogs.type.indexOf("storage") !== -1) {
-          return this.$t("message.title.CLUSTER_ENABLE_PROVISIONER") + " ( " + task.name + " )"
+          return this.$t("message.title.CLUSTER_ENABLE_PROVISIONER") + " [ " + task.name + " ]"
         } else {
-          return this.$t("message.title.CLUSTER_ENABLE_COMPONENT") + " ( " + task.name + " )"
+          return this.$t("message.title.CLUSTER_ENABLE_COMPONENT") + " [ " + task.name + " ]"
         }
       }
     },
