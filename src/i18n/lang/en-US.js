@@ -85,6 +85,7 @@ const message = {
       disable_success: "Disabled successfully",
       update_success: "Update completed",
       upgrade_start_success: "The cluster upgrade has started, please wait...",
+      metric_server_error: "The metrics-server service is unavailable. View the Metrics-Server Pod logs in the kube-system space to help locate the fault.",
     },
     validate: {
       limit: "Length from {0} to {1} characters",

@@ -254,6 +254,11 @@ export default {
         this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
         this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
         this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)
+      }).catch(() => {
+        this.$message({
+          type: "info",
+          message: this.$t("commons.msg.metric_server_error")
+        })
       })
     },
   },
