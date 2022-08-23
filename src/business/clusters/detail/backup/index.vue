@@ -173,7 +173,7 @@ export default {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
           click: (row) => {
-            this.deleteBackupFile(row.metadata.name)
+            this.deleteBackupFile(row.name)
           },
         },
       ],
