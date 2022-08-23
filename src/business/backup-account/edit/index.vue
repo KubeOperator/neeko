@@ -29,6 +29,12 @@
             <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.endpoint')">
               <el-input v-model="form.credentialVars['endpoint']"></el-input>
             </el-form-item>
+            <el-form-item v-if="form.type === 'MINIO'" prop="credentialVars.ssl">
+              <el-radio-group v-model="form.credentialVars['ssl']">
+                <el-radio label="http">http</el-radio>
+                <el-radio label="https">https</el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item v-if="form.type !== 'SFTP'" :label="$t('backup_account.table.bucket')">
               <el-select style="width: 100%" v-model="form.bucket" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in buckets" :key="item" :value="item">
