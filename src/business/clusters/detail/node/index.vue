@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-alert v-if="provider === ''" :title="$t('cluster.detail.node.operator_help')" type="info" />
+    <el-alert v-if="source === 'external'" :title="$t('cluster.detail.node.operator_help')" type="info" />
     <complex-table style="margin-top: 20px" ref="nodeData" :row-key="getRowKeys" :selects.sync="selects" @search="search" :data="data" v-loading="loading" :pagination-config="paginationConfig">
       <template #header>
         <el-button-group>
-          <el-button size="small" :disabled="provider === '' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1 || provider === '' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
+          <el-button size="small" :disabled="source === 'external' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1 || source === 'external' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
         </el-button-group>
@@ -164,7 +164,7 @@ export default {
             this.onDelete(row)
           },
           disabled: (row) => {
-            return this.provider === "" || this.buttonDisabled(row)
+            return this.source === "external" || this.buttonDisabled(row)
           },
         },
       ],
@@ -218,6 +218,7 @@ export default {
       maxNodeNum: 256,
       hosts: [],
       provider: null,
+      source: null,
       dialogCordonVisible: false,
       modeSelect: "safe",
       timer: null,
@@ -491,6 +492,7 @@ export default {
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
         this.provider = this.currentCluster.provider
+        this.source = this.currentCluster.source
       })
     },
 

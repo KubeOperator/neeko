@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <el-alert v-if="provider === ''" :title="$t('cluster.detail.storage.operator_help')" type="info" />
+    <el-alert v-if="source === 'external'" :title="$t('cluster.detail.storage.operator_help')" type="info" />
     <div style="margin-top: 20px">
       <el-tabs v-model="activeName" tab-position="left" @tab-click="handleClick()" style="margin-bottom: 30px;">
         <el-tab-pane :label="$t('cluster.detail.storage.storage_class')" name="storage_class">
@@ -29,13 +29,13 @@
           </el-card>
           <class-create v-if="classOnCreate" @backTo="backTo" />
         </el-tab-pane>
-        <el-tab-pane :label="$t('cluster.detail.storage.provisioner')" name="provisioner">
+        <el-tab-pane v-if="source !== 'external'" :label="$t('cluster.detail.storage.provisioner')" name="provisioner">
           <el-card v-if="!provisionerOnCreate">
             <template>
               <el-button-group>
-                <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('create')">{{$t('commons.button.create')}}</el-button>
+                <el-button size="small" @click="provisionerCreate('create')">{{$t('commons.button.create')}}</el-button>
                 <el-tooltip :content="$t('cluster.detail.storage.provisioner_exist_help')" placement="top-start">
-                  <el-button size="small" :disabled="provider === ''" @click="provisionerCreate('import')">{{$t('commons.button.import')}}</el-button>
+                  <el-button size="small" @click="provisionerCreate('import')">{{$t('commons.button.import')}}</el-button>
                 </el-tooltip>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onSync()">{{$t('commons.button.sync')}}</el-button>
                 <el-button size="small" :disabled="isDeleteButtonDisable" @click="onBatchDelete('provisioner')">{{$t('commons.button.delete')}}</el-button>
@@ -163,7 +163,7 @@ export default {
         continueToken: "",
         nextToken: "",
       },
-      provider: null,
+      source: null,
       loading: false,
       isDeleteButtonDisable: true,
       provisionerOnCreate: false,
@@ -231,7 +231,7 @@ export default {
     },
     getCluster() {
       getClusterByName(this.clusterName).then((data) => {
-        this.provider = data.provider
+        this.source = data.source
       })
     },
     getErrorInfo(row) {

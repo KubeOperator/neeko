@@ -61,9 +61,12 @@
       </el-table-column>
       <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
         <template v-slot:default="{row}">
-          <span>{{ row.status }}
+          <span v-if="row.status !== 'Failed'">{{ row.status }}
             <i v-if="row.status === 'Running'" class="el-icon-loading"/>
           </span>
+          <el-tooltip v-else class="item" effect="dark" :content="row.message" placement="top-start">
+            <span style="color: red">{{ row.status }}</span>
+          </el-tooltip>
         </template>
       </el-table-column>
 

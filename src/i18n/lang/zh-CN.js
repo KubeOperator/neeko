@@ -86,6 +86,7 @@ const message = {
       disable_success: "禁用成功",
       update_success: "更新成功",
       upgrade_start_success: "集群升级已开始，请稍候...",
+      metric_server_error: "metrics-server 服务不可用，请查看 kube-system 空间下 metrics-server pod 日志来辅助定位问题。",
     },
     validate: {
       limit: "长度在 {0} 到 {1} 个字符",
