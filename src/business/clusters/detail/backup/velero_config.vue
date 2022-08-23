@@ -34,7 +34,7 @@
           <el-button :disabled="submitLoading" @click="onDelete()" v-preventReClick>
             {{ $t("commons.button.delete") }}
           </el-button>
-          <el-button type="primary" @click="onSubmit()" v-preventReClick>
+          <el-button type="primary" :disabled="submitLoading" @click="onSubmit()" v-preventReClick>
             {{ $t("commons.button.submit") }}
           </el-button>
         </el-form-item>
@@ -93,6 +93,17 @@ export default {
         .then((res) => {
           if (res.id !== "") {
             this.form = res
+          }else {
+            this.form = {
+              requests: {
+                cpu: 1000,
+                memory: 512,
+              },
+              limits: {
+                cpu: 1000,
+                memory: 512,
+              },
+            }
           }
         })
         .finally(() => {
@@ -105,12 +116,15 @@ export default {
         cancelButtonText: this.$t("commons.button.cancel"),
         type: "warning",
       }).then(() => {
+        this.loading = true
         veleroUninstall(this.clusterName).then(() => {
           this.$message({
             type: "success",
             message: this.$t("commons.msg.delete_success"),
           })
           this.getConfig()
+        }).finally(() => {
+          this.loading = false
         })
       })
     },
