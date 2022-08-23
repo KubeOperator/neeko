@@ -9,6 +9,7 @@ const instance = axios.create({
   timeout: 60000 // request timeout, default 1 min
 })
 
+let whiteList = ["/proxy/kubernetes/mscluster/apis/metrics.k8s.io/v1beta1/nodes"]
 
 instance.interceptors.request.use(
   config => {
@@ -52,7 +53,17 @@ instance.interceptors.response.use(response => {
   } else {
     msg = error.message
   }
-  $error(msg)
+
+  let isWhite = false
+  for (const whiteUrl of whiteList) {
+    if (error.response.config.url == whiteUrl) {
+      isWhite = true
+      break
+    }
+  }
+  if (!isWhite) {
+    $error(msg)
+  }
   return Promise.reject(error)
 })
 
