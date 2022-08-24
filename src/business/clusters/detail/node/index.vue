@@ -5,9 +5,9 @@
       <template #header>
         <el-button-group>
           <el-button size="small" :disabled="source === 'external' || buttonDisabled()" @click="create()">{{$t('commons.button.create')}}</el-button>
-          <el-button size="small" :disabled="selects.length < 1 || source === 'external' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('cordon')">{{$t('commons.button.cordon')}}</el-button>
           <el-button size="small" :disabled="selects.length < 1" @click="onCordon('uncordon')">{{$t('commons.button.active')}}</el-button>
+          <el-button size="small" :disabled="selects.length < 1 || source === 'external' || buttonDisabled()" @click="onDelete()">{{$t('commons.button.delete')}}</el-button>
         </el-button-group>
       </template>
 
@@ -18,13 +18,13 @@
           <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="IP" width="120px" fix>
+      <el-table-column :label="$t('host.ip')" width="120px" fix>
         <template v-slot:default="{row}">{{getInternalIp(row)}}</template>
       </el-table-column>
       <el-table-column :label="$t('cluster.version')" width="100px" fix>
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
-      <el-table-column label="Roles" show-overflow-tooltip min-width="100" prop="roles" fix />
+      <el-table-column :label="$t('user.role')" show-overflow-tooltip min-width="100" prop="roles" fix />
       <el-table-column sortable class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider !== 'bareMetal'">
@@ -157,6 +157,28 @@ export default {
   data() {
     return {
       buttons: [
+        {
+          label: this.$t("commons.button.cordon"),
+          icon: "el-icon-video-pause",
+          click: (row) => {
+            this.selects = [row]
+            this.onCordon("cordon")
+          },
+          disabled: (row) => {
+            return row.status.indexOf("SchedulingDisabled") !== -1 || this.buttonDisabled(row)
+          },
+        },
+        {
+          label: this.$t("commons.button.active"),
+          icon: "el-icon-video-play",
+          click: (row) => {
+            this.selects = [row]
+            this.onCordon("active")
+          },
+          disabled: (row) => {
+            return row.status.indexOf("SchedulingDisabled") === -1 || this.buttonDisabled(row)
+          },
+        },
         {
           label: this.$t("commons.button.delete"),
           icon: "el-icon-delete",
