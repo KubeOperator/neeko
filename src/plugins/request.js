@@ -9,7 +9,10 @@ const instance = axios.create({
   timeout: 60000 // request timeout, default 1 min
 })
 
-let whiteList = ["/proxy/kubernetes/mscluster/apis/metrics.k8s.io/v1beta1/nodes"]
+let whiteList = [
+  "/proxy/kubernetes/mscluster/apis/metrics.k8s.io/v1beta1/nodes",
+  "/api/v1/kubernetes/evict",
+]
 
 instance.interceptors.request.use(
   config => {
@@ -92,7 +95,10 @@ export const get = (url, data, loading) => {
   return promise(request({ url: url, method: "get", params: data }), loading)
 }
 
-export const post = (url, data, loading) => {
+export const post = (url, data, headers, loading) => {
+  if (headers) {
+    return promise(request({ url: url, headers: headers, method: "post", data }), loading)
+  }
   return promise(request({ url: url, method: "post", data }), loading)
 }
 

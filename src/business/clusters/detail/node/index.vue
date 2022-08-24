@@ -393,13 +393,17 @@ export default {
     },
     submitCordon(isCordon) {
       this.submitLoading = true
-      let data = { spec: { unschedulable: isCordon } }
       const ps = []
       for (const item of this.selects) {
+        let nodeInfo = {
+          name: item.name,
+          cluster: this.clusterName,
+          setUnschedulable: isCordon
+        }
         ps.push(
-          cordonNode(this.clusterName, item.name, data).then(() => {
+          cordonNode(nodeInfo).then(() => {
             if (this.modeSelect === "force" && isCordon) {
-              listPod(this.clusterName).then((data) => {
+              listPod(this.clusterName, "").then((data) => {
                 this.bacthDeletePod(data.items, item.name)
               })
             }
@@ -428,17 +432,12 @@ export default {
           if (pod.metadata.ownerReferences && pod.metadata.ownerReferences[0].kind === "DaemonSet") {
             return
           }
-          const rmPod = {
-            apiVersion: "policy/v1beta1",
-            kind: "Eviction",
-            metadata: {
-              name: pod.metadata.name,
-              namespace: pod.metadata.namespace,
-              creationTimestamp: null,
-            },
-            deleteOptions: {},
+          let evict = {
+            name: pod.metadata.name,
+            cluster: this.clusterName,
+            namespace: pod.metadata.namespace,
           }
-          ps.push(evictionNode(this.clusterName, pod.metadata.namespace, pod.metadata.name, rmPod))
+          ps.push(evictionNode(evict))
         }
       }
       Promise.all(ps)

@@ -194,7 +194,8 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import { listProvisioner, createStorageClass, createSecret } from "@/api/cluster/storage"
+import { listProvisioner } from "@/api/cluster/storage"
+import { createStorageClass, createSecret } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
 
 export default {
@@ -245,7 +246,12 @@ export default {
           this.submitLoading = true
           if (this.provisioner.type === "glusterfs") {
             const mySecret = this.newV1Secrets()
-            createSecret(this.clusterName, this.form.parameters["secretNamespace"], mySecret)
+            let source = {
+              cluster: this.clusterName,
+              namespace: this.form.parameters["secretNamespace"],
+              info: mySecret,
+            }
+            createSecret(source)
               .then(() => {
                 if (this.form.parameters["restuserkey"]) {
                   delete this.form.parameters["restuserkey"]
@@ -270,7 +276,11 @@ export default {
       if (this.form.parameters["storagePolicyType"] !== undefined) {
         delete this.form.parameters["storagePolicyType"]
       }
-      createStorageClass(this.clusterName, this.form)
+      let sc = {
+        cluster: this.clusterName,
+        info: this.form
+      }
+      createStorageClass(sc)
         .then(() => {
           this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
           this.submitLoading = false

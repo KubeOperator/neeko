@@ -24,8 +24,6 @@
               </el-table-column>
               <fu-table-operations :buttons="buttons_class" :label="$t('commons.table.action')" fix />
             </complex-table>
-
-            <k8s-page @pageChange="classPageChange" :nextToken="classPage.nextToken" />
           </el-card>
           <class-create v-if="classOnCreate" @backTo="backTo" />
         </el-tab-pane>
@@ -125,17 +123,17 @@
 
 <script>
 import ComplexTable from "@/components/complex-table"
-import K8sPage from "@/components/k8s-page"
 import { getClusterByName } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
 import ProvisionerDetail from "./provisioner-detail"
 import ProvisionerCreate from "./provisioner-create"
 import ClassCreate from "./class-create"
-import { listProvisioner, listStorageClass, syncProvisioner, deleteProvisioner, deleteSecret, deleteStorageClass } from "@/api/cluster/storage"
+import { deleteResoure, listStorageClass } from "@/api/cluster/cluster"
+import { listProvisioner, syncProvisioner, deleteProvisioner } from "@/api/cluster/storage"
 
 export default {
   name: "ClusterStorage",
-  components: { ComplexTable, K8sPage, ProvisionerDetail, ProvisionerCreate, ClassCreate },
+  components: { ComplexTable, ProvisionerDetail, ProvisionerCreate, ClassCreate },
   data() {
     return {
       buttons_class: [
@@ -159,10 +157,6 @@ export default {
           },
         },
       ],
-      classPage: {
-        continueToken: "",
-        nextToken: "",
-      },
       source: null,
       loading: false,
       isDeleteButtonDisable: true,
@@ -192,11 +186,10 @@ export default {
     search() {
       this.loading = true
       if (this.activeName === "storage_class") {
-        listStorageClass(this.clusterName, this.classPage.continueToken, false)
+        listStorageClass(this.clusterName)
           .then((data) => {
             this.loading = false
             this.storageClassDatas = data.items
-            this.classPage.nextToken = data.metadata["continue"] ? data.metadata["continue"] : ""
           })
           .catch(() => {
             this.loading = false
@@ -237,10 +230,6 @@ export default {
     getErrorInfo(row) {
       this.dialogErrorVisible = true
       this.errMsg = row.message
-    },
-    classPageChange(continueToken) {
-      this.classPage.continueToken = continueToken.token
-      this.search()
     },
     handleClick() {
       localStorage.setItem("storage_active_name", this.activeName)
@@ -310,9 +299,13 @@ export default {
           break
         case "class":
           if (row.provisioner === "kubernetes.io/glusterfs") {
-            const namespace = row.parameters.secretNamespace
-            const secretName = row.parameters.secretName
-            deleteSecret(this.clusterName, namespace, secretName).then(() => {
+            let source = {
+              cluster: this.clusterName,
+              kind: "storageclass",
+              name: row.parameters.secretName,
+              namespace: row.parameters.secretNamespace,
+            }
+            deleteResoure(source).then(() => {
               this.deleteClass(row.metadata.name)
               this.loading = false
             }).catch(() => {
@@ -346,7 +339,12 @@ export default {
       })
     },
     deleteClass(deleteName) {
-      deleteStorageClass(this.clusterName, deleteName).then(() => {
+      let source = {
+        cluster: this.clusterName,
+        kind: "storageclass",
+        name: deleteName,
+      }
+      deleteResoure(source).then(() => {
         this.$message({ type: "success", message: this.$t("commons.msg.op_success") })
         this.search()
       })

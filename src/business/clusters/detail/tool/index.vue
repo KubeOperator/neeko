@@ -292,9 +292,7 @@
 
 <script>
 import { listTool, enableTool, disableTool, getFlex, enableFlex, disableFlex, upgradeTool, getNodePort, syncTool } from "@/api/cluster/tool"
-import { listNodeInCluster } from "@/api/cluster/node"
-import { listNamespace } from "@/api/cluster/cluster"
-import { listStorageClass } from "@/api/cluster/storage"
+import { listNamespace, listNode, listStorageClass } from "@/api/cluster/cluster"
 import { getClusterByName, getSecret } from "@/api/cluster"
 import { changeUnderLineToPoint } from "@/utils/format_conversion"
 import Rule from "@/utils/rules"
@@ -504,7 +502,7 @@ export default {
       })
     },
     listNodes() {
-      listNodeInCluster(this.clusterName).then((data) => {
+      listNode(this.clusterName).then((data) => {
         this.nodes = []
         data.items.forEach((item) => {
           if (item.spec["unschedulable"] === undefined) {
@@ -515,7 +513,7 @@ export default {
       })
     },
     listStorages() {
-      listStorageClass(this.clusterName, null, true).then((data) => {
+      listStorageClass(this.clusterName).then((data) => {
         this.storages = []
         data.items.forEach((item) => {
           this.storages.push(item.metadata.name)

@@ -90,11 +90,11 @@
                 <ul>Containers</ul>
               </el-col>
               <el-col :span="12">
-                <ul>{{nodes.length}}</ul>
-                <ul>{{namespaces.length}}</ul>
-                <ul>{{deployments.length}}</ul>
-                <ul>{{pods.length}}</ul>
-                <ul>{{containerNumber}}</ul>
+                <ul>{{overViewData.nodes}}</ul>
+                <ul>{{overViewData.namespaces}}</ul>
+                <ul>{{overViewData.deployments}}</ul>
+                <ul>{{overViewData.pods}}</ul>
+                <ul>{{overViewData.containers}}</ul>
               </el-col>
             </div>
           </el-card>
@@ -125,9 +125,7 @@
 </template>
 
 <script>
-import { listPod, listDeployment, getClusterToken } from "@/api/cluster/cluster"
-import { listNodeInCluster, listNodesUsage } from "@/api/cluster/node"
-import { listNamespace } from "@/api/cluster/cluster"
+import { listResource, getMetric, getClusterToken } from "@/api/cluster/cluster"
 import { getClusterByName } from "@/api/cluster"
 import KoDetail from "./ko-detail.vue"
 
@@ -156,11 +154,13 @@ export default {
         },
         source: "",
       },
-      namespaces: [],
-      pods: [],
-      nodes: [],
-      deployments: [],
-      containerNumber: 0,
+      overViewData: {
+        deployments: 0,
+        nodes: 0,
+        namespaces : 0,
+        pods: 0,
+        containers: 0,
+      },
       cpuTotal: 0,
       cpuUsage: 0,
       cpuUsagePercent: 0.0,
@@ -183,9 +183,7 @@ export default {
       getClusterByName(this.clusterName).then((data) => {
         this.currentCluster = data
       })
-      this.loadNameSpaces()
-      this.loadNodes()
-      this.loadDeployments()
+      this.loadDatas()
     },
     onOpen() {
       this.loading_xterm = true
@@ -209,48 +207,51 @@ export default {
         window.open(this.url, "_blank", "weight=300,height=200,alwaysRaised=yes,depended=yes")
       })
     },
-    loadNameSpaces() {
-      listNamespace(this.clusterName).then((data) => {
-        this.namespaces = data.items
-      })
-    },
-    loadPods() {
-      listPod(this.clusterName).then((data) => {
-        this.pods = data.items
-        this.podLength = this.pods.length
-        this.pods.forEach((pod) => {
-          this.containerNumber = this.containerNumber + pod.spec.containers.length
-        })
-        this.podUsagePercent = Math.round((this.pods.length / this.podLimit) * 100)
-      })
-    },
     loadNodes() {
-      listNodeInCluster(this.clusterName).then((data) => {
+      let search = {
+        kind: "nodelist",
+        cluster: this.clusterName,
+        continue: "",
+        limit: 0,
+        namespace: "",
+        name: "",
+      }
+      listResource(search).then((data) => {
         this.nodes = data.items
-        this.nodes.forEach((node) => {
-          this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)
-          const mem = node.status.capacity.memory.replace("Ki", "")
-          this.memTotal = this.memTotal + Number(mem)
-          this.podLimit = this.podLimit + Number(node.status.capacity.pods)
-        })
+        for (const node of this.nodes) {
+            this.cpuTotal = this.cpuTotal + Number(node.status.capacity.cpu)
+            const mem = node.status.capacity.memory.replace('Ki', '')
+            this.memTotal = this.memTotal + Number(mem)
+            this.podLimit = this.podLimit + Number(node.status.capacity.pods)
+        }
+        this.podUsagePercent = Math.round((this.overViewData.pods / this.podLimit) * 100)
         this.loadNodesUsages()
-        this.loadPods()
       })
     },
-    loadDeployments() {
-      listDeployment(this.clusterName).then((data) => {
-        this.deployments = data.items
+    loadDatas() {
+      let search = {
+        kind: "overviewdatas",
+        cluster: this.clusterName,
+        continue: "",
+        limit: 0,
+        namespace: "",
+        name: "",
+      }
+      listResource(search).then((data) => {
+        this.overViewData = data
+        this.podLength =  data.pods
+        this.loadNodes()
       })
     },
     loadNodesUsages() {
-      listNodesUsage(this.clusterName).then((data) => {
+      getMetric(this.clusterName).then((data) => {
         let metrics = data.items
-        metrics.forEach((me) => {
-          const c = me.usage.cpu.replace("n", "")
-          this.cpuUsage = this.cpuUsage + Number(c)
-          const m = me.usage.memory.replace("Ki", "")
-          this.memUsage = this.memUsage + Number(m)
-        })
+        for (const me of metrics) {
+            const c = me.usage.cpu.replace('n', '')
+            this.cpuUsage = this.cpuUsage + Number(c)
+            const m = me.usage.memory.replace('Ki', '')
+            this.memUsage = this.memUsage + Number(m)
+        }
         this.cpuUsage = this.cpuUsage / (1000 * 1000 * 1000)
         this.memUsagePercent = Math.round((this.memUsage / this.memTotal) * 100)
         this.cpuUsagePercent = Math.round((this.cpuUsage / this.cpuTotal) * 100)

@@ -1,36 +1,88 @@
-import {get} from "@/plugins/request"
+import {get, post} from "@/plugins/request"
 
-const proxyUrl = "/proxy/kubernetes/{cluster_name}/{resource_url}"
+const kubernetesUrl = "/api/v1/kubernetes/search"
+const kubernetesCreateUrl = "/api/v1/kubernetes/create"
+const kubernetesDeleteUrl = "/api/v1/kubernetes/delete"
+const metricUrl = "/api/v1/kubernetes/search/metric/{cluster_name}" 
 
-const deploymentUrl = "apis/apps/v1/deployments"
-const namespaceDeploymentUrl = "apis/apps/v1/namespaces/{namespace}/deployments"
-const namespaceUrl = "api/v1/namespaces"
-const podUrl = "api/v1/pods"
-const namespacePodUrl = "api/v1/namespaces/{namespace}/pods/"
+export function listResource(data) {
+  return post(kubernetesUrl, data)
+}
 
-export function listDeployment(clusterName, namespace) {
-  let url = proxyUrl.replace("{cluster_name}", clusterName)
-  if (namespace !== undefined && namespace !== null) {
-    url = url.replace("{resource_url}", namespaceDeploymentUrl).replace("{namespace}", namespace)
-  } else {
-    url = url.replace("{resource_url}", deploymentUrl)
-  }
-  return get(url)
+export function deleteResoure(data) {
+  return post(kubernetesDeleteUrl, data)
 }
 
 export function listNamespace(clusterName) {
-  const url = proxyUrl.replace("{cluster_name}", clusterName).replace("{resource_url}", namespaceUrl)
-  return get(url)
+  let search = {
+    kind: "namespacelist",
+    cluster: clusterName,
+    continue: "",
+    limit: 0,
+    namespace: "",
+    name: "",
+  }
+  return post(kubernetesUrl, search)
 }
 
-export function listPod(clusterName, continueToken, namespace) {
-  let url = proxyUrl.replace("{cluster_name}", clusterName)
-  if (namespace !== undefined && namespace !== null) {
-    url = url.replace("{resource_url}", namespacePodUrl).replace("{namespace}", namespace)
-  } else {
-    url = url.replace("{resource_url}", podUrl)
+export function listDeployment(clusterName, namespace) {
+  let search = {
+    kind: "deploymentlist",
+    cluster: clusterName,
+    continue: "",
+    limit: 0,
+    namespace: namespace,
+    name: "",
   }
-  return get(url)
+  return post(kubernetesUrl, search)
+}
+
+export function listPod(clusterName, namespace) {
+  let search = {
+    kind: "podlist",
+    cluster: clusterName,
+    continue: "",
+    limit: 0,
+    namespace: namespace,
+    name: "",
+  }
+  return post(kubernetesUrl, search)
+}
+
+export function listNode(clusterName) {
+  let search = {
+    kind: "nodelist",
+    cluster: clusterName,
+    continue: "",
+    limit: 0,
+    namespace: "",
+    name: "",
+  }
+  return post(kubernetesUrl, search)
+}
+
+export function listStorageClass(clusterName) {
+  let search = {
+    kind: "storageclasslist",
+    cluster: clusterName,
+    continue: "",
+    limit: 0,
+    namespace: "",
+    name: "",
+  }
+  return post(kubernetesUrl, search)
+}
+
+export function getMetric(clusterName) {
+  return post(metricUrl.replace("{cluster_name}", clusterName))
+}
+
+export function createStorageClass(data) {
+  return post(kubernetesCreateUrl + "/sc", data)
+}
+
+export function createSecret(data) {
+  return post(kubernetesCreateUrl + "/secret", data)
 }
 
 export function getClusterToken(clusterName) {
