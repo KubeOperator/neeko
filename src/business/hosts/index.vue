@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('host.host')">
-    <complex-table :data="data" ref="hostData" :row-key="getRowKeys" local-key="host_columns" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
+    <complex-table :data="data" :hiddenColums="true" ref="hostData" :row-key="getRowKeys" @selection-change="selectChange" :pagination-config="paginationConfig" @search="search" :selects.sync="hostSelections" v-loading="loading" :search-config="searchConfig">
       <template #header>
         <div>
           <el-button-group v-permission="['ADMIN']">
@@ -17,8 +17,8 @@
               {{ $t("host.batch") }}<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="port">{{ $t("host.batch_port_operation") }}</el-dropdown-item>
-              <el-dropdown-item command="credential">{{ $t("host.batch_credential_operation") }}</el-dropdown-item>
+              <el-dropdown-item style="width: 60px" command="port">{{ $t("host.port") }}</el-dropdown-item>
+              <el-dropdown-item style="width: 60px" command="credential">{{ $t("host.credential") }}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -32,14 +32,28 @@
       </el-table-column>
       <el-table-column sortable :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column sortable :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
-      <el-table-column sortable label="IP" min-width="120px" prop="ip" />
-      <el-table-column sortable :label="$t('host.flex_ip')" min-width="120px" prop="flexIp" :show="false" />
+      <el-table-column sortable :label="$t('host.ip')" min-width="120px" prop="ip">
+        <template v-slot:default="{row}">
+          <div v-if="row.flexIp === ''">
+            <span>{{ row.ip }}</span>
+          </div>
+          <div v-else>
+            <div><span>{{ row.ip }} {{ $t('host.public' )}}</span></div>
+            <div><span>{{ row.flexIp }} {{ $t('host.private' )}}</span></div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
-      <el-table-column :label="$t('host.cpu')" width="75px" prop="cpuCore" />
-      <el-table-column :label="$t('host.gpu')" :show="false" width="80px" prop="gpuNum" />
-      <el-table-column :label="$t('host.memory')" min-width="100px" prop="memory" />
+      <el-table-column :label="$t('host.config')" width="95px" prop="cpuCore">
+        <template v-slot:default="{row}">
+          <div>{{ row.cpuCore }} {{ $t('host.core') }}</div>
+          <div>{{ row.memory }} {{ $t('host.mb') }}</div>
+          <div v-if="row.gpuNum !== 0">GPU: {{ row.gpuNum }}</div>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('host.os')" show-overflow-tooltip min-width="120px">
         <template v-slot:default="{row}">
+          <div style="margin-left: 20px">{{ row.architecture }}</div>
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconziyuan"></use>
           </svg>
@@ -58,8 +72,7 @@
           <span> {{ row.os }} {{ row['osVersion'] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.architecture')" width="80px" prop="architecture" />
-      <el-table-column :label="$t('commons.table.status')" min-width="90px">
+      <el-table-column sortable :label="$t('commons.table.status')" min-width="90px">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
@@ -197,10 +210,22 @@ import KoStatus from "@/components/ko-status"
 import { listRegistryAll } from "@/api/system-setting"
 import { checkPermission } from "@/utils/permisstion"
 import { listCredentialAll } from "@/api/credentials"
+import { mapGetters } from "vuex";
 
 export default {
   name: "HostList",
   components: { KoStatus, ComplexTable, LayoutContent },
+  computed: {
+    ...mapGetters(["language"]),
+  },
+  watch: {
+    language(value) {
+      if (value) {
+        localStorage.removeItem("FU-T-host_columns" );
+        window.location.reload()
+      }
+    },
+  },
   data() {
     return {
       buttons: [
@@ -210,6 +235,15 @@ export default {
           click: (row) => {
             this.$router.push({ name: "HostEdit", params: { name: row.name } })
           },
+        },
+        {
+          label: this.$t("commons.button.sync"),
+          icon: "el-icon-refresh",
+          click: (row) => {
+            this.hostSelections = [row]
+            this.sync()
+          },
+          disabled: this.isDeleteButtonDisable,
         },
         {
           label: this.$t("commons.button.delete"),
