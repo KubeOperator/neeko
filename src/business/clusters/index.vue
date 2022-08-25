@@ -28,7 +28,7 @@
       <el-table-column sortable :label="$t('cluster.project')" v-if="isAdmin" min-width="100" prop="projectName" fix />
       <el-table-column sortable :label="$t('cluster.version')" min-width="75" prop="version" fix />
       <el-table-column sortable :label="$t('cluster.node_size')" min-width="70" prop="nodeSize" />
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
+      <el-table-column sortable :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status ==='Running'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>

@@ -44,14 +44,14 @@
         </template>
       </el-table-column>
       <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
-      <el-table-column :label="$t('host.config')" width="95px" prop="cpuCore">
+      <el-table-column sortable :label="$t('host.config')" width="95px" prop="cpuCore">
         <template v-slot:default="{row}">
           <div>{{ row.cpuCore }} {{ $t('host.core') }}</div>
           <div>{{ row.memory }} {{ $t('host.mb') }}</div>
           <div v-if="row.gpuNum !== 0">GPU: {{ row.gpuNum }}</div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.os')" show-overflow-tooltip min-width="120px">
+      <el-table-column sortable :label="$t('host.os')" show-overflow-tooltip min-width="120px">
         <template v-slot:default="{row}">
           <div style="margin-left: 20px">{{ row.architecture }}</div>
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">

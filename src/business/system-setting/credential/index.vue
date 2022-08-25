@@ -9,10 +9,10 @@
     </template>
 
     <el-table-column type="selection" fix></el-table-column>
-    <el-table-column :label="$t('commons.table.name')" mix-width="80" fix prop="name"/>
-    <el-table-column :label="$t('commons.table.username')" mix-width="30" prop="username"/>
-    <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type"/>
-    <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
+    <el-table-column sortable :label="$t('commons.table.name')" mix-width="80" fix prop="name"/>
+    <el-table-column sortable :label="$t('commons.table.username')" mix-width="30" prop="username"/>
+    <el-table-column sortable :label="$t('commons.table.type')" min-width="100" prop="type"/>
+    <el-table-column sortable :label="$t('commons.table.create_time')" prop="updatedAt">
       <template v-slot:default="{row}">
         {{ row.updatedAt | datetimeFormat }}
       </template>

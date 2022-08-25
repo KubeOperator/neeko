@@ -31,18 +31,18 @@
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')">
+      <el-table-column sortable prop="status" :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
           <el-switch :disabled="currentUser.user.name === row.name || row.name === 'admin'" @change="changeStatus(row)" v-model="row.status" active-value="active" inactive-value="passive" />
         </template>
       </el-table-column>
-      <el-table-column :label="$t('user.type')">
+      <el-table-column sortable prop="type" :label="$t('user.type')">
         <template v-slot:default="{row}">
           <span v-if="row.type === 'LDAP'">{{ $t("user.ldap") }}</span>
           <span v-if="row.type === 'LOCAL'">{{ $t("user.local") }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('user.role')" min-width="80">
+      <el-table-column sortable prop="role" :label="$t('user.role')" min-width="80">
         <template v-slot:default="{row}">
           <span size="small">{{ $t(`commons.role.${row.role}`) }}</span>
         </template>

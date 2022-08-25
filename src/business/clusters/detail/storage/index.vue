@@ -13,11 +13,11 @@
             </template>
             <complex-table style="margin-top: 20px" :selects.sync="classSelection" :data="storageClassDatas">
               <el-table-column type="selection" fix></el-table-column>
-              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
-              <el-table-column :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
-              <el-table-column :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
-              <el-table-column :label="$t('cluster.detail.storage.volume_binding_mode')" min-width="100" prop="volumeBindingMode" fix />
-              <el-table-column :label="$t('commons.table.create_time')">
+              <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="metadata.name" fix />
+              <el-table-column sortable :label="$t('cluster.detail.storage.provisioner_short')" min-width="100" prop="provisioner" fix />
+              <el-table-column sortable :label="$t('cluster.detail.storage.reclaim_policy')" min-width="100" prop="reclaimPolicy" fix />
+              <el-table-column sortable :label="$t('cluster.detail.storage.volume_binding_mode')" min-width="100" prop="volumeBindingMode" fix />
+              <el-table-column sortable :label="$t('commons.table.create_time')">
                 <template v-slot:default="{row}">
                   {{ row.metadata.creationTimestamp | datetimeFormat }}
                 </template>
@@ -41,14 +41,14 @@
             </template>
             <complex-table style="margin-top: 20px" ref="provisionerData" :row-key="getRowKeys" :selects.sync="provisionerSelection" @selection-change="selectChange()" :data="provisionerDatas">
               <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
-              <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name">
+              <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="name">
                 <template v-slot:default="{row}">
                   <el-link v-if="detailShow(row)" style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ row.name }}</el-link>
                   <span v-else>{{ row.name }}</span>
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('commons.table.type')" min-width="100" prop="type" fix />
-              <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+              <el-table-column sortable :label="$t('commons.table.type')" min-width="100" prop="type" fix />
+              <el-table-column sortable :label="$t('commons.table.status')" min-width="100" prop="status" fix>
                 <template v-slot:default="{row}">
                   <div v-if="row.status === 'Initializing'">
                     <i class="el-icon-loading" />&nbsp; &nbsp; &nbsp;
@@ -84,7 +84,7 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('commons.table.create_time')">
+              <el-table-column sortable prop="createAt" :label="$t('commons.table.create_time')">
                 <template v-slot:default="{row}">
                   {{ row.createdAt | datetimeFormat }}
                 </template>

@@ -11,14 +11,14 @@
       </template>
 
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('setting.table.registry.arch')" mix-width="80" fix prop="architecture"/>
-      <el-table-column :label="$t('setting.table.registry.protocol')" mix-width="30" prop="protocol"/>
-      <el-table-column :label="$t('setting.table.registry.hostname')" min-width="100" prop="hostname">
+      <el-table-column sortable :label="$t('setting.table.registry.arch')" mix-width="80" fix prop="architecture"/>
+      <el-table-column sortable :label="$t('setting.table.registry.protocol')" mix-width="30" prop="protocol"/>
+      <el-table-column sortable :label="$t('setting.table.registry.hostname')" min-width="100" prop="hostname">
         <template v-slot:default="{row}">
           <el-link style="font-size: 12px" type="info" @click="goForNexus(row)">{{ row.hostname }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status">
+      <el-table-column sortable :label="$t('commons.table.status')" min-width="100" prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status ==='Success'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -32,7 +32,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')" prop="updatedAt">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="updatedAt">
         <template v-slot:default="{row}">
           {{ row.updatedAt | datetimeFormat }}
         </template>

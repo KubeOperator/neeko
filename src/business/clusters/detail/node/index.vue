@@ -18,13 +18,13 @@
           <span v-if="row.status.indexOf('Running') === -1">{{row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('host.ip')" width="120px" fix>
+      <el-table-column sortable prop="ip" :label="$t('host.ip')" width="120px" fix>
         <template v-slot:default="{row}">{{getInternalIp(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.version')" width="100px" fix>
+      <el-table-column sortable prop="version" :label="$t('cluster.version')" width="100px" fix>
         <template v-slot:default="{row}">{{getVersion(row)}}</template>
       </el-table-column>
-      <el-table-column :label="$t('user.role')" show-overflow-tooltip min-width="100" prop="roles" fix />
+      <el-table-column sortable :label="$t('user.role')" show-overflow-tooltip min-width="100" prop="roles" fix />
       <el-table-column sortable class="ko-status" :label="$t('commons.table.status')" prop="status" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status.indexOf('Terminating') !== -1 && currentCluster.provider !== 'bareMetal'">

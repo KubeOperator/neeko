@@ -15,11 +15,11 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name"/>
-      <el-table-column :label="$t('project.project')" show-overflow-tooltip v-if="isAdmin" prop="projects"/>
-      <el-table-column :label="$t('cluster.cluster')" show-overflow-tooltip v-if="isAdmin" prop="clusters"/>
-      <el-table-column :label="$t('backup_account.table.bucket')" show-overflow-tooltip prop="bucket"/>
-      <el-table-column :label="$t('commons.table.type')"  prop="credentialVars.type">
+      <el-table-column sortable :label="$t('commons.table.name')" show-overflow-tooltip fix prop="name"/>
+      <el-table-column sortable :label="$t('project.project')" show-overflow-tooltip v-if="isAdmin" prop="projects"/>
+      <el-table-column sortable :label="$t('cluster.cluster')" show-overflow-tooltip v-if="isAdmin" prop="clusters"/>
+      <el-table-column sortable :label="$t('backup_account.table.bucket')" show-overflow-tooltip prop="bucket"/>
+      <el-table-column sortable :label="$t('commons.table.type')"  prop="credentialVars.type">
         <template v-slot:default="{row}">
           <svg v-if="row.type === 'OSS'" class="icon" aria-hidden="true">
             <use xlink:href="#iconoss"></use>
@@ -39,7 +39,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')"  prop="status">
+      <el-table-column sortable :label="$t('commons.table.status')"  prop="status">
         <template v-slot:default="{row}">
           <div v-if="row.status === 'VALID'">
             <span class="iconfont iconduihao" style="color: #32B350"></span>
@@ -51,7 +51,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

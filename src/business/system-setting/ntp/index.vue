@@ -10,9 +10,9 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" prop="name" fix />
-      <el-table-column :label="$t('setting.address')" prop="address" fix />
-      <el-table-column :label="$t('commons.table.status')" prop="status">
+      <el-table-column sortable :label="$t('commons.table.name')" prop="name" fix />
+      <el-table-column sortable :label="$t('setting.address')" prop="address" fix />
+      <el-table-column sortable :label="$t('commons.table.status')" prop="status">
         <template v-slot:default="{row}">
           <el-switch @change="changeStatus(row)" v-model="row.status" active-value="enable" inactive-value="disable" />
         </template>

@@ -21,17 +21,17 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" :reserve-selection="true" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{row}">
           <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="regionName"
               :label="$t('automatic.region.name')"
               mix-width="100"
               v-slot:default="{ row }">{{ row.regionName }}
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="status"
               :label="$t('commons.table.status')"
               mix-width="100"
               v-slot:default="{ row }">
@@ -47,12 +47,9 @@
         <div v-if="row.status === 'UPLOADIMAGERROR'">
           <span class="iconfont iconerror2" style="color: #FA4147"></span>
           <el-button type="text" @click="openErrMsgPage(row)">{{ $t("automatic.zone.uploadImageError") }}</el-button>
-<!--          <span class="iconfont iconerror2" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;-->
-<!--          {{ $t("automatic.zone.uploadImageError") }}-->
-<!--          <el-button type="text" @click="uploadTemplate(row.name)">{{ $t("commons.button.retry") }}</el-button>-->
         </div>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>

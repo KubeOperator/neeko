@@ -22,20 +22,20 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="cpu"
               :label="$t('automatic.vm_config.cpu')"
               mix-width="100"
               v-slot:default="{ row }">{{ row.cpu }}
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="memory"
               :label="$t('automatic.vm_config.memory')"
               mix-width="100"
               v-slot:default="{ row }">{{ row.memory }}
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')"/>

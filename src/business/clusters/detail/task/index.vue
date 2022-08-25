@@ -9,17 +9,17 @@
       </el-tooltip>
     </el-button-group>
     <complex-table :key="refresh" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading" :fit="true">
-      <el-table-column v-if="searchForm.logtype === 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
+      <el-table-column sortable prop="tasklogs.type" v-if="searchForm.logtype === 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
         <template v-slot:default="{row}">
           <el-link style="font-size: 12px" type="info" @click="getDetailInfo(row)">{{ $t(`task.${row.tasklogs.type}`) }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column v-if="searchForm.logtype !== 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
+      <el-table-column sortable prop="tasklogs.type" v-if="searchForm.logtype !== 'cluster'" min-width="150" :label="$t('cluster.detail.tag.task')">
         <template v-slot:default="{row}">
           <el-link style="font-size: 12px" type="info" @click="openXterm(row)">{{ loadName(row) }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="60">
+      <el-table-column sortable prop="tasklogs.phase" :label="$t('commons.table.status')" min-width="60">
         <template v-slot:default="{row}">
           <div v-if="row.tasklogs.phase === 'FAILED'">
             <span class="iconfont iconerror" style="color: #FA4147"></span> &nbsp; &nbsp; &nbsp;

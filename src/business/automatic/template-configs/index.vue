@@ -13,17 +13,17 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100" prop="name">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">
           <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.type')" mix-width="100" prop="type">
+      <el-table-column sortable prop="type" :label="$t('commons.table.type')" mix-width="100">
         <template v-slot:default="{row}">
           <cloud-providers :provider="row.type"></cloud-providers>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>

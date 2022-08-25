@@ -19,22 +19,22 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.name }}</template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="subnet"
               :label="$t('automatic.ip_pool.subnet')"
               mix-width="100"
               v-slot:default="{ row }">
         {{ row.subnet }}
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="ipUsed"
               :label="$t('automatic.ip_pool.ip_usage')"
               mix-width="100"
               v-slot:default="{ row }">
         <el-link type="info" @click="openIpList(row)">{{ row.ipUsed }} / {{ row.ips.length }}</el-link>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>

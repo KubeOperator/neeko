@@ -19,31 +19,31 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">
           <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="region"
               :label="$t('automatic.region.name')"
               mix-width="100"
               v-slot:default="{ row }">
         {{ row.region }}
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="zones"
               :label="$t('automatic.zone.name')"
               mix-width="100"
               v-slot:default="{ row }">
         <span v-for="zoneName in row.zones" v-bind:key="zoneName">{{ zoneName }},</span>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="projects"
               v-if="isAdmin"
               :label="$t('project.project')"
               mix-width="100"
               v-slot:default="{ row }">
         <span v-for="name in row.projects" v-bind:key="name">{{ name }},</span>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations v-if="isAdmin" :buttons="buttons" :label="$t('commons.table.action')"/>

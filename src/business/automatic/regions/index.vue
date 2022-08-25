@@ -18,25 +18,25 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">
           <el-link type="info" @click="openDetailPage(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="regionVars['provider']"
               :label="$t('automatic.cloud_provider')"
               mix-width="100">
         <template v-slot:default="{row}">
           <cloud-providers :provider="row.regionVars['provider']"></cloud-providers>
         </template>
       </el-table-column>
-      <el-table-column
+      <el-table-column sortable prop="datacenter"
               :label="$t('automatic.datacenter')"
               mix-width="100"
               v-slot:default="{ row }"
       >{{ row.datacenter }}
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
       <fu-table-operations :buttons="buttons" :label="$t('commons.table.action')"/>
