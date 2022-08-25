@@ -18,18 +18,18 @@
         </el-button-group>
       </template>
       <el-table-column type="selection" fix></el-table-column>
-      <el-table-column :label="$t('commons.table.name')" mix-width="100">
+      <el-table-column sortable prop="username" :label="$t('commons.table.name')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.username }}</template>
       </el-table-column>
-      <el-table-column :label="$t('user.email')" mix-width="100">
+      <el-table-column sortable prop="email" :label="$t('user.email')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.email }}</template>
       </el-table-column>
-      <el-table-column :label="$t('user.role')">
+      <el-table-column sortable prop="role" :label="$t('user.role')">
         <template v-slot:default="{ row }">
             {{ $t("project." + row.role) }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.create_time')">
+      <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
         <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
       </el-table-column>
     </complex-table>

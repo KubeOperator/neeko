@@ -9,17 +9,17 @@
         </div>
       </div>
       <complex-table  :data="items" v-loading="loading">
-        <el-table-column :label="$t('commons.table.name')">
+        <el-table-column sortable prop="metadata.name" :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             {{ row.metadata.name }}
           </template>
         </el-table-column>
-        <el-table-column :label="$t('commons.table.status')">
+        <el-table-column sortable prop="status.phase" :label="$t('commons.table.status')">
           <template v-slot:default="{row}">
             {{ row.status.phase }}
           </template>
         </el-table-column>
-        <el-table-column :label="$t('commons.table.create_time')">
+        <el-table-column sortable prop="metadata.creationTimestamp" :label="$t('commons.table.create_time')">
           <template v-slot:default="{row}">
             {{ row.metadata.creationTimestamp  | datetimeFormat }}
           </template>

@@ -51,7 +51,7 @@
           <div v-if="row.gpuNum !== 0">GPU: {{ row.gpuNum }}</div>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('host.os')" show-overflow-tooltip min-width="120px">
+      <el-table-column sortable prop="os" :label="$t('host.os')" show-overflow-tooltip min-width="120px">
         <template v-slot:default="{row}">
           <div style="margin-left: 20px">{{ row.architecture }}</div>
           <svg v-if="row.os === 'CentOS'" class="icon" aria-hidden="true">
@@ -72,7 +72,7 @@
           <span> {{ row.os }} {{ row['osVersion'] }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.status')" min-width="90px">
+      <el-table-column sortable prop="status" :label="$t('commons.table.status')" min-width="90px">
         <template v-slot:default="{row}">
           <ko-status :status="row.status" other="host" @detail="getErrorInfo(row)"></ko-status>
         </template>
@@ -97,13 +97,12 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('host.batch')" width="30%" :visible.sync="dialogBatchVisible">
-      <span>{{ $t("host.batch_list", [$t('host.' + operation)]) }}</span>
-      <ul style="margin-left: 5%" :key="host.name" v-for="host of hostSelections">
+    <el-dialog :title="$t('host.batch_' + operation + '_operation')" width="30%" :visible.sync="dialogBatchVisible">
+      <ul :key="host.name" v-for="host of hostSelections">
         <li>{{ host.name }} ({{ host.ip }})</li>
       </ul>
-      <el-input-number style="margin-left: 10%; width: 60%;" :max="65536" :min="0" v-if="operation === 'port'" v-model="port" clearable />
-      <el-select style="margin-left: 10%; width: 60%;" v-else v-model="credentialID" clearable filterable>
+      <el-input-number style="margin-left: 5%; width: 60%;" :max="65536" :min="0" v-if="operation === 'port'" v-model="port" clearable />
+      <el-select style="margin-left: 5%; width: 60%;" v-else v-model="credentialID" clearable filterable>
         <el-option v-for="cre in credentialList" :key="cre.id" :value="cre.id" :label="cre.name" />
       </el-select>
       <div slot="footer" class="dialog-footer">
@@ -377,7 +376,7 @@ export default {
         items: this.hostSelections,
       }
       batchHosts(data).then(() => {
-        this.$message({ type: "success", message: this.$t("commons.msg.import_success") })
+        this.$message({ type: "success", message: this.$t("commons.msg.save_success") })
         this.search()
         this.dialogBatchVisible = false
       })

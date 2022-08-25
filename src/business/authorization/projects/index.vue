@@ -13,14 +13,14 @@
           </el-button>
         </template>
         <el-table-column type="selection" fix></el-table-column>
-        <el-table-column :label="$t('commons.table.name')" min-width="100" fix>
+        <el-table-column sortable prop="name" :label="$t('commons.table.name')" min-width="100" fix>
           <template v-slot:default="{row}">
             {{ row.name }}
           </template>
         </el-table-column>
         <el-table-column :label="$t('commons.table.description')" min-width="150" prop="description"
                          fix></el-table-column>
-        <el-table-column :label="$t('commons.table.create_time')">
+        <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')">
           <template v-slot:default="{row}">
             {{ row.createdAt | datetimeFormat }}
           </template>

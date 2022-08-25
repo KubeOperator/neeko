@@ -15,11 +15,11 @@
           <el-link v-else type="info" @click="showIstioDetail(row)">{{ row.name }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('cluster.version')" prop="version" fix />
-      <el-table-column sortable :label="$t('commons.table.description')" min-width="300" prop="describe" fix>
+      <el-table-column :label="$t('cluster.version')" prop="version" fix />
+      <el-table-column :label="$t('commons.table.description')" min-width="300" prop="describe" fix>
         <template v-slot:default="{row}">{{ $t('cluster.detail.component.' + row.describe) }}</template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.action')" prop="status.phase" fix>
+      <el-table-column :label="$t('commons.table.action')" prop="status.phase" fix>
         <template v-slot:default="{row}">
           <div v-if="row.status ==='enable'">
             <el-button size="mini" type="primary" icon="el-icon-video-pause" @click="stopComponent(row, false)">{{ $t("commons.button.disable") }}</el-button>

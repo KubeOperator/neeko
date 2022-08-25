@@ -45,7 +45,7 @@
           <span v-else>{{ row.tasklogs.endTime | timeStampFormat }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable :label="$t('commons.table.spend_time')" min-width="60">
+      <el-table-column sortable :sort-method="sortFunc" :label="$t('commons.table.spend_time')" min-width="60">
         <template v-slot:default="{row}">
           {{ loadTimeSpend(row.tasklogs.startTime, row.tasklogs.endTime) }}
         </template>
@@ -85,12 +85,14 @@ import { getTasks } from "@/api/cluster/tasks"
 import ComplexTable from "@/components/complex-table"
 import { openLoggerWithID } from "@/api/cluster/tasks"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
+import { sortCommon } from "@/utils/sort"
 
 export default {
   name: "ClusterTask",
   components: { ComplexTable, LayoutContent },
   data() {
     return {
+      sortFunc: sortCommon,
       paginationConfig: {
         currentPage: 1,
         pageSize: 10,

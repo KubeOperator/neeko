@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 let whiteList = [
-  "/proxy/kubernetes/mscluster/apis/metrics.k8s.io/v1beta1/nodes",
+  "/api/v1/kubernetes/search/metric/",
   "/api/v1/kubernetes/evict",
 ]
 
@@ -59,7 +59,7 @@ instance.interceptors.response.use(response => {
 
   let isWhite = false
   for (const whiteUrl of whiteList) {
-    if (error.response.config.url == whiteUrl) {
+    if (error.response.config.url.indexOf(whiteUrl) !== -1) {
       isWhite = true
       break
     }

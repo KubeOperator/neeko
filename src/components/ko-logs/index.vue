@@ -5,7 +5,7 @@
         <span v-if="log.details&&log.details.length === 0">{{ log.message | errorFormat }}</span>
         <div>
           <el-steps :space="50" style="margin: 0 50px" direction="vertical" :active="activeName">
-            <el-step v-for="detail in log.details" :key="detail.name" :title="$t('task.' +detail.task)">
+            <el-step v-for="detail in log.details" :key="detail.task" :title="$t('task.' +detail.task)">
               <i :class="loadStepIcon(detail.status)" slot="icon"></i>
               <el-collapse v-if="detail.status === 'FAILED'" accordion slot="description" v-model="activeCollapse">
                 <el-collapse-item :title="item.name" :name="index" v-for="(item, index) in detail.formatMsgs" :key="index">

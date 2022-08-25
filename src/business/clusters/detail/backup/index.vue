@@ -86,9 +86,9 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" min-width="100" prop="name" fix />
+          <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="name" fix />
           <el-table-column :label="$t('cluster.detail.backup.backup_location')" min-width="100" prop="folder" fix />
-          <el-table-column :label="$t('cluster.detail.log.time')">
+          <el-table-column sortable prop="createdAt" :label="$t('cluster.detail.log.time')">
             <template v-slot:default="{row}">
               {{ row.createdAt | datetimeFormat }}
             </template>

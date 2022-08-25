@@ -23,13 +23,13 @@
       <el-table-column sortable :label="$t('automatic.ip_pool.address')" prop="address" mix-width="100">
         <template v-slot:default="{ row }">{{ row.address }}</template>
       </el-table-column>
-      <el-table-column :label="$t('automatic.ip_pool.gateway')" mix-width="100">
+      <el-table-column sortable prop="gateway" :label="$t('automatic.ip_pool.gateway')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.gateway }}</template>
       </el-table-column>
-      <el-table-column :label="$t('automatic.ip_pool.dns1')" mix-width="100">
+      <el-table-column sortable prop="dns1" :label="$t('automatic.ip_pool.dns1')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.dns1 }}</template>
       </el-table-column>
-      <el-table-column :label="$t('automatic.ip_pool.dns2')" mix-width="100">
+      <el-table-column sortable prop="dns2" :label="$t('automatic.ip_pool.dns2')" mix-width="100">
         <template v-slot:default="{ row }">{{ row.dns2 }}</template>
       </el-table-column>
       <el-table-column sortable :label="$t('automatic.ip_pool.status')" prop="status" mix-width="100">

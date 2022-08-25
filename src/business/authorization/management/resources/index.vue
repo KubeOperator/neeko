@@ -20,22 +20,22 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" min-width="100">
+          <el-table-column sortable prop="name" :label="$t('commons.table.name')" min-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
-          <el-table-column :label="$t('host.ip')" min-width="100px">
+          <el-table-column sortable prop="ip" :label="$t('host.ip')" min-width="100px">
             <template v-slot:default="{ row }">{{ row.ip }}</template>
           </el-table-column>
-          <el-table-column :label="$t('automatic.vm_config.cpu')" min-width="50">
+          <el-table-column sortable prop="cpuCore" :label="$t('automatic.vm_config.cpu')" min-width="50">
             <template v-slot:default="{ row }">{{ row.cpuCore }}</template>
           </el-table-column>
-          <el-table-column :label="$t('automatic.vm_config.memory')" min-width="50">
+          <el-table-column sortable prop="memory" :label="$t('automatic.vm_config.memory')" min-width="50">
             <template v-slot:default="{ row }">{{ row.memory }}</template>
           </el-table-column>
-          <el-table-column :label="$t('host.gpu')" min-width="50">
+          <el-table-column sortable prop="gpuNum" :label="$t('host.gpu')" min-width="50">
             <template v-slot:default="{ row }">{{ row.gpuNum }}</template>
           </el-table-column>
-          <el-table-column :label="$t('host.os')">
+          <el-table-column sortable prop="os" :label="$t('host.os')">
             <template v-slot:default="{ row }">{{ row.os }} {{ row.osVersion }}</template>
           </el-table-column>
         </complex-table>
@@ -59,7 +59,7 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" mix-width="60">
+          <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="60">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
           <el-table-column :label="$t('automatic.plan.deploy_template')"  mix-width="160">
@@ -67,7 +67,7 @@
                 {{ $t("automatic.plan." + row.deployTemplate) }}
             </template>
           </el-table-column>
-          <el-table-column :label="$t('commons.table.create_time')" mix-width="60">
+          <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')" mix-width="60">
             <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
           </el-table-column>
         </complex-table>
@@ -91,7 +91,7 @@
             </el-button-group>
           </template>
           <el-table-column type="selection" fix></el-table-column>
-          <el-table-column :label="$t('commons.table.name')" mix-width="100">
+          <el-table-column sortable prop="name" :label="$t('commons.table.name')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.name }}</template>
           </el-table-column>
           <el-table-column :label="$t('backup_account.table.bucket')" mix-width="100">
@@ -126,7 +126,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column :label="$t('commons.table.create_time')" mix-width="100">
+          <el-table-column sortable prop="createdAt" :label="$t('commons.table.create_time')" mix-width="100">
             <template v-slot:default="{ row }">{{ row.createdAt | datetimeFormat }}</template>
           </el-table-column>
         </complex-table>

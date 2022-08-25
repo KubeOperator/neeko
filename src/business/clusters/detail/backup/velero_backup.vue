@@ -17,26 +17,26 @@
           </el-button-group>
         </template>
         <el-table-column type="selection" fix></el-table-column>
-        <el-table-column :label="$t('commons.table.name')">
+        <el-table-column sortable prop="metadata.name" :label="$t('commons.table.name')">
           <template v-slot:default="{row}">
             <el-link type="info" @click="getVeleroDescribe(row)">
               {{ row.metadata.name }}
             </el-link>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('commons.table.type')">
+        <el-table-column sortable prop="kind" :label="$t('commons.table.type')">
           <template v-slot:default="{row}">
             <span v-if="row.kind === 'Backup'">{{$t('cluster.detail.backup.velero_type_normal')}}</span>
             <span v-if="row.kind === 'Schedule'">{{$t('cluster.detail.backup.velero_type_schedule') + '  (' + row.spec.schedule + ')'}}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('commons.table.status')">
+        <el-table-column sortable prop="status.phase" :label="$t('commons.table.status')">
           <template v-slot:default="{row}">
             <span v-if="row.status.phase">{{ row.status.phase }}</span>
             <span v-else>New</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('commons.table.create_time')">
+        <el-table-column sortable prop="metadata.creationTimestamp" :label="$t('commons.table.create_time')">
           <template v-slot:default="{row}">
             {{ row.metadata.creationTimestamp  | datetimeFormat }}
           </template>
@@ -196,6 +196,7 @@ import ComplexTable from "@/components/complex-table"
 import { createVeleroBackup, deleteVeleroBackup, getVeleroBackupLogs, getVeleroBackups, restore } from "@/api/cluster/backup"
 import { listNamespace } from "@/api/cluster/cluster"
 import Rule from "@/utils/rules"
+import { sortCommon } from "@/utils/sort"
 
 export default {
   name: "VeleroBackup",
@@ -203,6 +204,7 @@ export default {
   props: {},
   data() {
     return {
+      sortFunc: sortCommon,
       clusterName: "",
       items: [],
       selects: [],
