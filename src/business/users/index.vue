@@ -1,7 +1,7 @@
 <template>
 
   <layout-content :header="$t('user.user')">
-    <complex-table :data="data" local-key="user_columns" :search-config="searchConfig"
+    <complex-table :data="data" :search-config="searchConfig"
                    :pagination-config="paginationConfig" @search="search" v-loading="loading"
                    :selects.sync="selects" :fit="true">
       <template #toolbar>

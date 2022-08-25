@@ -1,13 +1,13 @@
 <template>
   <layout-content>
-    <complex-table local-key="system_log_columns" :header="$t('system_log.title')" 
+    <complex-table :header="$t('system_log.title')" 
       :data="data" :search-config="searchConfig" 
       :pagination-config="paginationConfig" 
       @input="search" @search="search">
       <el-table-column sortable :label="$t('commons.table.name')" min-width="100" prop="name" />
       <el-table-column sortable :label="$t('system_log.operation')" min-width="100" prop="operation" />
       <el-table-column sortable :label="$t('system_log.operation_info')" min-width="100" prop="operationInfo" :show-overflow-tooltip="true" />
-      <el-table-column sortable :label="$t('commons.table.create_time')">
+      <el-table-column sortable :label="$t('commons.table.create_time')" prop="createdAt">
         <template v-slot:default="{row}">
           {{ row.createdAt | datetimeFormat }}
         </template>

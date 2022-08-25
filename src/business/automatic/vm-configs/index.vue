@@ -1,7 +1,6 @@
 <template>
   <layout-content :header="$t('automatic.vm_config.name')">
     <complex-table
-            local-key="vm_config_columns"
             v-loading="loading"
             :data="data"
             :pagination-config="paginationConfig"

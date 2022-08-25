@@ -172,7 +172,7 @@ export default {
       dialogSyncVisible: false,
       dialogErrorVisible: false,
       errMsg: "",
-      activeName: "storageclass",
+      activeName: "storage_class",
       timer: null,
 
       dialogDetailVisible: false,

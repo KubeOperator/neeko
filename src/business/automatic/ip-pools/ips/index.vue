@@ -2,7 +2,6 @@
   <layout-content v-loading="loading" :header="$t('automatic.ip_pool.ip_list')" :back-to="{ name: 'IpPoolList' }">
     <complex-table
             :data="data"
-            local-key="ip_columns"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
             :selects.sync="selects"

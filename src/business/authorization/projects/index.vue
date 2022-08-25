@@ -4,7 +4,6 @@
     <el-tab-pane :label="$t('project.project')" name="project">
       <complex-table
               :data="data"
-              local-key="project_columns"
               :pagination-config="paginationConfig"
               :search-config="searchConfig"
               @search="search">

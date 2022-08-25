@@ -1,5 +1,5 @@
 <template>
-  <complex-table local-key="credential_columns" :data="data" :search-config="searchConfig" :selects.sync="selects"
+  <complex-table :data="data" :search-config="searchConfig" :selects.sync="selects"
                  v-loading="loading" :pagination-config="paginationConfig" @search="search">
     <template #toolbar>
       <el-button-group>

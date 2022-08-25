@@ -2,7 +2,6 @@
   <layout-content :header="$t('automatic.plan.name')" :description="$t('automatic.plan.description')"
                   v-loading="loading">
     <complex-table
-            local-key="plan_columns"
             :data="data"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"

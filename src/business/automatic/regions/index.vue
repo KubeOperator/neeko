@@ -2,7 +2,6 @@
   <layout-content :header="$t('automatic.region.name')" :description="$t('automatic.region.description')"
                   v-loading="loading">
     <complex-table
-            local-key="region_columns"
             :data="data"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"

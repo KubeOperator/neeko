@@ -15,13 +15,16 @@
           <slot name="complex"></slot>
         </template>
         <slot name="buttons"></slot>
-        <fu-table-column-select :columns="columns"/>
+        <fu-table-column-select v-if="hiddenColums" :columns="columns"/>
       </fu-search-bar>
     </div>
 
     <div class="complex-table__body">
-      <fu-table v-on="$listeners" v-bind="$attrs" :columns="columns" :local-key="localKey"
+      <fu-table v-if="hiddenColums" v-on="$listeners" v-bind="$attrs" :columns="columns" :local-key="localKey"
                 @selection-change="handleSelectionChange" ref="futable">
+        <slot></slot>
+      </fu-table>
+      <fu-table v-else v-on="$listeners" v-bind="$attrs" @selection-change="handleSelectionChange" ref="futable">
         <slot></slot>
       </fu-table>
     </div>
@@ -50,7 +53,8 @@ export default {
     header: String,
     searchConfig: Object,
     paginationConfig: Object,
-    selects:Array
+    selects:Array,
+    hiddenColums: Boolean
   },
   data () {
     return {

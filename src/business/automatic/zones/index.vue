@@ -2,7 +2,6 @@
   <layout-content :header="$t('automatic.zone.name')" :description="$t('automatic.zone.description')"
                   v-loading="loading">
     <complex-table
-            local-key="zone_columns"
             ref="zoneData"
             :row-key="getRowKeys"
             :data="data"

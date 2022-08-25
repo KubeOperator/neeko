@@ -1,6 +1,6 @@
 <template>
   <layout-content :header="$t('cluster.cluster')">
-    <complex-table ref="clusterData" local-key="cluster_columns" :row-key="getRowKeys" :selects.sync="clusterSelection" @selection-change="selectChange" :search-config="searchConfig" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading">
+    <complex-table ref="clusterData" :row-key="getRowKeys" :selects.sync="clusterSelection" @selection-change="selectChange" :search-config="searchConfig" :data="data" :pagination-config="paginationConfig" @search="search" v-loading="loading">
       <template #header>
         <el-button-group>
           <el-button size="small" @click="onCreate()" v-permission="['ADMIN','PROJECT_MANAGER']">

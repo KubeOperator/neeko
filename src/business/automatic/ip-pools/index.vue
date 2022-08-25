@@ -1,7 +1,6 @@
 <template>
   <layout-content :header="$t('automatic.ip_pool.name')" v-loading="loading">
     <complex-table
-            local-key="ip_pool_columns"
             :data="data"
             :pagination-config="paginationConfig"
             :search-config="searchConfig"
