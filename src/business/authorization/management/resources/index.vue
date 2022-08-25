@@ -111,6 +111,9 @@
               <svg v-if="row.type === 'S3'" class="icon" aria-hidden="true">
                 <use xlink:href="#icons3"></use>
               </svg>
+              <svg v-if="row.type === 'MINIO'" class="icon" aria-hidden="true">
+                <use xlink:href="#iconminio"></use>
+              </svg>
               &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ row.type }}</span>
             </template>
           </el-table-column>

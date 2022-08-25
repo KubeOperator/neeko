@@ -102,7 +102,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogDeleteVisible = false">{{ $t("commons.button.cancel") }}</el-button>
-        <el-button size="small" @click="submitDelete()" v-preventReClick>
+        <el-button size="small" :disabled="delForm.inputName !== deleteName" @click="submitDelete()" v-preventReClick>
           {{ $t("commons.button.submit") }}
         </el-button>
       </div>
@@ -376,13 +376,6 @@ export default {
       }
     },
     submitDelete() {
-      if (this.deleteName !== this.delForm.inputName) {
-        this.$message({
-          type: "info",
-          message: this.$t("commons.validate.input_error"),
-        })
-        return
-      }
       this.$refs["delForm"].validate((valid) => {
         if (valid) {
           deleteCluster(this.deleteName, this.isForce, this.isUninstall)

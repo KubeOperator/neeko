@@ -38,15 +38,15 @@
             <span>{{ row.ip }}</span>
           </div>
           <div v-else>
-            <div><span>{{ row.ip }} {{ $t('host.public' )}}</span></div>
-            <div><span>{{ row.flexIp }} {{ $t('host.private' )}}</span></div>
+            <div><span>{{ row.ip }} {{ $t('host.private' )}}</span></div>
+            <div><span>{{ row.flexIp }} {{ $t('host.public' )}}</span></div>
           </div>
         </template>
       </el-table-column>
       <el-table-column sortable :label="$t('host.credential_name')" show-overflow-tooltip :show="false" min-width="100" prop="credentialName" />
       <el-table-column sortable :label="$t('host.config')" width="95px" prop="cpuCore">
         <template v-slot:default="{row}">
-          <div>{{ row.cpuCore }} {{ $t('host.core') }}</div>
+          <div>{{ row.cpuCore }} Core</div>
           <div>{{ row.memory }} {{ $t('host.mb') }}</div>
           <div v-if="row.gpuNum !== 0">GPU: {{ row.gpuNum }}</div>
         </template>

@@ -4,24 +4,24 @@
       <el-col :span="4"><br/></el-col>
       <el-col :span="10">
         <div class="grid-content bg-purple-light">
-          <el-form ref="form" v-loading="loading" label-position="left" :model="form" label-width="80px">
-            <el-form-item :label="$t('credential.name')">
+          <el-form ref="form" v-loading="loading" :rules="rules" label-position="left" :model="form" label-width="80px">
+            <el-form-item :label="$t('credential.name')" prop="name">
               <el-input v-model="form.name" disabled></el-input>
               <span></span>
             </el-form-item>
-            <el-form-item :label="$t('credential.username')">
+            <el-form-item :label="$t('credential.username')" prop="username">
               <el-input v-model="form.username"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('credential.type')">
+            <el-form-item :label="$t('credential.type')" prop="type">
               <el-radio-group v-model="form.type">
                 <el-radio label="password">{{$t('credential.password')}}</el-radio>
                 <el-radio label="privateKey">{{$t('credential.privateKey')}}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="form.type==='password'" :label="$t('credential.password')">
+            <el-form-item v-if="form.type==='password'" prop="password" :label="$t('credential.password')">
               <el-input type="password" show-password :placeholder="$t('setting.helpInfo.inputPassword')" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type==='privateKey'" :label="$t('credential.privateKey')">
+            <el-form-item v-if="form.type==='privateKey'" prop="privateKey" :label="$t('credential.privateKey')">
               <el-input type="textarea" v-model="form.privateKey"></el-input>
             </el-form-item>
             <div style="float: right">
@@ -41,6 +41,8 @@
 <script>
 import LayoutContent from "@/components/layout/LayoutContent";
 import {updateCredentials, getCredentialByName} from "@/api/credentials";
+import Rule from "@/utils/rules"
+
 export default {
   components: {
     LayoutContent
@@ -55,6 +57,12 @@ export default {
         type: '',
         password: '',
         privateKey: ''
+      },
+      rules: {
+        name: [Rule.NameRule],
+        username: [Rule.RequiredRule],
+        password: [Rule.RequiredRule],
+        privateKey: [Rule.RequiredRule],
       },
       formLabelWidth: '120px',
       loading: false

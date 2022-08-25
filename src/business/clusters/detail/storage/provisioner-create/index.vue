@@ -96,7 +96,8 @@
             </el-form-item>
             <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
               <el-switch style="width: 80%" active-value="enable" inactive-value="disable"
-                         v-model="enableBlockStorage"/>
+                         v-model="enableBlockStorage" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"/>
             </el-form-item>
             <div v-if="enableBlockStorage === 'enable'">
               <el-form-item label="Version" prop="vars.cinder_blockstorage_version" :rules="requiredRules">

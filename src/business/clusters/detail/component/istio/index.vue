@@ -27,7 +27,8 @@
         </el-form>
       </el-collapse-item>
       <el-collapse-item title="Istio-Ingress" name="2">
-        <el-switch v-model="istioVars.enable_istio_ingress" active-value="enable" inactive-value="disable"></el-switch>
+        <el-switch v-model="istioVars.enable_istio_ingress" active-value="enable" inactive-value="disable" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
         <div v-if="istioVars.enable_istio_ingress === 'enable'">
           <el-form label-width="200px">
             <el-row type="flex">
@@ -56,7 +57,8 @@
         </div>
       </el-collapse-item>
       <el-collapse-item title="Istio-Egress" name="3">
-        <el-switch v-model="istioVars.enable_istio_egress" active-value="enable" inactive-value="disable"></el-switch>
+        <el-switch v-model="istioVars.enable_istio_egress" active-value="enable" inactive-value="disable" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
         <div v-if="istioVars.enable_istio_egress === 'enable'">
           <el-form label-width="200px">
             <el-row type="flex">

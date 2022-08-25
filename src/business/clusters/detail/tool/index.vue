@@ -93,7 +93,8 @@
 
         <div v-if="toolForm.name === 'chartmuseum'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="requiredRules">
@@ -117,7 +118,8 @@
             <el-input-number :step="1" step-strictly style="width: 80%" v-model="toolForm.vars['server_retention']" clearable></el-input-number>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['server_persistentVolume_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['server_persistentVolume_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['server_persistentVolume_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.server_persistentVolume_storageClass" :rules="requiredRules">
@@ -153,7 +155,8 @@
             <div><span class="input-help">{{$t('cluster.detail.tool.default_hip_memory')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch_persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['elasticsearch_persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['elasticsearch_persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.elasticsearch_volumeClaimTemplate_storageClassName" :rules="requiredRules">
@@ -169,7 +172,8 @@
 
         <div v-if="toolForm.name === 'loki'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['loki_persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['loki_persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['loki_persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.loki_persistence_storageClassName" :rules="requiredRules">
@@ -197,7 +201,8 @@
             <div v-if="!isPasswordValid"><span class="input-error">{{$t('cluster.detail.tool.grafana_password_help')}}</span></div>
           </el-form-item>
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClassName" :rules="requiredRules">
@@ -218,7 +223,8 @@
 
         <div v-if="toolForm.name === 'registry'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.persistence_storageClass" :rules="requiredRules">
@@ -239,7 +245,8 @@
 
         <div v-if="toolForm.name === 'kubeapps'">
           <el-form-item :label="$t('cluster.detail.tool.enable_storage')">
-            <el-switch style="width: 80%" v-model="toolForm.vars['postgresql_persistence_enabled']"></el-switch>
+            <el-switch style="width: 80%" v-model="toolForm.vars['postgresql_persistence_enabled']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
           </el-form-item>
           <div v-if="toolForm.vars['postgresql_persistence_enabled']">
             <el-form-item :label="$t('cluster.detail.tool.storage_class')" prop="vars.global_storageClass" :rules="requiredRules">

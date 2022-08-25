@@ -5,13 +5,13 @@
       <el-col :span="12">
         <div class="grid-content bg-purple-light">
           <el-form ref="form" label-position="left" v-loading="loading" :model="form" :rules="rules" label-width="140px">
-            <el-form-item :label="$t('setting.table.registry.arch')">
+            <el-form-item :label="$t('setting.table.registry.arch')" prop="architecture">
               <el-select style="width: 100%" v-model="form.architecture" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in architectureOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('setting.table.registry.protocol')">
+            <el-form-item :label="$t('setting.table.registry.protocol')" prop="protocol">
               <el-select @change="attachable = false" style="width: 100%" v-model="form.protocol" :placeholder="$t('commons.validate.select')">
                 <el-option v-for="item in protocolOptions" :key="item.value" :value="item.value" :disabled="item.disabled">
                 </el-option>
@@ -21,7 +21,7 @@
               <el-input @input="attachable = false" @blur="attachable = false" placeholder="172.16.10.100" v-model="form.hostname"></el-input>
               <div><span class="input-help">{{$t('setting.table.registry.hostname_help')}}</span></div>
             </el-form-item>
-            <el-form-item style="width: 100%" :label="$t('login.username')">
+            <el-form-item style="width: 100%" :label="$t('login.username')" prop="nexusUser">
               <el-input @input="attachable = false" @blur="attachable = false" v-model="form.nexusUser" placeholder="admin"></el-input>
             </el-form-item>
             <el-form-item :label="$t('setting.password')" prop="nexusPassword">
@@ -90,7 +90,10 @@ export default {
         nexusPassword: "",
       },
       rules: {
+        architecture: [Rule.RequiredRule],
+        protocol: [Rule.RequiredRule],
         hostname: [Rule.IpRule],
+        nexusUser: [Rule.RequiredRule],
         repoPort: [Rule.RequiredRule],
         registryPort: [Rule.RequiredRule],
         registryHostedPort: [Rule.RequiredRule],

@@ -19,7 +19,8 @@
               <el-input v-model="form.branch"></el-input>
             </el-form-item>
             <el-form-item :label="$t('multi_cluster.auth')">
-              <el-switch v-model="requireAuth" @change="onRequireAuthChange"></el-switch>
+              <el-switch v-model="requireAuth" @change="onRequireAuthChange" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"></el-switch>
             </el-form-item>
 
             <el-form-item v-if="requireAuth" :label="$t('multi_cluster.username')">

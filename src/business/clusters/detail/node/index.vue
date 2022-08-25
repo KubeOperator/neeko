@@ -103,13 +103,9 @@
       <node-detail :DetaiInfo="currentNode"></node-detail>
     </el-dialog>
 
-    <el-dialog :title="$t('cluster.detail.node.node_shrink')" width="30%" :visible.sync="dialogDeleteVisible">
-      <batch-delete ref="batchDelete" :deleteLists="deleteLists" @submitDelete="submitDelete" />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogDeleteVisible = false">{{$t('commons.button.cancel')}}</el-button>
-        <el-button type="primary" @click="onSubmitDelete">{{$t('commons.button.submit')}}</el-button>
-      </div>
-    </el-dialog>
+    <div v-if="dialogDeleteVisible">
+      <batch-delete ref="batchDelete" :visiable="dialogDeleteVisible" @changeVisble="changeVisble" :deleteLists="deleteLists" @submitDelete="submitDelete" />
+    </div>
 
     <el-dialog @close="searchForPolling()" v-if='dialogLogVisible' :title="$t('task.condition_detail')" width="70%" :visible.sync="dialogLogVisible">
       <ko-logs :operation="operationType" :clusterName="clusterName" :nodeName="nodeName" @retry="onRetry" @cancle="cancleLog()" />
@@ -344,7 +340,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-
+    changeVisble(val) {
+      this.dialogDeleteVisible = val
+    },
     onDelete(row) {
       this.deleteLists = []
       if (row) {
@@ -366,9 +364,6 @@ export default {
         }
       }
       this.dialogDeleteVisible = true
-    },
-    onSubmitDelete() {
-      this.$refs["batchDelete"].submitDelete()
     },
     submitDelete(selects, force) {
       this.deleteLoadding = true

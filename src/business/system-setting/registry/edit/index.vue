@@ -109,6 +109,9 @@ export default {
         protocol: [Rule.RequiredRule],
         nexusUser: [Rule.RequiredRule],
         nexusPassword: [Rule.RequiredRule],
+        repoPort: [Rule.RequiredRule],
+        registryPort: [Rule.RequiredRule],
+        registryHostedPort: [Rule.RequiredRule],
       },
       dialogChangePasswdVisible: false,
       passwordForm: {

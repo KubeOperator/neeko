@@ -850,7 +850,7 @@ const message = {
       CLUSTER_DELETE: "集群删除",
       CLUSTER_SCALE: "集群伸缩",
       CLUSTER_RESTORE: "集群恢复",
-      LICENSE_EXPIRE: "License 到期",
+      LICENSE_EXPIRE: "许可证到期",
       CLUSTER_OPERATOR: "集群操作"
     },
     detail: {
