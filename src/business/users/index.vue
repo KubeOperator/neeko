@@ -33,8 +33,7 @@
       </el-table-column>
       <el-table-column sortable prop="status" :label="$t('commons.table.status')">
         <template v-slot:default="{row}">
-          <el-switch :disabled="currentUser.user.name === row.name || row.name === 'admin'" @change="changeStatus(row)" :active-text="$t('commons.button.enable')"
-                        :inactive-text="$t('commons.button.disable')" v-model="row.status" active-value="active" inactive-value="passive" />
+          <el-switch :disabled="currentUser.user.name === row.name || row.name === 'admin'" @change="changeStatus(row)" v-model="row.status" active-value="active" inactive-value="passive" />
         </template>
       </el-table-column>
       <el-table-column sortable prop="type" :label="$t('user.type')">

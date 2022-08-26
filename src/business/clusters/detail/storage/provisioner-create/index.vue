@@ -171,7 +171,8 @@
             <el-form-item :label="$t('cluster.detail.storage.multi_path_networking')" prop="vars.oceanstor_is_multipath"
                           :rules="requiredRules">
               <el-switch style="width: 80%" active-value="yes" inactive-value="no"
-                         v-model="form.vars['oceanstor_is_multipath']"/>
+                         v-model="form.vars['oceanstor_is_multipath']" :active-text="$t('commons.button.enable')"
+                        :inactive-text="$t('commons.button.disable')"/>
             </el-form-item>
             <el-form-item :label="$t('commons.table.type')" prop="vars.oceanstor_type" :rules="requiredRules">
               <el-select style="width: 100%" v-model="form.vars['oceanstor_type']">
