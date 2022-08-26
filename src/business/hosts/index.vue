@@ -117,28 +117,46 @@
         <div align="center" style="margin-top: 15px">
           <table style="width: 90%" class="myTable">
             <tr>
-              <td>IP</td>
-              <td>{{currentHost.ip}}</td>
+              <td>{{$t('host.ip')}}</td>
+              <td>
+                <div v-if="currentHost.flexIp === ''">
+                  <span>{{ currentHost.ip }}</span>
+                </div>
+                <div v-else>
+                  <div><span>{{ currentHost.ip }} {{ $t('host.private' )}}</span></div>
+                  <div style="margin-top: 5px"><span>{{ currentHost.flexIp }} {{ $t('host.public' )}}</span></div>
+                </div>
+              </td>
             </tr>
             <tr>
-              <td>{{$t ('host.cpu')}}</td>
-              <td>{{currentHost.cpuCore}}</td>
-            </tr>
-            <tr>
-              <td>{{$t ('host.gpu')}}</td>
-              <td>{{currentHost.gpuNum}}</td>
-            </tr>
-            <tr>
-              <td>{{$t ('host.memory')}}</td>
-              <td>{{currentHost.memory}}</td>
+              <td>{{$t('host.config')}}</td>
+              <td>
+                <div style="margin-top: 5px">{{ currentHost.cpuCore }} Core</div>
+                <div style="margin-top: 5px">{{ currentHost.memory }} {{ $t('host.mb') }}</div>
+                <div style="margin-top: 5px" v-if="currentHost.gpuNum !== 0">GPU: {{ currentHost.gpuNum }}</div>
+              </td>
             </tr>
             <tr>
               <td>{{$t ('host.os')}}</td>
-              <td>{{currentHost.os}}</td>
-            </tr>
-            <tr>
-              <td>{{$t ('host.architecture')}}</td>
-              <td>{{currentHost.architecture}}</td>
+              <td>
+                <div>{{ currentHost.architecture }}</div>
+                <svg style="margin-top: 5px" v-if="currentHost.os === 'CentOS'" class="icon" aria-hidden="true">
+                  <use xlink:href="#iconziyuan"></use>
+                </svg>
+                <svg v-if="currentHost.os === 'EulerOS'" class="icon" aria-hidden="true">
+                  <use xlink:href="#iconEulerOS"></use>
+                </svg>
+                <svg v-if="currentHost.os === 'RedHat'" class="icon" aria-hidden="true">
+                  <use xlink:href="#iconred-hat"></use>
+                </svg>
+                <svg v-if="currentHost.os === 'Ubuntu'" class="icon" aria-hidden="true">
+                  <use xlink:href="#iconubuntu"></use>
+                </svg>
+                <svg v-if="currentHost.os === 'Kylin' || currentHost.os === 'Kylin Linux Advanced Server'" class="icon" aria-hidden="true">
+                  <use xlink:href="#iconqilin"></use>
+                </svg>
+                <span> {{ currentHost.os }} {{ currentHost['osVersion'] }}</span>
+              </td>
             </tr>
             <tr>
               <td>{{$t ('commons.table.create_time')}}</td>

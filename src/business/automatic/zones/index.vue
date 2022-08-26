@@ -77,15 +77,15 @@
             </tr>
             <tr v-if="item.cloudVars.resourceType!=='host'">
               <td>{{ $t("automatic.zone.resource_pool") }}</td>
-              <td>{{ item.cloudVars.resourcePool }}</td>
+              <td>{{ item.cloudVars.resource }}</td>
             </tr>
             <tr v-if="item.cloudVars.resourceType==='host'">
               <td>{{ $t("automatic.zone.host") }}</td>
               <td>{{ item.cloudVars.hostSystem }}</td>
             </tr>
             <tr>
-              <td>{{ $t("automatic.zone.cluster") }}</td>
-              <td>{{ item.cloudVars.cluster }}</td>
+              <td>{{ $t("automatic.zone.host") }}</td>
+              <td>{{ item.cloudVars.hostSystem }}</td>
             </tr>
             <tr>
               <td>{{ $t("automatic.zone.datastore") }}</td>

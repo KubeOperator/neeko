@@ -163,7 +163,7 @@
                   <el-option
                           v-for="(item,index) in ipPools"
                           :key="index"
-                          :label="item.name"
+                          :label="item.name + ' (' +item.subnet + ')' + ' [ ' + item.ipUsed + ' / ' + item.ips.length + ' ]'"
                           :value="item.name">
                   </el-option>
                 </el-select>
@@ -321,7 +321,7 @@
                   <el-option
                           v-for="(item,index) in ipPools"
                           :key="index"
-                          :label="item.name"
+                          :label="item.name + ' (' +item.subnet + ')' + ' [ ' + item.ipUsed + ' / ' + item.ips.length + ' ]'"
                           :value="item.name">
                   </el-option>
                 </el-select>
@@ -456,7 +456,7 @@
                   <el-option
                           v-for="(item,index) in ipPools"
                           :key="index"
-                          :label="item.name"
+                          :label="item.name + ' (' +item.subnet + ')' + ' [ ' + item.ipUsed + ' / ' + item.ips.length + ' ]'"
                           :value="item.name">
                   </el-option>
                 </el-select>
@@ -472,35 +472,6 @@
               </div>
             </el-form-item>
           </el-form>
-          <h4 v-if="currentPool && form.ipPoolName !== '' ">{{ $t("automatic.ip_pool.name") }}</h4>
-          <table class="el-table" v-if="currentPool && form.ipPoolName !== '' ">
-            <tbody>
-            <tr>
-              <th>{{ $t("commons.table.name") }}</th>
-              <td>{{ currentPool.name }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("automatic.ip_pool.subnet") }}</th>
-              <td>{{ currentPool.subnet }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("automatic.ip_pool.gateway") }}</th>
-              <td v-if="currentPool.ips.length >0 ">{{ currentPool.ips[0].gateway }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("automatic.ip_pool.dns1") }}</th>
-              <td v-if="currentPool.ips.length >0 ">{{ currentPool.ips[0].dns1 }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("automatic.ip_pool.dns2") }}</th>
-              <td v-if="currentPool.ips.length >0 ">{{ currentPool.ips[0].dns2 }}</td>
-            </tr>
-            <tr>
-              <th>{{ $t("automatic.ip_pool.ip_usage") }}</th>
-              <td>{{ currentPool.ipUsed }}/{{ currentPool.ips.length }}</td>
-            </tr>
-            </tbody>
-          </table>
         </div>
       </el-col>
     </el-row>
