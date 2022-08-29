@@ -32,14 +32,14 @@
       </el-table-column>
       <el-table-column sortable :label="$t('project.project')" v-if="isAdmin" show-overflow-tooltip min-width="120" prop="projectName" />
       <el-table-column sortable :label="$t('route.cluster')" show-overflow-tooltip min-width="100" prop="clusterName" />
-      <el-table-column sortable :label="$t('host.ip')" min-width="120px" prop="ip">
+      <el-table-column sortable :label="$t('host.ip')" min-width="150px" prop="ip">
         <template v-slot:default="{row}">
           <div v-if="row.flexIp === ''">
             <span>{{ row.ip }}</span>
           </div>
           <div v-else>
-            <div><span>{{ row.ip }} {{ $t('host.private' )}}</span></div>
             <div><span>{{ row.flexIp }} {{ $t('host.public' )}}</span></div>
+            <div><span>{{ row.ip }} {{ $t('host.private' )}}</span></div>
           </div>
         </template>
       </el-table-column>
@@ -123,8 +123,8 @@
                   <span>{{ currentHost.ip }}</span>
                 </div>
                 <div v-else>
-                  <div><span>{{ currentHost.ip }} {{ $t('host.private' )}}</span></div>
-                  <div style="margin-top: 5px"><span>{{ currentHost.flexIp }} {{ $t('host.public' )}}</span></div>
+                  <div><span>{{ currentHost.flexIp }} {{ $t('host.public' )}}</span></div>
+                  <div style="margin-top: 5px"><span>{{ currentHost.ip }} {{ $t('host.private' )}}</span></div>
                 </div>
               </td>
             </tr>

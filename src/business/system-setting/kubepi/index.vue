@@ -10,7 +10,7 @@
             <span>admin</span>
           </el-form-item>
           <el-form-item style="width: 100%" :label="$t('login.password')" prop="bindPassword">
-            <el-input @input="attachable = false" type="password" show-password v-model="form.bindPassword"></el-input>
+            <el-input @input="attachable = false" :placeholder="$t('setting.kubepi_password_help')" type="password" show-password v-model="form.bindPassword"></el-input>
           </el-form-item>
           <div style="float: right">
             <el-form-item>

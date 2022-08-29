@@ -9,13 +9,13 @@
     </template>
     <complex-table style="margin-top: 20px" v-loading="loading" :data="data" @search="search"
                    :pagination-config="paginationConfig">
-      <el-table-column label="ID" min-width="150" show-overflow-tooltip prop="id" fix>
+      <el-table-column sortable label="ID" min-width="150" show-overflow-tooltip prop="id" fix>
         <template v-slot:default="{row}">
           <el-link :disabled="!(row.status==='Success')" type="info" @click="cisDetail(row.id)">{{ row.id }}</el-link>
         </template>
       </el-table-column>
 
-      <el-table-column label="PASS" min-width="36" prop="totalPass" fix>
+      <el-table-column sortable label="PASS" min-width="36" prop="totalPass" fix>
         <template v-slot:default="{row}">
           <el-tag style="cursor: pointer" effect="plain" type="success" @click="cisDetail(row.id,'PASS')">
             {{ row.totalPass }}
@@ -23,7 +23,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="INFO" min-width="36" prop="totalInfo" fix>
+      <el-table-column sortable label="INFO" min-width="36" prop="totalInfo" fix>
 
         <template v-slot:default="{row}">
           <el-tag style="cursor: pointer" effect="plain" type="info" @click="cisDetail(row.id,'INFO')">{{
@@ -32,7 +32,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="WARN" min-width="36" prop="totalWarn" fix>
+      <el-table-column sortable label="WARN" min-width="36" prop="totalWarn" fix>
 
         <template v-slot:default="{row}">
           <el-tag style="cursor: pointer" effect="plain" type="warning" @click="cisDetail(row.id,'WARN')">
@@ -40,7 +40,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="FAIL" min-width="36" prop="totalFail" fix>
+      <el-table-column sortable label="FAIL" min-width="36" prop="totalFail" fix>
 
         <template v-slot:default="{row}">
           <el-tag style="cursor: pointer" effect="plain" type="danger" @click="cisDetail(row.id,'FAIL')">
@@ -48,18 +48,18 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
+      <el-table-column sortable :label="$t('cluster.detail.security.start_time')" min-width="100" prop="startTime" fix>
         <template v-slot:default="{row}">
           {{ row.startTime | datetimeFormat }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('cluster.detail.security.end_time')" min-width="100" prop="endTime" fix>
+      <el-table-column sortable :label="$t('cluster.detail.security.end_time')" min-width="100" prop="endTime" fix>
         <template v-slot:default="{row}">
           <span v-if="row.status !=='Running'">{{ row.endTime | datetimeFormat }}</span>
           <span v-if="row.status ==='Running'">-</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('commons.table.status')" min-width="100" prop="status" fix>
+      <el-table-column sortable :label="$t('commons.table.status')" min-width="100" prop="status" fix>
         <template v-slot:default="{row}">
           <span v-if="row.status !== 'Failed'">{{ row.status }}
             <i v-if="row.status === 'Running'" class="el-icon-loading"/>

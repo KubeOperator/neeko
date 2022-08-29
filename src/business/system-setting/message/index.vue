@@ -201,6 +201,7 @@ export default {
     getAccount () {
       getMsgAccount(this.type).then(res => {
         this.form = res
+        this.form.config.port = res?.config?.port ? res.config.port : null
       })
     },
     verify () {

@@ -848,6 +848,12 @@ export default {
       if (step.id === "component-setting") {
         this.loadProjectResource()
       }
+      if (step.id === "cluster-info") {
+        this.changeArch(this.form.architectures)
+        if (!this.archValid) {
+          return false
+        }
+      }
       if (!isNext) {
         return
       }
