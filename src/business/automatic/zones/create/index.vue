@@ -210,7 +210,7 @@
                 </el-radio-group>
               </el-form-item>
               <div v-if="form.cloudVars['templateType']==='customize'">
-                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.imageName">
+                <el-form-item :label="$t('automatic.zone.template')" prop="cloudVars.templateConfig">
                   <el-select v-model="form.cloudVars.templateConfig"
                              filterable style="width:100%"
                              reserve-keyword
@@ -266,7 +266,7 @@
                           v-for="(item,index) in cloudZone.networkList"
                           :key="index"
                           :label="item.name"
-                          :value="item.id">
+                          :value="item.name">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -523,6 +523,7 @@ export default {
           templateConfig: "",
           storageType: "",
           securityGroup: "",
+          network: "",
           ipType: "",
           subnet: "",
           floatingNetwork: "",
@@ -571,33 +572,33 @@ export default {
       resourcePools: [],
       rules: {
         name: [Rule.LengthRule, Rule.NameRule],
-        regionName: [Rule.RequiredRule],
+        regionName: [Rule.SelectRequiredRule],
         cloudVars: {
-          cluster: [Rule.RequiredRule],
-          datastore: [Rule.RequiredRule],
-          resourcePool: [Rule.RequiredRule],
-          templateType: [Rule.RequiredRule],
-          datastoreType: [Rule.RequiredRule],
-          imageName: [Rule.RequiredRule],
-          templateConfig: [Rule.RequiredRule],
-          network: [Rule.RequiredRule],
-          storageType: [Rule.RequiredRule],
-          securityGroup: [Rule.RequiredRule],
-          ipType: [Rule.RequiredRule],
-          subnet: [Rule.RequiredRule],
-          floatingNetwork: [Rule.RequiredRule],
-          switch: [Rule.RequiredRule],
-          portgroup: [Rule.RequiredRule],
+          cluster: [Rule.SelectRequiredRule],
+          datastore: [Rule.SelectRequiredRule],
+          resourcePool: [Rule.SelectRequiredRule],
+          templateType: [Rule.SelectRequiredRule],
+          datastoreType: [Rule.SelectRequiredRule],
+          imageName: [Rule.SelectRequiredRule],
+          templateConfig: [Rule.SelectRequiredRule],
+          network: [Rule.SelectRequiredRule],
+          storageType: [Rule.SelectRequiredRule],
+          securityGroup: [Rule.SelectRequiredRule],
+          ipType: [Rule.SelectRequiredRule],
+          subnet: [Rule.SelectRequiredRule],
+          floatingNetwork: [Rule.SelectRequiredRule],
+          switch: [Rule.SelectRequiredRule],
+          portgroup: [Rule.SelectRequiredRule],
           nfsAddress: [Rule.RequiredRule],
           nfsPort: [Rule.RequiredRule],
           nfsUsername: [Rule.RequiredRule],
           nfsPassword: [Rule.RequiredRule],
           port: [Rule.RequiredRule],
-          hostSystem: [Rule.RequiredRule],
-          resource: [Rule.RequiredRule],
+          hostSystem: [Rule.SelectRequiredRule],
+          resource: [Rule.SelectRequiredRule],
         },
-        credentialName: [Rule.RequiredRule],
-        ipPoolName: [Rule.RequiredRule],
+        credentialName: [Rule.SelectRequiredRule],
+        ipPoolName: [Rule.SelectRequiredRule],
       },
       currentPool: {
         ips: [],
@@ -701,9 +702,11 @@ export default {
         }
       })
     },
-    changeNetwork (networkId) {
+    changeNetwork (networkName) {
+      this.form.cloudVars.subnet = ""
+      this.form.cloudVars.floatingNetwork = ""
       this.cloudZone.networkList.forEach(network => {
-        if (network.id === networkId) {
+        if (network.name === networkName) {
           this.subnetList = network.subnetList
         }
       })
