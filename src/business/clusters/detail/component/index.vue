@@ -81,6 +81,8 @@
       </div>
     </el-dialog>
 
+    <metallb-component @search="search" ref="metallb_component"></metallb-component>
+
     <el-dialog :title="$t('commons.button.error_msg')" width="50%" :visible.sync="dialogVisible">
       <template slot="title">
         <div v-if="formatMsgs.failed">{{formatMsgs.name}}</div>
@@ -115,12 +117,13 @@ import ComplexTable from "@/components/complex-table"
 import { getComponents, createComponent, deleteComponent, syncComponents } from "@/api/cluster"
 import { openLoggerWithName } from "@/api/cluster/tasks"
 import IstioComponent from "./istio/index.vue"
+import MetallbComponent from "./metallb/index.vue"
 import IstioDetail from "./istio/detail.vue"
 import { ansibleErrFormat } from "@/utils/format_ansible_err"
 
 export default {
   name: "ClusterNamespace",
-  components: { ComplexTable, IstioComponent, IstioDetail },
+  components: { ComplexTable, IstioComponent, MetallbComponent, IstioDetail },
   data() {
     return {
       clusterName: "",
@@ -218,6 +221,11 @@ export default {
       this.component = row
       if (row.name === "istio") {
         this.dialogIstioVisible = true
+        return
+      }
+      if (row.name === "metallb") {
+        row.clusterName = this.clusterName
+        this.$refs.metallb_component.acceptParam(row)
         return
       }
       let data = {

@@ -102,6 +102,7 @@ const message = {
       common_name_help: "Lowercase English, numbers and-",
       name_help: "Chinese, uppercase and lowercase English, numbers, - and .",
       ip_range_error: "IP range error",
+      cidr_error: "Please enter the correct cidr!",
       subnet_error: "Subnet error",
       support_image_type: "Only JPG/PNG/JPEG files can be uploaded!",
     },
@@ -476,7 +477,9 @@ const message = {
         GPU_HELPER: "The GPU Operator allows the administrator of the Kubernetes cluster to manage GPU nodes in the same way as CPU nodes in the cluster.",
         DNS_CACHE_HELPER: "NodeLocal DNSCache improves cluster DNS performance by running DNS cache proxies as DaemonSet on cluster nodes.",
         ISTIO_HELPER: "Istio is an open platform for connecting, managing, and securing microservices.",
+        METALLB_HELPER: "MetalLB is a load-balancer implementation for bare metal Kubernetes clusters, using standard routing protocols.",
         NPD_HELPER: "Node-problem-detector is a daemon that monitors and reports on the health of a node.",
+        cidrHelper: "cidr network segment: one in a row, for example, 172.16.10.0/24",
       },
       storage: {
         type: "Type",
