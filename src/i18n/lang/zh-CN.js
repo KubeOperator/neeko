@@ -481,7 +481,7 @@ const message = {
         ISTIO_HELPER: "istio 是一个用于连接、管理和保护微服务的开放平台。",
         METALLB_HELPER: "metalLB 是裸金属 Kubernetes 集群的负载平衡器实现，使用标准路由协议。",
         NPD_HELPER: "node-problem-detector 是一个守护程序，用于监视和报告节点的健康状况。",
-        cidrHelper: "cidr 网段，一行一个，例：172.16.10.0/24",
+        cidrHelper: "cidr 网段，一行一个，例： \n172.16.10.0/24\n172.16.20.0/24",
         metallb_param_error: "请确保 cidr 和 ip 范围至少一项不为空！",
       },
       namespace: {

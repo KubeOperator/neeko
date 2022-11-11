@@ -479,7 +479,8 @@ const message = {
         ISTIO_HELPER: "Istio is an open platform for connecting, managing, and securing microservices.",
         METALLB_HELPER: "MetalLB is a load-balancer implementation for bare metal Kubernetes clusters, using standard routing protocols.",
         NPD_HELPER: "Node-problem-detector is a daemon that monitors and reports on the health of a node.",
-        cidrHelper: "cidr network segment: one in a row, for example, 172.16.10.0/24",
+        cidrHelper: "cidr network segment: one in a row, for example, \n172.16.10.0/24\n172.16.20.0/24",
+        metallb_param_error: "Make sure that at least one of the cidr and ip ranges is not empty!",
       },
       storage: {
         type: "Type",

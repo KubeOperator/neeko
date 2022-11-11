@@ -416,9 +416,6 @@
                           <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
                             <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                           </el-form-item>
-                          <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                            <el-input-number @change="isPortAvailable()" v-model.number="form.kubeApiServerPort" clearable></el-input-number>
-                          </el-form-item>
                         </div>
                       </div>
                       <div v-if="form.provider === 'plan'">
@@ -446,11 +443,12 @@
                           <el-form-item v-if="form.lbMode === 'external'" label="VIP" prop="lbKubeApiserverIp">
                             <el-input v-model="form.lbKubeApiserverIp" clearable></el-input>
                           </el-form-item>
-                          <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
-                            <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
-                          </el-form-item>
                         </div>
                       </div>
+
+                      <el-form-item :label="$t('cluster.creation.port')" prop="kubeApiServerPort">
+                        <el-input-number @change="isPortAvailable()" v-model="form.kubeApiServerPort" clearable></el-input-number>
+                      </el-form-item>
                     </el-col>
                     <el-col :span="4"><br /></el-col>
                   </el-row>
@@ -588,14 +586,14 @@
                       <ul>{{$t ('cluster.creation.worker_num')}}</ul>
                       <ul>{{$t ('cluster.creation.cluster_high_availability')}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">VIP</ul>
-                      <ul v-if="isMultiMaster">{{$t('cluster.creation.port')}}</ul>
+                      <ul>{{$t('cluster.creation.port')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.plan}}</ul>
                       <ul>{{form.workerAmount}}</ul>
                       <ul>{{form.lbMode}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
-                      <ul v-if="isMultiMaster">{{form.kubeApiServerPort}}</ul>
+                      <ul>{{form.kubeApiServerPort}}</ul>
                     </el-col>
                   </el-row>
                   <el-row type="flex" justify="center" v-if="form.provider === 'bareMetal'">
@@ -615,7 +613,7 @@
                       </el-tooltip>
                       <ul>{{form.lbMode}}</ul>
                       <ul v-if="isMultiMaster && form.lbMode === 'external'">{{form.lbKubeApiserverIp}}</ul>
-                      <ul v-if="isMultiMaster">{{form.kubeApiServerPort}}</ul>
+                      <ul>{{form.kubeApiServerPort}}</ul>
                     </el-col>
                   </el-row>
                   <br>
@@ -777,7 +775,6 @@ export default {
       let bool
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          console.log(valid)
           if (this.form.masters) {
             const lenMaster = this.form.masters.length
             if (lenMaster !== 0) {

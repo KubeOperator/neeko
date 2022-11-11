@@ -129,6 +129,8 @@ import { createComponent } from "@/api/cluster"
             this.metallbVars.name = row.name
             this.metallbVars.type = row.type
             this.metallbVars.version = row.version
+            this.metallbVars.metallb_cidrs = ""
+            this.metallbVars.metallb_ip_ranges = []
         }
     },
   }
