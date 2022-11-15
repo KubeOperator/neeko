@@ -1,5 +1,11 @@
 FROM node:14-alpine3.15 as stage-build
 
+ARG NPM_REGISTRY="https://registry.npmmirror.com"
+ENV NPM_REGISTY=$NPM_REGISTRY
+
+RUN set -ex \
+    && npm config set registry ${NPM_REGISTRY}
+
 WORKDIR /data
 
 RUN apk update && \
