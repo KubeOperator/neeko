@@ -255,7 +255,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item v-if="form.clusterInfo.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="clusterInfo.containerdStorageDir">
+                        <el-form-item v-if="form.clusterInfo.runtimeType === 'containerd'" :label="$t ('cluster.creation.docker_storage_dir')" prop="clusterInfo.containerdStorageDir">
                           <el-input v-model="form.clusterInfo.containerdStorageDir" placeholder="/var/lib/containerd" />
                         </el-form-item>
                       </el-col>

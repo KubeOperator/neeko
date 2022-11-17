@@ -288,10 +288,9 @@ const message = {
 
       step3: "运行时设置",
       runtime_type: "容器运行时",
-      docker_mirror_registry: "启用仓库镜像",
-      docker_remote_api: "启用 Restful API",
-      docker_storage_dir: "Docker 数据路径",
-      containe_storage_dir: "Containerd 数据路径",
+      docker_mirror_registry: "镜像加速器",
+      docker_remote_api: "远程访问",
+      docker_storage_dir: "数据目录",
       subnet: "Container 子网",
 
       step4: "容器网络设置",

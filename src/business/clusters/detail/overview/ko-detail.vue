@@ -130,7 +130,7 @@
         </el-row>
         <el-row v-if="clusterDetailInfo.specRuntime.runtimeType === 'containerd'" type="flex" justify="center">
           <el-col v-if="clusterDetailInfo.specRuntime.runtimeType === 'containerd'" :span="10">
-            <el-form-item :label="$t ('cluster.creation.containe_storage_dir') + ': '">
+            <el-form-item :label="$t ('cluster.creation.docker_storage_dir') + ': '">
               <span>{{clusterDetailInfo.specRuntime.containerdStorageDir}}</span>
             </el-form-item>
           </el-col>

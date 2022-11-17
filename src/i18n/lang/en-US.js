@@ -290,10 +290,9 @@ const message = {
 
       step3: "Runtime Settings",
       runtime_type: "Container Runtime",
-      docker_mirror_registry: "Docker Mirror Registry",
-      docker_remote_api: "Docker Remote Api",
-      docker_storage_dir: "Docker Data Path",
-      containe_storage_dir: "Containerd Data Path",
+      docker_mirror_registry: "Registry Mirrors",
+      docker_remote_api: "Remote API",
+      docker_storage_dir: "Data Path",
       subnet: "Container Subnet",
 
       step4: "Container Network Settings",

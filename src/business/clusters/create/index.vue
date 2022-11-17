@@ -194,7 +194,7 @@
                       <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.docker_storage_dir')" prop="dockerStorageDir">
                         <el-input v-model="form.dockerStorageDir" clearable></el-input>
                       </el-form-item>
-                      <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.containe_storage_dir')" prop="containerdStorageDir">
+                      <el-form-item v-if="form.runtimeType === 'containerd'" :label="$t ('cluster.creation.docker_storage_dir')" prop="containerdStorageDir">
                         <el-input v-model="form.containerdStorageDir" clearable></el-input>
                       </el-form-item>
                       <el-form-item v-if="form.runtimeType === 'docker'" :label="$t ('cluster.creation.subnet')" prop="dockerSubnet">
@@ -519,7 +519,7 @@
                       <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_remote_api')}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
                       <ul v-if="form.runtimeType === 'docker'">{{$t ('cluster.creation.subnet')}}</ul>
-                      <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.containe_storage_dir')}}</ul>
+                      <ul v-if="form.runtimeType === 'containerd'">{{$t ('cluster.creation.docker_storage_dir')}}</ul>
                     </el-col>
                     <el-col :span="6">
                       <ul>{{form.runtimeType}}</ul>
