@@ -24,6 +24,4 @@ $ npm run build
 
 
 ## Copyright
-Copyright (c) 2014-2022 飞致云 FIT2CLOUD, All rights reserved.
-
-
+Copyright (c) 2014-2023 飞致云 FIT2CLOUD, All rights reserved.
