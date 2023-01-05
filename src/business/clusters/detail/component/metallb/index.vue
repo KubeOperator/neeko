@@ -77,6 +77,10 @@ import { createComponent } from "@/api/cluster"
         },
         submitMetallb() {
             let itemVars = {}
+            if (!this.metallbVars.metallb_cidrs && this.metallbVars.metallb_ip_ranges.length === 0) {
+                this.$message({ type: "error", message: i18n.t("cluster.detail.component.metallb_param_error") })
+                return
+            }
             if (this.metallbVars.metallb_cidrs) {
                 let regexp = /^(?:(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}(?:[0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2]\d|3[0-2])$/
                 let cidrs = this.metallbVars.metallb_cidrs.split("\n")
@@ -87,7 +91,8 @@ import { createComponent } from "@/api/cluster"
                     }
                 }
                 itemVars.metallb_cidrs = this.metallbVars.metallb_cidrs.replace("\n", ",")
-            } else if (this.metallbVars.metallb_ip_ranges.length !== 0) {
+            } 
+            if (this.metallbVars.metallb_ip_ranges.length !== 0) {
                 let regexp = /^((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){3}$/
                 let ips = []
                 for (const item of this.metallbVars.metallb_ip_ranges) {
@@ -107,9 +112,6 @@ import { createComponent } from "@/api/cluster"
                     iprange.push(item.ipStart+"-"+item.ipEnd)
                 }
                 itemVars.metallb_ip_ranges = iprange.join(",")
-            } else {
-                this.$message({ type: "error", message: i18n.t("cluster.detail.component.metallb_param_error") })
-                return
             }
             let data = {
                 clusterName: this.metallbVars.clusterName,
